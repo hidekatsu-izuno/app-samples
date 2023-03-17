@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:15
+    container_name: app-samples-db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-15:/var/lib/postgresql/data
+      - ./initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  postgres-15:
