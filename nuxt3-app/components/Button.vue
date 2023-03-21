@@ -2,6 +2,7 @@
 withDefaults(defineProps<{
   label?: string
   halign?: "start" | "center" | "end"
+  error?: string
 }>(), {
 })
 </script>
@@ -21,5 +22,8 @@ withDefaults(defineProps<{
         'self-end': halign === 'end',
       }"
     ><slot /></button>
+    <div v-if="error"
+      class="block text-red-500"
+    >{{ error }}</div>
   </div>
 </template>

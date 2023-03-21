@@ -3,6 +3,7 @@ withDefaults(defineProps<{
   type?: "text" | "password" | "email"
   label?: string
   placeholder?: string
+  error?: string
 }>(), {
   type: "text"
 })
@@ -16,5 +17,8 @@ withDefaults(defineProps<{
     <input :type="type" :placeholder="placeholder"
       class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
     />
+    <div v-if="error"
+      class="block text-red-500"
+    >{{ error }}</div>
   </div>
 </template>
