@@ -5,10 +5,24 @@ withDefaults(defineProps<{
   error?: string
 }>(), {
 })
+
+const emits = defineEmits<{
+  (event: "update:error", value: string): void
+  (event: "click", value: MouseEvent): void
+}>()
+
+const emitError = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  emits("update:error", target.value)
+}
+
+const onClick = (event: MouseEvent) => {
+  emits("click", event)
+}
 </script>
 
 <template>
-  <div class="Anchor flex flex-col">
+  <div class="Hyperlink flex flex-col">
     <label v-if="label"
       class="block"
     >{{ label }}</label>
@@ -23,7 +37,7 @@ withDefaults(defineProps<{
       }"
     ><slot /></a>
     <div v-if="error"
-      class="block text-red-500"
+      class="block text-sm text-red-500"
     >{{ error }}</div>
   </div>
 </template>

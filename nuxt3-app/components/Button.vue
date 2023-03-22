@@ -5,6 +5,20 @@ withDefaults(defineProps<{
   error?: string
 }>(), {
 })
+
+const emits = defineEmits<{
+  (event: "update:error", value: string): void
+  (event: "click", value: MouseEvent): void
+}>()
+
+const emitError = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  emits("update:error", target.value)
+}
+
+const onClick = (event: MouseEvent) => {
+  emits("click", event)
+}
 </script>
 
 <template>
@@ -13,7 +27,8 @@ withDefaults(defineProps<{
       class="block"
     >{{ label }}</label>
     <button type="button"
-      class="text-white px-5 py-2.5 m-0 bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+      @click="onClick"
+      class="font-medium text-white px-5 py-2.5 m-0 bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
       :class="{
         'block': !halign,
         'w-full': !halign,
@@ -23,7 +38,7 @@ withDefaults(defineProps<{
       }"
     ><slot /></button>
     <div v-if="error"
-      class="block text-red-500"
+      class="block text-sm text-red-500"
     >{{ error }}</div>
   </div>
 </template>
