@@ -1,13 +1,18 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+import { ValidatorKey, Validator } from "@/composables/validator"
+
+const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
   type?: "text" | "password" | "email"
   label?: string
+  name?: string
   placeholder?: string
+  required?: boolean
   value?: string
   error?: string
 }>(), {
   type: "text",
+  required: false,
   value: "",
 })
 
@@ -21,9 +26,24 @@ const emitValue = (event: Event) => {
   emits("update:value", target.value)
 }
 
-const emitError = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  emits("update:error", target.value)
+const name = props.name
+if (name) {
+  const validator = inject(ValidatorKey)
+  if (validator) {
+    validator.on("validate", () => {
+      if (props.required) {
+        if (!props.value) {
+          emits("update:error", "必須項目です。")
+          return
+        }
+      }
+
+      return {
+        name,
+        value: props.value
+      }
+    })
+  }
 }
 </script>
 
