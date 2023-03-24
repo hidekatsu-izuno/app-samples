@@ -9,52 +9,48 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   required?: boolean
   value?: string
-  error?: string
 }>(), {
   type: "text",
   required: false,
   value: "",
-  error: "",
 })
 
 const data = reactive({
-  error: props.error
+  value: props.value || "",
+  error: "",
+})
+
+watch(() => props.value, () => {
+  data.value = props.value
 })
 
 const emits = defineEmits<{
   (event: "update:value", value: string): void
-  (event: "update:error", value: string): void
 }>()
 
 const emitValue = (event: Event) => {
   const target = event.target as HTMLInputElement
+  data.value = target.value
   emits("update:value", target.value)
 }
-
-const error = computed({
-  get: () => props.error || data.error,
-  set: (value) => {
-    data.error = value || ""
-    emits("update:error", value || "")
-  }
-})
 
 const name = props.name
 if (name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", () => {
+    validator.on("validate", name, () => {
+      data.error = ""
       if (props.required) {
-        if (!props.value) {
-          error.value = "必須項目です。"
+        if (!data.value) {
+          data.error = "必須項目です。"
           return
         }
       }
+      return data.value
+    })
 
-      return {
-        name,
-        value: props.value
-      }
+    validator.on("clear", name, () => {
+      data.error = ""
     })
   }
 }
@@ -66,7 +62,7 @@ if (name) {
       class="block"
     >{{ label }}</label>
     <input :type="type" :placeholder="placeholder"
-      :value="value"
+      :value="data.value"
       @input="emitValue"
       class="p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
       :class="{
@@ -77,8 +73,8 @@ if (name) {
         'self-end': halign === 'end',
       }"
     />
-    <div v-if="error"
+    <div v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ error }}</div>
+    >{{ data.error }}</div>
   </div>
 </template>

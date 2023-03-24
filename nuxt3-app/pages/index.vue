@@ -14,6 +14,8 @@ const onLoginButtonClick = async (event: MouseEvent) => {
   if (validated) {
     //const result = await $fetch("/api/login", { method: "POST", data: validated })
     alert("login: " + JSON.stringify(validated))
+
+    data.userId = "xxx"
   }
 }
 </script>
@@ -25,10 +27,10 @@ const onLoginButtonClick = async (event: MouseEvent) => {
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox label="メールアドレス" name="userId" type="email" required v-model:error="data.password" />
+            <TextBox label="メールアドレス" name="userId" type="email" required />
           </div>
           <div>
-            <TextBox label="パスワード" name="password" type="password" v-model:value="data.password" />
+            <TextBox label="パスワード" name="password" type="password" required v-model:value="data.password" />
           </div>
           <div>
             <Hyperlink halign="end" class="text-sm">パスワードを忘れた方はこちら</Hyperlink>
