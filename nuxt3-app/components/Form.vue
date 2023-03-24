@@ -1,10 +1,10 @@
-<script setup type="ts">
+<script setup lang="ts">
 import { ValidatorKey, Validator } from "@/composables/validator"
 
 const props = withDefaults(defineProps<{
   validator?: Validator
 }>(), {
-  validator: new Validator()
+  validator: () => new Validator()
 })
 
 provide(ValidatorKey, props.validator)

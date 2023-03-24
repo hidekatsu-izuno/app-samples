@@ -28,12 +28,13 @@ const emitValue = (event: Event) => {
 
 const name = props.name
 if (name) {
-  const validator = inject(ValidatorKey)
+  const validator = inject(ValidatorKey, null)
   if (validator) {
     validator.on("validate", () => {
       if (props.required) {
         if (!props.value) {
           emits("update:error", "必須項目です。")
+          console.log("update:error!")
           return
         }
       }

@@ -25,7 +25,7 @@ const onLoginButtonClick = async (event: MouseEvent) => {
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox label="メールアドレス" name="userId" type="email" />
+            <TextBox label="メールアドレス" name="userId" type="email" required />
           </div>
           <div>
             <TextBox label="パスワード" name="password" type="password" />

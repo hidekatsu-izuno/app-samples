@@ -17,13 +17,17 @@ export class Validator {
 
   validate() {
     const results: Record<string, any> = {}
+    let hasError = false
     for (const listener of this.validateListeners) {
       const result = listener()
       if (result) {
         results[result.name] = result.value
       } else {
-        return
+        hasError = true
       }
+    }
+    if (hasError) {
+      return
     }
     return results
   }
