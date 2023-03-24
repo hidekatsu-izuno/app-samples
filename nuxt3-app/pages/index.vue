@@ -25,10 +25,10 @@ const onLoginButtonClick = async (event: MouseEvent) => {
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox label="メールアドレス" name="userId" type="email" required />
+            <TextBox label="メールアドレス" name="userId" type="email" required v-model:error="data.password" />
           </div>
           <div>
-            <TextBox label="パスワード" name="password" type="password" />
+            <TextBox label="パスワード" name="password" type="password" v-model:value="data.password" />
           </div>
           <div>
             <Hyperlink halign="end" class="text-sm">パスワードを忘れた方はこちら</Hyperlink>

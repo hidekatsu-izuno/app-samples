@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ValidatorKey, Validator } from "@/composables/validator"
+import { ValidatorKey } from "@/composables/validator"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -14,6 +14,11 @@ const props = withDefaults(defineProps<{
   type: "text",
   required: false,
   value: "",
+  error: "",
+})
+
+const data = reactive({
+  error: props.error
 })
 
 const emits = defineEmits<{
@@ -26,6 +31,14 @@ const emitValue = (event: Event) => {
   emits("update:value", target.value)
 }
 
+const error = computed({
+  get: () => props.error || data.error,
+  set: (value) => {
+    data.error = value || ""
+    emits("update:error", value || "")
+  }
+})
+
 const name = props.name
 if (name) {
   const validator = inject(ValidatorKey, null)
@@ -33,8 +46,7 @@ if (name) {
     validator.on("validate", () => {
       if (props.required) {
         if (!props.value) {
-          emits("update:error", "必須項目です。")
-          console.log("update:error!")
+          error.value = "必須項目です。"
           return
         }
       }
