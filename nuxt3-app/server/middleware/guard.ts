@@ -3,7 +3,7 @@ import express from "express"
 import session from "express-session"
 import pg from "pg"
 import pgSession from "connect-pg-simple"
-import useSessionUser from "../utils/session"
+import { useSessionUser } from "../utils/session"
 
 const config = useRuntimeConfig()
 

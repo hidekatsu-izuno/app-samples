@@ -8,7 +8,7 @@ const onPasswordChangeButtonClick = async (event: MouseEvent) => {
   const validated = validator.validate()
   if (validated) {
     //const result = await $fetch("/api/login", { method: "POST", data: validated })
-    alert("login: " + JSON.stringify(validated))
+    alert("メールを送信しました。")
   }
 }
 </script>

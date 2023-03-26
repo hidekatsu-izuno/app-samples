@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ValidatorKey } from "@/composables/validator"
-import { z } from "zod"
+import { z, ZodSchema, ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
   name?: string
   placeholder?: string
   required?: boolean
-  maxLength?: number
+  schema?: ZodString
   value?: string
 }>(), {
   type: "text",
@@ -41,27 +41,28 @@ const emitValue = (event: Event) => {
 
 const name = props.name
 if (name) {
+  let schema = props.schema || z.string()
+  if (props.required) {
+    if (schema.minLength != null) {
+      schema = schema.nonempty()
+    }
+  }
+  if (props.type === "email") {
+    if (!schema.isEmail) {
+      schema = schema.email()
+    }
+  }
+
   const validator = inject(ValidatorKey, null)
   if (validator) {
     validator.on("validate", name, () => {
       data.error = ""
 
-      let schema = z.string()
-      if (props.required) {
-        schema = schema.nonempty(`必須項目です。`)
-      }
-      if (props.maxLength != null) {
-        schema = schema.max(props.maxLength, `${props.maxLength}文字以下で入力してください。`)
-      }
-      if (props.type === "email") {
-        schema = schema.email(`無効なメールアドレスです。`)
-      }
       const result = schema.safeParse(data.value)
       if (result.success) {
-        return data.value
+        return result.data
       } else {
         data.error = result.error.issues[0].message
-        return
       }
     })
 

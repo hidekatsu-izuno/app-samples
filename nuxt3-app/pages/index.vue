@@ -1,7 +1,8 @@
 
 <script setup lang="ts">
-import { useValidator } from '@/composables/validator'
-import { useHistoryState } from 'vue-history-state';
+import { useHistoryState } from 'vue-history-state'
+import { useValidator } from '~~/composables/validator'
+import { UserIdSchema, PasswordSchema } from '~~/composables/schemas';
 
 const historyState = useHistoryState()
 const validator = useValidator()
@@ -13,8 +14,8 @@ const goPasswordChangePage = () => {
 const onLoginButtonClick = async () => {
   const validated = validator.validate()
   if (validated) {
-    //const result = await $fetch("/api/login", { method: "POST", data: validated })
-    alert("login: " + JSON.stringify(validated))
+    const result = await $fetch("/api/login", { method: "POST", body: validated })
+    location.href = result.redirect
   }
 }
 </script>
@@ -26,14 +27,10 @@ const onLoginButtonClick = async () => {
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox label="メールアドレス" name="userId" type="email"
-              required :maxLength="256"
-            />
+            <TextBox type="email" label="メールアドレス" name="userId" :schema="UserIdSchema" />
           </div>
           <div>
-            <TextBox label="パスワード" name="password" type="password"
-              required :maxLength="256"
-            />
+            <TextBox type="password" label="パスワード" name="password" :schema="PasswordSchema" />
           </div>
           <div>
             <Hyperlink halign="end" class="text-sm" @click="goPasswordChangePage">パスワードを忘れた方はこちら</Hyperlink>

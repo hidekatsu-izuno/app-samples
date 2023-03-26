@@ -3,7 +3,7 @@ import type { Request } from "express"
 
 const SESSION_MANAGER_KEY = Symbol.for("SESSION_MANAGER_KEY")
 
-export default function useSessionUser(event: H3Event) {
+export function useSessionUser(event: H3Event) {
   const context = event.context as any
 
   let sessionManager = context[SESSION_MANAGER_KEY]
@@ -33,5 +33,29 @@ export class SessionUser {
 
   get userId() {
     return this.req.session.userId
+  }
+
+  async regenerate() {
+    await new Promise((resolve, reject) => {
+      this.req.session.regenerate((err: any) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(null)
+        }
+      })
+    })
+  }
+
+  async destory() {
+    await new Promise((resolve, reject) => {
+      this.req.session.destroy((err: any) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(null)
+        }
+      })
+    })
   }
 }
