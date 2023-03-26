@@ -1,14 +1,15 @@
 
 <script setup lang="ts">
-import { useValidator } from '@/composables/validator'
+import { Validator } from '@/utils/validator'
+import { UserIdSchema } from '@/utils/schemas'
 
-const validator = useValidator()
+const validator = new Validator()
 
-const onPasswordChangeButtonClick = async (event: MouseEvent) => {
+const onPasswordResetButtonClick = async () => {
   const validated = validator.validate()
   if (validated) {
-    //const result = await $fetch("/api/login", { method: "POST", data: validated })
-    alert("メールを送信しました。")
+    const result = await $fetch("/api/send_password_reset_email", { method: "POST", data: validated })
+    alert(result.message)
   }
 }
 </script>
@@ -20,12 +21,10 @@ const onPasswordChangeButtonClick = async (event: MouseEvent) => {
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox label="メールアドレス" name="userId" type="email"
-              required :maxLength="256"
-            />
+            <TextBox label="メールアドレス" name="email" type="email" required :schema="UserIdSchema" />
           </div>
           <div>
-            <Button halign="center" @click="onPasswordChangeButtonClick">パスワード再設定メールを送信</Button>
+            <Button halign="center" @click="onPasswordResetButtonClick">パスワード再設定メールを送信</Button>
           </div>
         </Form>
       </Card>

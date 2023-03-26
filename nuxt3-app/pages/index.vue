@@ -1,11 +1,11 @@
 
 <script setup lang="ts">
 import { useHistoryState } from 'vue-history-state'
-import { useValidator } from '~~/composables/validator'
-import { UserIdSchema, PasswordSchema } from '~~/composables/schemas';
+import { Validator } from '~~/utils/validator'
+import { UserIdSchema, PasswordSchema } from '@/utils/schemas'
 
 const historyState = useHistoryState()
-const validator = useValidator()
+const validator = new Validator()
 
 const goPasswordChangePage = () => {
   historyState.push("/change_password")

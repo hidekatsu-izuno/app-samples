@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ValidatorKey } from "@/composables/validator"
+import { ValidatorKey } from "~~/utils/validator"
 import { z, ZodSchema, ZodString } from "zod"
 
 const props = withDefaults(defineProps<{

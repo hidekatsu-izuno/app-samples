@@ -45,7 +45,3 @@ export class Validator {
     }
   }
 }
-
-export function useValidator() {
-  return new Validator()
-}
