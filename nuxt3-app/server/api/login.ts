@@ -1,5 +1,5 @@
 import { useSessionUser } from "@/server/utils/session"
-import { LoginSchema } from "@/composables/schemas"
+import { LoginSchema } from "~~/utils/schemas"
 
 export default defineEventHandler(async (event) => {
   const data = await readBody(event)
