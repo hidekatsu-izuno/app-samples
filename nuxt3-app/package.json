@@ -20,7 +20,7 @@
     "h3-express": "^0.3.0",
     "pg": "^8.10.0",
     "tiny-emitter": "^2.1.0",
-    "vue-history-state": "^0.13.0",
+    "vue-history-state": "^0.13.1",
     "zod": "^3.21.4"
   }
 }

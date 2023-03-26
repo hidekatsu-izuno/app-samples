@@ -2,19 +2,16 @@
 withDefaults(defineProps<{
   label?: string
   halign?: "start" | "center" | "end"
-  error?: string
 }>(), {
 })
 
+const data = reactive({
+  error: "",
+})
+
 const emits = defineEmits<{
-  (event: "update:error", value: string): void
   (event: "click", value: MouseEvent): void
 }>()
-
-const emitError = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  emits("update:error", target.value)
-}
 
 const onClick = (event: MouseEvent) => {
   emits("click", event)
@@ -26,8 +23,8 @@ const onClick = (event: MouseEvent) => {
     <label v-if="label"
       class="block"
     >{{ label }}</label>
-    <a href=""
-      class="text-blue-600 hover:underline"
+    <a
+      class="text-blue-600 cursor-pointer hover:underline"
       :class="{
         'block': !halign,
         'w-full': !halign,
@@ -35,9 +32,10 @@ const onClick = (event: MouseEvent) => {
         'self-center': halign === 'center',
         'self-end': halign === 'end',
       }"
+      @click="onClick"
     ><slot /></a>
-    <div v-if="error"
+    <div v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ error }}</div>
+    >{{ data.error }}</div>
   </div>
 </template>

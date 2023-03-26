@@ -1,16 +1,10 @@
 
 <script setup lang="ts">
 import { useValidator } from '@/composables/validator'
-import { useHistoryState } from 'vue-history-state';
 
-const historyState = useHistoryState()
 const validator = useValidator()
 
-const goPasswordChangePage = () => {
-  historyState.push("/change_password")
-}
-
-const onLoginButtonClick = async () => {
+const onPasswordChangeButtonClick = async (event: MouseEvent) => {
   const validated = validator.validate()
   if (validated) {
     //const result = await $fetch("/api/login", { method: "POST", data: validated })
@@ -22,7 +16,7 @@ const onLoginButtonClick = async () => {
 <template>
   <div class="min-h-screen flex bg-gray-50 items-center justify-center">
     <div class="w-full max-w-md flex flex-col items-center">
-      <h1 class="font-bold text-4xl m-4">Nuxt3 example</h1>
+      <h1 class="font-bold text-4xl m-4">パスワード再設定</h1>
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
@@ -31,15 +25,7 @@ const onLoginButtonClick = async () => {
             />
           </div>
           <div>
-            <TextBox label="パスワード" name="password" type="password"
-              required :maxLength="256"
-            />
-          </div>
-          <div>
-            <Hyperlink halign="end" class="text-sm" @click="goPasswordChangePage">パスワードを忘れた方はこちら</Hyperlink>
-          </div>
-          <div>
-            <Button halign="center" @click="onLoginButtonClick">ログイン</Button>
+            <Button halign="center" @click="onPasswordChangeButtonClick">パスワード再設定メールを送信</Button>
           </div>
         </Form>
       </Card>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ValidatorKey } from "@/composables/validator"
+import { z } from "zod"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -8,6 +9,7 @@ const props = withDefaults(defineProps<{
   name?: string
   placeholder?: string
   required?: boolean
+  maxLength?: number
   value?: string
 }>(), {
   type: "text",
@@ -31,6 +33,9 @@ const emits = defineEmits<{
 const emitValue = (event: Event) => {
   const target = event.target as HTMLInputElement
   data.value = target.value
+  if (data.error) {
+    data.error = ""
+  }
   emits("update:value", target.value)
 }
 
@@ -40,13 +45,24 @@ if (name) {
   if (validator) {
     validator.on("validate", name, () => {
       data.error = ""
+
+      let schema = z.string()
       if (props.required) {
-        if (!data.value) {
-          data.error = "必須項目です。"
-          return
-        }
+        schema = schema.nonempty(`必須項目です。`)
       }
-      return data.value
+      if (props.maxLength != null) {
+        schema = schema.max(props.maxLength, `${props.maxLength}文字以下で入力してください。`)
+      }
+      if (props.type === "email") {
+        schema = schema.email(`無効なメールアドレスです。`)
+      }
+      const result = schema.safeParse(data.value)
+      if (result.success) {
+        return data.value
+      } else {
+        data.error = result.error.issues[0].message
+        return
+      }
     })
 
     validator.on("clear", name, () => {
@@ -60,7 +76,7 @@ if (name) {
   <div class="TextBox">
     <label v-if="label"
       class="block"
-    >{{ label }}</label>
+    >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <input :type="type" :placeholder="placeholder"
       :value="data.value"
       @input="emitValue"
