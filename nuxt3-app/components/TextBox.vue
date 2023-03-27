@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ValidatorKey } from "~~/utils/validator"
-import { z, ZodSchema, ZodString } from "zod"
+import { z, ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -10,24 +10,24 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   required?: boolean
   schema?: ZodString
-  value?: string
+  modelValue?: string
 }>(), {
   type: "text",
   required: false,
-  value: "",
+  modelValue: "",
 })
 
 const data = reactive({
-  value: props.value || "",
+  value: props.modelValue || "",
   error: "",
 })
 
-watch(() => props.value, () => {
-  data.value = props.value
+watch(() => props.modelValue, () => {
+  data.value = props.modelValue
 })
 
 const emits = defineEmits<{
-  (event: "update:value", value: string): void
+  (event: "update:modelValue", value: string): void
 }>()
 
 const emitValue = (event: Event) => {
@@ -36,7 +36,7 @@ const emitValue = (event: Event) => {
   if (data.error) {
     data.error = ""
   }
-  emits("update:value", target.value)
+  emits("update:modelValue", target.value)
 }
 
 const name = props.name

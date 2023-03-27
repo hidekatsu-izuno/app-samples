@@ -3,14 +3,24 @@
 import { Validator } from '@/utils/validator'
 import { UserIdSchema } from '@/utils/schemas'
 
+const data = reactive({
+  showPopup: false,
+  message: "",
+})
+
 const validator = new Validator()
 
 const onPasswordResetButtonClick = async () => {
   const validated = validator.validate()
   if (validated) {
     const result = await $fetch("/api/send_password_reset_email", { method: "POST", data: validated })
-    alert(result.message)
+    data.message = result.message
+    data.showPopup = true
   }
+}
+
+const onPopupClose = (result?: "ok" | "cancel") => {
+
 }
 </script>
 
@@ -28,7 +38,11 @@ const onPasswordResetButtonClick = async () => {
           </div>
         </Form>
       </Card>
-      <div class="m-4 mb-8">Copyright &copy; Hidekatsu Izuno</div>
+      <div class="m-4 mb-8"></div>
+
+      <Teleport to="body">
+        <Popup type="ok" v-model="data.showPopup" :message="data.message" @close="onPopupClose"/>
+      </Teleport>
     </div>
   </div>
 </template>
