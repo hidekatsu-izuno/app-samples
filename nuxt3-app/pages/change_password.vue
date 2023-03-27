@@ -18,10 +18,6 @@ const onPasswordResetButtonClick = async () => {
     data.showPopup = true
   }
 }
-
-const onPopupClose = (result?: "ok" | "cancel") => {
-
-}
 </script>
 
 <template>
@@ -40,9 +36,7 @@ const onPopupClose = (result?: "ok" | "cancel") => {
       </Card>
       <div class="m-4 mb-8"></div>
 
-      <Teleport to="body">
-        <Popup type="ok" v-model="data.showPopup" :message="data.message" @close="onPopupClose"/>
-      </Teleport>
+      <Popup type="ok" v-model="data.showPopup" :message="data.message" />
     </div>
   </div>
 </template>

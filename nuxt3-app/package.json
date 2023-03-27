@@ -16,6 +16,7 @@
   "dependencies": {
     "connect-pg-simple": "^8.0.0",
     "express-session": "^1.17.3",
+    "focus-trap": "^7.4.0",
     "h3-express": "^0.3.0",
     "pg": "^8.10.0",
     "vue-history-state": "^0.13.1",
