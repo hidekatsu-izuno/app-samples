@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as focusTrap from "focus-trap"
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock"
 
 const props = withDefaults(defineProps<{
   type?: "ok" | "ok_cancel" | "yes_no" | "yes_no_cancel"
@@ -18,14 +19,17 @@ onMounted(() => {
 
   watch(() => props.modelValue, () => {
     if (props.modelValue) {
+      disableBodyScroll(elRef.value)
       trap.activate()
     } else {
       trap.deactivate()
+      enableBodyScroll(elRef.value)
     }
   }, { flush: 'post' })
 
   onUnmounted(() => {
     trap.deactivate()
+    clearAllBodyScrollLocks()
   })
 })
 
