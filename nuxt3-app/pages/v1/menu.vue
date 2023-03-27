@@ -1,8 +1,9 @@
 <script setup lang="ts">
+const { data } = useFetch("/api/v1/menu")
 </script>
 
 <template>
-  <div>
-    <h1>Menu</h1>
-  </div>
+  <Frame title="Menu" :user="data?.user" :menus="data?.menus">
+    <h1 class="text-2xl font-bold">Menu</h1>
+  </Frame>
 </template>

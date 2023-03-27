@@ -91,8 +91,30 @@ z.setErrorMap((issue, ctx) => {
 
 export const UserIdSchema = z.string().nonempty().email().max(256)
 export const PasswordSchema = z.string().nonempty().min(8)
+export const UserNameSchema = z.string().nonempty().max(1024)
 
 export const LoginSchema = z.object({
   userId: UserIdSchema,
   password: PasswordSchema,
+})
+
+export const UserSchema = z.object({
+  userId: UserIdSchema,
+  userName: UserNameSchema
+})
+
+export const MenuIdSchema = z.string().nonempty().length(10)
+export const MenuNameSchema = z.string().nonempty().max(16)
+
+const MenuSchemaBase = z.object({
+  menuId: MenuIdSchema,
+  menuName: MenuNameSchema,
+})
+
+type Menu = z.infer<typeof MenuSchemaBase> & {
+  children: Menu[],
+}
+
+export const MenuSchema: z.ZodType<Menu> = MenuSchemaBase.extend({
+  children: z.lazy(() => MenuSchema.array()),
 })

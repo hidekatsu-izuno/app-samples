@@ -46,7 +46,7 @@ const close = (result?: "ok" | "yes" | "no" | "cancel") => {
 
 <template>
   <Teleport to="body">
-    <div ref="elRef" class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40" :class="{ 'hidden': !modelValue }">
+    <div ref="elRef" class="fixed bg-gray-900 bg-opacity-50 inset-0 z-40" :class="{ 'hidden': !modelValue }">
       <div tabindex="-1"
         class="fixed top-0 left-0 right-0 z-50 p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full justify-center items-center flex">
         <div class="relative w-full h-full max-w-md md:h-auto">
