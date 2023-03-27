@@ -1,5 +1,5 @@
 import { useSessionUser } from "@/server/utils/session"
-import { LoginSchema } from "~~/utils/schemas"
+import { LoginSchema } from "@/utils/schemas"
 
 export default defineEventHandler(async (event) => {
   const data = await readBody(event)
@@ -9,6 +9,6 @@ export default defineEventHandler(async (event) => {
   session.userId = parsed.userId
 
   return {
-    redirect: "/v1/main"
+    redirect: "/v1/menu"
   }
 })

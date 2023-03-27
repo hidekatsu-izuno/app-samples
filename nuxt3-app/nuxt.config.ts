@@ -16,19 +16,6 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "vue-history-state/nuxt",
   ],
-  tailwindcss: {
-    config: {
-      content: [
-        "./node_modules/flowbite/**/*.js"
-      ],
-      theme: {
-        extend: {},
-      },
-      plugins: [
-        require("flowbite")
-      ],
-    }
-  },
 
   ...(isGenerateMode ? {
     ignore: [

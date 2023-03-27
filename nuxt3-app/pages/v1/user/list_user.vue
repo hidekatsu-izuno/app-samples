@@ -2,7 +2,5 @@
 </script>
 
 <template>
-  <div>
-    Menu
-  </div>
+  <div>User List</div>
 </template>
