@@ -14,9 +14,16 @@ const props = withDefaults(defineProps<{
 }>(), {
   type: "text",
   required: false,
-  format: 'yyyy-MM-dd',
+  format: ',###.###',
   modelValue: "",
 })
+
+let schema = props.schema || z.string()
+if (props.required) {
+  if (schema.minLength != null) {
+    schema = schema.nonempty()
+  }
+}
 
 const data = reactive({
   value: props.modelValue || "",
@@ -26,6 +33,17 @@ const data = reactive({
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
 })
+
+const validate = (value: string) => {
+  data.error = ""
+
+  const result = schema.safeParse(value)
+  if (result.success) {
+    return result.data
+  } else {
+    data.error = result.error.issues[0].message
+  }
+}
 
 const emits = defineEmits<{
   (event: "update:modelValue", value: string): void
@@ -40,26 +58,27 @@ const emitValue = (event: Event) => {
   emits("update:modelValue", target.value)
 }
 
-const name = props.name
-if (name) {
-  let schema = props.schema || z.string()
-  if (props.required) {
-    if (schema.minLength != null) {
-      schema = schema.nonempty()
+const emitFormattedValue = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const validated = validate(target.value)
+  if (validated) {
+    const dec = parseDecimal(validated)
+    if (dec) {
+      const formatted = formatDecimal(dec, props.format)
+      if (formatted) {
+        data.value = formatted
+        emits("update:modelValue", data.value)
+      }
     }
   }
+}
 
+const name = props.name
+if (name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
     validator.on("validate", name, () => {
-      data.error = ""
-
-      const result = schema.safeParse(data.value)
-      if (result.success) {
-        return result.data
-      } else {
-        data.error = result.error.issues[0].message
-      }
+      return validate(data.value)
     })
 
     validator.on("clear", name, () => {
@@ -77,7 +96,8 @@ if (name) {
     <input type="text" :placeholder="placeholder"
       :value="data.value"
       @input="emitValue"
-      class="p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+      @blur="emitFormattedValue"
+      class="p-2.5 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
       :class="{
         'block': !halign,
         'w-full': !halign,

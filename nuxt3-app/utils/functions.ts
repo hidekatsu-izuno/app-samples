@@ -48,7 +48,7 @@ export function parseDecimal(str: string | number | null | undefined) {
     }
   }
 
-  if (dec.isFinite() || dec.isNaN()) {
+  if (!dec.isFinite()) {
     return null
   }
 

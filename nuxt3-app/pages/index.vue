@@ -33,6 +33,9 @@ const onLoginButtonClick = async () => {
             <TextBox type="password" label="パスワード" name="password" :schema="PasswordSchema" />
           </div>
           <div>
+            <NumberBox />
+          </div>
+          <div>
             <Hyperlink halign="end" class="text-sm" @click="goPasswordChangePage">パスワードを忘れた方はこちら</Hyperlink>
           </div>
           <div>
