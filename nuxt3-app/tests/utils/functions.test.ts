@@ -19,9 +19,9 @@ describe('test formatDecimal', () => {
     expect(formatDecimal(parseDecimal("+0"), "#.")).toBe("0.")
     expect(formatDecimal(parseDecimal("-0"), "#.")).toBe("0.")
 
-    expect(formatDecimal(parseDecimal("0"), "#.#")).toBe("0.")
-    expect(formatDecimal(parseDecimal("+0"), "#.#")).toBe("0.")
-    expect(formatDecimal(parseDecimal("-0"), "#.#")).toBe("0.")
+    expect(formatDecimal(parseDecimal("0"), "#.#")).toBe("0")
+    expect(formatDecimal(parseDecimal("+0"), "#.#")).toBe("0")
+    expect(formatDecimal(parseDecimal("-0"), "#.#")).toBe("0")
 
     expect(formatDecimal(parseDecimal("0"), "#.0")).toBe("0.0")
     expect(formatDecimal(parseDecimal("+0"), "#.0")).toBe("0.0")
@@ -59,9 +59,9 @@ describe('test formatDecimal', () => {
     expect(formatDecimal(parseDecimal("+1"), "##0,000")).toBe("0,001")
     expect(formatDecimal(parseDecimal("-1"), "##0,000")).toBe("-0,001")
 
-    expect(formatDecimal(parseDecimal("1"), "#.#")).toBe("1.")
-    expect(formatDecimal(parseDecimal("+1"), "#.#")).toBe("1.")
-    expect(formatDecimal(parseDecimal("-1"), "#.#")).toBe("-1.")
+    expect(formatDecimal(parseDecimal("1"), "#.#")).toBe("1")
+    expect(formatDecimal(parseDecimal("+1"), "#.#")).toBe("1")
+    expect(formatDecimal(parseDecimal("-1"), "#.#")).toBe("-1")
 
     expect(formatDecimal(parseDecimal("1"), "#.0")).toBe("1.0")
     expect(formatDecimal(parseDecimal("+1"), "#.0")).toBe("1.0")

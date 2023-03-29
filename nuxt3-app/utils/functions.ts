@@ -112,12 +112,13 @@ export function formatDecimal(dec: Decimal | string | number | null | undefined,
       const zeroPos = fFormat.lastIndexOf("0")
       const zeroSpan = ((zeroPos !== -1) ? zeroPos : 0)
       str = dec.toFixed(Math.max(Math.min(scale, fullSpan), zeroSpan), Decimal.ROUND_HALF_UP)
+      const parts = str.split(".")
+      ipart = parts[0] || ''
+      fpart = parts[1] ? '.' + parts[1] : ""
     } else {
-      str = dec.toFixed(scale)
+      ipart = dec.toFixed(0, Decimal.ROUND_HALF_UP)
+      fpart = '.'
     }
-    const parts = str.split(".")
-    ipart = parts[0] || ''
-    fpart = '.' + (parts[1] || '')
   } else {
     ipart = dec.toFixed(0, Decimal.ROUND_HALF_UP)
   }
