@@ -5,7 +5,11 @@ import {
 } from "date-fns"
 import Decimal from "decimal.js"
 
-export function parseDate(str: string, format: string) {
+export function parseDate(str: string | null | undefined, format: string) {
+  if (!str) {
+    return null
+  }
+
   try {
     return _parseDate(str, format, new Date())
   } catch (err) {
@@ -39,12 +43,10 @@ export function formatDate(date: number | Date | string | null | undefined, form
   }
 }
 
-export function parseDecimal(str: string | number | null | undefined) {
+export function parseNumber(str: string | null | undefined) {
   let dec
   if (!str) {
     return null
-  } else  if (typeof str === "number") {
-    dec = new Decimal(str)
   } else {
     try {
       dec = new Decimal(str.replaceAll(",", ""))
@@ -57,13 +59,17 @@ export function parseDecimal(str: string | number | null | undefined) {
     return null
   }
 
-  return dec
+  try {
+    return dec.toNumber()
+  } catch (err) {
+    return null
+  }
 }
 
 const ReDecimalFormat = /^((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*)(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?$/
 const ReDecimalText = /("(""|[^"])*"|'(''|[^'])*')/g
 
-export function formatDecimal(dec: Decimal | string | number | null | undefined, format?: string) {
+export function formatNumber(dec: Decimal | string | number | null | undefined, format?: string) {
   if (!dec) {
     return ""
   } else if (typeof dec === "number") {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ValidatorKey } from "~~/utils/validator"
-import { z, ZodString } from "zod"
+import { ZodNumber } from "zod"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   required?: boolean
   format?: string
-  schema?: ZodString
+  schema?: ZodNumber
   modelValue?: string
 }>(), {
   type: "text",
@@ -17,13 +17,6 @@ const props = withDefaults(defineProps<{
   format: ',###.###',
   modelValue: "",
 })
-
-let schema = props.schema || z.string()
-if (props.required) {
-  if (schema.minLength != null) {
-    schema = schema.nonempty()
-  }
-}
 
 const data = reactive({
   value: props.modelValue || "",
@@ -37,16 +30,22 @@ watch(() => props.modelValue, () => {
 const validate = (value: string) => {
   data.error = ""
 
-  const result = schema.safeParse(value)
-  if (result.success) {
-    const dec = parseDecimal(result.data)
-    if (dec) {
-      return formatDecimal(dec)
-    } else {
-      data.error = "値は数値である必要があります。"
+  let num = parseNumber(value)
+  if (num) {
+    if (props.schema) {
+      const result = props.schema.safeParse(num)
+      if (result.success) {
+        num = result.data
+      } else {
+        data.error = result.error.issues[0].message
+      }
     }
-  } else {
-    data.error = result.error.issues[0].message
+  } else if (props.required) {
+    data.error = "必須入力です。"
+  }
+
+  if (!data.error) {
+    return formatNumber(num)
   }
 }
 
@@ -67,11 +66,8 @@ const emitFormattedValue = (event: Event) => {
   const target = event.target as HTMLInputElement
   const validated = validate(target.value)
   if (validated) {
-    const formatted = formatDecimal(validated, props.format)
-    if (formatted) {
-      data.value = formatted
-      emits("update:modelValue", data.value)
-    }
+    data.value = formatNumber(validated, props.format)
+    emits("update:modelValue", data.value)
   }
 }
 

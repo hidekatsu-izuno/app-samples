@@ -26,6 +26,28 @@ watch(() => props.modelValue, () => {
   data.value = props.modelValue
 })
 
+
+const validate = (value: string) => {
+  data.error = ""
+
+  if (value) {
+    if (props.schema) {
+      const result = props.schema.safeParse(value)
+      if (result.success) {
+        value = result.data
+      } else {
+        data.error = result.error.issues[0].message
+      }
+    }
+  } else if (props.required) {
+    data.error = "必須入力です。"
+  }
+
+  if (!data.error) {
+    return value || ""
+  }
+}
+
 const emits = defineEmits<{
   (event: "update:modelValue", value: string): void
 }>()
