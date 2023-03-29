@@ -39,7 +39,12 @@ const validate = (value: string) => {
 
   const result = schema.safeParse(value)
   if (result.success) {
-    return result.data
+    const dec = parseDecimal(result.data)
+    if (dec) {
+      return formatDecimal(dec)
+    } else {
+      data.error = "値は数値である必要があります。"
+    }
   } else {
     data.error = result.error.issues[0].message
   }
@@ -55,20 +60,17 @@ const emitValue = (event: Event) => {
   if (data.error) {
     data.error = ""
   }
-  emits("update:modelValue", target.value)
+  emits("update:modelValue", data.value)
 }
 
 const emitFormattedValue = (event: Event) => {
   const target = event.target as HTMLInputElement
   const validated = validate(target.value)
   if (validated) {
-    const dec = parseDecimal(validated)
-    if (dec) {
-      const formatted = formatDecimal(dec, props.format)
-      if (formatted) {
-        data.value = formatted
-        emits("update:modelValue", data.value)
-      }
+    const formatted = formatDecimal(validated, props.format)
+    if (formatted) {
+      data.value = formatted
+      emits("update:modelValue", data.value)
     }
   }
 }

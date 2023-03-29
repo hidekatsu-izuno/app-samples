@@ -17,17 +17,22 @@ export function parseDate(str: string, format: string) {
   }
 }
 
-export function formatDate(date: number | Date | string, format: string) {
-  const tmp = typeof date === "string" ? parseISO(date) : date
-  if (!tmp) {
-    return null
+export function formatDate(date: number | Date | string | null | undefined, format: string) {
+  if (!date) {
+    return ""
+  } else if (typeof date === "string") {
+    try {
+      date = parseISO(date)
+    } catch (err) {
+      return date as string
+    }
   }
 
   try {
-    return _formatDate(tmp, format)
+    return _formatDate(date, format)
   } catch (err) {
     if (err instanceof RangeError) {
-      return null
+      return date.toString()
     } else {
       throw err
     }
@@ -58,12 +63,23 @@ export function parseDecimal(str: string | number | null | undefined) {
 const ReDecimalFormat = /^((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*)(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?$/
 const ReDecimalText = /("(""|[^"])*"|'(''|[^'])*')/g
 
-export function formatDecimal(dec: Decimal | string | number | null | undefined, format: string) {
-  if (!(dec instanceof Decimal)) {
-    dec = parseDecimal(dec)
-    if (!dec) {
-      return null
+export function formatDecimal(dec: Decimal | string | number | null | undefined, format?: string) {
+  if (!dec) {
+    return ""
+  } else if (typeof dec === "number") {
+    dec = new Decimal(dec)
+  } else if (typeof dec === "string") {
+    try {
+      dec = new Decimal(dec.replaceAll(",", ""))
+    } catch (err) {
+      return dec as string
     }
+  }
+
+  if (!format) {
+    const precision = dec.precision()
+    const scale = dec.isInt() ? 0 : precision - dec.truncated().precision()
+    return dec.toFixed(scale)
   }
 
   const m = ReDecimalFormat.exec(format)
