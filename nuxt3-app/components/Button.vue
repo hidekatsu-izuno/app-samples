@@ -28,7 +28,7 @@ const onClick = (event: MouseEvent) => {
     >{{ label }}</label>
     <button type="button"
       @click="onClick"
-      class="font-medium text-white px-5 py-2.5 m-0 bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+      class="font-medium text-white px-4 py-1.5 m-0 bg-blue-700 rounded-md hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
       :class="{
         'block': !halign,
         'w-full': !halign,

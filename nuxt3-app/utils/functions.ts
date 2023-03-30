@@ -2,16 +2,27 @@ import {
   parse as _parseDate,
   format as _formatDate,
   parseISO,
+  isValid,
+  startOfToday,
 } from "date-fns"
 import Decimal from "decimal.js"
 
-export function parseDate(str: string | null | undefined, format: string) {
+export function today() {
+  return startOfToday()
+}
+
+export function parseDate(str: string | null | undefined, format?: string) {
   if (!str) {
     return null
   }
 
   try {
-    return _parseDate(str, format, new Date())
+    const tmp = format ? _parseDate(str, format, new Date()) : parseISO(str)
+    if (isValid(tmp)) {
+      return tmp
+    } else {
+      return null
+    }
   } catch (err) {
     if (err instanceof RangeError) {
       return null
@@ -26,7 +37,12 @@ export function formatDate(date: number | Date | string | null | undefined, form
     return ""
   } else if (typeof date === "string") {
     try {
-      date = parseISO(date)
+      const tmp = parseISO(date)
+      if (isValid(tmp)) {
+        date = tmp
+      } else {
+        return date as string
+      }
     } catch (err) {
       return date as string
     }
@@ -43,7 +59,7 @@ export function formatDate(date: number | Date | string | null | undefined, form
   }
 }
 
-export function parseNumber(str: string | null | undefined) {
+export function parseNumber(str: string | null | undefined, format?: string) {
   let dec
   if (!str) {
     return null

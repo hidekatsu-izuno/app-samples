@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ValidatorKey } from "~~/utils/validator"
+import { ValidatorKey } from "@/utils/validator"
+import { JapaneseErrorMap } from "@/utils/schemas"
 import { z, ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
@@ -26,13 +27,23 @@ watch(() => props.modelValue, () => {
   data.value = props.modelValue
 })
 
-
 const validate = (value: string) => {
   data.error = ""
 
   if (value) {
-    if (props.schema) {
-      const result = props.schema.safeParse(value)
+    let schema = props.schema
+    if (props.type === "email") {
+      if (!schema) {
+        schema = z.string().email()
+      } else if (!schema.isEmail) {
+        schema = schema.email()
+      }
+    }
+
+    if (schema) {
+      const result = schema.safeParse(value, {
+        errorMap: JapaneseErrorMap
+      })
       if (result.success) {
         value = result.data
       } else {
@@ -52,7 +63,7 @@ const emits = defineEmits<{
   (event: "update:modelValue", value: string): void
 }>()
 
-const emitValue = (event: Event) => {
+function onInput(event: Event) {
   const target = event.target as HTMLInputElement
   data.value = target.value
   if (data.error) {
@@ -61,31 +72,21 @@ const emitValue = (event: Event) => {
   emits("update:modelValue", target.value)
 }
 
+function onBlur(event: Event) {
+  const target = event.target as HTMLInputElement
+  const validated = validate(target.value)
+  if (validated) {
+    data.value = validated
+    emits("update:modelValue", data.value)
+  }
+}
+
 const name = props.name
 if (name) {
-  let schema = props.schema || z.string()
-  if (props.required) {
-    if (schema.minLength != null) {
-      schema = schema.nonempty()
-    }
-  }
-  if (props.type === "email") {
-    if (!schema.isEmail) {
-      schema = schema.email()
-    }
-  }
-
   const validator = inject(ValidatorKey, null)
   if (validator) {
     validator.on("validate", name, () => {
-      data.error = ""
-
-      const result = schema.safeParse(data.value)
-      if (result.success) {
-        return result.data
-      } else {
-        data.error = result.error.issues[0].message
-      }
+      return validate(data.value)
     })
 
     validator.on("clear", name, () => {
@@ -102,8 +103,9 @@ if (name) {
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <input :type="type" :placeholder="placeholder"
       :value="data.value"
-      @input="emitValue"
-      class="p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+      @input="onInput"
+      @blur="onBlur"
+      class="p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
       :class="{
         'block': !halign,
         'w-full': !halign,

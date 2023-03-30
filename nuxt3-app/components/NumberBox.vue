@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ValidatorKey } from "~~/utils/validator"
+import { ValidatorKey } from "@/utils/validator"
 import { ZodNumber } from "zod"
 
 const props = withDefaults(defineProps<{
@@ -33,13 +33,17 @@ const validate = (value: string) => {
   let num = parseNumber(value)
   if (num) {
     if (props.schema) {
-      const result = props.schema.safeParse(num)
+      const result = props.schema.safeParse(num, {
+        errorMap: JapaneseErrorMap
+      })
       if (result.success) {
         num = result.data
       } else {
         data.error = result.error.issues[0].message
       }
     }
+  } else if (value) {
+    data.error = "入力に誤りがあります。"
   } else if (props.required) {
     data.error = "必須入力です。"
   }
@@ -53,7 +57,7 @@ const emits = defineEmits<{
   (event: "update:modelValue", value: string): void
 }>()
 
-const emitValue = (event: Event) => {
+function onInput(event: Event) {
   const target = event.target as HTMLInputElement
   data.value = target.value
   if (data.error) {
@@ -62,7 +66,17 @@ const emitValue = (event: Event) => {
   emits("update:modelValue", data.value)
 }
 
-const emitFormattedValue = (event: Event) => {
+function onFocus(event: Event) {
+  const target = event.target as HTMLInputElement
+  if (target.value) {
+    const num = parseNumber(target.value)
+    if (num) {
+      data.value = formatNumber(num)
+    }
+  }
+}
+
+function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   const validated = validate(target.value)
   if (validated) {
@@ -87,15 +101,16 @@ if (name) {
 </script>
 
 <template>
-  <div class="DateBox">
+  <div class="NumberBox">
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <input type="text" :placeholder="placeholder"
       :value="data.value"
-      @input="emitValue"
-      @blur="emitFormattedValue"
-      class="p-2.5 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+      @input="onInput"
+      @focus="onFocus"
+      @blur="onBlur"
+      class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
       :class="{
         'block': !halign,
         'w-full': !halign,
