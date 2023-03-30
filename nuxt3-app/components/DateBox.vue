@@ -29,6 +29,20 @@ watch(() => props.modelValue, () => {
   data.value = props.modelValue
 })
 
+const name = props.name
+if (name) {
+  const validator = inject(ValidatorKey, null)
+  if (validator) {
+    validator.on("validate", name, () => {
+      return validate(data.value, props.format)
+    })
+
+    validator.on("clear", name, () => {
+      data.error = ""
+    })
+  }
+}
+
 const inputRef = ref()
 const pickerRef = ref()
 
@@ -49,32 +63,6 @@ onMounted(() => {
     popper?.destroy()
   })
 })
-
-const validate = (value: string, format?: string) => {
-  data.error = ""
-
-  let date = parseDate(value, format)
-  if (date) {
-    if (props.schema) {
-      const result = props.schema.safeParse(date, {
-        errorMap: JapaneseErrorMap
-      })
-      if (result.success) {
-        date = result.data
-      } else {
-        data.error = result.error.issues[0].message
-      }
-    }
-  } else if (value) {
-    data.error = "入力に誤りがあります。"
-  } else if (props.required) {
-    data.error = "必須入力です。"
-  }
-
-  if (!data.error) {
-    return formatDate(date, "uuuu-MM-dd")
-  }
-}
 
 const emits = defineEmits<{
   (event: "update:modelValue", value: string): void
@@ -138,17 +126,29 @@ function onPickerDateClick(date: Date) {
   nextTick(() => inputRef.value?.blur())
 }
 
-const name = props.name
-if (name) {
-  const validator = inject(ValidatorKey, null)
-  if (validator) {
-    validator.on("validate", name, () => {
-      return validate(data.value, props.format)
-    })
+function validate(value: string, format?: string) {
+  data.error = ""
 
-    validator.on("clear", name, () => {
-      data.error = ""
-    })
+  let date = parseDate(value, format)
+  if (date) {
+    if (props.schema) {
+      const result = props.schema.safeParse(date, {
+        errorMap: JapaneseErrorMap
+      })
+      if (result.success) {
+        date = result.data
+      } else {
+        data.error = result.error.issues[0].message
+      }
+    }
+  } else if (value) {
+    data.error = "入力に誤りがあります。"
+  } else if (props.required) {
+    data.error = "必須入力です。"
+  }
+
+  if (!data.error) {
+    return formatDate(date, "uuuu-MM-dd")
   }
 }
 </script>
@@ -167,7 +167,7 @@ if (name) {
         @input="onInput"
         @focus="onFocus"
         @blur="onBlur"
-        class="p-2 pr-10 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
+        class="p-2 pr-10 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
         :class="{
           'block': !halign,
           'w-full': !halign,
@@ -178,7 +178,7 @@ if (name) {
       />
     </div>
     <div ref="pickerRef" @mousedown="onPickerMouseDown"
-      class="hidden grid grid-cols-7 justify-contents-center align-contents-center p-2 bg-white rounded-md shadow-lg"
+      class="hidden grid grid-cols-7 justify-contents-center align-contents-center text-sm p-2 bg-white rounded-md shadow-lg"
     >
       <div @click="onPickerPrevButtonClick"
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"

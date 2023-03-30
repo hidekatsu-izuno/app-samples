@@ -59,7 +59,7 @@ export function formatDate(date: number | Date | string | null | undefined, form
   }
 }
 
-export function parseNumber(str: string | null | undefined, format?: string) {
+export function parseNumber(str: string | null | undefined) {
   let dec
   if (!str) {
     return null

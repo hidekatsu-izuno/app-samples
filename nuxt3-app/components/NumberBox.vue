@@ -27,29 +27,17 @@ watch(() => props.modelValue, () => {
   data.value = props.modelValue
 })
 
-const validate = (value: string) => {
-  data.error = ""
+const name = props.name
+if (name) {
+  const validator = inject(ValidatorKey, null)
+  if (validator) {
+    validator.on("validate", name, () => {
+      return validate(data.value)
+    })
 
-  let num = parseNumber(value)
-  if (num) {
-    if (props.schema) {
-      const result = props.schema.safeParse(num, {
-        errorMap: JapaneseErrorMap
-      })
-      if (result.success) {
-        num = result.data
-      } else {
-        data.error = result.error.issues[0].message
-      }
-    }
-  } else if (value) {
-    data.error = "入力に誤りがあります。"
-  } else if (props.required) {
-    data.error = "必須入力です。"
-  }
-
-  if (!data.error) {
-    return formatNumber(num)
+    validator.on("clear", name, () => {
+      data.error = ""
+    })
   }
 }
 
@@ -85,17 +73,29 @@ function onBlur(event: Event) {
   }
 }
 
-const name = props.name
-if (name) {
-  const validator = inject(ValidatorKey, null)
-  if (validator) {
-    validator.on("validate", name, () => {
-      return validate(data.value)
-    })
+function validate(value: string) {
+  data.error = ""
 
-    validator.on("clear", name, () => {
-      data.error = ""
-    })
+  let num = parseNumber(value)
+  if (num) {
+    if (props.schema) {
+      const result = props.schema.safeParse(num, {
+        errorMap: JapaneseErrorMap
+      })
+      if (result.success) {
+        num = result.data
+      } else {
+        data.error = result.error.issues[0].message
+      }
+    }
+  } else if (value) {
+    data.error = "入力に誤りがあります。"
+  } else if (props.required) {
+    data.error = "必須入力です。"
+  }
+
+  if (!data.error) {
+    return formatNumber(num)
   }
 }
 </script>
@@ -110,7 +110,7 @@ if (name) {
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
-      class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
+      class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
       :class="{
         'block': !halign,
         'w-full': !halign,

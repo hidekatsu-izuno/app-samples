@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import { ValidatorKey } from "@/utils/validator"
-import { JapaneseErrorMap } from "@/utils/schemas"
-import { z, ZodString } from "zod"
-
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
-  type?: "text" | "password" | "email"
   label?: string
   name?: string
   placeholder?: string
   required?: boolean
-  schema?: ZodString
   modelValue?: string
 }>(), {
-  type: "text",
   required: false,
   modelValue: "",
 })
@@ -45,8 +38,8 @@ const emits = defineEmits<{
   (event: "update:modelValue", value: string): void
 }>()
 
-function onInput(event: Event) {
-  const target = event.target as HTMLInputElement
+function onChange(event: Event) {
+  const target = event.target as HTMLSelectElement
   data.value = target.value
   if (data.error) {
     data.error = ""
@@ -54,38 +47,11 @@ function onInput(event: Event) {
   emits("update:modelValue", target.value)
 }
 
-function onBlur(event: Event) {
-  const target = event.target as HTMLInputElement
-  const validated = validate(target.value)
-  if (validated) {
-    data.value = validated
-    emits("update:modelValue", data.value)
-  }
-}
-
-function validate(value: string) {
+const validate = (value: string) => {
   data.error = ""
 
   if (value) {
-    let schema = props.schema
-    if (props.type === "email") {
-      if (!schema) {
-        schema = z.string().email()
-      } else if (!schema.isEmail) {
-        schema = schema.email()
-      }
-    }
-
-    if (schema) {
-      const result = schema.safeParse(value, {
-        errorMap: JapaneseErrorMap
-      })
-      if (result.success) {
-        value = result.data
-      } else {
-        data.error = result.error.issues[0].message
-      }
-    }
+    // no handle
   } else if (props.required) {
     data.error = "必須入力です。"
   }
@@ -101,11 +67,8 @@ function validate(value: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input :type="type" :placeholder="placeholder"
-      :value="data.value"
-      @input="onInput"
-      @blur="onBlur"
-      class="p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+    <select
+      class="p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
       :class="{
         'block': !halign,
         'w-full': !halign,
@@ -113,7 +76,13 @@ function validate(value: string) {
         'self-center': halign === 'center',
         'self-end': halign === 'end',
       }"
-    />
+    >
+      <option selected>Choose a country</option>
+      <option value="US">United States</option>
+      <option value="CA">Canada</option>
+      <option value="FR">France</option>
+      <option value="DE">Germany</option>
+    </select>
     <div v-if="data.error"
       class="block text-sm text-red-500"
     >{{ data.error }}</div>
