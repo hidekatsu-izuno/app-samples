@@ -9,6 +9,8 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   required?: boolean
   format?: string
   schema?: ZodDate
@@ -201,13 +203,17 @@ function validate(value: string, format?: string) {
         })"
         @click="() => onPickerDateClick(date)"
         class="flex font-medium items-center justify-center h-8 rounded-md cursor-default"
-        :class="{
-          'text-white': isSameDay(pickerData.start, date),
-          'bg-blue-700': isSameDay(pickerData.start, date),
-          'hover:bg-blue-800': isSameDay(pickerData.start, date),
-          'hover:bg-gray-100': !isSameDay(pickerData.start, date),
-          'text-gray-500': !isSameMonth(pickerData.current, date),
-        }"
+        :class="[
+          {
+            'text-white': isSameDay(pickerData.start, date),
+            'bg-blue-700': isSameDay(pickerData.start, date),
+            'hover:bg-blue-800': isSameDay(pickerData.start, date),
+            'hover:bg-gray-100': !isSameDay(pickerData.start, date),
+            'text-gray-500': !isSameMonth(pickerData.current, date),
+          },
+          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+        ]"
+        :style="props.inputStyle"
       >{{ date.getDate() }}</div>
     </div>
     <div v-if="data.error"
@@ -216,7 +222,7 @@ function validate(value: string, format?: string) {
   </div>
 </template>
 
-<style>
+<style scoped>
 .DateBox input[type="number"]::-webkit-inner-spin-button,
 .DateBox input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

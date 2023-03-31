@@ -4,6 +4,8 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   items?: Array<{ value: string, text: string }>
   required?: boolean
   modelValue?: string
@@ -73,13 +75,17 @@ const validate = (value: string) => {
       :value="data.value"
       @change="onChange"
       class="p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-      :class="{
-        'block': !halign,
-        'w-full': !halign,
-        'self-start': halign === 'start',
-        'self-center': halign === 'center',
-        'self-end': halign === 'end',
-      }"
+      :class="[
+        {
+          'block': !halign,
+          'w-full': !halign,
+          'self-start': halign === 'start',
+          'self-center': halign === 'center',
+          'self-end': halign === 'end',
+        },
+        ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+      ]"
+      :style="props.inputStyle"
     >
       <option disabled value="">{{ placeholder }}</option>
       <option v-for="item in items" :value="item.value">{{ item.text }}</option>

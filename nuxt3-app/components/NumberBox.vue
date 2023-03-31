@@ -7,6 +7,8 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   required?: boolean
   format?: string
   schema?: ZodNumber
@@ -116,13 +118,17 @@ function validate(value: string, format?: string) {
       @focus="onFocus"
       @blur="onBlur"
       class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-      :class="{
-        'block': !halign,
-        'w-full': !halign,
-        'self-start': halign === 'start',
-        'self-center': halign === 'center',
-        'self-end': halign === 'end',
-      }"
+      :class="[
+        {
+          'block': !halign,
+          'w-full': !halign,
+          'self-start': halign === 'start',
+          'self-center': halign === 'center',
+          'self-end': halign === 'end',
+        },
+        ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+      ]"
+      :style="props.inputStyle"
     />
     <div v-if="data.error"
       class="block text-sm text-red-500"
@@ -130,9 +136,9 @@ function validate(value: string, format?: string) {
   </div>
 </template>
 
-<style>
-.NumberBox input[type="number"]::-webkit-inner-spin-button,
-.NumberBox input[type="number"]::-webkit-outer-spin-button {
+<style scoped>
+.NumberBox > input[type="number"]::-webkit-inner-spin-button,
+.NumberBox > input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

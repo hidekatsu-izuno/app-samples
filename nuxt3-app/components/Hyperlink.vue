@@ -1,7 +1,9 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
-  label?: string
+const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
+  label?: string
+  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
 }>(), {
 })
 
@@ -23,16 +25,19 @@ const onClick = (event: MouseEvent) => {
     <label v-if="label"
       class="block"
     >{{ label }}</label>
-    <a
+    <a @click="onClick"
       class="text-blue-600 cursor-pointer hover:underline"
-      :class="{
-        'block': !halign,
-        'w-full': !halign,
-        'self-start': halign === 'start',
-        'self-center': halign === 'center',
-        'self-end': halign === 'end',
-      }"
-      @click="onClick"
+      :class="[
+        {
+          'block': !halign,
+          'w-full': !halign,
+          'self-start': halign === 'start',
+          'self-center': halign === 'center',
+          'self-end': halign === 'end',
+        },
+        ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+      ]"
+      :style="props.inputStyle"
     ><slot /></a>
     <div v-if="data.error"
       class="block text-sm text-red-500"
