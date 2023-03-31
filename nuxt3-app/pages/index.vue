@@ -33,7 +33,7 @@ const onLoginButtonClick = async () => {
             <TextBox type="password" label="パスワード" name="password" :schema="PasswordSchema" />
           </div>
           <div>
-            <NumberBox required />
+            <NumberBox required format="aaa#.##bbb" />
           </div>
           <div>
             <DateBox required />

@@ -19,12 +19,13 @@ const props = withDefaults(defineProps<{
 })
 
 const data = reactive({
+  focused: false,
   value: props.modelValue || "",
   error: "",
 })
 
 watch(() => props.modelValue, () => {
-  data.value = props.modelValue
+  data.value = data.focused ? props.modelValue : formatNumber(props.modelValue, props.format)
 })
 
 const name = props.name
@@ -55,9 +56,11 @@ function onInput(event: Event) {
 }
 
 function onFocus(event: Event) {
+  data.focused = true
+
   const target = event.target as HTMLInputElement
   if (target.value) {
-    const num = parseNumber(target.value)
+    const num = parseNumber(target.value, props.format)
     if (num) {
       data.value = formatNumber(num)
     }
@@ -65,6 +68,8 @@ function onFocus(event: Event) {
 }
 
 function onBlur(event: Event) {
+  data.focused = false
+
   const target = event.target as HTMLInputElement
   const validated = validate(target.value)
   if (validated) {

@@ -174,17 +174,26 @@ function getDecimalFormat(format: string, locale: string = "en-US") {
   return dformat
 }
 
-export function parseNumber(str: string | null | undefined) {
+export function parseNumber(str: string | null | undefined, format?: string) {
   if (!str) {
     return null
   }
 
-  const num = Number.parseFloat(str.replaceAll(",", ""))
-  if (Number.isFinite(num)) {
-    return num
-  } else {
-    return null
+  if (format) {
+    const dformat = getDecimalFormat(format)
+    if (dformat.positive.prefix.length + dformat.positive.suffix.length < str.length
+      && str.startsWith(dformat.positive.prefix)
+      && str.endsWith(dformat.positive.suffix)) {
+        // skip
+    } else if (dformat.negative.prefix.length + dformat.negative.suffix.length < str.length
+      && str.startsWith(dformat.negative.prefix)
+      && str.endsWith(dformat.negative.suffix)) {
+      str = "-" + str.substring(dformat.negative.prefix.length, str.length - dformat.negative.suffix.length)
+    }
   }
+
+  const num = Number.parseFloat(str.replace(/^[^0-9-]+/, "").replaceAll(",", ""))
+  return Number.isFinite(num) ? num : null
 }
 
 export function formatNumber(num: string | number | null | undefined, format?: string) {
