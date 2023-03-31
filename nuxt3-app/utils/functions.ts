@@ -59,128 +59,190 @@ export function formatDate(date: number | Date | string | null | undefined, form
   }
 }
 
+const ReDecimalFormat = /^((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*)(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?$/
+const ReDecimalText = /("(""|[^"])*"|'(''|[^'])*')/g
+
+declare type DecimalFormatPattern = {
+  prefix: string,
+  suffix: string,
+  groupingDigits: number,
+  formatter: Intl.NumberFormat,
+}
+
+class DecimalFormat {
+  constructor(
+    public positive: DecimalFormatPattern,
+    public negative: DecimalFormatPattern,
+    public zero: DecimalFormatPattern
+  ) {
+  }
+
+  format(value: number) {
+    if (Number.isNaN(value)) {
+      return ""
+    }
+
+    const format = value === 0 ? this.zero : (value < 0) ? this.negative: this.positive
+    let formatted = Number.isFinite(value) ? format.formatter.format(Math.abs(value)) : Math.abs(value).toString()
+    if (format.groupingDigits > 0) {
+      const re = new RegExp("\\B(?=(\\d{" + format.groupingDigits + "})+(?!\\d))", "g")
+      const sep = formatted.indexOf(".")
+      formatted = formatted.substring(0, sep).replace(re, ",") + ((sep !== -1) ? formatted.substring(sep) : "")
+    }
+    return format.prefix + formatted + format.suffix
+  }
+}
+
+const decimalFormatCache = new Map<string, DecimalFormat>()
+
+function getDecimalFormat(format: string, locale: string = "en-US") {
+  const cached = decimalFormatCache.get(format)
+  if (cached) {
+    return cached
+  }
+
+  const m = ReDecimalFormat.exec(format)
+  if (!m || !m[2]) {
+    throw new TypeError("Invalid format: " + format)
+  }
+
+  const patterns = new Array<DecimalFormatPattern>()
+  for (let i = 0; i < 3; i++) {
+    let iFormat = m[i * 4 + 2] || ''
+    let fFormat = m[i * 4 + 3] || ''
+    if (!iFormat) {
+      break
+    }
+
+    let prefix = (m[i * 4 + 1] || '').replace(ReDecimalText, m => {
+      const sep = m.charAt(0)
+      return m.substring(1, m.length - 1).replaceAll(sep + sep, sep)
+    })
+    let suffix = (m[i * 4 + 4] || '').replace(ReDecimalText, m => {
+      const sep = m.charAt(0)
+      return m.substring(1, m.length - 1).replaceAll(sep + sep, sep)
+    })
+
+    let minimumIntegerDigits = 1
+    let minimumFractionDigits = 0
+    let maximumFractionDigits = 0
+    let groupingDigits = 0
+
+    if (fFormat) {
+      if (fFormat.length > 1) {
+        maximumFractionDigits = fFormat.length - 1
+        const zeroPos = fFormat.lastIndexOf("0")
+        minimumFractionDigits = ((zeroPos !== -1) ? zeroPos : 0)
+      } else {
+        suffix = fFormat + suffix
+      }
+    }
+
+    const groupingPos = iFormat.lastIndexOf(",")
+    if (groupingPos !== -1) {
+      iFormat = iFormat.replaceAll(",", "")
+      groupingDigits = iFormat.length - groupingPos
+    }
+
+    const zeroPos = iFormat.indexOf("0")
+    if (zeroPos !== -1) {
+      minimumIntegerDigits = Math.max(iFormat.length - zeroPos, 1)
+    }
+
+    patterns.push({
+      prefix,
+      suffix,
+      groupingDigits: groupingDigits !== 3 ? groupingDigits : 0,
+      formatter: new Intl.NumberFormat(locale, {
+        minimumIntegerDigits,
+        minimumFractionDigits,
+        maximumFractionDigits,
+        useGrouping: groupingDigits === 3
+      }),
+    })
+  }
+
+  const positive = patterns[0]
+  const negative = patterns[1] || {
+    ...patterns[0],
+    prefix: patterns[0].prefix + "-"
+  }
+  const zero = patterns[2] || patterns[0]
+
+  const dformat = new DecimalFormat(positive, negative, zero)
+  decimalFormatCache.set(format, dformat)
+  return dformat
+}
+
 export function parseNumber(str: string | null | undefined) {
-  let dec
   if (!str) {
     return null
+  }
+
+  const num = Number.parseFloat(str.replaceAll(",", ""))
+  if (Number.isFinite(num)) {
+    return num
   } else {
-    try {
-      dec = new Decimal(str.replaceAll(",", ""))
-    } catch (err) {
-      return null
-    }
-  }
-
-  if (!dec.isFinite()) {
-    return null
-  }
-
-  try {
-    return dec.toNumber()
-  } catch (err) {
     return null
   }
 }
 
-const ReDecimalFormat = /^((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*)(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?(?:;((?:"[^"]*"|'[^']*'|[^"'#0,.])*)([#,]*[0,]*)([.]0*#*)?((?:"[^"]*"|'[^']*'|[^"'#0])*))?$/
-const ReDecimalText = /("(""|[^"])*"|'(''|[^'])*')/g
-
-export function formatNumber(dec: Decimal | string | number | null | undefined, format?: string) {
-  if (!dec) {
+export function formatNumber(num: string | number | null | undefined, format?: string) {
+  if (num == null) {
     return ""
-  } else if (typeof dec === "number") {
-    dec = new Decimal(dec)
-  } else if (typeof dec === "string") {
-    try {
-      dec = new Decimal(dec.replaceAll(",", ""))
-    } catch (err) {
-      return dec as string
-    }
-  }
-
-  if (!format) {
-    const precision = dec.precision()
-    const scale = dec.isInt() ? 0 : precision - dec.truncated().precision()
-    return dec.toFixed(scale)
-  }
-
-  const m = ReDecimalFormat.exec(format)
-  if (!m || (!m[2] && !m[6] && !m[10])) {
-    throw new TypeError("Invalid format: " + format)
-  }
-
-  let start = 0
-  if (dec.isZero()) {
-    dec = dec.abs()
-    if (m[10]) {
-      start = 8
-    }
-  } else if (dec.isNeg()) {
-    dec = dec.abs()
-    if (m[6]) {
-      start = 4
+  } else if (typeof num === "string") {
+    const tmp = parseNumber(num)
+    if (tmp) {
+      num = tmp as number
     } else {
-      m[1] = (m[1] || '') + "-"
+      return num
     }
   }
 
-  const prefix = (m[start + 1] || '').replace(ReDecimalText, m => {
-    const sep = m.charAt(0)
-    return m.substring(1, m.length - 1).replaceAll(sep + sep, sep)
-  })
-  const iFormat = m[start + 2] || ''
-  const fFormat = m[start + 3] || ''
-  const suffix = (m[start + 4] || '').replace(ReDecimalText, m => {
-    const sep = m.charAt(0)
-    return m.substring(1, m.length - 1).replaceAll(sep + sep, sep)
-  })
-
-  if (!dec.e && dec.e !== 0) {
-    return prefix + dec.abs().toString() + suffix   // Infinity/NaN
+  if (!format || !Number.isFinite(num)) {
+    return toPlainString(num)
   }
 
-  let ipart = ""
-  let fpart = ""
-  if (fFormat) {
-    const precision = dec.precision()
-    const scale = dec.isInt() ? 0 : precision - dec.truncated().precision()
-    let str
-    if (fFormat.length > 1) {
-      const fullSpan = fFormat.length - 1
-      const zeroPos = fFormat.lastIndexOf("0")
-      const zeroSpan = ((zeroPos !== -1) ? zeroPos : 0)
-      str = dec.toFixed(Math.max(Math.min(scale, fullSpan), zeroSpan), Decimal.ROUND_HALF_UP)
-      const parts = str.split(".")
-      ipart = parts[0] || ''
-      fpart = parts[1] ? '.' + parts[1] : ""
-    } else {
-      ipart = dec.toFixed(0, Decimal.ROUND_HALF_UP)
-      fpart = '.'
-    }
+  return getDecimalFormat(format).format(num)
+}
+
+export function toPlainString(num: number | string) {
+  if (typeof num === "number" && (!Number.isFinite(num) || num === 0)) {
+    return num.toString()
+  }
+
+  let str = num.toString()
+  const sep = str.indexOf("e")
+  if (sep === -1) {
+    return str
+  }
+
+  let minus = ""
+  if (str.startsWith("-")) {
+    str = str.substring(1)
+    minus = "-"
+  }
+
+  let esign = str.charAt(sep + 1)
+
+  const e = Number.parseInt(str.substring(sep + 2), 10)
+  str = str.substring(0, sep)
+
+  const index = str.indexOf(".")
+  let scale = (index === -1) ? 0 : str.length - index - 1
+  str = (index === -1) ? str : (str.substring(0, index) + str.substring(index + 1))
+  if (esign === "+") {
+    str = str + "0".repeat(e)
   } else {
-    ipart = dec.toFixed(0, Decimal.ROUND_HALF_UP)
+    scale = scale + e
   }
 
-  const commaPos = iFormat.lastIndexOf(",")
-  if (commaPos !== -1) {
-    const iFormatNoComma = iFormat.replaceAll(",", "")
-    const zeroPos = iFormatNoComma.indexOf("0")
-    const zeroSpan = (zeroPos !== -1) ? iFormatNoComma.length - zeroPos : 0
-    if (ipart.length < zeroSpan) {
-      ipart = "0".repeat(zeroSpan - ipart.length) + ipart
-    }
-
-    const commaSpan = iFormat.length - commaPos -1
-    if (commaSpan > 0) {
-      ipart = ipart.replace(new RegExp("\\B(?=(\\d{" + commaSpan + "})+(?!\\d))", "g"), ",")
-    }
-  } else {
-    const zeroPos = iFormat.indexOf("0")
-    const zeroSpan = (zeroPos !== -1) ? iFormat.length - zeroPos : 0
-    if (ipart.length < zeroSpan) {
-      ipart = "0".repeat(zeroSpan - ipart.length) + ipart
-    }
+  str = str.replace(/^0+/, "")
+  if (scale === 0) {
+    return minus + str
   }
 
-  return prefix + ipart + fpart + suffix
+  const ipart = (str.length > scale) ? minus + str.substring(0, str.length - scale) : "0"
+  const fpart = ((str.length > scale) ? str.substring(str.length - scale) : ("0".repeat(scale - str.length) + str)).replace(/0+$/, "")
+  return  ipart + (fpart ? ("." + fpart) : "")
 }

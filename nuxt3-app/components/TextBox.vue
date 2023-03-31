@@ -19,12 +19,17 @@ const props = withDefaults(defineProps<{
 })
 
 const data = reactive({
+  maxLength: props.schema?.maxLength ?? undefined,
   value: props.modelValue || "",
   error: "",
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
+})
+
+watch(() => props.schema, () => {
+  data.maxLength = props.schema?.maxLength ?? undefined
 })
 
 const name = props.name
@@ -101,7 +106,7 @@ function validate(value: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input :type="type" :placeholder="placeholder"
+    <input :type="type" :placeholder="placeholder" :maxlength="data.maxLength"
       :value="data.value"
       @input="onInput"
       @blur="onBlur"

@@ -4,9 +4,11 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  items?: Array<{ value: string, text: string }>
   required?: boolean
   modelValue?: string
 }>(), {
+  items: () => [],
   required: false,
   modelValue: "",
 })
@@ -63,11 +65,13 @@ const validate = (value: string) => {
 </script>
 
 <template>
-  <div class="TextBox">
+  <div class="SelectBox">
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <select
+      :value="data.value"
+      @change="onChange"
       class="p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
       :class="{
         'block': !halign,
@@ -77,11 +81,8 @@ const validate = (value: string) => {
         'self-end': halign === 'end',
       }"
     >
-      <option selected>Choose a country</option>
-      <option value="US">United States</option>
-      <option value="CA">Canada</option>
-      <option value="FR">France</option>
-      <option value="DE">Germany</option>
+      <option disabled value="">{{ placeholder }}</option>
+      <option v-for="item in items" :value="item.value">{{ item.text }}</option>
     </select>
     <div v-if="data.error"
       class="block text-sm text-red-500"
