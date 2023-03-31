@@ -116,6 +116,33 @@ describe('test formatNumber', () => {
     expect(formatNumber(parseNumber("1000"), "##0,000")).toBe("1,000")
     expect(formatNumber(parseNumber("-1000"), "##0,000")).toBe("-1,000")
   })
+
+  test('format float', () => {
+    expect(formatNumber(parseNumber("10"), "#.#")).toBe("10")
+    expect(formatNumber(parseNumber("-10"), "#.#")).toBe("-10")
+    expect(formatNumber(parseNumber("10"), "#.0")).toBe("10.0")
+    expect(formatNumber(parseNumber("-10"), "#.0")).toBe("-10.0")
+    expect(formatNumber(parseNumber("1000.4"), "#.#")).toBe("1000.4")
+    expect(formatNumber(parseNumber("1000.5"), "#.#")).toBe("1000.5")
+    expect(formatNumber(parseNumber("1000.00"), "#.#")).toBe("1000")
+    expect(formatNumber(parseNumber("1000.04"), "#.#")).toBe("1000")
+    expect(formatNumber(parseNumber("1000.05"), "#.#")).toBe("1000.1")
+
+    expect(formatNumber(parseNumber("1000"), "#,###.#")).toBe("1,000")
+    expect(formatNumber(parseNumber("1000"), "#,###.0")).toBe("1,000.0")
+    expect(formatNumber(parseNumber("1000.4"), "#,###.#")).toBe("1,000.4")
+    expect(formatNumber(parseNumber("1000.5"), "#,###.#")).toBe("1,000.5")
+    expect(formatNumber(parseNumber("1000.00"), "#,###.#")).toBe("1,000")
+    expect(formatNumber(parseNumber("1000.04"), "#,###.#")).toBe("1,000")
+    expect(formatNumber(parseNumber("1000.05"), "#,###.#")).toBe("1,000.1")
+
+    expect(formatNumber(parseNumber("1000.00"), "#,###.0#")).toBe("1,000.0")
+    expect(formatNumber(parseNumber("1000.04"), "#,###.0#")).toBe("1,000.04")
+    expect(formatNumber(parseNumber("1000.05"), "#,###.0#")).toBe("1,000.05")
+    expect(formatNumber(parseNumber("1000.004"), "#,###.0#")).toBe("1,000.0")
+    expect(formatNumber(parseNumber("1000.005"), "#,###.0#")).toBe("1,000.01")
+
+  })
 })
 
 describe('test toPlainString', () => {

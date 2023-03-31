@@ -110,7 +110,7 @@ function validate(value: string, format?: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input type="text" :placeholder="placeholder"
+    <input :type="data.focused ? 'number' : 'text'" :placeholder="placeholder"
       :value="data.value"
       @input="onInput"
       @focus="onFocus"
@@ -129,3 +129,11 @@ function validate(value: string, format?: string) {
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.NumberBox input[type="number"]::-webkit-inner-spin-button,
+.NumberBox input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

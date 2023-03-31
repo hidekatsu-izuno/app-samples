@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<{
 })
 
 const data = reactive({
+  focused: false,
   value: props.modelValue || "",
   error: "",
 })
@@ -78,6 +79,8 @@ function onInput(event: Event) {
 }
 
 function onFocus(event: Event) {
+  data.focused = true
+
   const target = event.target as HTMLInputElement
   if (target.value) {
     const date = parseDate(target.value, props.format)
@@ -88,6 +91,7 @@ function onFocus(event: Event) {
 }
 
 function onBlur(event: Event) {
+  data.focused = false
   pickerRef.value?.classList.add("hidden")
 
   const target = event.target as HTMLInputElement
@@ -162,7 +166,7 @@ function validate(value: string, format?: string) {
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
         <Icon class="m-auto" icon="mdi:calendar" width="24px" height="24px" inline />
       </div>
-      <input ref="inputRef" type="text" :placeholder="placeholder"
+      <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder"
         :value="data.value"
         @input="onInput"
         @focus="onFocus"
@@ -211,3 +215,11 @@ function validate(value: string, format?: string) {
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.DateBox input[type="number"]::-webkit-inner-spin-button,
+.DateBox input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

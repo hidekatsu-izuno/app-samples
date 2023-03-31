@@ -39,6 +39,9 @@ const onLoginButtonClick = async () => {
             <DateBox required />
           </div>
           <div>
+            <TextArea label="test" style="height:200px" required />
+          </div>
+          <div>
             <Hyperlink halign="end" class="text-sm" @click="goPasswordChangePage">パスワードを忘れた方はこちら</Hyperlink>
           </div>
           <div>

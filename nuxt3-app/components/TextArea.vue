@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ValidatorKey } from "@/utils/validator"
 import { JapaneseErrorMap } from "@/utils/schemas"
-import { z, ZodString } from "zod"
+import { ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -88,7 +88,7 @@ function validate(value: string) {
 </script>
 
 <template>
-  <div class="TextArea">
+  <div class="TextArea flex flex-col">
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
@@ -96,7 +96,7 @@ function validate(value: string) {
       :value="data.value"
       @input="onInput"
       @blur="onBlur"
-      class="p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+      class="flex-auto p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
       :class="{
         'block': !halign,
         'w-full': !halign,
