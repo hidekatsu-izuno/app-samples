@@ -9,14 +9,8 @@ const props = withDefaults(defineProps<{
 })
 
 const emits = defineEmits<{
-  (event: "update:error", value: string): void
   (event: "click", value: MouseEvent): void
 }>()
-
-const emitError = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  emits("update:error", target.value)
-}
 
 const onClick = (event: MouseEvent) => {
   emits("click", event)
@@ -30,7 +24,7 @@ const onClick = (event: MouseEvent) => {
     >{{ label }}</label>
     <button type="button"
       @click="onClick"
-      class="font-medium text-white px-4 py-1.5 m-0 bg-blue-700 rounded-md outline-none hover:bg-blue-800 focus:ring-4 focus:ring-blue-500"
+      class="font-medium text-white px-4 py-1.5 m-0 bg-blue-700 rounded-md outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :class="[
         {
           'block': !halign,

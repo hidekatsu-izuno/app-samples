@@ -47,6 +47,10 @@ const onLoginButtonClick = async () => {
             <RadioList :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
           </div>
           <div>
+            <CheckList required :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
+            <CheckList :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
+          </div>
+          <div>
             <TextArea label="test" input-style="height:200px" required />
           </div>
           <div>

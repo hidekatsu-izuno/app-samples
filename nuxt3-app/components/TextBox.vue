@@ -98,7 +98,7 @@ function validate(value: string) {
   }
 
   if (!data.error) {
-    return value || ""
+    return value
   }
 }
 </script>
@@ -112,7 +112,7 @@ function validate(value: string) {
       :value="data.value"
       @input="onInput"
       @blur="onBlur"
-      class="p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+      class="p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         {
           'block': !halign,

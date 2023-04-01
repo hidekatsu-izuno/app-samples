@@ -62,7 +62,7 @@ const validate = (value: string) => {
   }
 
   if (!data.error) {
-    return value || ""
+    return value
   }
 }
 </script>
@@ -75,7 +75,7 @@ const validate = (value: string) => {
     <select
       :value="data.value"
       @change="onChange"
-      class="p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+      class="p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         {
           'block': !halign,
