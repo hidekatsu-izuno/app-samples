@@ -73,7 +73,7 @@ const validate = (value: string) => {
   if (value) {
     // no handle
   } else if (props.required) {
-    data.error = "必須入力です。"
+    data.error = "必ず選択してください。"
   }
 
   if (!data.error) {

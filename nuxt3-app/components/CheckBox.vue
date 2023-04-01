@@ -1,25 +1,22 @@
 <script setup lang="ts">
-import { uuidv4 } from "@/utils/functions"
-
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
   label?: string
   name?: string
+  placeholder?: string
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  items?: Array<{ value: string, text: string }>
+  value?: string
+  text?: string
   required?: boolean
-  modelValue?: string[]
+  modelValue?: boolean
 }>(), {
-  items: () => [],
   required: false,
-  modelValue: () => [],
+  modelValue: false
 })
 
-const id = uuidv4()
-
 const data = reactive({
-  value: props.modelValue || "",
+  value: !!props.modelValue,
   error: "",
 })
 
@@ -42,21 +39,20 @@ if (name) {
 }
 
 const emits = defineEmits<{
-  (event: "update:modelValue", value: string[]): void
+  (event: "update:modelValue", value: boolean): void
 }>()
 
 function onChange(event: Event) {
   const target = event.target as HTMLInputElement
   let changed = false
   if (target.checked) {
-    if (!data.value.includes(target.value)) {
-      data.value = [...data.value, target.value]
+    if (!data.value) {
+      data.value = true
       changed = true
     }
   } else {
-    const index = data.value.indexOf(target.value)
-    if (index !== -1) {
-      data.value = data.value.splice(index, 1)
+    if (data.value) {
+      data.value = false
       changed = true
     }
   }
@@ -73,37 +69,40 @@ function onBlur() {
   validate(data.value)
 }
 
-const validate = (value: string[]) => {
+const validate = (value: boolean) => {
   data.error = ""
 
-  if (value.length > 0) {
+  if (value) {
     // no handle
   } else if (props.required) {
     data.error = "必ず選択してください。"
   }
 
   if (!data.error) {
+    if (props.value) {
+      return value ? props.value : null
+    }
     return value
   }
 }
 </script>
 
 <template>
-  <div class="CheckList">
+  <div class="CheckBox">
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))">
-      <label v-for="item in items" class="flex items-center gap-0.5 py-1"
+    <div>
+      <label class="flex items-center gap-0.5 py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
-      ><input type="checkbox" :name="id"
-          :value="item.value"
-          :checked="data.value.includes(item.value)"
+      ><input type="checkbox"
+          :value="value"
+          :checked="data.value"
           @change="onChange"
           @blur="onBlur"
           class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
-        ><span>{{ item.text }}</span></label>
+        ><span v-if="text">{{ text }}</span></label>
     </div>
     <div v-if="data.error"
       class="block text-sm text-red-500"
@@ -112,7 +111,7 @@ const validate = (value: string[]) => {
 </template>
 
 <style>
-.CheckList > div > label > input[type="checkbox"]:checked {
+.CheckBox > div > label > input[type="checkbox"]:checked {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
 }
 </style>

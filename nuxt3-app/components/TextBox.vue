@@ -5,7 +5,7 @@ import { z, ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
-  type?: "text" | "password" | "email"
+  type?: "text" | "password" | "email" | "tel" | "url"
   label?: string
   name?: string
   placeholder?: string
@@ -80,6 +80,12 @@ function validate(value: string) {
         schema = z.string().email()
       } else if (!schema.isEmail) {
         schema = schema.email()
+      }
+    } else if (props.type === "url") {
+      if (!schema) {
+        schema = z.string().url()
+      } else if (!schema.isURL) {
+        schema = schema.url()
       }
     }
 

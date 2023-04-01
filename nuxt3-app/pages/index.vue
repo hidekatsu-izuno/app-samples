@@ -51,6 +51,9 @@ const onLoginButtonClick = async () => {
             <CheckList :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
           </div>
           <div>
+            <CheckBox required text="X" />
+          </div>
+          <div>
             <TextArea label="test" input-style="height:200px" required />
           </div>
           <div>
