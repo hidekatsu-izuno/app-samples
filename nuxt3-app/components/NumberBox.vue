@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ValidatorKey } from "@/utils/validator"
+import { formatMessages } from "esbuild";
 import { ZodNumber } from "zod"
 
 const props = withDefaults(defineProps<{
@@ -21,6 +22,7 @@ const props = withDefaults(defineProps<{
 })
 
 const data = reactive({
+  maxLength: getFormatMaxLength(props.format),
   focused: false,
   value: props.modelValue || "",
   error: "",
@@ -105,6 +107,15 @@ function validate(value: string, format?: string) {
     return formatNumber(num)
   }
 }
+
+function getFormatMaxLength(format: string) {
+  let max = 17
+  const index = format.indexOf(".")
+  if (index !== -1) {
+    max += format.length - index
+  }
+  return max
+}
 </script>
 
 <template>
@@ -112,7 +123,7 @@ function validate(value: string, format?: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input :type="data.focused ? 'number' : 'text'" :placeholder="placeholder"
+    <input :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :maxlength="data.maxLength"
       :value="data.value"
       @input="onInput"
       @focus="onFocus"
@@ -136,7 +147,7 @@ function validate(value: string, format?: string) {
   </div>
 </template>
 
-<style scoped>
+<style>
 .NumberBox > input[type="number"]::-webkit-inner-spin-button,
 .NumberBox > input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

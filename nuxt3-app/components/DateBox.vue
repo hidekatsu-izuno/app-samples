@@ -3,6 +3,7 @@ import { createPopper } from '@popperjs/core'
 import { ValidatorKey } from "@/utils/validator"
 import { ZodDate } from "zod"
 import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameMonth, isSameDay, sub, add, format, parseISO } from "date-fns"
+import { formatMessages } from 'esbuild';
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<{
 })
 
 const data = reactive({
+  maxLength: getFormatMaxLength(props.format),
   focused: false,
   value: props.modelValue || "",
   error: "",
@@ -157,6 +159,10 @@ function validate(value: string, format?: string) {
     return formatDate(date, "uuuu-MM-dd")
   }
 }
+
+function getFormatMaxLength(format: string) {
+  return format.length * 4
+}
 </script>
 
 <template>
@@ -168,7 +174,7 @@ function validate(value: string, format?: string) {
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
         <div class="icon-[mdi--calendar] text-2xl"></div>
       </div>
-      <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder"
+      <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :maxlength="data.maxLength"
         :value="data.value"
         @input="onInput"
         @focus="onFocus"
