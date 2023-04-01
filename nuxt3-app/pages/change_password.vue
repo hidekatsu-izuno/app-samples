@@ -36,7 +36,7 @@ const onPasswordResetButtonClick = async () => {
       </Card>
       <div class="m-4 mb-8"></div>
 
-      <Popup type="ok" v-model="data.showPopup" :message="data.message" />
+      <MessageBox type="ok" v-model="data.showPopup" :message="data.message" />
     </div>
   </div>
 </template>
