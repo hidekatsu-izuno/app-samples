@@ -166,7 +166,7 @@ function validate(value: string, format?: string) {
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <div class="relative">
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
-        <Icon class="m-auto" icon="mdi:calendar" width="24px" height="24px" inline />
+        <div class="m-auto icon-[mdi--calendar] text-2xl"></div>
       </div>
       <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder"
         :value="data.value"

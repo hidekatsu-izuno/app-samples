@@ -56,10 +56,10 @@ const close = (result?: "ok" | "yes" | "no" | "cancel") => {
           <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <button type="button" @click="() => close()"
               class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
-              <Icon icon="mdi:close-circle" width="22px" height="22px" />
+              <div class="icon-[mdi--close-circle] text-2xl"></div>
             </button>
             <div class="p-6 text-center">
-              <Icon class="m-auto" icon="mdi:alert-circle-outline" width="64px" height="64px" color="red" inline />
+              <div class="icon-[mdi--alert-circle-outline] text-red-500 text-6xl"></div>
               <h3 class="mb-5 text-lg font-normal text-gray-500">{{ message }}</h3>
               <div class="flex justify-center gap-0.5">
                 <button type="button" v-if="type === 'ok' || type === 'ok_cancel'" @click="() => close('ok')"

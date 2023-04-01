@@ -1,3 +1,5 @@
+import { addDynamicIconSelectors } from "@iconify/tailwind"
+
 const isGenerateMode = process.argv.includes('generate')
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -16,6 +18,15 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "vue-history-state/nuxt",
   ],
+
+  tailwindcss: {
+    config: {
+      content: [],
+      plugins: [
+        addDynamicIconSelectors()
+      ]
+    }
+  },
 
   ...(isGenerateMode ? {
     ignore: [

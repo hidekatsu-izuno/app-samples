@@ -87,15 +87,15 @@ const validate = (value: string) => {
         :checked="!data.value"
         @change="onChange"
         @blur="onBlur"
-        class="w-4 h-4 mr-1 text-blue-600 bg-gray-100 border-gray-300 focus:ring-2 focus:ring-blue-500"
+        class="appearance-none w-4 h-4 mr-1 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-500 checked:bg-white checked:border-blue-500"
       >{{ placeholder }}</label>
       <label v-for="item in items" class="flex items-center py-1"><input type="radio" :name="id"
-        :value="item.value"
-        :checked="item.value === data.value"
-        @change="onChange"
-        @blur="onBlur"
-        class="w-4 h-4 mr-1 text-blue-600 bg-gray-100 border-gray-300 focus:ring-2 focus:ring-blue-500"
-      >{{ item.text }}</label>
+          :value="item.value"
+          :checked="item.value === data.value"
+          @change="onChange"
+          @blur="onBlur"
+          class="appearance-none w-4 h-4 mr-1 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-500 checked:bg-white checked:border-4 checked:border-blue-500"
+        >{{ item.text }}</label>
     </div>
     <div v-if="data.error"
       class="block text-sm text-red-500"
