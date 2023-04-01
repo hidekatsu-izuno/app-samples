@@ -166,7 +166,7 @@ function validate(value: string, format?: string) {
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <div class="relative">
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
-        <div class="m-auto icon-[mdi--calendar] text-2xl"></div>
+        <div class="icon-[mdi--calendar] text-2xl"></div>
       </div>
       <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder"
         :value="data.value"
@@ -188,12 +188,12 @@ function validate(value: string, format?: string) {
     >
       <div @click="onPickerPrevButtonClick"
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
-      ><Icon icon="mdi:arrow-left" width="24px" height="24px" inline /></div>
+      ><div class="icon-[mdi--arrow-left] text-2xl"></div></div>
       <div class="col-span-5 flex items-center justify-center h-8"
       >{{ format(pickerData.current, "uuuu/MM") }}</div>
       <div @click="onPickerNextButtonClick"
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
-      ><Icon icon="mdi:arrow-right" width="24px" height="24px" inline /></div>
+      ><div class="icon-[mdi--arrow-right] text-2xl"></div></div>
       <div v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
         class="flex font-medium text-gray-500 items-center justify-center w-8 h-6"
       >{{ week }}</div>
