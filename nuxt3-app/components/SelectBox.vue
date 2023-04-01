@@ -44,6 +44,7 @@ const emits = defineEmits<{
 
 function onChange(event: Event) {
   const target = event.target as HTMLSelectElement
+  validate(target.value)
   data.value = target.value
   if (data.error) {
     data.error = ""
@@ -87,7 +88,7 @@ const validate = (value: string) => {
       ]"
       :style="props.inputStyle"
     >
-      <option disabled value="">{{ placeholder }}</option>
+      <option :disabled="required" value="">{{ placeholder }}</option>
       <option v-for="item in items" :value="item.value">{{ item.text }}</option>
     </select>
     <div v-if="data.error"

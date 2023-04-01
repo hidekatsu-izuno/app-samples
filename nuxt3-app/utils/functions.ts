@@ -5,7 +5,15 @@ import {
   isValid,
   startOfToday,
 } from "date-fns"
-import Decimal from "decimal.js"
+import { v4 } from "uuid"
+
+export function uuidv4() {
+  return v4()
+}
+
+export function now() {
+  return new Date()
+}
 
 export function today() {
   return startOfToday()

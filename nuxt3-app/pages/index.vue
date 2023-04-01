@@ -39,6 +39,14 @@ const onLoginButtonClick = async () => {
             <DateBox required />
           </div>
           <div>
+            <SelectBox required :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
+            <SelectBox :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
+          </div>
+          <div>
+            <RadioList required :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
+            <RadioList :items="[{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }]" />
+          </div>
+          <div>
             <TextArea label="test" input-style="height:200px" required />
           </div>
           <div>
