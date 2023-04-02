@@ -4,6 +4,7 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   items?: Array<{ value: string, text: string }>
@@ -72,10 +73,10 @@ const validate = (value: string) => {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <select
+    <select :tabindex="tabindex"
       :value="data.value"
       @change="onChange"
-      class="p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+      class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         {
           'block': !halign,

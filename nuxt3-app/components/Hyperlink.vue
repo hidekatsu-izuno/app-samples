@@ -2,6 +2,8 @@
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
   label?: string
+  href?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
 }>(), {
@@ -25,8 +27,8 @@ const onClick = (event: MouseEvent) => {
     <label v-if="label"
       class="block"
     >{{ label }}</label>
-    <a @click="onClick"
-      class="text-blue-600 cursor-pointer hover:underline"
+    <a :href="href || 'javascript:void(0)'" @click="onClick" :tabindex="tabindex"
+      class="text-blue-600 rounded-md outline-none hover:underline focus:ring-2 focus:ring-blue-200"
       :class="[
         {
           'block': !halign,

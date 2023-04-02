@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   required?: boolean
@@ -174,12 +175,12 @@ function getFormatMaxLength(format: string) {
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
         <div class="icon-[mdi--calendar] text-2xl"></div>
       </div>
-      <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :maxlength="data.maxLength"
+      <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
         :value="data.value"
         @input="onInput"
         @focus="onFocus"
         @blur="onBlur"
-        class="p-2 pr-10 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
         :class="{
           'block': !halign,
           'w-full': !halign,

@@ -6,6 +6,7 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   items?: Array<{ value: string, text: string }>
@@ -91,7 +92,7 @@ const validate = (value: string) => {
       <label v-if="!required" class="flex items-center gap-0.5 py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
-      ><input type="radio"
+      ><input type="radio" :tabindex="tabindex"
         :name="id" value=""
         :checked="!data.value"
         @change="onChange"
@@ -101,7 +102,7 @@ const validate = (value: string) => {
       <label v-for="item in items" class="flex items-center py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
-      ><input type="radio" :name="id"
+      ><input type="radio" :name="id" :tabindex="tabindex"
           :value="item.value"
           :checked="item.value === data.value"
           @change="onChange"

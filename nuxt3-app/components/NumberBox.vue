@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   required?: boolean
@@ -123,7 +124,7 @@ function getFormatMaxLength(format: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :maxlength="data.maxLength"
+    <input :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
       :value="data.value"
       @input="onInput"
       @focus="onFocus"

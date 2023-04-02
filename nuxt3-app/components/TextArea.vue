@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   required?: boolean
@@ -94,11 +95,11 @@ function validate(value: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <textarea :placeholder="placeholder"
+    <textarea :placeholder="placeholder" :tabindex="tabindex"
       :value="data.value"
       @input="onInput"
       @blur="onBlur"
-      class="p-2 text-sm text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+      class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         {
           'block': !halign,

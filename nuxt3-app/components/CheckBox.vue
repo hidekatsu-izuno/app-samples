@@ -4,6 +4,7 @@ const props = withDefaults(defineProps<{
   label?: string
   name?: string
   placeholder?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   value?: string
@@ -96,7 +97,7 @@ const validate = (value: boolean) => {
       <label class="flex items-center gap-0.5 py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
-      ><input type="checkbox"
+      ><input type="checkbox" :tabindex="tabindex"
           :value="value"
           :checked="data.value"
           @change="onChange"

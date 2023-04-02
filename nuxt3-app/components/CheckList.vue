@@ -5,6 +5,7 @@ const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
   label?: string
   name?: string
+  tabindex?: number
   inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
   items?: Array<{ value: string, text: string }>
@@ -97,7 +98,7 @@ const validate = (value: string[]) => {
       <label v-for="item in items" class="flex items-center gap-0.5 py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
-      ><input type="checkbox" :name="id"
+      ><input type="checkbox" :name="id" :tabindex="tabindex"
           :value="item.value"
           :checked="data.value.includes(item.value)"
           @change="onChange"
