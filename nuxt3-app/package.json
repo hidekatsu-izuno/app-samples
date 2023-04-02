@@ -27,7 +27,6 @@
     "date-fns": "^2.29.3",
     "decimal.js": "^10.4.3",
     "express-session": "^1.17.3",
-    "flowbite-datepicker": "^1.2.2",
     "focus-trap": "^7.4.0",
     "h3-express": "^0.3.0",
     "pg": "^8.10.0",

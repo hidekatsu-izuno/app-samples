@@ -77,16 +77,19 @@ function validate(value: string) {
     let schema = props.schema
     if (props.type === "email") {
       if (!schema) {
-        schema = z.string().email()
-      } else if (!schema.isEmail) {
-        schema = schema.email()
+        schema = z.string()
       }
+      schema = schema.email("メールアドレスの書式に誤りがあります。")
+    } else if (props.type === "tel") {
+      if (!schema) {
+        schema = z.string()
+      }
+      schema = schema.regex(/^0[0-9-]{8,9}[0-9]$/, "電話番号の書式に誤りがあります。")
     } else if (props.type === "url") {
       if (!schema) {
-        schema = z.string().url()
-      } else if (!schema.isURL) {
-        schema = schema.url()
+        schema = z.string()
       }
+      schema = schema.url("URLの書式に誤りがあります。")
     }
 
     if (schema) {
