@@ -89,7 +89,7 @@ const validate = (value: string) => {
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))">
-      <label v-if="!required" class="flex items-center gap-0.5 py-1"
+      <label v-if="!required" class="flex items-center gap-1 py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
       ><input type="radio" :tabindex="tabindex"
@@ -99,7 +99,7 @@ const validate = (value: string) => {
         @blur="onBlur"
         class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
       >{{ placeholder }}</label>
-      <label v-for="item in items" class="flex items-center py-1"
+      <label v-for="item in items" class="flex items-center gap-1 py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
       ><input type="radio" :name="id" :tabindex="tabindex"

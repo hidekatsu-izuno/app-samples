@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ValidatorKey } from "@/utils/validator"
-import { formatMessages } from "esbuild";
 import { ZodNumber } from "zod"
 
 const props = withDefaults(defineProps<{
@@ -124,20 +123,14 @@ function getFormatMaxLength(format: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
+    <input type="text" inputmode="numeric" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
       :value="data.value"
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
       class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
-        {
-          'block': !halign,
-          'w-full': !halign,
-          'self-start': halign === 'start',
-          'self-center': halign === 'center',
-          'self-end': halign === 'end',
-        },
+        halign === 'start' ? 'self-start' : halign === 'center' ? 'self-center' : halign === 'end' ? 'self-end' : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"

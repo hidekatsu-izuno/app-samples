@@ -2,8 +2,7 @@
 import { createPopper } from '@popperjs/core'
 import { ValidatorKey } from "@/utils/validator"
 import { ZodDate } from "zod"
-import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameMonth, isSameDay, sub, add, format, parseISO } from "date-fns"
-import { formatMessages } from 'esbuild';
+import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameMonth, isSameDay, sub, add, format } from "date-fns"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -18,7 +17,6 @@ const props = withDefaults(defineProps<{
   schema?: ZodDate
   modelValue?: string
 }>(), {
-  type: "text",
   required: false,
   format: 'uuuu/MM/dd',
   modelValue: "",
@@ -32,7 +30,7 @@ const data = reactive({
 })
 
 watch(() => props.modelValue, () => {
-  data.value = props.modelValue
+  data.value = data.focused ? props.modelValue : formatDate(props.modelValue, props.format)
 })
 
 const name = props.name
@@ -97,6 +95,7 @@ function onFocus(event: Event) {
 
 function onBlur(event: Event) {
   data.focused = false
+
   pickerRef.value?.classList.add("hidden")
 
   const target = event.target as HTMLInputElement
@@ -175,7 +174,7 @@ function getFormatMaxLength(format: string) {
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
         <div class="icon-[mdi--calendar] text-2xl"></div>
       </div>
-      <input ref="inputRef" :type="data.focused ? 'number' : 'text'" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
+      <input ref="inputRef" type="text" inputmode="numeric" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
         :value="data.value"
         @input="onInput"
         @focus="onFocus"
@@ -211,13 +210,7 @@ function getFormatMaxLength(format: string) {
         @click="() => onPickerDateClick(date)"
         class="flex font-medium items-center justify-center h-8 rounded-md cursor-default"
         :class="[
-          {
-            'text-white': isSameDay(pickerData.start, date),
-            'bg-blue-700': isSameDay(pickerData.start, date),
-            'hover:bg-blue-800': isSameDay(pickerData.start, date),
-            'hover:bg-gray-100': !isSameDay(pickerData.start, date),
-            'text-gray-500': !isSameMonth(pickerData.current, date),
-          },
+          isSameDay(pickerData.start, date) ? 'text-white bg-blue-700 hover:bg-blue-800' : 'text-gray-500 hover:bg-gray-100',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
         :style="props.inputStyle"

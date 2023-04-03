@@ -94,7 +94,7 @@ const validate = (value: boolean) => {
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <div>
-      <label class="flex items-center gap-0.5 py-1"
+      <label class="flex items-center gap-1 py-1"
         :class="props.inputClass"
         :style="props.inputStyle"
       ><input type="checkbox" :tabindex="tabindex"
@@ -102,7 +102,7 @@ const validate = (value: boolean) => {
           :checked="data.value"
           @change="onChange"
           @blur="onBlur"
-          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
         ><span v-if="text">{{ text }}</span></label>
     </div>
     <div v-if="data.error"
