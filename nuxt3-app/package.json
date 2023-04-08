@@ -9,8 +9,8 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@iconify/tailwind": "^0.1.2",
     "@iconify-json/mdi": "^1.1.50",
+    "@iconify/tailwind": "^0.1.2",
     "@nuxt/test-utils": "^3.3.2",
     "@nuxtjs/tailwindcss": "^6.6.5",
     "@types/body-scroll-lock": "^3.1.0",
