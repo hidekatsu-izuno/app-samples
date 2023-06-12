@@ -1,7 +1,8 @@
 import type { EventHandler } from "h3"
 import { SessionKey, SessionConfig, SessionData } from "./session"
+import { ZodError } from "zod"
 
-export default async function defineAppHandler(handler: EventHandler) {
+export function defineAppHandler(handler: EventHandler) {
   return defineEventHandler(async (event) => {
     const path = getRequestPath(event)
     if (!/^\/api\/auth\/.*/.test(path)) {
@@ -16,6 +17,10 @@ export default async function defineAppHandler(handler: EventHandler) {
     try {
       return await handler(event)
     } catch (err) {
+      if (err instanceof ZodError) {
+        err = createError({ statusCode: 400, cause: err })
+      }
+      console.error(err)
       return err
     }
   })

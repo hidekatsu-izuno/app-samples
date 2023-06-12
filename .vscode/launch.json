@@ -1,19 +1,33 @@
 {
-  // IntelliSense を使用して利用可能な属性を学べます。
-  // 既存の属性の説明をホバーして表示します。
-  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
   "version": "0.2.0",
   "configurations": [
-      {
-        "name": "nuxt dev",
-        "type": "node",
-          "request": "launch",
-          "skipFiles": [
-              "<node_internals>/**"
-          ],
-          "cwd": "${workspaceFolder}/nuxt3-example",
-          "program": "./node_modules/.bin/nuxt",
-          "args": ["dev"]
-      }
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "client: chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/nuxt3-app"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "server: nuxt",
+      "cwd": "${workspaceFolder}/nuxt3-app",
+      "program": "./node_modules/nuxi/bin/nuxi.mjs",
+      "args": [
+        "dev"
+      ],
+    }
+  ],
+  "compounds": [
+    {
+      "name": "fullstack: nuxt",
+      "configurations": [
+        "server: nuxt",
+        "client: chrome"
+      ]
+    }
   ]
 }

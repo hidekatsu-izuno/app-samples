@@ -2,14 +2,15 @@
 <script setup lang="ts">
 import { useHistoryState } from "vue-history-state"
 import { Validator } from "~/utils/validator"
-import { UserIdSchema, PasswordSchema } from "~/utils/schemas/items"
+import { UserIdSchema, UserPasswordSchema } from "~/utils/schemas/items"
 import { http } from "~/utils/http"
 
 const historyState = useHistoryState()
 const validator = new Validator()
 
 const data = reactive({
-  showMessageBox: false
+  showMessageBox: false,
+  message: "",
 })
 
 const goChangePasswordPage = () => {
@@ -18,11 +19,19 @@ const goChangePasswordPage = () => {
 
 const onLoginButtonClick = async () => {
   const validated = validator.validate()
-  if (validated) {
+  if (!validated) {
+    data.message = "入力に誤りがあります。"
+    data.showMessageBox = true
+    return
+  }
+
+  try {
     const result = await http.post("/api/auth/signin", validated)
     location.href = result.redirect
-  } else {
+  } catch (err) {
+    data.message = "ログインに失敗しました。"
     data.showMessageBox = true
+    return
   }
 }
 </script>
@@ -37,7 +46,7 @@ const onLoginButtonClick = async () => {
             <TextBox type="email" label="メールアドレス" name="userId" required :schema="UserIdSchema" />
           </div>
           <div>
-            <TextBox type="password" label="パスワード" name="password" required :schema="PasswordSchema" />
+            <TextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
           </div>
           <div>
             <Hyperlink halign="end" class="text-sm" @click="goChangePasswordPage">パスワードを忘れた方はこちら</Hyperlink>
@@ -49,6 +58,6 @@ const onLoginButtonClick = async () => {
       </Card>
       <div class="m-4 mb-8">Copyright &copy; Hidekatsu Izuno</div>
     </div>
-    <MessageBox v-model="data.showMessageBox" message="入力に誤りがあります。"/>
+    <MessageBox v-model="data.showMessageBox" :message="data.message"/>
   </div>
 </template>

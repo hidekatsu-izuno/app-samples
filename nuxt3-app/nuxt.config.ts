@@ -6,6 +6,9 @@ const isGenerateMode = process.argv.includes('generate')
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   runtimeConfig: {
+    auth: {
+      salt: ""
+    },
     session: {
       password: "01234567890123456789012345678901",
       maxAge: 1800,
@@ -18,6 +21,8 @@ export default defineNuxtConfig({
       database: process.env.DB_DATABASE,
     }
   },
+
+  sourcemap: true,
 
   modules: [
     "@nuxtjs/tailwindcss",
