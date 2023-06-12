@@ -1,8 +1,8 @@
 
 <script setup lang="ts">
-import { useHistoryState } from 'vue-history-state'
-import { Validator } from '~/utils/validator'
-import { UserIdSchema, PasswordSchema } from '~/utils/schemas/mt_user'
+import { useHistoryState } from "vue-history-state"
+import { Validator } from "~/utils/validator"
+import { UserIdSchema, PasswordSchema } from "~/utils/schemas/items"
 import { http } from "~/utils/http"
 
 const historyState = useHistoryState()
@@ -12,7 +12,7 @@ const data = reactive({
   showMessageBox: false
 })
 
-const goPasswordChangePage = () => {
+const goChangePasswordPage = () => {
   historyState.push("/change_password")
 }
 
@@ -40,7 +40,7 @@ const onLoginButtonClick = async () => {
             <TextBox type="password" label="パスワード" name="password" required :schema="PasswordSchema" />
           </div>
           <div>
-            <Hyperlink halign="end" class="text-sm" @click="goPasswordChangePage">パスワードを忘れた方はこちら</Hyperlink>
+            <Hyperlink halign="end" class="text-sm" @click="goChangePasswordPage">パスワードを忘れた方はこちら</Hyperlink>
           </div>
           <div>
             <Button halign="center" @click="onLoginButtonClick">ログイン</Button>
