@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { useHistoryState } from "vue-history-state"
 import { Validator } from "~/utils/validator"
-import { UserIdSchema, UserPasswordSchema } from "~/utils/schemas/items"
+import { EmailSchema, UserPasswordSchema } from "~/utils/schemas"
 import { http } from "~/utils/http"
 
 const historyState = useHistoryState()
@@ -43,7 +43,7 @@ const onLoginButtonClick = async () => {
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox type="email" label="メールアドレス" name="userId" required :schema="UserIdSchema" />
+            <TextBox type="email" label="メールアドレス" name="email" required :schema="EmailSchema" />
           </div>
           <div>
             <TextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />

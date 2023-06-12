@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ValidatorKey } from "~/utils/validator"
-import { JapaneseErrorMap } from "~/utils/schemas/errors"
+import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { z, ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
