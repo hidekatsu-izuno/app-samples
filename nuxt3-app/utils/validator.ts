@@ -1,6 +1,6 @@
 export const ValidatorKey: InjectionKey<Validator> = Symbol.for("ValidatorKey")
 
-declare type ValidatorListener = {
+export declare type ValidatorListener = {
   name: string,
   listener: () => any,
 }

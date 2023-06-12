@@ -1,3 +1,4 @@
+import { fileURLToPath } from "url"
 import { addDynamicIconSelectors } from "@iconify/tailwind"
 
 const isGenerateMode = process.argv.includes('generate')
@@ -18,6 +19,10 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "vue-history-state/nuxt",
   ],
+
+  alias: {
+    "~": fileURLToPath(new URL("./", import.meta.url))
+  },
 
   tailwindcss: {
     config: {
