@@ -10,7 +10,7 @@ const validator = new Validator()
 
 const data = reactive(historyState.data || {
   email: "",
-  showMessageBox: false,
+  showMessage: false,
   message: ""
 })
 
