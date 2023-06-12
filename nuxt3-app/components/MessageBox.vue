@@ -15,10 +15,7 @@ const props = withDefaults(defineProps<{
 const elRef = ref()
 
 onMounted(() => {
-  const trap = focusTrap.createFocusTrap(elRef.value, {
-    initialFocus: props.type.startsWith("yes") ? ".PopupYesButton"
-       : ".PopupOkButton"
-    })
+  const trap = focusTrap.createFocusTrap(elRef.value)
 
   watch(() => props.modelValue, () => {
     if (props.modelValue) {
@@ -50,10 +47,6 @@ const close = (result?: "ok" | "yes" | "no" | "cancel") => {
 <template>
   <Teleport to="body">
     <dialog ref="elRef" class="MessageBox inset-0 rounded-lg shadow-2xl" :open="modelValue">
-      <button type="button" @click="() => close()"
-        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
-        <div class="icon-[mdi--close-circle] text-2xl"></div>
-      </button>
       <div class="p-6 text-center">
         <div class="icon-[mdi--alert-circle-outline] text-red-500 text-6xl"></div>
         <h3 class="mb-5 text-lg font-normal text-gray-500">{{ message }}</h3>
@@ -68,6 +61,10 @@ const close = (result?: "ok" | "yes" | "no" | "cancel") => {
             class="PopupCancelButton text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">キャンセル</button>
         </div>
       </div>
+      <button type="button" @click="() => close()"
+        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+        <div class="icon-[mdi--close-circle] text-2xl"></div>
+      </button>
     </dialog>
   </Teleport>
 </template>
