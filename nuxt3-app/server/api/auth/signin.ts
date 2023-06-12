@@ -23,7 +23,7 @@ export default defineAppHandler(async (event) => {
     userId: userId
   })
   return {
-    redirect: "/v1/"
+    redirect: "/v1/CM0001/menu"
   }
 })
 

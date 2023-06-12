@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { useHistoryState } from "vue-history-state"
+import { onBackupState, useHistoryState } from "vue-history-state"
 import { Validator } from "~/utils/validator"
 import { EmailSchema, UserPasswordSchema } from "~/utils/schemas"
 import { http } from "~/utils/http"
@@ -8,10 +8,13 @@ import { http } from "~/utils/http"
 const historyState = useHistoryState()
 const validator = new Validator()
 
-const data = reactive({
+const data = reactive(historyState.data || {
+  email: "",
   showMessageBox: false,
-  message: "",
+  message: ""
 })
+
+onBackupState(() => data)
 
 const goChangePasswordPage = () => {
   historyState.push("/change_password")
@@ -43,7 +46,7 @@ const onLoginButtonClick = async () => {
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox type="email" label="メールアドレス" name="email" required :schema="EmailSchema" />
+            <TextBox type="email" label="メールアドレス" name="email" v-model="data.email" required :schema="EmailSchema" />
           </div>
           <div>
             <TextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
