@@ -6,6 +6,10 @@ const isGenerateMode = process.argv.includes('generate')
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   runtimeConfig: {
+    session: {
+      password: "01234567890123456789012345678901",
+      maxAge: 1800,
+    },
     database: {
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
