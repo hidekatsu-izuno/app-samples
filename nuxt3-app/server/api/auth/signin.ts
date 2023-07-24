@@ -1,8 +1,9 @@
+import { H3Event } from "h3"
 import { z } from "zod"
 import { defineAppHandler } from "~/server/utils/controller"
-import { SessionConfig } from "~/server/utils/session"
+import { AppSessionConfig } from "~/server/utils/session"
 import { UserPasswordSchema, EmailSchema } from "~/utils/schemas"
-import { pg } from "~/server/utils/database"
+import { useSqlConnection } from "~/server/utils/database"
 import { encodePassword } from "~/server/utils/password"
 
 const runtimeConfig = useRuntimeConfig()
@@ -14,12 +15,13 @@ const SigninSchema = z.object({
 
 export default defineAppHandler(async (event) => {
   const params = SigninSchema.parse(await readBody(event))
-  const userId = await getValidUserId(params.email, params.password)
+
+  const userId = await getValidUserId(event, params.email, params.password)
   if (!userId) {
     throw createError({ statusCode: 401 })
   }
 
-  await updateSession(event, SessionConfig, {
+  await updateSession(event, AppSessionConfig, {
     userId: userId
   })
   return {
@@ -27,13 +29,14 @@ export default defineAppHandler(async (event) => {
   }
 })
 
-async function getValidUserId(email: string, password: string) {
+async function getValidUserId(event: H3Event, email: string, password: string) {
+  const con = useSqlConnection(event)
   const hashed = (await encodePassword(
       password,
       Buffer.from(runtimeConfig.auth.salt, "base64"),
     )).toString("base64")
 
-  const result = await pg`
+  const result = await con`
     select
       mu.user_id
     from

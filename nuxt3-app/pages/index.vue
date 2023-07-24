@@ -3,7 +3,7 @@
 import { onBackupState, useHistoryState } from "vue-history-state"
 import { Validator } from "~/utils/validator"
 import { EmailSchema, UserPasswordSchema } from "~/utils/schemas"
-import { http } from "~/utils/http"
+import { HTTPClient } from "~/utils/http"
 
 const historyState = useHistoryState()
 const validator = new Validator()
@@ -29,7 +29,7 @@ const onLoginButtonClick = async () => {
   }
 
   try {
-    const result = await http.post("/api/auth/signin", validated)
+    const result = await HTTPClient.post("/api/auth/signin", validated)
     location.href = result.redirect
   } catch (err) {
     data.message = "ログインに失敗しました。"

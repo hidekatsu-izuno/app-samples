@@ -16,7 +16,7 @@
     "@types/body-scroll-lock": "^3.1.0",
     "@types/uuid": "^9.0.1",
     "nuxt": "^3.5.3",
-    "vitest": "^0.32.0"
+    "vitest": "^0.33.0"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -24,7 +24,7 @@
     "date-fns": "^2.30.0",
     "decimal.js": "^10.4.3",
     "focus-trap": "^7.4.3",
-    "jtc-utils": "^0.3.3",
+    "jtc-utils": "^0.3.4",
     "postgres": "^3.3.5",
     "uuid": "^9.0.0",
     "vue-history-state": "^0.13.1",

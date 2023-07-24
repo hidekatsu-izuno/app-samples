@@ -1,10 +1,10 @@
-import { SessionConfig as ISessionConfig, H3Event } from "h3"
+import { SessionConfig, H3Event } from "h3"
 
 const runtimeConfig = useRuntimeConfig()
 
-export const SessionKey = Symbol.for("SessionKey")
+export const AppSessionKey = Symbol.for("AppSessionKey")
 
-export const SessionConfig: ISessionConfig = {
+export const AppSessionConfig: SessionConfig = {
   password: runtimeConfig.session.password,
   maxAge: runtimeConfig.session.maxAge,
   cookie: {
@@ -14,12 +14,12 @@ export const SessionConfig: ISessionConfig = {
   }
 }
 
-export declare type SessionData = {
+export declare type AppSession = {
   userId: string
 }
 
-export function getSessionData(event: H3Event) {
+export function getAppSession(event: H3Event) {
   return (event as any)[SessionKey] ?? ({
       userId: ""
-    }) as SessionData
+    }) as AppSession
 }

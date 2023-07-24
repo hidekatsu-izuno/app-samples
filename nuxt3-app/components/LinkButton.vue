@@ -23,7 +23,7 @@ const onClick = (event: MouseEvent) => {
 </script>
 
 <template>
-  <div class="Hyperlink flex flex-col">
+  <div class="LinkButton flex flex-col">
     <label v-if="label"
       class="block"
     >{{ label }}</label>
