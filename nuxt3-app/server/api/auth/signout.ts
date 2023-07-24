@@ -1,7 +1,12 @@
-import { defineAppHandler } from "~/server/utils/controller"
+import { defineController } from "~/server/utils/controller"
 import { AppSessionConfig } from "~/server/utils/session"
 
-export default defineAppHandler(async (event) => {
-  await clearSession(event, AppSessionConfig)
-  return {}
+export default defineController({
+  session: false,
+  transaction: false,
+
+  async post(event) {
+    await clearSession(event, AppSessionConfig)
+    return {}
+  }
 })

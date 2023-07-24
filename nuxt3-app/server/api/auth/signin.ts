@@ -1,10 +1,9 @@
 import { H3Event } from "h3"
 import { z } from "zod"
-import { defineAppHandler } from "~/server/utils/controller"
+import { defineController, useSqlConnection } from "~/server/utils/controller"
 import { AppSessionConfig } from "~/server/utils/session"
 import { UserPasswordSchema, EmailSchema } from "~/utils/schemas"
-import { useSqlConnection } from "~/server/utils/database"
-import { encodePassword } from "~/server/utils/password"
+import { encodePassword } from "server/utils/security"
 
 const runtimeConfig = useRuntimeConfig()
 
@@ -13,19 +12,24 @@ const SigninSchema = z.object({
   password: UserPasswordSchema,
 })
 
-export default defineAppHandler(async (event) => {
-  const params = SigninSchema.parse(await readBody(event))
+export default defineController({
+  session: false,
+  transaction: false,
 
-  const userId = await getValidUserId(event, params.email, params.password)
-  if (!userId) {
-    throw createError({ statusCode: 401 })
-  }
+  async post(event) {
+    const params = SigninSchema.parse(await readBody(event))
 
-  await updateSession(event, AppSessionConfig, {
-    userId: userId
-  })
-  return {
-    redirect: "/v1/CM0001/menu"
+    const userId = await getValidUserId(event, params.email, params.password)
+    if (!userId) {
+      throw createError({ statusCode: 401 })
+    }
+
+    await updateSession(event, AppSessionConfig, {
+      userId: userId
+    })
+    return {
+      redirect: "/v1/CM0001/menu"
+    }
   }
 })
 
