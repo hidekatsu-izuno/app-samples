@@ -33,6 +33,10 @@ export default defineNuxtConfig({
     "~": fileURLToPath(new URL("./", import.meta.url))
   },
 
+  components: [
+    { path: '~/components', pathPrefix: false },
+  ],
+
   tailwindcss: {
     config: {
       content: [],

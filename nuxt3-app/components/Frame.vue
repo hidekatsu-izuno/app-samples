@@ -25,29 +25,29 @@ function onDrawerClick(e: MouseEvent) {
 <template>
   <div class="Frame flex flex-row-reverse w-full min-h-screen bg-white">
     <div class="flex flex-col flex-grow">
-      <div class="flex flex-row items-center gap-x-0.5 sticky top-0 left-0 right-0 bg-white">
-        <div @click="openDrawer"
-          class="icon-[mdi--menu] text-4xl xl:hidden"
-        ></div>
-        <h1>{{ title }}</h1>
-      </div>
-      <div class="flex-grow"><slot /></div>
-      <div v-if="$slots.footer"
-        class="sticky bottom-0 left-0 right-0 bg-white"
-      ><slot name="footer" /></div>
+      <header class="sticky top-0 left-0 right-0">
+        <div class="flex flex-row items-center px-4 h-14 bg-white border-b border-gray-300">
+          <Icon @click="openDrawer" name="menu" class="text-4xl xl:hidden cursor-pointer mr-2" />
+          <h1 class="flex-grow text-lg font-bold">{{ title }}</h1>
+          <div v-if="$slots.headerRight" class="flex-shrink justify-self-end ml-2"><slot name="headerRight" /></div>
+        </div>
+        <div v-if="$slots.headerBottom" class="px-4 py-1 bg-white border-b border-gray-300"><slot name="headerBottom" /></div>
+      </header>
+      <main v-if="$slots.main" class="flex-grow p-4 bg-slate-50"><slot name="main" /></main>
+      <footer v-if="$slots.footer"
+        class="sticky bottom-0 left-0 right-0 px-4 py-2 bg-slate-400"
+      ><slot name="footer" /></footer>
     </div>
     <div v-if="$slots.drawer" @click="closeDrawer"
       class="fixed top-0 bottom-0 left-0 right-0 xl:block xl:static bg-black/[.5]"
       :class="{ hidden: !data.showDrawer }"
     >
       <div @click="onDrawerClick"
-        class="sticky top-0 w-fit h-screen overflow-y-auto bg-white"
+        class="sticky top-0 w-fit h-screen overflow-y-auto bg-slate-900 text-white"
       >
-        <div class="flex items-center gap-x-0.5">
-          <div @click="closeDrawer"
-            class="icon-[mdi--menu-open] text-4xl xl:hidden"
-          ></div>
-          <div class="flex-grow">Nuxt3 App</div>
+        <div class="flex items-center px-4 w-64 h-14">
+          <Icon @click="closeDrawer" name="menu-open" class="text-4xl xl:hidden cursor-pointer mr-2" />
+          <div class="flex-grow text-lg font-bold">Nuxt3 App</div>
         </div>
         <slot name="drawer" />
       </div>

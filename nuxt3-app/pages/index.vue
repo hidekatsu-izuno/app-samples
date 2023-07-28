@@ -42,7 +42,7 @@ const onLoginButtonClick = async () => {
 <template>
   <div class="min-h-screen flex bg-gray-50 items-center justify-center">
     <div class="w-full max-w-md flex flex-col items-center">
-      <h1 class="font-bold text-4xl m-4">Nuxt3 example</h1>
+      <h1 class="font-bold text-4xl m-4">Nuxt3 Sample App</h1>
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
@@ -52,7 +52,7 @@ const onLoginButtonClick = async () => {
             <TextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
           </div>
           <div>
-            <Hyperlink halign="end" class="text-sm" @click="goChangePasswordPage">パスワードを忘れた方はこちら</Hyperlink>
+            <LinkButton halign="end" class="text-sm" @click="goChangePasswordPage">パスワードを忘れた方はこちら</LinkButton>
           </div>
           <div>
             <Button halign="center" @click="onLoginButtonClick">ログイン</Button>

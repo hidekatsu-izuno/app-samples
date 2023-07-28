@@ -1,4 +1,4 @@
-import * as postgres from 'postgres'
+import { default as postgres } from "postgres"
 
 const runtimeConfig = useRuntimeConfig()
 export const sql = postgres({
@@ -7,5 +7,6 @@ export const sql = postgres({
   username: runtimeConfig.database.user,
   password: runtimeConfig.database.password,
   database: runtimeConfig.database.database,
+  debug: process.env.NODE_ENV === "development",
 })
 

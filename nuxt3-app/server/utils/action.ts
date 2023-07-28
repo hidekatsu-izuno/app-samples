@@ -9,19 +9,21 @@ const SqlKey = Symbol.for("SqlKey")
 export declare type ControllerOptions = {
   session?: boolean,
   transaction?: boolean,
-  get?: EventHandler,
-  post?: EventHandler,
 }
 
-export function defineController(params: ControllerOptions) {
+export function defineAction(handler: EventHandler): EventHandler;
+export function defineAction(options: ControllerOptions, handler: EventHandler): EventHandler;
+export function defineAction(arg1: ControllerOptions | EventHandler, arg2?: EventHandler): EventHandler {
+  const handler = arg2 ? arg2 : arg1 as EventHandler
+  const options = arg2 ? arg1 as ControllerOptions : {}
+
   return defineEventHandler(async (event) => {
     const method = getMethod(event)
-    let handler = (params as any)[method.toLowerCase()] as EventHandler | undefined
-    if (!handler) {
+    if (method !== "GET" && method !== "POST") {
       throw createError({ statusCode: 400 })
     }
 
-    if (params.session !== false) {
+    if (options.session !== false) {
       const path = getRequestPath(event)
       if (!/^\/api\/auth\/.*/.test(path)) {
         const session = await useSession<AppSession>(event, AppSessionConfig)
@@ -34,21 +36,17 @@ export function defineController(params: ControllerOptions) {
     }
 
     try {
-      try {
-        if (params.transaction !== false) {
-          return await sql.begin(async (sql) => {
-            (event as any)[SqlKey] = sql
-            try {
-              return handler ? await handler(event) : () => {}
-            } finally {
-              delete (event as any)[SqlKey]
-            }
-          })
-        } else {
-          return await handler(event)
-        }
-      } finally {
-        await sql.end()
+      if (options.transaction !== false) {
+        return await sql.begin(async (sql) => {
+          (event as any)[SqlKey] = sql
+          try {
+            return await handler(event)
+          } finally {
+            delete (event as any)[SqlKey]
+          }
+        })
+      } else {
+        return await handler(event)
       }
     } catch (err) {
       if (err instanceof ZodError) {
@@ -65,6 +63,22 @@ export declare type AppSession = {
 }
 
 export declare type SqlConnection = typeof sql
+
+export function loggedMethod<This, Args extends any[], Return>(
+  target: (this: This, ...args: Args) => Return,
+  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
+) {
+  const methodName = String(context.name);
+
+  function replacementMethod(this: This, ...args: Args): Return {
+      console.log(`LOG: Entering method '${methodName}'.`)
+      const result = target.call(this, ...args);
+      console.log(`LOG: Exiting method '${methodName}'.`)
+      return result;
+  }
+
+  return replacementMethod;
+}
 
 export function getAppSession(event: H3Event) {
   return (event as any)[AppSessionKey] ?? ({
