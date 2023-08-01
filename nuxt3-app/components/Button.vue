@@ -1,19 +1,21 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  label?: string
-  halign?: "start" | "center" | "end"
-  tabindex?: number
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  error?: string
+  label?: string,
+  halign?: "start" | "center" | "end",
+  type?: "filled" | "outline",
+  tabindex?: number,
+  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  error?: string,
 }>(), {
+  type: "filled"
 })
 
 const emits = defineEmits<{
   (event: "click", value: MouseEvent): void
 }>()
 
-const onClick = (event: MouseEvent) => {
+function onClick(event: MouseEvent) {
   emits("click", event)
 }
 </script>
@@ -25,15 +27,10 @@ const onClick = (event: MouseEvent) => {
     >{{ label }}</label>
     <button type="button" :tabindex="tabindex"
       @click="onClick"
-      class="font-medium text-white px-4 py-1.5 m-0 bg-blue-700 rounded-md outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="font-medium px-4 py-1.5 m-0 rounded-md outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :class="[
-        {
-          'block': !halign,
-          'w-full': !halign,
-          'self-start': halign === 'start',
-          'self-center': halign === 'center',
-          'self-end': halign === 'end',
-        },
+        type === 'outline' ? 'text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-700' : 'text-white bg-blue-700',
+        halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"

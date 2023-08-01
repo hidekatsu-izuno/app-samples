@@ -40,8 +40,18 @@ if (name) {
 }
 
 const emits = defineEmits<{
+  (event: "focus", value: Event): void
+  (event: "blur", value: Event): void
   (event: "update:modelValue", value: string): void
 }>()
+
+function onFocus(event: Event) {
+  emits("focus", event)
+}
+
+function onBlur(event: Event) {
+  emits("blur", event)
+}
 
 function onChange(event: Event) {
   const target = event.target as HTMLSelectElement
@@ -53,7 +63,7 @@ function onChange(event: Event) {
   emits("update:modelValue", target.value)
 }
 
-const validate = (value: string) => {
+function validate(value: string) {
   data.error = ""
 
   if (value) {
@@ -75,16 +85,12 @@ const validate = (value: string) => {
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <select :tabindex="tabindex"
       :value="data.value"
+      @focus="onFocus"
       @change="onChange"
+      @blur="onBlur"
       class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
-        {
-          'block': !halign,
-          'w-full': !halign,
-          'self-start': halign === 'start',
-          'self-center': halign === 'center',
-          'self-end': halign === 'end',
-        },
+        halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"

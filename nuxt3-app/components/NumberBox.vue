@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ValidatorKey } from "~/utils/validator"
 import { ZodNumber } from "zod"
+import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -47,17 +48,10 @@ if (name) {
 }
 
 const emits = defineEmits<{
+  (event: "focus", value: Event): void
   (event: "update:modelValue", value: string): void
+  (event: "blur", value: Event): void
 }>()
-
-function onInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  data.value = target.value
-  if (data.error) {
-    data.error = ""
-  }
-  emits("update:modelValue", data.value)
-}
 
 function onFocus(event: Event) {
   data.focused = true
@@ -69,6 +63,17 @@ function onFocus(event: Event) {
       data.value = formatNumber(num)
     }
   }
+
+  emits("focus", event)
+}
+
+function onInput(event: Event) {
+  const target = event.target as HTMLInputElement
+  data.value = target.value
+  if (data.error) {
+    data.error = ""
+  }
+  emits("update:modelValue", data.value)
 }
 
 function onBlur(event: Event) {
@@ -130,7 +135,7 @@ function getFormatMaxLength(format: string) {
       @blur="onBlur"
       class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
-        halign === 'start' ? 'self-start' : halign === 'center' ? 'self-center' : halign === 'end' ? 'self-end' : 'block w-full',
+        halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"

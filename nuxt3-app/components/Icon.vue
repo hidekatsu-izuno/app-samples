@@ -6,16 +6,10 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-  <template v-if="props.name === 'alert-circle-outline'">
-    <div class="icon-[mdi--alert-circle-outline]"></div>
-  </template>
-  <template v-else-if="props.name === 'menu'">
-    <div class="icon-[mdi--menu]"></div>
-  </template>
-  <template v-else-if="props.name === 'menu-open'">
-    <div class="icon-[mdi--menu-open]"></div>
-  </template>
-  <template v-else>
-    <div class="icon-[mdi--help]"></div>
-  </template>
+  <div v-if="props.name === 'alert-circle-outline'" class="icon-[mdi--alert-circle-outline]"></div>
+  <div v-else-if="props.name === 'close-circle'" class="icon-[mdi--close-circle]"></div>
+  <div v-else-if="props.name === 'menu'" class="icon-[mdi--menu]"></div>
+  <div v-else-if="props.name === 'menu-open'" class="icon-[mdi--menu-open]"></div>
+  <div v-else-if="props.name === 'calendar'" class="icon-[mdi--calendar]"></div>
+  <div v-else class="icon-[mdi--help]"></div>
 </template>

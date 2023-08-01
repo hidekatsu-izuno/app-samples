@@ -26,7 +26,15 @@ const emits = defineEmits<{
   (event: "update:modelValue", value: boolean): void
 }>()
 
-const onChange = (event: Event) => {
+function onClick(event: Event) {
+  const target = event.target as HTMLInputElement
+  if (target.tagName === 'label') {
+    event.preventDefault()
+    data.value = !data.value
+  }
+}
+
+function onChange(event: Event) {
   const target = event.target as HTMLInputElement
   let changed = false
   if (target.checked) {
@@ -53,7 +61,7 @@ function onBlur() {
   validate(data.value)
 }
 
-const validate = (value: boolean) => {
+function validate(value: boolean) {
   data.error = ""
 
   if (value) {
@@ -76,22 +84,20 @@ const validate = (value: boolean) => {
     <label v-if="label"
       class="block"
     >{{ label }}</label>
-    <label class="flex items-center gap-1 py-1"
-      :class="{
-        'block': !halign,
-        'w-full': !halign,
-        'self-start': halign === 'start',
-        'self-center': halign === 'center',
-        'self-end': halign === 'end',
-      }"
-    ><input type="checkbox" @change="onChange" @blur="onBlur"
-      class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
-      :class="props.inputClass"
-      :style="props.inputStyle"
-      :value="value"
-      :checked="data.value"
-      :tabindex="tabindex"
-    /><slot /></label>
+    <div :class="[
+        halign ? `flex self-${halign}` : 'w-full',
+      ]">
+      <label class="inline-flex items-center gap-1 py-1"
+        @click="onClick"
+      ><input type="checkbox" @change="onChange" @blur="onBlur"
+        class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+        :class="props.inputClass"
+        :style="props.inputStyle"
+        :value="value"
+        :checked="data.value"
+        :tabindex="tabindex"
+      /><slot /></label>
+    </div>
     <div v-if="data.error"
       class="block text-sm text-red-500"
     >{{ data.error }}</div>
@@ -99,7 +105,7 @@ const validate = (value: boolean) => {
 </template>
 
 <style>
-.CheckBox > div > label > input[type="checkbox"]:checked {
+.Check > div > label > input[type="checkbox"]:checked {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
 }
 </style>

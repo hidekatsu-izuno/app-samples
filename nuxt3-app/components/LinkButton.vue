@@ -17,7 +17,7 @@ const emits = defineEmits<{
   (event: "click", value: MouseEvent): void
 }>()
 
-const onClick = (event: MouseEvent) => {
+function onClick(event: MouseEvent) {
   emits("click", event)
 }
 </script>
@@ -27,20 +27,15 @@ const onClick = (event: MouseEvent) => {
     <label v-if="label"
       class="block"
     >{{ label }}</label>
-    <a :href="href || 'javascript:void(0)'" @click="onClick" :tabindex="tabindex"
-      class="text-blue-600 rounded-md outline-none hover:underline focus:ring-2 focus:ring-blue-200"
-      :class="[
-        {
-          'block': !halign,
-          'w-full': !halign,
-          'self-start': halign === 'start',
-          'self-center': halign === 'center',
-          'self-end': halign === 'end',
-        },
-        ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-      ]"
-      :style="props.inputStyle"
-    ><slot /></a>
+    <div :class="[
+      halign ? `self-${halign}` : 'w-full',
+    ]">
+      <a :href="href" @click="onClick" :tabindex="tabindex"
+        class="text-blue-600 rounded-md outline-none hover:underline focus:ring-2 focus:ring-blue-200 cursor-pointer"
+        :class="props.inputClass"
+        :style="props.inputStyle"
+      ><slot /></a>
+    </div>
     <div v-if="data.error"
       class="block text-sm text-red-500"
     >{{ data.error }}</div>

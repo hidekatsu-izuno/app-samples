@@ -3,6 +3,7 @@ import { createPopper } from '@popperjs/core'
 import { ValidatorKey } from "~/utils/validator"
 import { ZodDate } from "zod"
 import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameDay, sub, add, format } from "date-fns"
+import { JapaneseErrorMap } from '~/utils/zod/JapaneseErrorMap'
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end"
@@ -170,24 +171,22 @@ function getFormatMaxLength(format: string) {
     <label v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <div class="relative">
-      <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
-        <div class="icon-[mdi--calendar] text-2xl"></div>
-      </div>
+    <div class="relative" :class="[
+        halign ? `self-${halign}` : 'block w-full',
+    ]">
       <input ref="inputRef" type="text" inputmode="numeric" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
         :value="data.value"
         @input="onInput"
         @focus="onFocus"
         @blur="onBlur"
         class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
-        :class="{
-          'block': !halign,
-          'w-full': !halign,
-          'self-start': halign === 'start',
-          'self-center': halign === 'center',
-          'self-end': halign === 'end',
-        }"
+        :class="[
+          halign ? `self-${halign}` : 'block w-full',
+        ]"
       />
+      <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
+        <Icon name="calendar" class="text-2xl" />
+      </div>
     </div>
     <div ref="pickerRef" @mousedown="onPickerMouseDown"
       class="hidden grid grid-cols-7 justify-contents-center align-contents-center text-sm p-2 bg-white rounded-md shadow-lg"
