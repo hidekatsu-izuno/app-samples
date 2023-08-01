@@ -11,5 +11,7 @@ const props = withDefaults(defineProps<{
   <div v-else-if="props.name === 'menu'" class="icon-[mdi--menu]"></div>
   <div v-else-if="props.name === 'menu-open'" class="icon-[mdi--menu-open]"></div>
   <div v-else-if="props.name === 'calendar'" class="icon-[mdi--calendar]"></div>
+  <div v-else-if="props.name === 'chevron-left'" class="icon-[mdi--chevron-left]"></div>
+  <div v-else-if="props.name === 'chevron-right'" class="icon-[mdi--chevron-right]"></div>
   <div v-else class="icon-[mdi--help]"></div>
 </template>

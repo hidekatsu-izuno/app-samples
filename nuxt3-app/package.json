@@ -23,7 +23,6 @@
     "body-scroll-lock": "^3.1.5",
     "date-fns": "^2.30.0",
     "decimal.js": "^10.4.3",
-    "focus-trap": "^7.4.3",
     "jtc-utils": "^0.3.4",
     "postgres": "^3.3.5",
     "vue-history-state": "^0.13.1",

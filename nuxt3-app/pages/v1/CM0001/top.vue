@@ -16,8 +16,9 @@ const data = reactive({
 <template v-slot:headerBottom>Bottom</template>
 
 <Card class="mb-4">
-<h2>テキストボックス (TextBox)</h2>
-
+<template v-slot:header>
+  <h2>テキストボックス (TextBox)</h2>
+</template>
 <div class="grid grid-cols-2 gap-2">
   <TextBox label="デフォルト（必須）" required />
   <TextBox label="デフォルト" />
@@ -135,6 +136,15 @@ const data = reactive({
 </Card>
 
 <Card class="mb-4">
+<h2>ページング (Paginator)</h2>
+
+<div class="grid grid-cols-2 gap-2">
+  <Paginator />
+  <Paginator :maxSize="1000" />
+</div>
+</Card>
+
+<Card class="mb-4">
 <h2>メッセージボックス</h2>
 <div class="grid grid-cols-4 gap-2">
   <Button @click="data.showMessageBox1 = true">OK</Button>
@@ -148,7 +158,7 @@ const data = reactive({
 <template v-slot:drawer><Menu /></template>
 </Frame>
 <MessageBox type="ok" v-model="data.showMessageBox1">あ</MessageBox>
-<MessageBox type="ok_cancel" v-model="data.showMessageBox2">い</MessageBox>
-<MessageBox type="yes_no" v-model="data.showMessageBox3">う</MessageBox>
-<MessageBox type="yes_no_cancel" v-model="data.showMessageBox4">え</MessageBox>
+<MessageBox type="ok-cancel" v-model="data.showMessageBox2">い</MessageBox>
+<MessageBox type="yes-no" v-model="data.showMessageBox3">う</MessageBox>
+<MessageBox type="yes-no-cancel" v-model="data.showMessageBox4">え</MessageBox>
 </template>
