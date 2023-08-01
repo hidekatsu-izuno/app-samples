@@ -142,7 +142,9 @@ const data = reactive({
 
 <div class="grid grid-cols-2 gap-2">
   <Paginator v-model="data.page1" />
-  <Paginator v-model="data.page2" :maxSize="1000" />
+  <Paginator v-model="data.page2" :maxSize="1000"
+    @focus="console.log('focus')"
+    @blur="console.log('blur')" />
 </div>
 </Card>
 

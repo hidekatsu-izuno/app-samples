@@ -13,6 +13,10 @@ const props = withDefaults(defineProps<{
   maxSize: 0,
 })
 
+const data = reactive({
+  focused: false
+})
+
 const maxPage = computed(() => Math.max(Math.ceil(props.maxSize / props.pageSize), 1))
 
 const emits = defineEmits<{
@@ -21,8 +25,11 @@ const emits = defineEmits<{
   (event: "blur", value: Event): void
 }>()
 
-function onFocus(event: Event) {
-  emits("focus", event)
+function onFocusin(event: Event) {
+  if (!data.focused) {
+    data.focused = true
+    emits("focus", event)
+  }
 }
 
 function onClick(event: MouseEvent) {
@@ -33,14 +40,23 @@ function onClick(event: MouseEvent) {
   }
 }
 
-function onBlur(event: Event) {
-  emits("blur", event)
+function onFocusout(event: Event) {
+  const currentTarget = event.currentTarget as HTMLElement
+  requestAnimationFrame(() => {
+    if (!currentTarget.contains(document.activeElement)) {
+      emits("blur", event)
+      data.focused = false
+    }
+  })
 }
 
 </script>
 
 <template>
-  <div class="Paginator flex flex-row">
+  <div class="Paginator flex flex-row"
+    @focusin="onFocusin"
+    @focusout="onFocusout"
+  >
     <button type="button"
       class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="modelValue === 1"
