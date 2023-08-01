@@ -13,15 +13,7 @@ const props = withDefaults(defineProps<{
   maxSize: 0,
 })
 
-const maxPage = Math.max(Math.ceil(props.maxSize / props.pageSize), 1)
-
-const data = reactive({
-  value: Math.max(props.modelValue, 1)
-})
-
-watch(() => props.modelValue, () => {
-  data.value = props.modelValue
-})
+const maxPage = computed(() => Math.max(Math.ceil(props.maxSize / props.pageSize), 1))
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void
@@ -34,7 +26,7 @@ function onFocus(event: Event) {
 }
 
 function onClick(event: MouseEvent) {
-  const target = event.target as HTMLButtonElement
+  const target = event.currentTarget as HTMLButtonElement
   const value = target.dataset.value
   if (value && /^[0-9]+$/.test(value)) {
     emits("update:modelValue", Number.parseInt(value))
@@ -50,20 +42,20 @@ function onBlur(event: Event) {
 <template>
   <div class="Paginator flex flex-row">
     <button type="button"
-      class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none hover:text-white hover:border-0 hover:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="modelValue === 1"
       :data-value="Math.max(modelValue - 1, 1)"
       @click="onClick"
     ><Icon name="chevron-left" class="text-2xl" /></button>
     <button type="button" v-for="page in maxPage"
       class="-ml-[1px] flex items-center justify-center w-8 h-8 outline-none focus:ring-2 focus:ring-blue-200"
-      :class="[modelValue === page ? 'text-white border-blue-700 bg-blue-700 hover:bg-blue-800' : 'border border-gray-300 bg-white hover:text-white hover:border-blue-800 hover:bg-blue-800']"
+      :class="[modelValue === page ? 'text-white border-blue-700 bg-blue-700 hover:enabled:bg-blue-800' : 'border border-gray-300 bg-white hover:enabled:text-white hover:enabled:border-blue-800 hover:enabled:bg-blue-800']"
       :disabled="modelValue === page"
       :data-value="page"
       @click="onClick"
     >{{ page }}</button>
     <button type="button"
-      class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none hover:text-white hover:border-0 hover:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="modelValue === maxPage"
       :data-value="Math.max(modelValue + 1, 1)"
       @click="onClick"

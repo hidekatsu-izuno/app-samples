@@ -2,6 +2,8 @@
 import Menu from "~/components/v1/CM0001/Menu.vue"
 
 const data = reactive({
+  page1: 1,
+  page2: 1,
   showMessageBox1: false,
   showMessageBox2: false,
   showMessageBox3: false,
@@ -128,7 +130,7 @@ const data = reactive({
 </Card>
 
 <Card class="mb-4">
-<h2>リンク (Button)</h2>
+<h2>リンク (LinkButton)</h2>
 
 <div class="grid grid-cols-2 gap-2">
   <LinkButton label="デフォルト">リンク</LinkButton>
@@ -139,8 +141,8 @@ const data = reactive({
 <h2>ページング (Paginator)</h2>
 
 <div class="grid grid-cols-2 gap-2">
-  <Paginator />
-  <Paginator :maxSize="1000" />
+  <Paginator v-model="data.page1" />
+  <Paginator v-model="data.page2" :maxSize="1000" />
 </div>
 </Card>
 
