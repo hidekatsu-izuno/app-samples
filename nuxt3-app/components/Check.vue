@@ -23,30 +23,17 @@ watch(() => props.modelValue, () => {
 })
 
 const emits = defineEmits<{
+  (event: "focus", value: Event): void
   (event: "update:modelValue", value: boolean): void
+  (event: "blur", value: Event): void
 }>()
-
-function onClick(event: Event) {
-  const target = event.target as HTMLInputElement
-  if (target.tagName === 'label') {
-    event.preventDefault()
-    data.value = !data.value
-  }
-}
 
 function onChange(event: Event) {
   const target = event.target as HTMLInputElement
   let changed = false
-  if (target.checked) {
-    if (!data.value) {
-      data.value = true
-      changed = true
-    }
-  } else {
-    if (data.value) {
-      data.value = false
-      changed = true
-    }
+  if (data.value !== target.checked) {
+    data.value = !target.checked
+    changed = true
   }
   validate(data.value)
   if (data.error) {
@@ -57,8 +44,13 @@ function onChange(event: Event) {
   }
 }
 
-function onBlur() {
-  validate(data.value)
+function onFocusout(event: Event) {
+  const currentTarget = event.currentTarget as HTMLElement
+  requestAnimationFrame(() => {
+    if (!currentTarget.contains(document.activeElement)) {
+      emits("blur", event)
+    }
+  })
 }
 
 function validate(value: boolean) {
@@ -88,8 +80,8 @@ function validate(value: boolean) {
         halign ? `flex self-${halign}` : 'w-full',
       ]">
       <label class="inline-flex items-center gap-1 py-1"
-        @click="onClick"
-      ><input type="checkbox" @change="onChange" @blur="onBlur"
+        @focusout="onFocusout"
+      ><input type="checkbox" @change="onChange"
         class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
         :class="props.inputClass"
         :style="props.inputStyle"

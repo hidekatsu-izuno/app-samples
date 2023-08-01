@@ -12,11 +12,21 @@ const props = withDefaults(defineProps<{
 })
 
 const emits = defineEmits<{
+  (event: "focus", value: Event): void
   (event: "click", value: MouseEvent): void
+  (event: "blur", value: Event): void
 }>()
+
+function onFocus(event: Event) {
+  emits("focus", event)
+}
 
 function onClick(event: MouseEvent) {
   emits("click", event)
+}
+
+function onBlur(event: Event) {
+  emits("blur", event)
 }
 </script>
 
@@ -26,7 +36,9 @@ function onClick(event: MouseEvent) {
       class="block"
     >{{ label }}</label>
     <button type="button" :tabindex="tabindex"
+      @focus="onFocus"
       @click="onClick"
+      @blur="onBlur"
       class="font-medium px-4 py-1.5 m-0 rounded-md outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :class="[
         type === 'outline' ? 'text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-700' : 'text-white bg-blue-700',
