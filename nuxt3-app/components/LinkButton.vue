@@ -43,7 +43,7 @@ function onBlur(event: MouseEvent) {
         halign ? `self-${halign}` : 'w-full',
       ]"
     >
-      <a
+      <NuxtLink
         :href="href"
         :tabindex="tabindex"
         class="text-blue-600 rounded-md outline-none hover:underline focus:ring-2 focus:ring-blue-200 cursor-pointer"
@@ -52,7 +52,7 @@ function onBlur(event: MouseEvent) {
         @focus="onFocus"
         @click="onClick"
         @blur="onBlur"
-      ><slot /></a>
+      ><slot /></NuxtLink>
     </div>
     <div
       v-if="data.error"

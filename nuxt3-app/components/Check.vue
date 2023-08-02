@@ -35,7 +35,7 @@ function onFocus(event: Event) {
 function onChange(event: Event) {
   const target = event.target as HTMLInputElement
   if (data.value !== target.checked) {
-    data.value = !target.checked
+    data.value = target.checked
     validate(data.value)
     emits("update:modelValue", data.value)
   }

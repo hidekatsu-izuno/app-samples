@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { uuid } from "~/utils/functions"
+const { data: id } = await useAsyncData("compId", async () => uuid())
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -18,8 +19,6 @@ const props = withDefaults(defineProps<{
   required: false,
   modelValue: () => []
 })
-
-const id = uuid()
 
 const data = reactive({
   value: new Array<string>(),
@@ -58,18 +57,16 @@ function onFocusin(event: Event) {
 }
 
 function onChange(event: Event) {
-  const target = event.target as HTMLInputElement
-  let changed = false
-  if (target.checked) {
-    if (!data.value.includes(target.value)) {
-      const newValue = [...data.value, target.value]
-      newValue.sort()
-      data.value = newValue
-      changed = true
-    }
+  const currentTarget = event.currentTarget as HTMLElement
+  const targets = currentTarget.querySelectorAll(`[name="${id.value}"]:checked`) as NodeListOf<HTMLInputElement>
+  const values = new Set<string>()
+  for (let i = 0; i < targets.length; i++) {
+    values.add(targets[i].value)
   }
-  validate(data.value)
-  if (changed) {
+
+  if (data.value.length !== values.size || !data.value.every(item => values.has(item))) {
+    data.value = [...values].sort()
+    validate(data.value)
     emits("update:modelValue", data.value)
   }
 }
@@ -111,6 +108,7 @@ function validate(value: string[]) {
       :class="[
         `grid-columns-${columns}`
       ]"
+      @change="onChange"
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
@@ -121,12 +119,11 @@ function validate(value: string[]) {
           :style="props.inputStyle"
         ><input
           type="checkbox"
-          :name="id"
+          :name="id || undefined"
           :tabindex="tabindex"
           :value="item.value"
           :checked="data.value.includes(item.value)"
           class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
-          @change="onChange"
         ><span>{{ item.text }}</span></label>
       </div>
     </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { uuid } from "~/utils/functions"
+const { data: id } = await useAsyncData("compId", async () => uuid())
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -20,8 +21,6 @@ const props = withDefaults(defineProps<{
   required: false,
   modelValue: ""
 })
-
-const id = uuid()
 
 const data = reactive({
   value: "",
@@ -60,7 +59,8 @@ function onFocusin(event: Event) {
 }
 
 function onChange(event: Event) {
-  const target = document.querySelector(`[name=${id}]:checked`) as HTMLInputElement | null
+  const currentTarget = event.currentTarget as HTMLElement
+  const target = currentTarget.querySelector(`[name=${id}]:checked`) as HTMLInputElement | null
   const newValue = target ? target.value : ""
   if (data.value !== newValue) {
     data.value = newValue
@@ -106,6 +106,7 @@ function validate(value: string) {
       :class="[
         `grid-columns-${columns}`
       ]"
+      @change="onChange"
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
@@ -117,11 +118,10 @@ function validate(value: string) {
         ><input
           type="radio"
           :tabindex="tabindex"
-          :name="id"
+          :name="id || undefined"
           value=""
           :checked="!data.value"
           class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
-          @change="onChange"
         >{{ placeholder }}</label>
       </div>
       <div v-for="(item, index) in items" :key="index">
@@ -131,7 +131,7 @@ function validate(value: string) {
           :style="props.inputStyle"
         ><input
           type="radio"
-          :name="id"
+          :name="id || undefined"
           :tabindex="tabindex"
           :value="item.value"
           :checked="item.value === data.value"
