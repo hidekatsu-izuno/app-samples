@@ -20,12 +20,12 @@ const props = withDefaults(defineProps<{
 const data = reactive({
   value: [] as File[],
   error: "",
-  active: false
+  active: false,
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-}, { immediate: true })
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -50,6 +50,10 @@ function onClick(event: Event) {
   data.active = true
 }
 
+function onFocus(event: Event) {
+  emits("focus", event)
+}
+
 function onChange(event: Event) {
   if (data.active) {
     data.active = false
@@ -67,12 +71,8 @@ function onBlur(event: Event) {
     data.active = false
     return
   }
-  const target = event.target as HTMLInputElement
-  const validated = validate(target.files ? Array.from(target.files) : undefined)
-  if (validated) {
-    data.value = validated
-    emits("update:modelValue", data.value)
-  }
+  validate(data.value)
+  emits("blur", event)
 }
 
 function validate(value?: File[]) {
@@ -102,7 +102,6 @@ function validate(value?: File[]) {
       :placeholder="placeholder"
       :tabindex="tabindex"
       :accept="accept"
-      :value="data.value"
       class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
@@ -110,9 +109,10 @@ function validate(value?: File[]) {
       ]"
       :style="props.inputStyle"
       @click="onClick"
+      @focus="onFocus"
       @change="onChange"
       @blur="onBlur"
-    >
+    />
     <div
       v-if="data.error"
       class="block text-sm text-red-500"

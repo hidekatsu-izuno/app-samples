@@ -19,12 +19,12 @@ const props = withDefaults(defineProps<{
 const data = reactive({
   value: undefined as File | undefined,
   error: "",
-  clicked: false
+  active: false,
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-}, { immediate: true })
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -46,7 +46,7 @@ const emits = defineEmits<{
 }>()
 
 function onClick(event: Event) {
-  data.clicked = true
+  data.active = true
 }
 
 function onFocus(event: Event) {
@@ -54,30 +54,23 @@ function onFocus(event: Event) {
 }
 
 function onChange(event: Event) {
-  if (data.clicked) {
-    data.clicked = false
+  if (data.active) {
+    data.active = false
   }
   const target = event.target as HTMLInputElement
   data.value = target.files?.[0]
   if (data.error) {
     data.error = ""
   }
-  emits("update:modelValue", target.files?.[0])
+  emits("update:modelValue", data.value)
 }
 
 function onBlur(event: Event) {
-  if (data.clicked) {
-    data.clicked = false
+  if (data.active) {
+    data.active = false
     return
   }
-
-  const target = event.target as HTMLInputElement
-  const validated = validate(target.files?.[0])
-  if (validated) {
-    data.value = validated
-    emits("update:modelValue", data.value)
-  }
-
+  validate(data.value)
   emits("blur", event)
 }
 
@@ -107,7 +100,6 @@ function validate(value?: File) {
       :placeholder="placeholder"
       :tabindex="tabindex"
       :accept="accept"
-      :value="data.value"
       class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
