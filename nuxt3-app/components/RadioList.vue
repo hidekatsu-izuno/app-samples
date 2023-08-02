@@ -60,7 +60,7 @@ function onFocusin(event: Event) {
 
 function onChange(event: Event) {
   const currentTarget = event.currentTarget as HTMLElement
-  const target = currentTarget.querySelector(`[name=${id}]:checked`) as HTMLInputElement | null
+  const target = currentTarget.querySelector(`[name="${id.value}"]:checked`) as HTMLInputElement | null
   const newValue = target ? target.value : ""
   if (data.value !== newValue) {
     data.value = newValue
@@ -136,9 +136,6 @@ function validate(value: string) {
           :value="item.value"
           :checked="item.value === data.value"
           class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
-          @focus="onFocus"
-          @change="onChange"
-          @blur="onBlur"
         >{{ item.text }}</label>
       </div>
     </div>

@@ -55,8 +55,6 @@ function onBlur(event: Event) {
     <div
       v-if="error"
       class="block text-sm text-red-500"
-    >
-      {{ error }}
-    </div>
+    >{{ error }}</div>
   </div>
 </template>

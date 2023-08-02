@@ -118,12 +118,10 @@ function validate(value?: File) {
       @focus="onFocus"
       @change="onChange"
       @blur="onBlur"
-    >
+    />
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >
-      {{ data.error }}
-    </div>
+    >{{ data.error }}</div>
   </div>
 </template>

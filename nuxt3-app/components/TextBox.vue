@@ -142,8 +142,6 @@ function validate(value: string) {
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >
-      {{ data.error }}
-    </div>
+    >{{ data.error }}</div>
   </div>
 </template>

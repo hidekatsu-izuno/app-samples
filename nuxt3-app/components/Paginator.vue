@@ -72,7 +72,6 @@ function onFocusout(event: Event) {
     }
   })
 }
-
 </script>
 
 <template>

@@ -95,18 +95,12 @@ function validate(value: string) {
       @change="onChange"
       @blur="onBlur"
     >
-      <option :disabled="required" value="">
-        {{ placeholder }}
-      </option>
-      <option v-for="(item, index) in items" :key="index" :value="item.value">
-        {{ item.text }}
-      </option>
+      <option :disabled="required" value="">{{ placeholder }}</option>
+      <option v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text }}</option>
     </select>
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >
-      {{ data.error }}
-    </div>
+    >{{ data.error }}</div>
   </div>
 </template>
