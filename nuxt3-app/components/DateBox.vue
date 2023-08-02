@@ -1,48 +1,48 @@
 <script setup lang="ts">
-import { createPopper } from '@popperjs/core'
-import { ValidatorKey } from "~/utils/validator"
+import { createPopper } from "@popperjs/core"
 import { ZodDate } from "zod"
-import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameDay, sub, add, format } from "date-fns"
-import { JapaneseErrorMap } from '~/utils/zod/JapaneseErrorMap'
+import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameDay, sub, add } from "date-fns"
+import { ValidatorKey } from "~/utils/validator"
+import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end"
-  label?: string
-  name?: string
-  placeholder?: string
-  tabindex?: number
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  required?: boolean
-  format?: string
-  schema?: ZodDate
-  modelValue?: string
+  halign?: "start" | "center" | "end",
+  label?: string,
+  name?: string,
+  placeholder?: string,
+  tabindex?: number,
+  inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  required?: boolean,
+  format?: string,
+  schema?: ZodDate,
+  modelValue?: string,
 }>(), {
   required: false,
-  format: 'uuuu/MM/dd',
-  modelValue: "",
+  format: "uuuu/MM/dd",
+  modelValue: ""
 })
 
+const maxLength = computed(() => getFormatMaxLength(props.format))
+
 const data = reactive({
-  maxLength: getFormatMaxLength(props.format),
   focused: false,
-  value: props.modelValue || "",
-  error: "",
+  value: "",
+  error: ""
 })
 
 watch(() => props.modelValue, () => {
   data.value = data.focused ? props.modelValue : formatDate(props.modelValue, props.format)
-})
+}, { immediate: true })
 
-const name = props.name
-if (name) {
+if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", name, () => {
+    validator.on("validate", props.name, () => {
       return validate(data.value, props.format)
     })
 
-    validator.on("clear", name, () => {
+    validator.on("clear", props.name, () => {
       data.error = ""
     })
   }
@@ -54,7 +54,7 @@ const pickerRef = ref()
 const start = startOfDay(new Date())
 const pickerData = reactive({
   start,
-  current: start,
+  current: start
 })
 
 let popper: ReturnType<typeof createPopper>
@@ -70,17 +70,10 @@ onMounted(() => {
 })
 
 const emits = defineEmits<{
+  (event: "focus", value: Event): void
   (event: "update:modelValue", value: string): void
+  (event: "blur", value: Event): void
 }>()
-
-function onInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  data.value = target.value
-  if (data.error) {
-    data.error = ""
-  }
-  emits("update:modelValue", data.value)
-}
 
 function onFocus(event: Event) {
   data.focused = true
@@ -92,6 +85,17 @@ function onFocus(event: Event) {
       data.value = formatDate(date, "uuuuMMdd")
     }
   }
+
+  emits("focus", event)
+}
+
+function onInput(event: Event) {
+  const target = event.target as HTMLInputElement
+  data.value = target.value
+  if (data.error) {
+    data.error = ""
+  }
+  emits("update:modelValue", data.value)
 }
 
 function onBlur(event: Event) {
@@ -105,6 +109,8 @@ function onBlur(event: Event) {
     data.value = formatDate(validated, props.format)
     emits("update:modelValue", data.value)
   }
+
+  emits("blur", event)
 }
 
 function onPickerIconMouseDown(event: Event) {
@@ -131,7 +137,7 @@ function onPickerNextButtonClick() {
 }
 
 function onPickerDateClick(date: Date) {
-  data.value = format(date, "uuuuMMdd")
+  data.value = formatDate(date, "uuuuMMdd")
   nextTick(() => inputRef.value?.blur())
 }
 
@@ -168,56 +174,86 @@ function getFormatMaxLength(format: string) {
 
 <template>
   <div class="DateBox">
-    <label v-if="label"
+    <label
+      v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <div class="relative" :class="[
+    <div
+      class="relative"
+      :class="[
         halign ? `self-${halign}` : 'block w-full',
-    ]">
-      <input ref="inputRef" type="text" inputmode="numeric" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
+      ]"
+    >
+      <input
+        ref="inputRef"
+        type="text"
+        inputmode="numeric"
+        :placeholder="placeholder"
+        :tabindex="tabindex"
+        :maxlength="maxLength"
         :value="data.value"
-        @input="onInput"
-        @focus="onFocus"
-        @blur="onBlur"
         class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
         :class="[
           halign ? `self-${halign}` : 'block w-full',
         ]"
-      />
+        @input="onInput"
+        @focus="onFocus"
+        @blur="onBlur"
+      >
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
         <Icon name="calendar" class="text-2xl" />
       </div>
     </div>
-    <div ref="pickerRef" @mousedown="onPickerMouseDown"
-      class="hidden grid grid-cols-7 justify-contents-center align-contents-center text-sm p-2 bg-white rounded-md shadow-lg"
+    <div
+      ref="pickerRef"
+      class="hidden grid grid-cols-7 justify-contents-center align-contents-center text-sm p-2 bg-white rounded-md shadow-lg z-10"
+      @mousedown="onPickerMouseDown"
     >
-      <div @click="onPickerPrevButtonClick"
+      <div
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
-      ><div class="icon-[mdi--arrow-left] text-2xl"></div></div>
-      <div class="col-span-5 flex items-center justify-center h-8"
-      >{{ format(pickerData.current, "uuuu/MM") }}</div>
-      <div @click="onPickerNextButtonClick"
+        @click="onPickerPrevButtonClick"
+      >
+        <Icon name="arrow-left" class="text-2xl" />
+      </div>
+      <div class="col-span-5 flex items-center justify-center h-8">
+        {{ formatDate(pickerData.current, "uuuu/MM") }}
+      </div>
+      <div
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
-      ><div class="icon-[mdi--arrow-right] text-2xl"></div></div>
-      <div v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
+        @click="onPickerNextButtonClick"
+      >
+        <Icon name="arrow-right" class="text-2xl" />
+      </div>
+      <div
+        v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
+        :key="week"
         class="flex font-medium text-gray-500 items-center justify-center w-8 h-6"
-      >{{ week }}</div>
-      <div v-for="date in eachDayOfInterval({
+      >
+        {{ week }}
+      </div>
+      <div
+        v-for="date in eachDayOfInterval({
           start: startOfWeek(startOfMonth(pickerData.current)),
           end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
         })"
-        @click="() => onPickerDateClick(date)"
+        :key="date.getTime()"
         class="flex font-medium items-center justify-center h-8 rounded-md cursor-default"
         :class="[
           isSameDay(pickerData.start, date) ? 'text-white bg-blue-700 hover:bg-blue-800' : 'text-gray-500 hover:bg-gray-100',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
         :style="props.inputStyle"
-      >{{ date.getDate() }}</div>
+        @click="() => onPickerDateClick(date)"
+      >
+        {{ date.getDate() }}
+      </div>
     </div>
-    <div v-if="data.error"
+    <div
+      v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>
 

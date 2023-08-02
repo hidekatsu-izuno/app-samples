@@ -15,10 +15,13 @@ const goToPage = (path: string) => {
 
 <template>
   <div class="p-4 pt-0">
-    <ul v-for="menu in data.menus">
-      <li @click="goToPage(menu.path)"
+    <ul v-for="(menu, index) in data.menus" :key="index">
+      <li
         class="flex flex-row items-center p-2 rounded gap-x-0.5 hover:bg-blue-900 select-none cursor-pointer"
-      ><Icon :name="menu.icon" />{{ menu.text }}</li>
+        @click="goToPage(menu.path)"
+      >
+        <Icon :name="menu.icon" />{{ menu.text }}
+      </li>
     </ul>
   </div>
 </template>

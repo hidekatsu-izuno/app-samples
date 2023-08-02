@@ -6,7 +6,7 @@ export {
   CsvReader,
   CsvWriter,
   FixlenReader,
-  FixlenWriter,
+  FixlenWriter
 } from "jtc-utils"
 
 export function uuid() {

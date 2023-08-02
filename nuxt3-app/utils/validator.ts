@@ -1,5 +1,3 @@
-export const ValidatorKey: InjectionKey<Validator> = Symbol.for("ValidatorKey")
-
 export declare type ValidatorListener = {
   name: string,
   listener: () => any,
@@ -8,7 +6,7 @@ export declare type ValidatorListener = {
 export class Validator {
   private listeners: Record<string, Array<ValidatorListener>> = {
     validate: [],
-    clear: [],
+    clear: []
   }
 
   on(event: "validate" | "clear", name: string, listener: () => any): void {
@@ -45,3 +43,5 @@ export class Validator {
     }
   }
 }
+
+export const ValidatorKey: InjectionKey<Validator> = Symbol.for("ValidatorKey")

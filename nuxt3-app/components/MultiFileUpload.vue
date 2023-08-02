@@ -2,40 +2,39 @@
 import { ValidatorKey } from "~/utils/validator"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end"
-  label?: string
-  name?: string
-  placeholder?: string
-  tabindex?: number
-  accept?: string
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  required?: boolean
-  modelValue?: File[]
+  halign?: "start" | "center" | "end",
+  label?: string,
+  name?: string,
+  placeholder?: string,
+  tabindex?: number,
+  accept?: string,
+  inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  required?: boolean,
+  modelValue?: File[],
 }>(), {
   required: false,
-  modelValue: undefined,
+  modelValue: () => [],
 })
 
 const data = reactive({
-  value: props.modelValue,
+  value: [] as File[],
   error: "",
-  active: false,
+  active: false
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-})
+}, { immediate: true })
 
-const name = props.name
-if (name) {
+if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", name, () => {
+    validator.on("validate", props.name, () => {
       return validate(data.value)
     })
 
-    validator.on("clear", name, () => {
+    validator.on("clear", props.name, () => {
       data.error = ""
     })
   }
@@ -56,7 +55,7 @@ function onChange(event: Event) {
     data.active = false
   }
   const target = event.target as HTMLInputElement
-  data.value = target.files ? Array.from(target.files) : undefined
+  data.value = target.files ? Array.from(target.files) : []
   if (data.error) {
     data.error = ""
   }
@@ -93,23 +92,32 @@ function validate(value?: File[]) {
 
 <template>
   <div class="MultiFileUpload">
-    <label v-if="label"
+    <label
+      v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input type="file" multiple="true" :placeholder="placeholder" :tabindex="tabindex" :accept="accept"
+    <input
+      type="file"
+      multiple="true"
+      :placeholder="placeholder"
+      :tabindex="tabindex"
+      :accept="accept"
       :value="data.value"
-      @click="onClick"
-      @change="onChange"
-      @blur="onBlur"
       class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
-    />
-    <div v-if="data.error"
+      @click="onClick"
+      @change="onChange"
+      @blur="onBlur"
+    >
+    <div
+      v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>

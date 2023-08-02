@@ -1,42 +1,41 @@
 <script setup lang="ts">
+import { ZodString } from "zod"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
-import { ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end"
-  label?: string
-  name?: string
-  placeholder?: string
-  tabindex?: number
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  required?: boolean
-  schema?: ZodString
-  modelValue?: string
+  halign?: "start" | "center" | "end",
+  label?: string,
+  name?: string,
+  placeholder?: string,
+  tabindex?: number,
+  inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  required?: boolean,
+  schema?: ZodString,
+  modelValue?: string,
 }>(), {
   required: false,
-  modelValue: "",
+  modelValue: ""
 })
 
 const data = reactive({
-  value: props.modelValue || "",
-  error: "",
+  value: "",
+  error: ""
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-})
+}, { immediate: true })
 
-const name = props.name
-if (name) {
+if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", name, () => {
+    validator.on("validate", props.name, () => {
       return validate(data.value)
     })
 
-    validator.on("clear", name, () => {
+    validator.on("clear", props.name, () => {
       data.error = ""
     })
   }
@@ -76,7 +75,7 @@ function validate(value: string) {
   data.error = ""
 
   if (value) {
-    let schema = props.schema
+    const schema = props.schema
 
     if (schema) {
       const result = schema.safeParse(value, {
@@ -100,23 +99,29 @@ function validate(value: string) {
 
 <template>
   <div class="TextArea">
-    <label v-if="label"
+    <label
+      v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <textarea :placeholder="placeholder" :tabindex="tabindex"
+    <textarea
+      :placeholder="placeholder"
+      :tabindex="tabindex"
       :value="data.value"
-      @focus="onFocus"
-      @input="onInput"
-      @blur="onBlur"
       class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
-    ></textarea>
-    <div v-if="data.error"
+      @focus="onFocus"
+      @input="onInput"
+      @blur="onBlur"
+    />
+    <div
+      v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>

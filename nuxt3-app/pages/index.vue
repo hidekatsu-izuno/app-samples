@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { onBackupState, useHistoryState } from "vue-history-state"
 import { Validator } from "~/utils/validator"
@@ -34,7 +33,6 @@ const onLoginButtonClick = async () => {
   } catch (err) {
     data.message = "ログインに失敗しました。"
     data.showMessageBox = true
-    return
   }
 }
 </script>
@@ -42,25 +40,40 @@ const onLoginButtonClick = async () => {
 <template>
   <div class="min-h-screen flex bg-gray-50 items-center justify-center">
     <div class="w-full max-w-md flex flex-col items-center">
-      <h1 class="font-bold text-4xl m-4">Nuxt3 Sample App</h1>
+      <h1 class="font-bold text-4xl m-4">
+        Nuxt3 Sample App
+      </h1>
       <Card>
         <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox type="email" label="メールアドレス" name="email" v-model="data.email" required :schema="EmailSchema" />
+            <TextBox
+              v-model="data.email"
+              type="email"
+              label="メールアドレス"
+              name="email"
+              required
+              :schema="EmailSchema"
+            />
           </div>
           <div>
             <TextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
           </div>
           <div>
-            <LinkButton halign="end" class="text-sm" @click="goChangePasswordPage">パスワードを忘れた方はこちら</LinkButton>
+            <LinkButton halign="end" class="text-sm" @click="goChangePasswordPage">
+              パスワードを忘れた方はこちら
+            </LinkButton>
           </div>
           <div>
-            <Button halign="center" @click="onLoginButtonClick">ログイン</Button>
+            <Button halign="center" @click="onLoginButtonClick">
+              ログイン
+            </Button>
           </div>
         </Form>
       </Card>
-      <div class="m-4 mb-8">Copyright &copy; Hidekatsu Izuno</div>
+      <div class="m-4 mb-8">
+        Copyright &copy; Hidekatsu Izuno
+      </div>
     </div>
-    <MessageBox v-model="data.showMessageBox" :message="data.message"/>
+    <MessageBox v-model="data.showMessageBox" :message="data.message" />
   </div>
 </template>

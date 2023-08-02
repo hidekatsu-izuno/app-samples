@@ -1,49 +1,45 @@
 <script setup lang="ts">
+import { z, ZodString } from "zod"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
-import { z, ZodString } from "zod"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end"
-  type?: "text" | "password" | "email" | "tel" | "url"
-  label?: string
-  name?: string
-  placeholder?: string
-  tabindex?: number
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  required?: boolean
-  schema?: ZodString
-  modelValue?: string
+  halign?: "start" | "center" | "end",
+  type?: "text" | "password" | "email" | "tel" | "url",
+  label?: string,
+  name?: string,
+  placeholder?: string,
+  tabindex?: number,
+  inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  required?: boolean,
+  schema?: ZodString,
+  modelValue?: string,
 }>(), {
   type: "text",
   required: false,
-  modelValue: "",
+  modelValue: ""
 })
 
+const maxLength = computed(() => props.schema?.maxLength ?? undefined)
+
 const data = reactive({
-  maxLength: props.schema?.maxLength ?? undefined,
-  value: props.modelValue || "",
-  error: "",
+  value: "",
+  error: ""
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-})
+}, { immediate: true })
 
-watch(() => props.schema, () => {
-  data.maxLength = props.schema?.maxLength ?? undefined
-})
-
-const name = props.name
-if (name) {
+if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", name, () => {
+    validator.on("validate", props.name, () => {
       return validate(data.value)
     })
 
-    validator.on("clear", name, () => {
+    validator.on("clear", props.name, () => {
       data.error = ""
     })
   }
@@ -123,23 +119,31 @@ function validate(value: string) {
 
 <template>
   <div class="TextBox">
-    <label v-if="label"
+    <label
+      v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input :type="type" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
+    <input
+      :type="type"
+      :placeholder="placeholder"
+      :tabindex="tabindex"
+      :maxlength="maxLength"
       :value="data.value"
-      @focus="onFocus"
-      @input="onInput"
-      @blur="onBlur"
       class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
-    />
-    <div v-if="data.error"
+      @focus="onFocus"
+      @input="onInput"
+      @blur="onBlur"
+    >
+    <div
+      v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>

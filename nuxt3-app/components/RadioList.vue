@@ -2,45 +2,45 @@
 import { uuid } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end"
-  label?: string
-  name?: string
-  placeholder?: string
-  tabindex?: number
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  items?: Array<{ value: string, text: string }>
-  columns?: number
-  required?: boolean
-  modelValue?: string
+  halign?: "start" | "center" | "end",
+  label?: string,
+  name?: string,
+  placeholder?: string,
+  tabindex?: number,
+  inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  items?: Array<{ value: string, text: string }>,
+  columns?: number,
+  required?: boolean,
+  modelValue?: string,
 }>(), {
   placeholder: "未選択",
   items: () => [],
   columns: 1,
   required: false,
-  modelValue: "",
+  modelValue: ""
 })
 
 const id = uuid()
 
 const data = reactive({
-  value: props.modelValue || "",
-  error: "",
+  value: "",
+  focused: false,
+  error: ""
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-})
+}, { immediate: true })
 
-const name = props.name
-if (name) {
+if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", name, () => {
+    validator.on("validate", props.name, () => {
       return validate(data.value)
     })
 
-    validator.on("clear", name, () => {
+    validator.on("clear", props.name, () => {
       data.error = ""
     })
   }
@@ -52,30 +52,32 @@ const emits = defineEmits<{
   (event: "blur", value: Event): void
 }>()
 
-function onFocus(event: Event) {
-  emits("focus", event)
+function onFocusin(event: Event) {
+  if (!data.focused) {
+    data.focused = true
+    emits("focus", event)
+  }
 }
 
 function onChange(event: Event) {
-  const target = event.target as HTMLInputElement
-  let changed = false
-  if (target.checked) {
-    validate(target.value)
-    data.value = target.value
-    changed = true
-  }
-  if (data.error) {
-    data.error = ""
-  }
-  if (changed) {
+  const target = document.querySelector(`[name=${id}]:checked`) as HTMLInputElement | null
+  const newValue = target ? target.value : ""
+  if (data.value !== newValue) {
+    data.value = newValue
+    validate(data.value)
     emits("update:modelValue", data.value)
   }
 }
 
-function onBlur(event: Event) {
-  validate(data.value)
-
-  emits("blur", event)
+function onFocusout(event: Event) {
+  const currentTarget = event.currentTarget as HTMLElement
+  requestAnimationFrame(() => {
+    if (!currentTarget.contains(document.activeElement)) {
+      validate(data.value)
+      emits("blur", event)
+      data.focused = false
+    }
+  })
 }
 
 function validate(value: string) {
@@ -95,43 +97,57 @@ function validate(value: string) {
 
 <template>
   <div class="RadioList">
-    <label v-if="label"
+    <label
+      v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <div class="grid" :class="[
-      `grid-columns-${columns}`
-    ]">
+    <div
+      class="grid"
+      :class="[
+        `grid-columns-${columns}`
+      ]"
+      @focusin="onFocusin"
+      @focusout="onFocusout"
+    >
       <div v-if="!required">
         <label
           class="flex items-center gap-1 py-1"
           :class="props.inputClass"
           :style="props.inputStyle"
-        ><input type="radio" :tabindex="tabindex"
-          :name="id" value=""
+        ><input
+          type="radio"
+          :tabindex="tabindex"
+          :name="id"
+          value=""
           :checked="!data.value"
-          @change="onChange"
-          @blur="onBlur"
           class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          @change="onChange"
         >{{ placeholder }}</label>
       </div>
-      <div v-for="item in items">
+      <div v-for="(item, index) in items" :key="index">
         <label
           class="inline-flex items-center gap-1 py-1"
           :class="props.inputClass"
           :style="props.inputStyle"
-        ><input type="radio" :name="id" :tabindex="tabindex"
-            :value="item.value"
-            :checked="item.value === data.value"
-            @focus="onFocus"
-            @change="onChange"
-            @blur="onBlur"
-            class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
-          >{{ item.text }}</label>
+        ><input
+          type="radio"
+          :name="id"
+          :tabindex="tabindex"
+          :value="item.value"
+          :checked="item.value === data.value"
+          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          @focus="onFocus"
+          @change="onChange"
+          @blur="onBlur"
+        >{{ item.text }}</label>
       </div>
     </div>
-    <div v-if="data.error"
+    <div
+      v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>
 

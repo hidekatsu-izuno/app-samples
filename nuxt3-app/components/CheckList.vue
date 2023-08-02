@@ -2,72 +2,87 @@
 import { uuid } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end"
-  label?: string
-  name?: string
-  tabindex?: number
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  items?: Array<{ value: string, text: string }>
-  columns?: number
-  required?: boolean
-  modelValue?: string[]
+  halign?: "start" | "center" | "end",
+  label?: string,
+  name?: string,
+  tabindex?: number,
+  inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  items?: Array<{ value: string, text: string }>,
+  columns?: number,
+  required?: boolean,
+  modelValue?: string[],
 }>(), {
   items: () => [],
   columns: 1,
   required: false,
-  modelValue: () => [],
+  modelValue: () => []
 })
 
 const id = uuid()
 
 const data = reactive({
-  value: props.modelValue || "",
-  error: "",
+  value: new Array<string>(),
+  focused: false,
+  error: ""
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-})
+}, { immediate: true })
 
-const name = props.name
-if (name) {
+if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", name, () => {
+    validator.on("validate", props.name, () => {
       return validate(data.value)
     })
 
-    validator.on("clear", name, () => {
+    validator.on("clear", props.name, () => {
       data.error = ""
     })
   }
 }
 
 const emits = defineEmits<{
+  (event: "focus", value: Event): void
   (event: "update:modelValue", value: string[]): void
+  (event: "blur", value: Event): void
 }>()
+
+function onFocusin(event: Event) {
+  if (!data.focused) {
+    data.focused = true
+    emits("focus", event)
+  }
+}
 
 function onChange(event: Event) {
   const target = event.target as HTMLInputElement
   let changed = false
   if (target.checked) {
     if (!data.value.includes(target.value)) {
-      data.value = [...data.value, target.value]
+      const newValue = [...data.value, target.value]
+      newValue.sort()
+      data.value = newValue
       changed = true
     }
   }
   validate(data.value)
-  if (data.error) {
-    data.error = ""
-  }
   if (changed) {
     emits("update:modelValue", data.value)
   }
 }
 
-function onBlur() {
-  validate(data.value)
+function onFocusout(event: Event) {
+  const currentTarget = event.currentTarget as HTMLElement
+  requestAnimationFrame(() => {
+    if (!currentTarget.contains(document.activeElement)) {
+      validate(data.value)
+      emits("blur", event)
+      data.focused = false
+    }
+  })
 }
 
 function validate(value: string[]) {
@@ -87,29 +102,40 @@ function validate(value: string[]) {
 
 <template>
   <div class="CheckList">
-    <label v-if="label"
+    <label
+      v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <div class="grid" :class="[
-      `grid-columns-${columns}`
-    ]">
-      <div v-for="item in items">
+    <div
+      class="grid"
+      :class="[
+        `grid-columns-${columns}`
+      ]"
+      @focusin="onFocusin"
+      @focusout="onFocusout"
+    >
+      <div v-for="(item, index) in items" :key="index">
         <label
           class="inline-flex items-center gap-0.5 py-1"
           :class="props.inputClass"
           :style="props.inputStyle"
-        ><input type="checkbox" :name="id" :tabindex="tabindex"
-            :value="item.value"
-            :checked="data.value.includes(item.value)"
-            @change="onChange"
-            @blur="onBlur"
-            class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
-          ><span>{{ item.text }}</span></label>
+        ><input
+          type="checkbox"
+          :name="id"
+          :tabindex="tabindex"
+          :value="item.value"
+          :checked="data.value.includes(item.value)"
+          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          @change="onChange"
+        ><span>{{ item.text }}</span></label>
       </div>
     </div>
-    <div v-if="data.error"
+    <div
+      v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>
 

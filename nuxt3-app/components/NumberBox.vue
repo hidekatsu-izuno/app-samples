@@ -1,47 +1,54 @@
 <script setup lang="ts">
-import { ValidatorKey } from "~/utils/validator"
 import { ZodNumber } from "zod"
+import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end"
-  label?: string
-  name?: string
-  placeholder?: string
-  tabindex?: number
-  inputClass?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
-  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[]
-  required?: boolean
-  format?: string
-  schema?: ZodNumber
-  modelValue?: string
+  halign?: "start" | "center" | "end",
+  label?: string,
+  name?: string,
+  placeholder?: string,
+  tabindex?: number,
+  inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
+  inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  required?: boolean,
+  format?: string,
+  schema?: ZodNumber,
+  modelValue?: string | number,
 }>(), {
-  type: "text",
   required: false,
-  format: ',###.###',
-  modelValue: "",
+  format: ",###.###",
+  modelValue: ""
 })
 
+const maxLength = computed(() => getFormatMaxLength(props.format))
+
 const data = reactive({
-  maxLength: getFormatMaxLength(props.format),
   focused: false,
-  value: props.modelValue || "",
-  error: "",
+  value: "",
+  error: ""
 })
 
 watch(() => props.modelValue, () => {
-  data.value = data.focused ? props.modelValue : formatNumber(props.modelValue, props.format)
-})
+  if (data.focused) {
+    if (typeof props.modelValue === "number") {
+      data.value = formatNumber(props.modelValue)
+    } else {
+      data.value = props.modelValue
+    }
+  } else {
+    data.value = formatNumber(props.modelValue, props.format)
+  }
+}, { immediate: true })
 
-const name = props.name
-if (name) {
+if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
-    validator.on("validate", name, () => {
+    validator.on("validate", props.name, () => {
       return validate(data.value, props.format)
     })
 
-    validator.on("clear", name, () => {
+    validator.on("clear", props.name, () => {
       data.error = ""
     })
   }
@@ -109,7 +116,7 @@ function validate(value: string, format?: string) {
   }
 
   if (!data.error) {
-    return formatNumber(num)
+    return num
   }
 }
 
@@ -125,24 +132,33 @@ function getFormatMaxLength(format: string) {
 
 <template>
   <div class="NumberBox">
-    <label v-if="label"
+    <label
+      v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input type="text" inputmode="numeric" :placeholder="placeholder" :tabindex="tabindex" :maxlength="data.maxLength"
+    <input
+      type="text"
+      inputmode="decimal"
+      :placeholder="placeholder"
+      :tabindex="tabindex"
+      :maxlength="maxLength"
       :value="data.value"
-      @input="onInput"
-      @focus="onFocus"
-      @blur="onBlur"
       class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
-    />
-    <div v-if="data.error"
+      @input="onInput"
+      @focus="onFocus"
+      @blur="onBlur"
+    >
+    <div
+      v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>
 

@@ -11,10 +11,16 @@ export declare type ControllerOptions = {
   transaction?: boolean,
 }
 
+export declare type AppSession = {
+  userId: string
+}
+
+export declare type SqlConnection = typeof sql
+
 export function defineAction(handler: EventHandler): EventHandler;
 export function defineAction(options: ControllerOptions, handler: EventHandler): EventHandler;
 export function defineAction(arg1: ControllerOptions | EventHandler, arg2?: EventHandler): EventHandler {
-  const handler = arg2 ? arg2 : arg1 as EventHandler
+  const handler = arg2 ?? (arg1 as EventHandler)
   const options = arg2 ? arg1 as ControllerOptions : {}
 
   return defineEventHandler(async (event) => {
@@ -49,41 +55,36 @@ export function defineAction(arg1: ControllerOptions | EventHandler, arg2?: Even
         return await handler(event)
       }
     } catch (err) {
+      let newErr = err
       if (err instanceof ZodError) {
-        err = createError({ statusCode: 400, cause: err })
+        newErr = createError({ statusCode: 400, cause: err })
       }
-      console.error(err)
-      return err
+      console.error(newErr)
+      return newErr
     }
   })
 }
-
-export declare type AppSession = {
-  userId: string
-}
-
-export declare type SqlConnection = typeof sql
 
 export function loggedMethod<This, Args extends any[], Return>(
   target: (this: This, ...args: Args) => Return,
   context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
 ) {
-  const methodName = String(context.name);
+  const methodName = String(context.name)
 
   function replacementMethod(this: This, ...args: Args): Return {
-      console.log(`LOG: Entering method '${methodName}'.`)
-      const result = target.call(this, ...args);
-      console.log(`LOG: Exiting method '${methodName}'.`)
-      return result;
+    console.log(`LOG: Entering method '${methodName}'.`)
+    const result = target.call(this, ...args)
+    console.log(`LOG: Exiting method '${methodName}'.`)
+    return result
   }
 
-  return replacementMethod;
+  return replacementMethod
 }
 
 export function getAppSession(event: H3Event) {
   return (event as any)[AppSessionKey] ?? ({
-      userId: ""
-    }) as AppSession
+    userId: ""
+  }) as AppSession
 }
 
 export function useSqlConnection(event: H3Event) {
