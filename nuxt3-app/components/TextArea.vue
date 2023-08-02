@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<{
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   schema?: ZodString,
   modelValue?: string,
 }>(), {
@@ -104,15 +106,16 @@ function validate(value: string) {
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <textarea
-      :placeholder="placeholder"
-      :tabindex="tabindex"
-      :value="data.value"
       class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
+      :placeholder="placeholder"
+      :value="data.value"
+      :disabled="disabled"
+      :tabindex="tabindex"
       @focus="onFocus"
       @input="onInput"
       @blur="onBlur"

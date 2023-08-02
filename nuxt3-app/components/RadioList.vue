@@ -13,6 +13,8 @@ const props = withDefaults(defineProps<{
   items?: Array<{ value: string, text: string }>,
   columns?: number,
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   modelValue?: string,
 }>(), {
   placeholder: "未選択",
@@ -117,11 +119,12 @@ function validate(value: string) {
           :style="props.inputStyle"
         ><input
           type="radio"
-          :tabindex="tabindex"
-          :name="id || undefined"
-          value=""
-          :checked="!data.value"
           class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          value=""
+          :name="id || undefined"
+          :checked="!data.value"
+          :disabled="disabled"
+          :tabindex="tabindex"
         >{{ placeholder }}</label>
       </div>
       <div v-for="(item, index) in items" :key="index">
@@ -131,11 +134,12 @@ function validate(value: string) {
           :style="props.inputStyle"
         ><input
           type="radio"
+          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
           :name="id || undefined"
-          :tabindex="tabindex"
           :value="item.value"
           :checked="item.value === data.value"
-          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          :disabled="disabled"
+          :tabindex="tabindex"
         >{{ item.text }}</label>
       </div>
     </div>

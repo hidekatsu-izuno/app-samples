@@ -11,6 +11,8 @@ const props = withDefaults(defineProps<{
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   modelValue?: File[],
 }>(), {
   required: false,
@@ -99,15 +101,16 @@ function validate(value?: File[]) {
     <input
       type="file"
       multiple="true"
-      :placeholder="placeholder"
-      :tabindex="tabindex"
-      :accept="accept"
       class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
+      :placeholder="placeholder"
+      :accept="accept"
+      :tabindex="tabindex"
+      :disabled="disabled"
       @click="onClick"
       @focus="onFocus"
       @change="onChange"

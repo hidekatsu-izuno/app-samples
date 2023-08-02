@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<{
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   format?: string,
   schema?: ZodNumber,
   modelValue?: string | number,
@@ -139,16 +141,17 @@ function getFormatMaxLength(format: string) {
     <input
       type="text"
       inputmode="decimal"
-      :placeholder="placeholder"
-      :tabindex="tabindex"
-      :maxlength="maxLength"
-      :value="data.value"
       class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
+      :placeholder="placeholder"
+      :maxlength="maxLength"
+      :value="data.value"
+      :disabled="disabled"
+      :tabindex="tabindex"
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"

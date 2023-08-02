@@ -10,10 +10,13 @@ const props = withDefaults(defineProps<{
   <div v-else-if="props.name === 'arrow-left'" class="icon-[mdi--arrow-left]" />
   <div v-else-if="props.name === 'arrow-right'" class="icon-[mdi--arrow-right]" />
   <div v-else-if="props.name === 'close-circle'" class="icon-[mdi--close-circle]" />
-  <div v-else-if="props.name === 'menu'" class="icon-[mdi--menu]" />
-  <div v-else-if="props.name === 'menu-open'" class="icon-[mdi--menu-open]" />
   <div v-else-if="props.name === 'calendar'" class="icon-[mdi--calendar]" />
   <div v-else-if="props.name === 'chevron-left'" class="icon-[mdi--chevron-left]" />
   <div v-else-if="props.name === 'chevron-right'" class="icon-[mdi--chevron-right]" />
-  <div v-else class="icon-[mdi--help]" />
+  <div v-else-if="props.name === 'chevron-right'" class="icon-[mdi--chevron-right]" />
+  <div v-else-if="props.name === 'help'" class="icon-[mdi--help]" />
+  <div v-else-if="props.name === 'menu'" class="icon-[mdi--menu]" />
+  <div v-else-if="props.name === 'menu-open'" class="icon-[mdi--menu-open]" />
+  <div v-else-if="props.name === 'page-first'" class="icon-[mdi--page-first]" />
+  <div v-else-if="props.name === 'page-last'" class="icon-[mdi--page-last]" />
 </template>

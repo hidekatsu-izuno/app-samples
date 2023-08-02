@@ -13,12 +13,14 @@ const props = withDefaults(defineProps<{
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   schema?: ZodString,
   modelValue?: string,
 }>(), {
   type: "text",
   required: false,
-  modelValue: ""
+  modelValue: "",
 })
 
 const maxLength = computed(() => props.schema?.maxLength ?? undefined)
@@ -124,17 +126,18 @@ function validate(value: string) {
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <input
-      :type="type"
-      :placeholder="placeholder"
-      :tabindex="tabindex"
-      :maxlength="maxLength"
-      :value="data.value"
       class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
+      :type="type"
+      :placeholder="placeholder"
+      :maxlength="maxLength"
+      :value="data.value"
+      :disabled="disabled"
+      :tabindex="tabindex"
       @focus="onFocus"
       @input="onInput"
       @blur="onBlur"

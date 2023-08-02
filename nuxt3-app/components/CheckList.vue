@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<{
   items?: Array<{ value: string, text: string }>,
   columns?: number,
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   modelValue?: string[],
 }>(), {
   items: () => [],
@@ -119,11 +121,12 @@ function validate(value: string[]) {
           :style="props.inputStyle"
         ><input
           type="checkbox"
+          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
           :name="id || undefined"
-          :tabindex="tabindex"
           :value="item.value"
           :checked="data.value.includes(item.value)"
-          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          :disabled="disabled"
+          :tabindex="tabindex"
         ><span>{{ item.text }}</span></label>
       </div>
     </div>

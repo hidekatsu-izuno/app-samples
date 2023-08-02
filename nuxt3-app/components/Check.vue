@@ -7,6 +7,8 @@ const props = withDefaults(defineProps<{
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   modelValue?: boolean,
 }>(), {
   required: false,
@@ -85,6 +87,7 @@ function validate(value: boolean) {
         :style="props.inputStyle"
         :value="value"
         :checked="data.value"
+        :disabled="disabled"
         :tabindex="tabindex"
         @focus="onFocus"
         @change="onChange"

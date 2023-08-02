@@ -205,7 +205,7 @@ const data = reactive({
         <Paginator v-model="data.page1" />
         <div class="border">{{ data.page1 }}</div>
 
-        <Paginator v-model="data.page2" :max-size="1000" />
+        <Paginator v-model="data.page2" :totalCount="1000" />
         <div class="border">{{ data.page2 }}</div>
       </div>
     </Card>

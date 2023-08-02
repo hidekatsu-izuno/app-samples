@@ -9,6 +9,8 @@ const props = withDefaults(defineProps<{
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   items?: Array<{ value: string, text: string }>,
   required?: boolean,
+  disabled?: boolean,
+  readonly?: boolean,
   modelValue?: string,
 }>(), {
   items: () => [],
@@ -83,14 +85,15 @@ function validate(value: string) {
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <select
-      :tabindex="tabindex"
-      :value="data.value"
-      class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+    class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
+      :value="data.value"
+      :disabled="disabled"
+      :tabindex="tabindex"
       @focus="onFocus"
       @change="onChange"
       @blur="onBlur"

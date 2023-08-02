@@ -7,6 +7,8 @@ const props = withDefaults(defineProps<{
   modelValue?: number,
   pageSize?: number,
   totalCount?: number,
+  disabled?: boolean,
+  readonly?: boolean,
 }>(), {
   modelValue: 1,
   pageSize: 100,
@@ -18,29 +20,6 @@ const data = reactive({
 })
 
 const maxPage = computed(() => Math.max(Math.ceil(props.totalCount / props.pageSize), 1))
-const items = computed(() => {
-  const results = new Array<number | string>()
-  let right = Math.min(Math.max(props.modelValue + 1, 4), maxPage.value)
-  let left = Math.max(right - 2, 1)
-
-  results.push(1)
-  if (left - 1 > 1) {
-    results.push("...")
-  } else {
-    left = 2
-  }
-  for (let page = left; page <= right; page++) {
-    results.push(page)
-  }
-  if (right < maxPage.value) {
-    if (right + 1 < maxPage.value) {
-      results.push("...")
-    }
-    results.push(maxPage.value)
-  }
-
-  return results
-})
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void
@@ -82,28 +61,30 @@ function onFocusout(event: Event) {
   >
     <button
       type="button"
-      class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-      :disabled="modelValue === 1"
+      class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none disabled:text-gray-500 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      :disabled="disabled || modelValue === 1"
+      :data-value="1"
+      @click="onClick"
+    >
+      <Icon name="page-first" class="text-2xl" />
+    </button>
+    <button
+      type="button"
+      class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 w-8 h-8 outline-none disabled:text-gray-500 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      :disabled="disabled || modelValue === 1"
       :data-value="Math.max(modelValue - 1, 1)"
       @click="onClick"
     >
       <Icon name="chevron-left" class="text-2xl" />
     </button>
-    <button
-      v-for="(page, index) in items"
-      :key="index"
-      type="button"
-      class="-ml-[1px] flex items-center justify-center w-8 h-8 outline-none focus:ring-2 focus:ring-blue-200"
-      :class="[modelValue === page ? 'text-white border-blue-700 bg-blue-700 hover:enabled:bg-blue-800' : 'border border-gray-300 bg-white hover:enabled:text-white hover:enabled:border-blue-800 hover:enabled:bg-blue-800']"
-      :disabled="modelValue === page || !Number.isInteger(page)"
-      :data-value="page"
-      @click="onClick"
-    >{{ page }}</button>
+    <div
+      class="flex items-center justify-center bg-white border-y border-gray-300 w-48 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+    >{{ modelValue }} / {{ maxPage }}</div>
     <button
       type="button"
-      class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-      :disabled="modelValue === maxPage"
-      :data-value="Math.max(modelValue + 1, 1)"
+      class="flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none disabled:text-gray-500 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      :disabled="disabled || modelValue === maxPage"
+      :data-value="Math.min(modelValue + 1, maxPage)"
       @click="onClick"
     >
       <Icon name="chevron-right" class="text-2xl" />

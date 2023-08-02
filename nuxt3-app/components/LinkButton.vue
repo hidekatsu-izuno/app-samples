@@ -6,6 +6,7 @@ const props = withDefaults(defineProps<{
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
+  disabled?: boolean,
 }>(), {
 })
 
@@ -44,11 +45,12 @@ function onBlur(event: MouseEvent) {
       ]"
     >
       <NuxtLink
-        :href="href"
-        :tabindex="tabindex"
         class="text-blue-600 rounded-md outline-none hover:underline focus:ring-2 focus:ring-blue-200 cursor-pointer"
         :class="props.inputClass"
         :style="props.inputStyle"
+        :href="href"
+        :disabled="disabled"
+        :tabindex="tabindex"
         @focus="onFocus"
         @click="onClick"
         @blur="onBlur"
