@@ -12,12 +12,12 @@ const props = withDefaults(defineProps<{
   modelValue?: boolean,
 }>(), {
   required: false,
-  modelValue: false
+  modelValue: false,
 })
 
 const data = reactive({
   value: false,
-  error: ""
+  error: "",
 })
 
 watch(() => props.modelValue, () => {

@@ -7,14 +7,14 @@ export const HTTPClient = {
   },
   async post<T=any>(url: string, data?: Record<string, any>) {
     return await fetchData<T>("POST", url, data)
-  }
+  },
 }
 
 async function fetchData<T=any>(method: "GET" | "POST", url: string, data?: Record<string, any>) {
   try {
     return await $fetch<T>(url, {
       method,
-      body: data
+      body: data,
     })
   } catch (err: any) {
     if (isNuxtError(err)) {
@@ -24,7 +24,7 @@ async function fetchData<T=any>(method: "GET" | "POST", url: string, data?: Reco
       throw createError({
         statusCode: err.statusCode,
         statusMessage: err.statusMessage,
-        fatal: true
+        fatal: true,
       })
     }
   }

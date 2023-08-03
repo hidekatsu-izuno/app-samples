@@ -8,12 +8,12 @@ const runtimeConfig = useRuntimeConfig()
 
 const SigninSchema = z.object({
   email: EmailSchema,
-  password: UserPasswordSchema
+  password: UserPasswordSchema,
 })
 
 export default defineAction({
   session: false,
-  transaction: false
+  transaction: false,
 }, async (event) => {
   const params = SigninSchema.parse(await readBody(event))
 
@@ -24,18 +24,18 @@ export default defineAction({
   }
 
   await updateSession(event, AppSessionConfig, {
-    userId
+    userId,
   })
 
   return {
-    redirect: "/v1/CM0001/top"
+    redirect: "/v1/CM0001/top",
   }
 })
 
 async function getValidUserId(con: SqlConnection, email: string, password: string) {
   const hashed = (await encodePassword(
     password,
-    Buffer.from(runtimeConfig.auth.salt, "base64")
+    Buffer.from(runtimeConfig.auth.salt, "base64"),
   )).toString("base64")
 
   const result = await con`

@@ -12,7 +12,7 @@ export const JapaneseErrorMap: ZodErrorMap = (issue, ctx) => {
       return {
         message: `オブジェクトに認識できないキーが含まれています：${issue.keys
           .map(k => `'${k}'`)
-          .join(", ")}`
+          .join(", ")}`,
       }
     case z.ZodIssueCode.invalid_union:
       return { message: "Invalid input" }
@@ -20,13 +20,13 @@ export const JapaneseErrorMap: ZodErrorMap = (issue, ctx) => {
       return {
         message: `Invalid discriminator value. Expected ${issue.options
           .map(val => (typeof val === "string" ? `'${val}'` : val))
-          .join(" | ")}`
+          .join(" | ")}`,
       }
     case z.ZodIssueCode.invalid_enum_value:
       return {
         message: `次の値のいずれかを入力してください：${issue.options
           .map(val => (typeof val === "string" ? `'${val}'` : val))
-          .join(" | ")}`
+          .join(" | ")}`,
       }
     case z.ZodIssueCode.invalid_arguments:
       return { message: "関数の引数が不正です。" }

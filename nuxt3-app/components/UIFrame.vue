@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const data = reactive({
-  showDrawer: false
+  showDrawer: false,
 })
 
 function openDrawer() {

@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   required: false,
   format: "uuuu/MM/dd",
-  modelValue: ""
+  modelValue: "",
 })
 
 const maxLength = computed(() => getFormatMaxLength(props.format))
@@ -30,7 +30,7 @@ const maxLength = computed(() => getFormatMaxLength(props.format))
 const data = reactive({
   focused: false,
   value: "",
-  error: ""
+  error: "",
 })
 
 watch(() => props.modelValue, () => {
@@ -56,14 +56,14 @@ const pickerRef = ref()
 const start = startOfDay(new Date())
 const pickerData = reactive({
   start,
-  current: start
+  current: start,
 })
 
 let popper: ReturnType<typeof createPopper>
 
 onMounted(() => {
   popper = createPopper(inputRef.value, pickerRef.value, {
-    placement: "bottom-end"
+    placement: "bottom-end",
   })
 
   onUnmounted(() => {
@@ -154,7 +154,7 @@ function validate(value: string, format?: string) {
   if (date) {
     if (props.schema) {
       const result = props.schema.safeParse(date, {
-        errorMap: JapaneseErrorMap
+        errorMap: JapaneseErrorMap,
       })
       if (result.success) {
         date = result.data

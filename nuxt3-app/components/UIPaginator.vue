@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<{
 })
 
 const data = reactive({
-  focused: false
+  focused: false,
 })
 
 const maxPage = computed(() => Math.max(Math.ceil(props.totalCount / props.pageSize), 1))
@@ -80,7 +80,9 @@ function onFocusout(event: Event) {
     </button>
     <div
       class="flex items-center justify-center bg-white border-y border-gray-300 w-48 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-    >{{ modelValue }} / {{ maxPage }}</div>
+    >
+      {{ modelValue }} / {{ maxPage }}
+    </div>
     <button
       type="button"
       class="flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none disabled:text-gray-500 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"

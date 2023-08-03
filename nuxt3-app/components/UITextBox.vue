@@ -27,7 +27,7 @@ const maxLength = computed(() => props.schema?.maxLength ?? undefined)
 
 const data = reactive({
   value: "",
-  error: ""
+  error: "",
 })
 
 watch(() => props.modelValue, () => {
@@ -101,7 +101,7 @@ function validate(value: string) {
 
     if (schema) {
       const result = schema.safeParse(value, {
-        errorMap: JapaneseErrorMap
+        errorMap: JapaneseErrorMap,
       })
       if (result.success) {
         value = result.data
@@ -128,8 +128,11 @@ function validate(value: string) {
     <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ data.value || '&#8203;' }}</div>
-    <input v-else
+    >
+      {{ data.value || '&#8203;' }}
+    </div>
+    <input
+      v-else
       class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
@@ -145,10 +148,12 @@ function validate(value: string) {
       @focus="onFocus"
       @input="onInput"
       @blur="onBlur"
-    />
+    >
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>

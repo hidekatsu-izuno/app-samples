@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { uuid } from "~/utils/functions"
-const { data: id } = await useAsyncData("compId", async () => uuid())
+const { data: id } = await useAsyncData("compId", () => uuid())
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -19,13 +19,13 @@ const props = withDefaults(defineProps<{
   items: () => [],
   columns: 1,
   required: false,
-  modelValue: () => []
+  modelValue: () => [],
 })
 
 const data = reactive({
   value: new Array<string>(),
   focused: false,
-  error: ""
+  error: "",
 })
 
 watch(() => props.modelValue, () => {
@@ -138,7 +138,7 @@ function validate(value: string[]) {
           :checked="data.value.includes(item.value)"
           :disabled="disabled"
           :tabindex="tabindex"
-        /><div>{{ item.text }}</div></label>
+        ><div>{{ item.text }}</div></label>
       </div>
     </div>
     <div

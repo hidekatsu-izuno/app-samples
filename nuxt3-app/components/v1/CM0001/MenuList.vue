@@ -4,8 +4,8 @@ const historyState = useHistoryState()
 
 const data = reactive({
   menus: [
-    { text: "ユーザー管理", icon: "alert-circle-outline", path: "/v1/CM0002/search_user" }
-  ]
+    { text: "ユーザー管理", icon: "alert-circle-outline", path: "/v1/CM0002/search_user" },
+  ],
 })
 
 const goToPage = (path: string) => {

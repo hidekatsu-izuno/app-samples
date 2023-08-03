@@ -6,26 +6,26 @@ const isGenerateMode = process.argv.includes("generate")
 export default defineNuxtConfig({
   runtimeConfig: {
     auth: {
-      salt: ""
+      salt: "",
     },
     session: {
       password: "01234567890123456789012345678901",
-      maxAge: 1800
+      maxAge: 1800,
     },
     database: {
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE
-    }
+      database: process.env.DB_DATABASE,
+    },
   },
 
   sourcemap: true,
 
   modules: [
     "@nuxtjs/tailwindcss",
-    "vue-history-state/nuxt"
+    "vue-history-state/nuxt",
   ],
 
   typescript: {
@@ -33,23 +33,23 @@ export default defineNuxtConfig({
       compilerOptions: {
         paths: {
           "@": ["."],
-          "@/*": ["./*"]
-        }
-      }
-    }
+          "@/*": ["./*"],
+        },
+      },
+    },
   },
 
   components: [
-    { path: "~/components", pathPrefix: false }
+    { path: "~/components", pathPrefix: false },
   ],
 
   tailwindcss: {
     config: {
       content: [],
       plugins: [
-        addDynamicIconSelectors()
-      ]
-    }
+        addDynamicIconSelectors(),
+      ],
+    },
   },
 
   ...(isGenerateMode
@@ -60,8 +60,8 @@ export default defineNuxtConfig({
           "**/*.{spec,test}.{js,ts,jsx,tsx}",
           "**/*.d.ts",
           ".output",
-          "**/-*.*"
-        ]
+          "**/-*.*",
+        ],
       }
-    : {})
+    : {}),
 })

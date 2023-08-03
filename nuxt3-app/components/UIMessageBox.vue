@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
   type: "ok",
   modelValue: false,
   message: "",
-  modaless: false
+  modaless: false,
 })
 
 const elRef = ref()

@@ -6,13 +6,13 @@ export declare type ValidatorListener = {
 export class Validator {
   private listeners: Record<string, Array<ValidatorListener>> = {
     validate: [],
-    clear: []
+    clear: [],
   }
 
   on(event: "validate" | "clear", name: string, listener: () => any): void {
     this.listeners[event].push({
       name,
-      listener
+      listener,
     })
   }
 

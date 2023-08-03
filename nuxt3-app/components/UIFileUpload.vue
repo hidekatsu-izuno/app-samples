@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
   readonly?: boolean,
   modelValue?: File,
 }>(), {
-  required: false
+  required: false,
 })
 
 const data = reactive({
@@ -100,7 +100,9 @@ function validate(value?: File) {
     <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ data.value?.name || '&#8203;' }}</div>
+    >
+      {{ data.value?.name || '&#8203;' }}
+    </div>
     <input
       v-else
       type="file"
@@ -118,10 +120,12 @@ function validate(value?: File) {
       @focus="onFocus"
       @change="onChange"
       @blur="onBlur"
-    />
+    >
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>

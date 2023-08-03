@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { uuid } from "~/utils/functions"
-const { data: id } = await useAsyncData("compId", async () => uuid())
+const { data: id } = await useAsyncData("compId", () => uuid())
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -21,13 +21,13 @@ const props = withDefaults(defineProps<{
   items: () => [],
   columns: 1,
   required: false,
-  modelValue: ""
+  modelValue: "",
 })
 
 const data = reactive({
   value: "",
   focused: false,
-  error: ""
+  error: "",
 })
 
 watch(() => props.modelValue, () => {
@@ -106,7 +106,9 @@ function validate(value: string) {
     <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
+    >
+      {{ items.find(item => item.value === data.value)?.text || '&#8203;' }}
+    </div>
     <div
       v-else
       class="grid"
@@ -131,7 +133,7 @@ function validate(value: string) {
           :checked="!data.value"
           :disabled="disabled"
           :tabindex="tabindex"
-        /><div>{{ placeholder }}</div></label>
+        ><div>{{ placeholder }}</div></label>
       </div>
       <div v-for="(item, index) in items" :key="index">
         <label
@@ -146,7 +148,7 @@ function validate(value: string) {
           :checked="item.value === data.value"
           :disabled="disabled"
           :tabindex="tabindex"
-        /><div>{{ item.text }}</div></label>
+        ><div>{{ item.text }}</div></label>
       </div>
     </div>
     <div

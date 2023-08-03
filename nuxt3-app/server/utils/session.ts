@@ -7,6 +7,6 @@ export const AppSessionConfig: SessionConfig = {
   cookie: {
     secure: true,
     httpOnly: true,
-    sameSite: "strict"
-  }
+    sameSite: "strict",
+  },
 }

@@ -67,7 +67,7 @@ export function defineAction(arg1: ControllerOptions | EventHandler, arg2?: Even
 
 export function loggedMethod<This, Args extends any[], Return>(
   target: (this: This, ...args: Args) => Return,
-  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
+  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>,
 ) {
   const methodName = String(context.name)
 
@@ -83,7 +83,7 @@ export function loggedMethod<This, Args extends any[], Return>(
 
 export function getAppSession(event: H3Event) {
   return (event as any)[AppSessionKey] ?? ({
-    userId: ""
+    userId: "",
   }) as AppSession
 }
 

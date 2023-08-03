@@ -15,12 +15,12 @@ const props = withDefaults(defineProps<{
 }>(), {
   items: () => [],
   required: false,
-  modelValue: ""
+  modelValue: "",
 })
 
 const data = reactive({
   value: "",
-  error: ""
+  error: "",
 })
 
 watch(() => props.modelValue, () => {
@@ -87,9 +87,12 @@ function validate(value: string) {
     <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
-    <select v-else
-    class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+    >
+      {{ items.find(item => item.value === data.value)?.text || '&#8203;' }}
+    </div>
+    <select
+      v-else
+      class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
@@ -108,6 +111,8 @@ function validate(value: string) {
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>

@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   required: false,
   format: ",###.###",
-  modelValue: ""
+  modelValue: "",
 })
 
 const maxLength = computed(() => getFormatMaxLength(props.format))
@@ -28,7 +28,7 @@ const maxLength = computed(() => getFormatMaxLength(props.format))
 const data = reactive({
   focused: false,
   value: "",
-  error: ""
+  error: "",
 })
 
 watch(() => props.modelValue, () => {
@@ -99,7 +99,7 @@ function validate(value: string, format?: string) {
   if (num) {
     if (props.schema) {
       const result = props.schema.safeParse(num, {
-        errorMap: JapaneseErrorMap
+        errorMap: JapaneseErrorMap,
       })
       if (result.success) {
         num = result.data
@@ -137,7 +137,9 @@ function getFormatMaxLength(format: string) {
     <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ data.value || '&#8203;' }}</div>
+    >
+      {{ data.value || '&#8203;' }}
+    </div>
     <input
       v-else
       type="text"
@@ -160,7 +162,9 @@ function getFormatMaxLength(format: string) {
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >{{ data.error }}</div>
+    >
+      {{ data.error }}
+    </div>
   </div>
 </template>
 
