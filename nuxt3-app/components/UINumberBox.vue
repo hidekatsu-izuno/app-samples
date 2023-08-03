@@ -2,6 +2,7 @@
 import { ZodNumber } from "zod"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
+import { toHalfwidth } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -29,6 +30,7 @@ const data = reactive({
   focused: false,
   value: "",
   error: "",
+  ime: false,
 })
 
 watch(() => props.modelValue, () => {
@@ -53,9 +55,9 @@ if (props.name) {
 }
 
 const emits = defineEmits<{
-  (event: "focus", value: Event): void
-  (event: "update:modelValue", value: string): void
-  (event: "blur", value: Event): void
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: string): void,
+  (event: "blur", value: Event): void,
 }>()
 
 function onFocus(event: Event) {
@@ -73,12 +75,25 @@ function onFocus(event: Event) {
 }
 
 function onInput(event: Event) {
+  if (data.ime) {
+    return
+  }
+
   const target = event.target as HTMLInputElement
   data.value = target.value
   if (data.error) {
     data.error = ""
   }
   emits("update:modelValue", data.value)
+}
+
+function onCompositionStart(event: Event) {
+  data.ime = true
+}
+
+function onCompositionEnd(event: Event) {
+  data.ime = false
+  onInput(event)
 }
 
 function onBlur(event: Event) {
@@ -158,6 +173,8 @@ function getFormatMaxLength(format: string) {
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
+      @compositionstart="onCompositionStart"
+      @compositionend="onCompositionEnd"
     />
     <div
       v-if="data.error"

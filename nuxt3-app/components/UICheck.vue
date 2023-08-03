@@ -25,9 +25,9 @@ watch(() => props.modelValue, () => {
 }, { immediate: true })
 
 const emits = defineEmits<{
-  (event: "focus", value: Event): void
-  (event: "update:modelValue", value: boolean): void
-  (event: "blur", value: Event): void
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: boolean): void,
+  (event: "blur", value: Event): void,
 }>()
 
 function onFocus(event: Event) {

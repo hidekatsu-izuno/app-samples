@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<{
   readonly?: boolean,
   schema?: ZodString,
   modelValue?: string,
+  filter?: (input: string) => string,
 }>(), {
   type: "text",
   required: false,
@@ -28,6 +29,7 @@ const maxLength = computed(() => props.schema?.maxLength ?? undefined)
 const data = reactive({
   value: "",
   error: "",
+  ime: false,
 })
 
 watch(() => props.modelValue, () => {
@@ -58,17 +60,30 @@ function onFocus(event: Event) {
 }
 
 function onInput(event: Event) {
+  if (data.ime) {
+    return
+  }
+
   const target = event.target as HTMLInputElement
   data.value = target.value
   if (data.error) {
     data.error = ""
   }
-  emits("update:modelValue", target.value)
+  emits("update:modelValue", data.value)
+}
+
+function onCompositionStart(event: Event) {
+  data.ime = true
+}
+
+function onCompositionEnd(event: Event) {
+  data.ime = false
+  onInput(event)
 }
 
 function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
-  const validated = validate(target.value)
+  const validated = validate(props.filter ? props.filter(target.value) : target.value)
   if (validated) {
     data.value = validated
     emits("update:modelValue", data.value)
@@ -148,7 +163,9 @@ function validate(value: string) {
       @focus="onFocus"
       @input="onInput"
       @blur="onBlur"
-    >
+      @compositionstart="onCompositionStart"
+      @compositionend="onCompositionEnd"
+    />
     <div
       v-if="data.error"
       class="block text-sm text-red-500"

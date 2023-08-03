@@ -10,6 +10,7 @@ const data = reactive({
   textbox3: "",
   textbox4: "",
   textbox5: "",
+  textbox6: "",
   numberboxRequired: false,
   numberboxDisabled: false,
   numberboxReadonly: false,
@@ -133,6 +134,17 @@ const data = reactive({
           :readonly="data.textboxReadonly"
         />
         <div class="border">{{ data.textbox5 }}</div>
+
+        <UITextBox
+          v-model="data.textbox6"
+          label="フィルタ"
+          type="text"
+          :filter="(text: string) => text.toUpperCase()"
+          :required="data.textboxRequired"
+          :disabled="data.textboxDisabled"
+          :readonly="data.textboxReadonly"
+        />
+        <div class="border">{{ data.textbox6 }}</div>
       </div>
     </UICard>
 
