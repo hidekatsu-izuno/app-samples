@@ -199,7 +199,7 @@ function getFormatMaxLength(format: string) {
         ref="inputRef"
         type="text"
         inputmode="numeric"
-        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
         :class="[
           halign ? `self-${halign}` : 'block w-full',
         ]"
@@ -211,7 +211,7 @@ function getFormatMaxLength(format: string) {
         @input="onInput"
         @focus="onFocus"
         @blur="onBlur"
-      >
+      />
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
         <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-400' : '']" />
       </div>

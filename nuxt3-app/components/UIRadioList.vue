@@ -106,9 +106,7 @@ function validate(value: string) {
     <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >
-      {{ items.find(item => item.value === data.value)?.text || '&#8203;' }}
-    </div>
+    >{{ items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
     <div
       v-else
       class="grid"

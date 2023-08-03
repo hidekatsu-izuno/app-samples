@@ -365,7 +365,6 @@ const data = reactive({
       <template #header>
         <div class="flex flex-row gap-1">
           <h2 class="grow">メッセージボックス (UIMessageBox)</h2>
-          <div class="shrink"><input v-model="data.linkDisabled" type="checkbox"> disabled</div>
         </div>
       </template>
       <div class="grid grid-cols-4 gap-2">
