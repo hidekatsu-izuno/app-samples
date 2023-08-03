@@ -42,9 +42,9 @@ if (props.name) {
 }
 
 const emits = defineEmits<{
-  (event: "focus", value: Event): void
-  (event: "update:modelValue", value?: File[]): void
-  (event: "blur", value: Event): void
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: File[]): void,
+  (event: "blur", value: Event): void,
 }>()
 
 function onClick(event: Event) {

@@ -22,9 +22,9 @@ const data = reactive({
 const maxPage = computed(() => Math.max(Math.ceil(props.totalCount / props.pageSize), 1))
 
 const emits = defineEmits<{
-  (event: "focus", value: Event): void
-  (event: "update:modelValue", value: number): void
-  (event: "blur", value: Event): void
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: number): void,
+  (event: "blur", value: Event): void,
 }>()
 
 function onFocusin(event: Event) {

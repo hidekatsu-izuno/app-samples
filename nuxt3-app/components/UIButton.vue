@@ -19,9 +19,9 @@ const props = withDefaults(defineProps<{
 })
 
 const emits = defineEmits<{
-  (event: "focus", value: Event): void
-  (event: "click", value: MouseEvent): void
-  (event: "blur", value: Event): void
+  (event: "focus", value: Event): void,
+  (event: "click", value: MouseEvent): void,
+  (event: "blur", value: Event): void,
 }>()
 
 function onFocus(event: Event) {

@@ -38,8 +38,8 @@ onMounted(() => {
 })
 
 const emits = defineEmits<{
-  (event: "update:modelValue", value: boolean): void
-  (event: "close", value?: "ok" | "yes" | "no" | "cancel"): void
+  (event: "update:modelValue", value: boolean): void,
+  (event: "close", value?: "ok" | "yes" | "no" | "cancel"): void,
 }>()
 
 function close(result?: "ok" | "yes" | "no" | "cancel") {
