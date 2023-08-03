@@ -38,7 +38,7 @@ function onBlur(event: Event) {
 </script>
 
 <template>
-  <div class="Button flex flex-col">
+  <div class="UIButton flex flex-col">
     <label
       v-if="label"
       class="block"

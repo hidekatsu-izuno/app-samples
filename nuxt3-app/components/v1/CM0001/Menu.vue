@@ -20,7 +20,7 @@ const goToPage = (path: string) => {
         class="flex flex-row items-center p-2 rounded gap-x-0.5 hover:bg-blue-900 select-none cursor-pointer"
         @click="goToPage(menu.path)"
       >
-        <Icon :name="menu.icon" />{{ menu.text }}
+        <UIIcon :name="menu.icon" />{{ menu.text }}
       </li>
     </ul>
   </div>

@@ -64,15 +64,15 @@ const data = reactive({
   linkDisabled: false,
   link1: 0,
   link2: 0,
-  showMessageBox1: false,
-  showMessageBox2: false,
-  showMessageBox3: false,
-  showMessageBox4: false
+  messageBox1: false,
+  messageBox2: false,
+  messageBox3: false,
+  messageBox4: false
 })
 </script>
 
 <template>
-  <Frame>
+  <UIFrame>
     <template #headerLeft>
       <h1>コンポーネント一覧</h1>
     </template>
@@ -83,37 +83,37 @@ const data = reactive({
       Bottom
     </template>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">テキストボックス (TextBox)</h2>
+          <h2 class="grow">テキストボックス (UITextBox)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.textboxRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.textboxDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.textboxReadonly" /> readonly</div>
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2">
-        <TextBox v-model="data.textbox1" label="デフォルト" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
+        <UITextBox v-model="data.textbox1" label="デフォルト" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
         <div class="border">{{ data.textbox1 }}</div>
 
-        <TextBox v-model="data.textbox2" label="パスワード" type="password" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
+        <UITextBox v-model="data.textbox2" label="パスワード" type="password" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
         <div class="border">{{ data.textbox2 }}</div>
 
-        <TextBox v-model="data.textbox3" label="メールアドレス" type="email" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
+        <UITextBox v-model="data.textbox3" label="メールアドレス" type="email" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
         <div class="border">{{ data.textbox3 }}</div>
 
-        <TextBox v-model="data.textbox4" label="電話番号" type="tel" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
+        <UITextBox v-model="data.textbox4" label="電話番号" type="tel" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
         <div class="border">{{ data.textbox4 }}</div>
 
-        <TextBox v-model="data.textbox5" label="URL" type="url" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
+        <UITextBox v-model="data.textbox5" label="URL" type="url" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
         <div class="border">{{ data.textbox5 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">数値ボックス (NumberBox)</h2>
+          <h2 class="grow">数値ボックス (UINumberBox)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.numberboxRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.numberboxDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.numberboxReadonly" /> readonly</div>
@@ -122,18 +122,18 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <NumberBox v-model="data.numberbox1" label="デフォルト" :required="data.numberboxRequired" :disabled="data.numberboxDisabled" :readonly="data.numberboxReadonly" />
+        <UINumberBox v-model="data.numberbox1" label="デフォルト" :required="data.numberboxRequired" :disabled="data.numberboxDisabled" :readonly="data.numberboxReadonly" />
         <div class="border">{{ data.numberbox1 }}</div>
 
-        <NumberBox v-model="data.numberbox2" label="小数点あり" format="###,##0.0#" :required="data.numberboxRequired" :disabled="data.numberboxDisabled" :readonly="data.numberboxReadonly" />
+        <UINumberBox v-model="data.numberbox2" label="小数点あり" format="###,##0.0#" :required="data.numberboxRequired" :disabled="data.numberboxDisabled" :readonly="data.numberboxReadonly" />
         <div class="border">{{ data.numberbox2 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">日付ボックス (DateBox)</h2>
+          <h2 class="grow">日付ボックス (UIDateBox)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.dateboxRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.dateboxDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.dateboxReadonly" /> readonly</div>
@@ -141,15 +141,15 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <DateBox v-model="data.datebox1" label="デフォルト" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly" />
+        <UIDateBox v-model="data.datebox1" label="デフォルト" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly" />
         <div class="border">{{ data.datebox1 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">テキストエリア (TextArea)</h2>
+          <h2 class="grow">テキストエリア (UITextArea)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.textareaRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.textareaDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.textareaReadonly" /> readonly</div>
@@ -157,15 +157,15 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <TextArea v-model="data.textarea1" label="デフォルト" :required="data.textareaRequired" :disabled="data.textareaDisabled" :readonly="data.textareaReadonly" />
+        <UITextArea v-model="data.textarea1" label="デフォルト" :required="data.textareaRequired" :disabled="data.textareaDisabled" :readonly="data.textareaReadonly" />
         <div class="border">{{ data.textarea1 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">セレクトボックス (SelectBox)</h2>
+          <h2 class="grow">セレクトボックス (UISelectBox)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.selectboxRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.selectboxDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.selectboxReadonly" /> readonly</div>
@@ -173,16 +173,16 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <SelectBox v-model="data.selectbox1" label="デフォルト" :required="data.selectboxRequired" :disabled="data.selectboxDisabled" :readonly="data.selectboxReadonly"
+        <UISelectBox v-model="data.selectbox1" label="デフォルト" :required="data.selectboxRequired" :disabled="data.selectboxDisabled" :readonly="data.selectboxReadonly"
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]" placeholder="---" />
         <div class="border">{{ data.selectbox1 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">チェックボックス (Check)</h2>
+          <h2 class="grow">チェックボックス (UICheck)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.checkRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.checkDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.checkReadonly" /> readonly</div>
@@ -190,15 +190,15 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <Check v-model="data.check1" label="デフォルト" :required="data.checkRequired" :disabled="data.checkDisabled" :readonly="data.checkReadonly">チェックボックス</Check>
+        <UICheck v-model="data.check1" label="デフォルト" :required="data.checkRequired" :disabled="data.checkDisabled" :readonly="data.checkReadonly">チェックボックス</UICheck>
         <div class="border">{{ data.check1 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">チェックリスト (CheckList)</h2>
+          <h2 class="grow">チェックリスト (UICheckList)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.checklistRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.checklistDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.checklistReadonly" /> readonly</div>
@@ -206,16 +206,16 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <CheckList v-model="data.checklist1" label="デフォルト" :required="data.checklistRequired" :disabled="data.checklistDisabled" :readonly="data.checklistReadonly"
+        <UICheckList v-model="data.checklist1" label="デフォルト" :required="data.checklistRequired" :disabled="data.checklistDisabled" :readonly="data.checklistReadonly"
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]" />
         <div class="border">{{ data.checklist1 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">ラジオリスト (RadioList)</h2>
+          <h2 class="grow">ラジオリスト (UIRadioList)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.radiolistRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.radiolistDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.radiolistReadonly" /> readonly</div>
@@ -223,16 +223,16 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <RadioList v-model="data.radiolist1" label="デフォルト" :required="data.radiolistRequired" :disabled="data.radiolistDisabled" :readonly="data.radiolistReadonly"
+        <UIRadioList v-model="data.radiolist1" label="デフォルト" :required="data.radiolistRequired" :disabled="data.radiolistDisabled" :readonly="data.radiolistReadonly"
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]" />
         <div class="border">{{ data.radiolist1 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">ファイル選択 (FileUpload)</h2>
+          <h2 class="grow">ファイル選択 (UIFileUpload)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.fileuploadRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.fileuploadDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.fileuploadReadonly" /> readonly</div>
@@ -240,15 +240,15 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <FileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" :readonly="data.fileuploadReadonly" />
+        <UIFileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" :readonly="data.fileuploadReadonly" />
         <div class="border">{{ data.fileupload1?.name }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">複数ファイル選択 (MultiFileUpload)</h2>
+          <h2 class="grow">複数ファイル選択 (UIMultiFileUpload)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.multifileuploadRequired" /> required</div>
           <div class="shrink"><input type="checkbox" v-model="data.multifileuploadDisabled" /> disabled</div>
           <div class="shrink"><input type="checkbox" v-model="data.multifileuploadReadonly" /> readonly</div>
@@ -256,63 +256,63 @@ const data = reactive({
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <MultiFileUpload v-model="data.multifileupload1" label="デフォルト"  :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" :readonly="data.multifileuploadReadonly" />
+        <UIMultiFileUpload v-model="data.multifileupload1" label="デフォルト"  :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" :readonly="data.multifileuploadReadonly" />
         <div class="border">{{ data.multifileupload1.map(item => item.name) }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">ページング (Paginator)</h2>
+          <h2 class="grow">ページング (UIPaginator)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.paginatorDisabled" /> disabled</div>
         </div>
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <Paginator v-model="data.paginator1" :disabled="data.paginatorDisabled" />
+        <UIPaginator v-model="data.paginator1" :disabled="data.paginatorDisabled" />
         <div class="border">{{ data.paginator1 }}</div>
 
-        <Paginator v-model="data.paginator2" :disabled="data.paginatorDisabled" :pageSize="50" :totalCount="1000" />
+        <UIPaginator v-model="data.paginator2" :disabled="data.paginatorDisabled" :pageSize="50" :totalCount="1000" />
         <div class="border">{{ data.paginator2 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">ボタン (Button)</h2>
+          <h2 class="grow">ボタン (UIButton)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.buttonDisabled" /> disabled</div>
         </div>
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <Button label="デフォルト" :disabled="data.buttonDisabled" @click="data.button1++">ボタン</Button>
+        <UIButton label="デフォルト" :disabled="data.buttonDisabled" @click="data.button1++">ボタン</UIButton>
         <div class="border">{{ data.button1 }}</div>
 
-        <Button label="アウトライン" type="outline" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</Button>
+        <UIButton label="アウトライン" type="outline" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</UIButton>
         <div class="border">{{ data.button2 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
-          <h2 class="grow">リンク (LinkButton)</h2>
+          <h2 class="grow">リンク (UILink)</h2>
           <div class="shrink"><input type="checkbox" v-model="data.linkDisabled" /> disabled</div>
         </div>
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <LinkButton label="デフォルト" :disabled="data.linkDisabled" @click="data.link1++">リンク</LinkButton>
+        <UILink label="デフォルト" :disabled="data.linkDisabled" @click="data.link1++">リンク</UILink>
         <div class="border">{{ data.link1 }}</div>
 
-        <LinkButton label="デフォルト" :disabled="data.linkDisabled" @click="data.link2++">リンク</LinkButton>
+        <UILink label="デフォルト" :disabled="data.linkDisabled" @click="data.link2++">リンク</UILink>
         <div class="border">{{ data.link2 }}</div>
       </div>
-    </Card>
+    </UICard>
 
-    <Card class="mb-4">
+    <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
           <h2 class="grow">メッセージボックス</h2>
@@ -320,17 +320,17 @@ const data = reactive({
         </div>
       </template>
       <div class="grid grid-cols-4 gap-2">
-        <Button @click="data.showMessageBox1 = true">OK</Button>
-        <Button @click="data.showMessageBox2 = true">OK/CANCEL</Button>
-        <Button @click="data.showMessageBox3 = true">YES/NO</Button>
-        <Button @click="data.showMessageBox4 = true">YES/NO/CANCEL</Button>
+        <UIButton @click="data.messageBox1 = true">OK</UIButton>
+        <UIButton @click="data.messageBox2 = true">OK/CANCEL</UIButton>
+        <UIButton @click="data.messageBox3 = true">YES/NO</UIButton>
+        <UIButton @click="data.messageBox4 = true">YES/NO/CANCEL</UIButton>
       </div>
-    </Card>
+    </UICard>
 
-    <MessageBox v-model="data.showMessageBox1" type="ok">あ</MessageBox>
-    <MessageBox v-model="data.showMessageBox2" type="ok-cancel">い</MessageBox>
-    <MessageBox v-model="data.showMessageBox3" type="yes-no">う</MessageBox>
-    <MessageBox v-model="data.showMessageBox4" type="yes-no-cancel">え</MessageBox>
+    <UIMessageBox v-model="data.messageBox1" type="ok">あ</UIMessageBox>
+    <UIMessageBox v-model="data.messageBox2" type="ok-cancel">い</UIMessageBox>
+    <UIMessageBox v-model="data.messageBox3" type="yes-no">う</UIMessageBox>
+    <UIMessageBox v-model="data.messageBox4" type="yes-no-cancel">え</UIMessageBox>
 
     <template #footer>
       Footer
@@ -338,5 +338,5 @@ const data = reactive({
     <template #drawer>
       <Menu />
     </template>
-  </Frame>
+  </UIFrame>
 </template>

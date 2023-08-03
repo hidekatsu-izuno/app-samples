@@ -1,31 +1,32 @@
 <script setup lang="ts">
+import { ValidatorKey } from "~/utils/validator"
+
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
   name?: string,
   placeholder?: string,
   tabindex?: number,
+  accept?: string,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
-  items?: Array<{ value: string, text: string }>,
   required?: boolean,
   disabled?: boolean,
   readonly?: boolean,
-  modelValue?: string,
+  modelValue?: File,
 }>(), {
-  items: () => [],
-  required: false,
-  modelValue: ""
+  required: false
 })
 
 const data = reactive({
-  value: "",
-  error: ""
+  value: undefined as File | undefined,
+  error: "",
+  active: false,
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-}, { immediate: true })
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -42,28 +43,40 @@ if (props.name) {
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void
-  (event: "update:modelValue", value: string): void
+  (event: "update:modelValue", value?: File): void
   (event: "blur", value: Event): void
 }>()
+
+function onClick(event: Event) {
+  data.active = true
+}
 
 function onFocus(event: Event) {
   emits("focus", event)
 }
 
 function onChange(event: Event) {
-  const target = event.target as HTMLSelectElement
-  validate(target.value)
-  data.value = target.value
-  emits("update:modelValue", target.value)
+  if (data.active) {
+    data.active = false
+  }
+  const target = event.target as HTMLInputElement
+  data.value = target.files?.[0]
+  if (data.error) {
+    data.error = ""
+  }
+  emits("update:modelValue", data.value)
 }
 
 function onBlur(event: Event) {
-  const target = event.target as HTMLSelectElement
-  validate(target.value)
+  if (data.active) {
+    data.active = false
+    return
+  }
+  validate(data.value)
   emits("blur", event)
 }
 
-function validate(value: string) {
+function validate(value?: File) {
   data.error = ""
 
   if (value) {
@@ -79,7 +92,7 @@ function validate(value: string) {
 </script>
 
 <template>
-  <div class="SelectBox">
+  <div class="UIFileUpload">
     <label
       v-if="label"
       class="block"
@@ -87,24 +100,25 @@ function validate(value: string) {
     <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
-    <select v-else
-    class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+    >{{ data.value?.name || '&#8203;' }}</div>
+    <input
+      v-else
+      type="file"
+      class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
-      :value="data.value"
+      :placeholder="placeholder"
+      :accept="accept"
       :disabled="disabled"
       :tabindex="tabindex"
+      @click="onClick"
       @focus="onFocus"
       @change="onChange"
       @blur="onBlur"
-    >
-      <option :disabled="required" value="">{{ placeholder }}</option>
-      <option v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text }}</option>
-    </select>
+    />
     <div
       v-if="data.error"
       class="block text-sm text-red-500"

@@ -1,33 +1,38 @@
 <script setup lang="ts">
+import { z, ZodString } from "zod"
 import { ValidatorKey } from "~/utils/validator"
+import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
+  type?: "text" | "password" | "email" | "tel" | "url",
   label?: string,
   name?: string,
   placeholder?: string,
   tabindex?: number,
-  accept?: string,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   required?: boolean,
   disabled?: boolean,
   readonly?: boolean,
-  modelValue?: File[],
+  schema?: ZodString,
+  modelValue?: string,
 }>(), {
+  type: "text",
   required: false,
-  modelValue: () => [],
+  modelValue: "",
 })
 
+const maxLength = computed(() => props.schema?.maxLength ?? undefined)
+
 const data = reactive({
-  value: [] as File[],
-  error: "",
-  active: false,
+  value: "",
+  error: ""
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
-})
+}, { immediate: true })
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -44,44 +49,66 @@ if (props.name) {
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void
-  (event: "update:modelValue", value?: File[]): void
+  (event: "update:modelValue", value: string): void
   (event: "blur", value: Event): void
 }>()
-
-function onClick(event: Event) {
-  data.active = true
-}
 
 function onFocus(event: Event) {
   emits("focus", event)
 }
 
-function onChange(event: Event) {
-  if (data.active) {
-    data.active = false
-  }
+function onInput(event: Event) {
   const target = event.target as HTMLInputElement
-  data.value = target.files ? Array.from(target.files) : []
+  data.value = target.value
   if (data.error) {
     data.error = ""
   }
-  emits("update:modelValue", data.value)
+  emits("update:modelValue", target.value)
 }
 
 function onBlur(event: Event) {
-  if (data.active) {
-    data.active = false
-    return
+  const target = event.target as HTMLInputElement
+  const validated = validate(target.value)
+  if (validated) {
+    data.value = validated
+    emits("update:modelValue", data.value)
   }
-  validate(data.value)
+
   emits("blur", event)
 }
 
-function validate(value?: File[]) {
+function validate(value: string) {
   data.error = ""
 
-  if (value && value.length > 0) {
-    // no handle
+  if (value) {
+    let schema = props.schema
+    if (props.type === "email") {
+      if (!schema) {
+        schema = z.string()
+      }
+      schema = schema.email()
+    } else if (props.type === "tel") {
+      if (!schema) {
+        schema = z.string()
+      }
+      schema = schema.regex(/^0[0-9-]{8,9}[0-9]$/, "電話番号の書式に誤りがあります。")
+    } else if (props.type === "url") {
+      if (!schema) {
+        schema = z.string()
+      }
+      schema = schema.url("URLの書式に誤りがあります。")
+    }
+
+    if (schema) {
+      const result = schema.safeParse(value, {
+        errorMap: JapaneseErrorMap
+      })
+      if (result.success) {
+        value = result.data
+      } else {
+        data.error = result.error.issues[0].message
+      }
+    }
   } else if (props.required) {
     data.error = "必須入力です。"
   }
@@ -93,35 +120,30 @@ function validate(value?: File[]) {
 </script>
 
 <template>
-  <div class="MultiFileUpload">
+  <div class="UITextBox">
     <label
       v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <ul
+    <div
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >
-      <li v-for="(file, index) in data.value" :key="index">{{ file.name }}</li>
-      <li v-if="!data.value">&#8203;</li>
-    </ul>
-    <input
-      v-else
-      type="file"
-      multiple="true"
-      class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+    >{{ data.value || '&#8203;' }}</div>
+    <input v-else
+      class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
+      :type="props.type"
       :placeholder="props.placeholder"
-      :accept="props.accept"
-      :tabindex="props.tabindex"
+      :value="data.value"
       :disabled="props.disabled"
-      @click="onClick"
+      :tabindex="props.tabindex"
+      :maxlength="maxLength"
       @focus="onFocus"
-      @change="onChange"
+      @input="onInput"
       @blur="onBlur"
     />
     <div

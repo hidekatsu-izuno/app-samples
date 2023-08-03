@@ -34,7 +34,7 @@ function onBlur(event: MouseEvent) {
 </script>
 
 <template>
-  <div class="LinkButton flex flex-col">
+  <div class="UILink flex flex-col">
     <label
       v-if="label"
       class="block"

@@ -55,7 +55,7 @@ function onFocusout(event: Event) {
 
 <template>
   <div
-    class="Paginator flex flex-row"
+    class="UIPaginator flex flex-row"
     :class="disabled && 'text-gray-500'"
     @focusin="onFocusin"
     @focusout="onFocusout"
@@ -67,7 +67,7 @@ function onFocusout(event: Event) {
       :data-value="1"
       @click="onClick"
     >
-      <Icon name="page-first" class="text-2xl" />
+      <UIIcon name="page-first" class="text-2xl" />
     </button>
     <button
       type="button"
@@ -76,7 +76,7 @@ function onFocusout(event: Event) {
       :data-value="Math.max(modelValue - 1, 1)"
       @click="onClick"
     >
-      <Icon name="chevron-left" class="text-2xl" />
+      <UIIcon name="chevron-left" class="text-2xl" />
     </button>
     <div
       class="flex items-center justify-center bg-white border-y border-gray-300 w-48 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
@@ -88,7 +88,7 @@ function onFocusout(event: Event) {
       :data-value="Math.min(modelValue + 1, maxPage)"
       @click="onClick"
     >
-      <Icon name="chevron-right" class="text-2xl" />
+      <UIIcon name="chevron-right" class="text-2xl" />
     </button>
     <div class="flex items-center px-2">{{ totalCount }} 件</div>
   </div>

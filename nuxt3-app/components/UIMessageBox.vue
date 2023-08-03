@@ -50,9 +50,9 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
 
 <template>
   <Teleport to="body">
-    <dialog ref="elRef" class="MessageBox fixed inset-0 w-1/2 rounded-lg shadow-2xl z-50">
+    <dialog ref="elRef" class="UIMessageBox fixed inset-0 w-1/2 rounded-lg shadow-2xl z-50">
       <div class="p-6 text-center">
-        <Icon name="alert-circle-outline" class="text-red-500 text-6xl" />
+        <UIIcon name="alert-circle-outline" class="text-red-500 text-6xl" />
         <h3 class="mb-5 text-lg font-normal text-gray-500">
           <slot />
         </h3>
@@ -98,7 +98,7 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
         class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
         @click="close()"
       >
-        <Icon name="close-circle" class="text-2xl" />
+        <UIIcon name="close-circle" class="text-2xl" />
       </button>
     </dialog>
   </Teleport>

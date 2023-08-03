@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full border border-gray-200 rounded-lg bg-white shadow">
+  <div class="UICard flex flex-col w-full border border-gray-200 rounded-lg bg-white shadow">
     <div v-if="$slots.header" class="p-3 bg-gray-50 border-b border-gray-200 rounded-t-lg">
       <slot name="header" />
     </div>

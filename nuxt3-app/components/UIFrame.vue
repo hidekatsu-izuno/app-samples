@@ -17,11 +17,11 @@ function onDrawerClick(e: MouseEvent) {
 </script>
 
 <template>
-  <div class="Frame flex flex-row-reverse w-full min-h-screen bg-white">
+  <div class="UIFrame flex flex-row-reverse w-full min-h-screen bg-white">
     <div class="flex flex-col grow">
       <header class="sticky top-0 left-0 right-0 z-10 overflow-hidden">
         <div class="flex flex-row items-center px-4 h-14 bg-white border-b border-gray-300 gap-2">
-          <Icon name="menu" class="text-4xl xl:hidden cursor-pointer" @click="openDrawer" />
+          <UIIcon name="menu" class="text-4xl xl:hidden cursor-pointer" @click="openDrawer" />
           <div v-if="$slots.headerLeft" class="grow overflow-hidden">
             <slot name="headerLeft" />
           </div>
@@ -54,7 +54,7 @@ function onDrawerClick(e: MouseEvent) {
         @click="onDrawerClick"
       >
         <div class="flex items-center px-4 w-64 h-14">
-          <Icon name="menu-open" class="text-4xl xl:hidden cursor-pointer mr-2" @click="closeDrawer" />
+          <UIIcon name="menu-open" class="text-4xl xl:hidden cursor-pointer mr-2" @click="closeDrawer" />
           <div class="grow text-lg font-bold">
             Nuxt3 App
           </div>

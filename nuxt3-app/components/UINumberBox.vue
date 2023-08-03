@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { z, ZodString } from "zod"
+import { ZodNumber } from "zod"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
-  type?: "text" | "password" | "email" | "tel" | "url",
   label?: string,
   name?: string,
   placeholder?: string,
@@ -15,30 +14,36 @@ const props = withDefaults(defineProps<{
   required?: boolean,
   disabled?: boolean,
   readonly?: boolean,
-  schema?: ZodString,
+  format?: string,
+  schema?: ZodNumber,
   modelValue?: string,
 }>(), {
-  type: "text",
   required: false,
-  modelValue: "",
+  format: ",###.###",
+  modelValue: ""
 })
 
-const maxLength = computed(() => props.schema?.maxLength ?? undefined)
+const maxLength = computed(() => getFormatMaxLength(props.format))
 
 const data = reactive({
+  focused: false,
   value: "",
   error: ""
 })
 
 watch(() => props.modelValue, () => {
-  data.value = props.modelValue
+  if (data.focused) {
+    data.value = props.modelValue
+  } else {
+    data.value = formatNumber(props.modelValue, props.format)
+  }
 }, { immediate: true })
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
     validator.on("validate", props.name, () => {
-      return validate(data.value)
+      return validate(data.value, props.format)
     })
 
     validator.on("clear", props.name, () => {
@@ -54,6 +59,16 @@ const emits = defineEmits<{
 }>()
 
 function onFocus(event: Event) {
+  data.focused = true
+
+  const target = event.target as HTMLInputElement
+  if (target.value) {
+    const num = parseNumber(target.value, props.format)
+    if (num) {
+      data.value = formatNumber(num)
+    }
+  }
+
   emits("focus", event)
 }
 
@@ -63,64 +78,58 @@ function onInput(event: Event) {
   if (data.error) {
     data.error = ""
   }
-  emits("update:modelValue", target.value)
+  emits("update:modelValue", data.value)
 }
 
 function onBlur(event: Event) {
+  data.focused = false
+
   const target = event.target as HTMLInputElement
   const validated = validate(target.value)
   if (validated) {
-    data.value = validated
+    data.value = formatNumber(validated, props.format)
     emits("update:modelValue", data.value)
   }
-
-  emits("blur", event)
 }
 
-function validate(value: string) {
+function validate(value: string, format?: string) {
   data.error = ""
 
-  if (value) {
-    let schema = props.schema
-    if (props.type === "email") {
-      if (!schema) {
-        schema = z.string()
-      }
-      schema = schema.email()
-    } else if (props.type === "tel") {
-      if (!schema) {
-        schema = z.string()
-      }
-      schema = schema.regex(/^0[0-9-]{8,9}[0-9]$/, "電話番号の書式に誤りがあります。")
-    } else if (props.type === "url") {
-      if (!schema) {
-        schema = z.string()
-      }
-      schema = schema.url("URLの書式に誤りがあります。")
-    }
-
-    if (schema) {
-      const result = schema.safeParse(value, {
+  let num = parseNumber(value)
+  if (num) {
+    if (props.schema) {
+      const result = props.schema.safeParse(num, {
         errorMap: JapaneseErrorMap
       })
       if (result.success) {
-        value = result.data
+        num = result.data
       } else {
         data.error = result.error.issues[0].message
       }
     }
+  } else if (value) {
+    data.error = "入力に誤りがあります。"
   } else if (props.required) {
     data.error = "必須入力です。"
   }
 
   if (!data.error) {
-    return value
+    return num
   }
+}
+
+function getFormatMaxLength(format: string) {
+  let max = 17
+  const index = format.indexOf(".")
+  if (index !== -1) {
+    max += format.length - index
+  }
+  return max
 }
 </script>
 
 <template>
-  <div class="TextBox">
+  <div class="UINumberBox">
     <label
       v-if="label"
       class="block"
@@ -129,26 +138,36 @@ function validate(value: string) {
       v-if="props.readonly"
       class="block px-2 py-1 text-gray-900 border border-gray-200"
     >{{ data.value || '&#8203;' }}</div>
-    <input v-else
-      class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+    <input
+      v-else
+      type="text"
+      inputmode="decimal"
+      class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
-      :type="props.type"
-      :placeholder="props.placeholder"
-      :value="data.value"
-      :disabled="props.disabled"
-      :tabindex="props.tabindex"
+      :placeholder="placeholder"
       :maxlength="maxLength"
-      @focus="onFocus"
+      :value="data.value"
+      :disabled="disabled"
+      :tabindex="tabindex"
       @input="onInput"
+      @focus="onFocus"
       @blur="onBlur"
-    />
+    >
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UINumberBox > input[type="number"]::-webkit-inner-spin-button,
+.UINumberBox > input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

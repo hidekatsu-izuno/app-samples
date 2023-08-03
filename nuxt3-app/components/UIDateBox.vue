@@ -179,7 +179,7 @@ function getFormatMaxLength(format: string) {
 </script>
 
 <template>
-  <div class="DateBox">
+  <div class="UIDateBox">
     <label
       v-if="label"
       class="block"
@@ -213,7 +213,7 @@ function getFormatMaxLength(format: string) {
         @blur="onBlur"
       >
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
-        <Icon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-500' : '']" />
+        <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-500' : '']" />
       </div>
     </div>
     <div
@@ -225,7 +225,7 @@ function getFormatMaxLength(format: string) {
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
         @click="onPickerPrevButtonClick"
       >
-        <Icon name="arrow-left" class="text-2xl" />
+        <UIIcon name="arrow-left" class="text-2xl" />
       </div>
       <div class="col-span-5 flex items-center justify-center h-8">
         {{ formatDate(pickerData.current, "uuuu/MM") }}
@@ -234,7 +234,7 @@ function getFormatMaxLength(format: string) {
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
         @click="onPickerNextButtonClick"
       >
-        <Icon name="arrow-right" class="text-2xl" />
+        <UIIcon name="arrow-right" class="text-2xl" />
       </div>
       <div
         v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
