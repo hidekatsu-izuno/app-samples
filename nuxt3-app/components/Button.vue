@@ -3,13 +3,19 @@ const props = withDefaults(defineProps<{
   label?: string,
   halign?: "start" | "center" | "end",
   type?: "filled" | "outline",
+  color?: "slate" | "gray" | "zinc" | "neutral" | "stone" |
+    "red" | "orange" | "amber" | "yellow" |
+    "lime" | "green" | "emerald" | "teal" |
+    "cyan" | "sky" | "blue" | "indigo" |
+    "violet" | "purple" | "fuchsia" | "pink" | "rose",
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   error?: string,
   disabled?: boolean,
 }>(), {
-  type: "filled"
+  type: "filled",
+  color: "blue",
 })
 
 const emits = defineEmits<{
@@ -39,9 +45,10 @@ function onBlur(event: Event) {
     >{{ label }}</label>
     <button
       type="button"
-      class="font-medium px-4 py-1.5 m-0 rounded-md outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="font-medium px-4 py-1.5 m-0 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200"
       :class="[
-        type === 'outline' ? 'text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-700' : 'text-white bg-blue-700',
+        type === 'outline' ? `text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-900` :
+          `text-white bg-blue-700 hover:bg-blue-900`,
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"

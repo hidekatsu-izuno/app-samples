@@ -84,8 +84,12 @@ function validate(value: string) {
       v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <select
-    class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+    <div
+      v-if="props.readonly"
+      class="block px-2 py-1 text-gray-900 border border-gray-200"
+    >{{ items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
+    <select v-else
+    class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])

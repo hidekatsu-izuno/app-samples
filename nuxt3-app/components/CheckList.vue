@@ -105,7 +105,15 @@ function validate(value: string[]) {
       v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
+    <ul
+      v-if="props.readonly"
+      class="block px-2 py-1 text-gray-900 border border-gray-200"
+    >
+      <li v-for="(item, index) in items.filter(item => data.value.includes(item.value))" :key="index">{{ item.text }}</li>
+      <li v-if="!data.value || data.value.length === 0">&#8203;</li>
+    </ul>
     <div
+      v-else
       class="grid"
       :class="[
         `grid-columns-${columns}`
@@ -117,17 +125,20 @@ function validate(value: string[]) {
       <div v-for="(item, index) in items" :key="index">
         <label
           class="inline-flex items-center gap-0.5 py-1"
-          :class="props.inputClass"
+          :class="[
+            disabled ? 'text-gray-500' : '',
+            ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+          ]"
           :style="props.inputStyle"
         ><input
           type="checkbox"
-          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
           :name="id || undefined"
           :value="item.value"
           :checked="data.value.includes(item.value)"
           :disabled="disabled"
           :tabindex="tabindex"
-        ><span>{{ item.text }}</span></label>
+        /><div>{{ item.text }}</div></label>
       </div>
     </div>
     <div

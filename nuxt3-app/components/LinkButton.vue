@@ -45,14 +45,16 @@ function onBlur(event: MouseEvent) {
       ]"
     >
       <NuxtLink
-        class="text-blue-600 rounded-md outline-none hover:underline focus:ring-2 focus:ring-blue-200 cursor-pointer"
-        :class="props.inputClass"
+        class="rounded-md outline-none focus:ring-2 focus:ring-blue-200"
+        :class="[
+          disabled ? 'text-gray-500 cursor-default' : 'text-blue-600 hover:underline cursor-pointer',
+          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+        ]"
         :style="props.inputStyle"
-        :href="href"
-        :disabled="disabled"
+        :href="!disabled && href"
         :tabindex="tabindex"
         @focus="onFocus"
-        @click="onClick"
+        @click="!disabled && onClick"
         @blur="onBlur"
       ><slot /></NuxtLink>
     </div>

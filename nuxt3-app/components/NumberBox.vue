@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<{
   readonly?: boolean,
   format?: string,
   schema?: ZodNumber,
-  modelValue?: string | number,
+  modelValue?: string,
 }>(), {
   required: false,
   format: ",###.###",
@@ -33,11 +33,7 @@ const data = reactive({
 
 watch(() => props.modelValue, () => {
   if (data.focused) {
-    if (typeof props.modelValue === "number") {
-      data.value = formatNumber(props.modelValue)
-    } else {
-      data.value = props.modelValue
-    }
+    data.value = props.modelValue
   } else {
     data.value = formatNumber(props.modelValue, props.format)
   }
@@ -138,10 +134,15 @@ function getFormatMaxLength(format: string) {
       v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
+    <div
+      v-if="props.readonly"
+      class="block px-2 py-1 text-gray-900 border border-gray-200"
+    >{{ data.value || '&#8203;' }}</div>
     <input
+      v-else
       type="text"
       inputmode="decimal"
-      class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+      class="p-2 text-sm text-right text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])

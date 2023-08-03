@@ -104,9 +104,15 @@ function validate(value: string) {
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <div
+      v-if="props.readonly"
+      class="block px-2 py-1 text-gray-900 border border-gray-200"
+    >{{ items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
+    <div
+      v-else
       class="grid"
       :class="[
-        `grid-columns-${columns}`
+        `grid-columns-${columns}`,
+        disabled ? 'text-gray-500' : '',
       ]"
       @change="onChange"
       @focusin="onFocusin"
@@ -119,13 +125,13 @@ function validate(value: string) {
           :style="props.inputStyle"
         ><input
           type="radio"
-          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
           value=""
           :name="id || undefined"
           :checked="!data.value"
           :disabled="disabled"
           :tabindex="tabindex"
-        >{{ placeholder }}</label>
+        /><div>{{ placeholder }}</div></label>
       </div>
       <div v-for="(item, index) in items" :key="index">
         <label
@@ -134,13 +140,13 @@ function validate(value: string) {
           :style="props.inputStyle"
         ><input
           type="radio"
-          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
           :name="id || undefined"
           :value="item.value"
           :checked="item.value === data.value"
           :disabled="disabled"
           :tabindex="tabindex"
-        >{{ item.text }}</label>
+        /><div>{{ item.text }}</div></label>
       </div>
     </div>
     <div

@@ -18,14 +18,14 @@ function onDrawerClick(e: MouseEvent) {
 
 <template>
   <div class="Frame flex flex-row-reverse w-full min-h-screen bg-white">
-    <div class="flex flex-col flex-grow">
+    <div class="flex flex-col grow">
       <header class="sticky top-0 left-0 right-0 z-10 overflow-hidden">
         <div class="flex flex-row items-center px-4 h-14 bg-white border-b border-gray-300 gap-2">
           <Icon name="menu" class="text-4xl xl:hidden cursor-pointer" @click="openDrawer" />
-          <div v-if="$slots.headerLeft" class="flex-grow overflow-hidden">
+          <div v-if="$slots.headerLeft" class="grow overflow-hidden">
             <slot name="headerLeft" />
           </div>
-          <div v-if="$slots.headerRight" class="flex-shrink justify-self-end overflow-hidden">
+          <div v-if="$slots.headerRight" class="shrink justify-self-end overflow-hidden">
             <slot name="headerRight" />
           </div>
         </div>
@@ -33,7 +33,7 @@ function onDrawerClick(e: MouseEvent) {
           <slot name="headerBottom" />
         </div>
       </header>
-      <main class="flex-grow p-4 bg-slate-50 overflow-hidden">
+      <main class="grow p-4 bg-slate-50 overflow-hidden">
         <slot />
       </main>
       <footer
@@ -55,7 +55,7 @@ function onDrawerClick(e: MouseEvent) {
       >
         <div class="flex items-center px-4 w-64 h-14">
           <Icon name="menu-open" class="text-4xl xl:hidden cursor-pointer mr-2" @click="closeDrawer" />
-          <div class="flex-grow text-lg font-bold">
+          <div class="grow text-lg font-bold">
             Nuxt3 App
           </div>
         </div>

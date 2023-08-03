@@ -117,6 +117,10 @@ function onBlur(event: Event) {
 
 function onPickerIconMouseDown(event: Event) {
   event.preventDefault()
+  if (props.disabled) {
+    return
+  }
+
   inputRef.value?.focus()
 
   pickerData.start = parseDate(data.value) || startOfDay(new Date())
@@ -181,6 +185,11 @@ function getFormatMaxLength(format: string) {
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
     <div
+      v-if="props.readonly"
+      class="block px-2 py-1 text-gray-900 border border-gray-200"
+    >{{ data.value || '&#8203;' }}</div>
+    <div
+      v-else
       class="relative"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
@@ -190,7 +199,7 @@ function getFormatMaxLength(format: string) {
         ref="inputRef"
         type="text"
         inputmode="numeric"
-        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
         :class="[
           halign ? `self-${halign}` : 'block w-full',
         ]"
@@ -203,7 +212,7 @@ function getFormatMaxLength(format: string) {
         @focus="onFocus"
         @blur="onBlur"
       >
-      <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="!disabled && onPickerIconMouseDown">
+      <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
         <Icon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-500' : '']" />
       </div>
     </div>

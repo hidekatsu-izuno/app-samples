@@ -125,23 +125,27 @@ function validate(value: string) {
       v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <input
-      class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+    <div
+      v-if="props.readonly"
+      class="block px-2 py-1 text-gray-900 border border-gray-200"
+    >{{ data.value || '&#8203;' }}</div>
+    <input v-else
+      class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
       ]"
       :style="props.inputStyle"
-      :type="type"
-      :placeholder="placeholder"
-      :maxlength="maxLength"
+      :type="props.type"
+      :placeholder="props.placeholder"
       :value="data.value"
-      :disabled="disabled"
-      :tabindex="tabindex"
+      :disabled="props.disabled"
+      :tabindex="props.tabindex"
+      :maxlength="maxLength"
       @focus="onFocus"
       @input="onInput"
       @blur="onBlur"
-    >
+    />
     <div
       v-if="data.error"
       class="block text-sm text-red-500"

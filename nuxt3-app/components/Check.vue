@@ -74,21 +74,33 @@ function validate(value: boolean) {
       class="block"
     >{{ label }}</label>
     <div
+      v-if="props.readonly"
+      class="block px-2 py-1 text-gray-900 border border-gray-200"
+    >
+      <template v-if="data.value"><slot /></template>
+      <template v-else>&#8203;</template>
+    </div>
+    <div
+      v-else
       :class="[
         halign ? `flex self-${halign}` : 'w-full',
       ]"
     >
       <label
         class="inline-flex items-center gap-1 py-1"
+        :class="[
+          disabled ? 'text-gray-500' : '',
+          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+        ]"
       ><input
         type="checkbox"
-        class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500"
+        class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
         :class="props.inputClass"
         :style="props.inputStyle"
-        :value="value"
+        :value="props.value"
+        :disabled="props.disabled"
+        :tabindex="props.tabindex"
         :checked="data.value"
-        :disabled="disabled"
-        :tabindex="tabindex"
         @focus="onFocus"
         @change="onChange"
         @blur="onBlur"

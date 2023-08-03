@@ -56,6 +56,7 @@ function onFocusout(event: Event) {
 <template>
   <div
     class="Paginator flex flex-row"
+    :class="disabled && 'text-gray-500'"
     @focusin="onFocusin"
     @focusout="onFocusout"
   >
@@ -89,5 +90,6 @@ function onFocusout(event: Event) {
     >
       <Icon name="chevron-right" class="text-2xl" />
     </button>
+    <div class="flex items-center px-2">{{ totalCount }} 件</div>
   </div>
 </template>
