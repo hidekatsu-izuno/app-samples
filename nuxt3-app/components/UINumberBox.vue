@@ -2,7 +2,6 @@
 import { ZodNumber } from "zod"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
-import { toHalfwidth } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",

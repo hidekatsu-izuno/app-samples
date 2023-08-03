@@ -4,7 +4,6 @@ import { ZodDate } from "zod"
 import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameDay, sub, add } from "date-fns"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
-import { toHalfwidth } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
