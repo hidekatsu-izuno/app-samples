@@ -124,7 +124,7 @@ function validate(value: string[]) {
     >
       <div v-for="(item, index) in items" :key="index">
         <label
-          class="inline-flex items-center gap-0.5 py-1"
+          class="inline-flex items-center gap-1 py-1"
           :class="[
             disabled ? 'text-gray-400' : '',
             ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
@@ -132,13 +132,13 @@ function validate(value: string[]) {
           :style="props.inputStyle"
         ><input
           type="checkbox"
-          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
+          class="peer appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
           :name="id || undefined"
           :value="item.value"
           :checked="data.value.includes(item.value)"
           :disabled="disabled"
           :tabindex="tabindex"
-        ><div>{{ item.text }}</div></label>
+        ><UIIcon name="check-bold" class="w-4 h-4 overflow-hidden text-xl text-white -ml-[20px] hidden peer-checked:block" />{{ item.text }}</label>
       </div>
     </div>
     <div
@@ -147,9 +147,3 @@ function validate(value: string[]) {
     >{{ data.error }}</div>
   </div>
 </template>
-
-<style>
-.UICheckList > div > div > label > input[type="checkbox"]:checked {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-}
-</style>

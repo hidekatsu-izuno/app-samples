@@ -9,10 +9,13 @@ const props = withDefaults(defineProps<{
   <div v-if="props.name === 'alert-circle-outline'" class="UIIcon icon-[mdi--alert-circle-outline]" />
   <div v-else-if="props.name === 'arrow-left'" class="UIIcon icon-[mdi--arrow-left]" />
   <div v-else-if="props.name === 'arrow-right'" class="UIIcon icon-[mdi--arrow-right]" />
-  <div v-else-if="props.name === 'close-circle'" class="UIIcon icon-[mdi--close-circle]" />
   <div v-else-if="props.name === 'calendar'" class="UIIcon icon-[mdi--calendar]" />
+  <div v-else-if="props.name === 'check'" class="UIIcon icon-[mdi--check]" />
+  <div v-else-if="props.name === 'check-bold'" class="UIIcon icon-[mdi--check-bold]" />
   <div v-else-if="props.name === 'chevron-left'" class="UIIcon icon-[mdi--chevron-left]" />
   <div v-else-if="props.name === 'chevron-right'" class="UIIcon icon-[mdi--chevron-right]" />
+  <div v-else-if="props.name === 'circle-medium'" class="UIIcon icon-[mdi--circle-medium]" />
+  <div v-else-if="props.name === 'close-circle'" class="UIIcon icon-[mdi--close-circle]" />
   <div v-else-if="props.name === 'help'" class="UIIcon icon-[mdi--help]" />
   <div v-else-if="props.name === 'menu'" class="UIIcon icon-[mdi--menu]" />
   <div v-else-if="props.name === 'menu-open'" class="UIIcon icon-[mdi--menu-open]" />
