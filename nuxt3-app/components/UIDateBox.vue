@@ -4,6 +4,7 @@ import { ZodDate } from "zod"
 import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameDay, sub, add } from "date-fns"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
+import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -120,7 +121,7 @@ function onBlur(event: Event) {
   pickerRef.value?.classList.add("hidden")
 
   const target = event.target as HTMLInputElement
-  const validated = validate(target.value)
+  const validated = validate(toHalfwidthAscii(target.value))
   if (validated) {
     data.value = formatDate(validated, props.format)
     emits("update:modelValue", data.value)

@@ -2,6 +2,7 @@
 import { ZodNumber } from "zod"
 import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
+import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -99,7 +100,8 @@ function onBlur(event: Event) {
   data.focused = false
 
   const target = event.target as HTMLInputElement
-  const validated = validate(target.value)
+  data.value = toHalfwidthAscii(target.value)
+  const validated = validate(data.value)
   if (validated) {
     data.value = formatNumber(validated, props.format)
     emits("update:modelValue", data.value)

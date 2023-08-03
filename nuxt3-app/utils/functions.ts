@@ -3,6 +3,7 @@ export {
   formatNumber,
   parseNumber,
   formatDate,
+  toHalfwidthAscii,
   CsvReader,
   CsvWriter,
   FixlenReader,
