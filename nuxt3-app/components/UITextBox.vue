@@ -83,7 +83,11 @@ function onCompositionEnd(event: Event) {
 
 function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
-  const validated = validate(props.filter ? props.filter(target.value) : target.value)
+  let value = props.filter ? props.filter(target.value) : target.value
+  if (props.type === "email" || props.type === "tel") {
+    value = toHalfwidthAscii(value)
+  }
+  const validated = validate(value)
   if (validated) {
     data.value = validated
     emits("update:modelValue", data.value)
