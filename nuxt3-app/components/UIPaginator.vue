@@ -56,13 +56,13 @@ function onFocusout(event: Event) {
 <template>
   <div
     class="UIPaginator flex flex-row"
-    :class="disabled && 'text-gray-500'"
+    :class="disabled && 'text-gray-400'"
     @focusin="onFocusin"
     @focusout="onFocusout"
   >
     <button
       type="button"
-      class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none disabled:text-gray-500 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="disabled || modelValue === 1"
       :data-value="1"
       @click="onClick"
@@ -71,7 +71,7 @@ function onFocusout(event: Event) {
     </button>
     <button
       type="button"
-      class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 w-8 h-8 outline-none disabled:text-gray-500 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="disabled || modelValue === 1"
       :data-value="Math.max(modelValue - 1, 1)"
       @click="onClick"
@@ -80,12 +80,10 @@ function onFocusout(event: Event) {
     </button>
     <div
       class="flex items-center justify-center bg-white border-y border-gray-300 w-48 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-    >
-      {{ modelValue }} / {{ maxPage }}
-    </div>
+    >{{ modelValue }} / {{ maxPage }}</div>
     <button
       type="button"
-      class="flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none disabled:text-gray-500 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="disabled || modelValue === maxPage"
       :data-value="Math.min(modelValue + 1, maxPage)"
       @click="onClick"

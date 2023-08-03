@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { uuid } from "~/utils/functions"
-const { data: id } = await useAsyncData("compId", () => uuid())
+const { data: id } = await useAsyncData("compId", () => Promise.resolve(uuid()))
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -114,7 +114,7 @@ function validate(value: string) {
       class="grid"
       :class="[
         `grid-columns-${columns}`,
-        disabled ? 'text-gray-500' : '',
+        disabled ? 'text-gray-400' : '',
       ]"
       @change="onChange"
       @focusin="onFocusin"
@@ -127,7 +127,7 @@ function validate(value: string) {
           :style="props.inputStyle"
         ><input
           type="radio"
-          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
+          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
           value=""
           :name="id || undefined"
           :checked="!data.value"
@@ -142,7 +142,7 @@ function validate(value: string) {
           :style="props.inputStyle"
         ><input
           type="radio"
-          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
+          class="appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
           :name="id || undefined"
           :value="item.value"
           :checked="item.value === data.value"

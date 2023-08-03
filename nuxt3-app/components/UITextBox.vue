@@ -133,7 +133,7 @@ function validate(value: string) {
     </div>
     <input
       v-else
-      class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+      class="block px-2 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
@@ -152,8 +152,6 @@ function validate(value: string) {
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >
-      {{ data.error }}
-    </div>
+    >{{ data.error }}</div>
   </div>
 </template>

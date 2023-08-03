@@ -45,7 +45,7 @@ function onBlur(event: Event) {
     >{{ label }}</label>
     <button
       type="button"
-      class="font-medium px-4 py-1.5 m-0 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200"
+      class="font-medium px-4 py-1.5 m-0 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200"
       :class="[
         type === 'outline' ? `text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-900` :
         `text-white bg-blue-700 hover:bg-blue-900`,

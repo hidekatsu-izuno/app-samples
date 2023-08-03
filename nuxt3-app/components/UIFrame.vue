@@ -55,9 +55,7 @@ function onDrawerClick(e: MouseEvent) {
       >
         <div class="flex items-center px-4 w-64 h-14">
           <UIIcon name="menu-open" class="text-4xl xl:hidden cursor-pointer mr-2" @click="closeDrawer" />
-          <div class="grow text-lg font-bold">
-            Nuxt3 App
-          </div>
+          <div class="grow text-lg font-bold">Nuxt3 App</div>
         </div>
         <slot name="drawer" />
       </div>

@@ -12,7 +12,6 @@ const props = withDefaults(defineProps<{
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   required?: boolean,
   disabled?: boolean,
-  readonly?: boolean,
   modelValue?: File[],
 }>(), {
   required: false,
@@ -98,18 +97,10 @@ function validate(value?: File[]) {
       v-if="label"
       class="block"
     >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
-    <ul
-      v-if="props.readonly"
-      class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >
-      <li v-for="(file, index) in data.value" :key="index">{{ file.name }}</li>
-      <li v-if="!data.value">&#8203;</li>
-    </ul>
     <input
-      v-else
       type="file"
       multiple="true"
-      class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+      class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
       :class="[
         halign ? `self-${halign}` : 'block w-full',
         ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
@@ -123,12 +114,10 @@ function validate(value?: File[]) {
       @focus="onFocus"
       @change="onChange"
       @blur="onBlur"
-    >
+    />
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >
-      {{ data.error }}
-    </div>
+    >{{ data.error }}</div>
   </div>
 </template>

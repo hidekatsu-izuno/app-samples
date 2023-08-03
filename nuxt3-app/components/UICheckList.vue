@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { uuid } from "~/utils/functions"
-const { data: id } = await useAsyncData("compId", () => uuid())
+const { data: id } = await useAsyncData("compId", () => Promise.resolve(uuid()))
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
@@ -126,13 +126,13 @@ function validate(value: string[]) {
         <label
           class="inline-flex items-center gap-0.5 py-1"
           :class="[
-            disabled ? 'text-gray-500' : '',
+            disabled ? 'text-gray-400' : '',
             ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
           ]"
           :style="props.inputStyle"
         ><input
           type="checkbox"
-          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
+          class="appearance-none w-4 h-4 mr-1 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
           :name="id || undefined"
           :value="item.value"
           :checked="data.value.includes(item.value)"

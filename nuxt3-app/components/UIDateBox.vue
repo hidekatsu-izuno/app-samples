@@ -199,7 +199,7 @@ function getFormatMaxLength(format: string) {
         ref="inputRef"
         type="text"
         inputmode="numeric"
-        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
         :class="[
           halign ? `self-${halign}` : 'block w-full',
         ]"
@@ -213,7 +213,7 @@ function getFormatMaxLength(format: string) {
         @blur="onBlur"
       >
       <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
-        <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-500' : '']" />
+        <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-400' : '']" />
       </div>
     </div>
     <div
@@ -227,9 +227,7 @@ function getFormatMaxLength(format: string) {
       >
         <UIIcon name="arrow-left" class="text-2xl" />
       </div>
-      <div class="col-span-5 flex items-center justify-center h-8">
-        {{ formatDate(pickerData.current, "uuuu/MM") }}
-      </div>
+      <div class="col-span-5 flex items-center justify-center h-8">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
       <div
         class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
         @click="onPickerNextButtonClick"
@@ -239,10 +237,8 @@ function getFormatMaxLength(format: string) {
       <div
         v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
         :key="week"
-        class="flex font-medium text-gray-500 items-center justify-center w-8 h-6"
-      >
-        {{ week }}
-      </div>
+        class="flex font-medium text-gray-400 items-center justify-center w-8 h-6"
+      >{{ week }}</div>
       <div
         v-for="date in eachDayOfInterval({
           start: startOfWeek(startOfMonth(pickerData.current)),
@@ -251,7 +247,7 @@ function getFormatMaxLength(format: string) {
         :key="date.getTime()"
         class="flex font-medium items-center justify-center h-8 rounded-md cursor-default"
         :class="[
-          isSameDay(pickerData.start, date) ? 'text-white bg-blue-700 hover:bg-blue-800' : 'text-gray-500 hover:bg-gray-100',
+          isSameDay(pickerData.start, date) ? 'text-white bg-blue-700 hover:bg-blue-800' : 'text-gray-400 hover:bg-gray-100',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
         :style="props.inputStyle"

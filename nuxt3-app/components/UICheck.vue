@@ -89,12 +89,12 @@ function validate(value: boolean) {
       <label
         class="inline-flex items-center gap-1 py-1"
         :class="[
-          disabled ? 'text-gray-500' : '',
+          disabled ? 'text-gray-400' : '',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
       ><input
         type="checkbox"
-        class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-500"
+        class="appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
         :class="props.inputClass"
         :style="props.inputStyle"
         :value="props.value"

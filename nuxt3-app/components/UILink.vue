@@ -47,7 +47,7 @@ function onBlur(event: MouseEvent) {
       <NuxtLink
         class="rounded-md outline-none focus:ring-2 focus:ring-blue-200"
         :class="[
-          disabled ? 'text-gray-500 cursor-default' : 'text-blue-600 hover:underline cursor-pointer',
+          disabled ? 'text-gray-400 cursor-default' : 'text-blue-600 hover:underline cursor-pointer',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
         :style="props.inputStyle"
@@ -63,8 +63,6 @@ function onBlur(event: MouseEvent) {
     <div
       v-if="data.error"
       class="block text-sm text-red-500"
-    >
-      {{ data.error }}
-    </div>
+    >{{ data.error }}</div>
   </div>
 </template>

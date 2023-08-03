@@ -47,12 +47,10 @@ const data = reactive({
   radiolist2: "",
   fileuploadRequired: false,
   fileuploadDisabled: false,
-  fileuploadReadonly: false,
   fileupload1: undefined as File | undefined,
   fileupload2: undefined as File | undefined,
   multifileuploadRequired: false,
   multifileuploadDisabled: false,
-  multifileuploadReadonly: false,
   multifileupload1: [] as File[],
   multifileupload2: [] as File[],
   paginatorDisabled: false,
@@ -288,12 +286,11 @@ const data = reactive({
           <h2 class="grow">ファイル選択 (UIFileUpload)</h2>
           <div class="shrink"><input v-model="data.fileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.fileuploadDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.fileuploadReadonly" type="checkbox"> readonly</div>
         </div>
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <UIFileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" :readonly="data.fileuploadReadonly" />
+        <UIFileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" />
         <div class="border">{{ data.fileupload1?.name }}</div>
       </div>
     </UICard>
@@ -304,12 +301,11 @@ const data = reactive({
           <h2 class="grow">複数ファイル選択 (UIMultiFileUpload)</h2>
           <div class="shrink"><input v-model="data.multifileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.multifileuploadDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.multifileuploadReadonly" type="checkbox"> readonly</div>
         </div>
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <UIMultiFileUpload v-model="data.multifileupload1" label="デフォルト" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" :readonly="data.multifileuploadReadonly" />
+        <UIMultiFileUpload v-model="data.multifileupload1" label="デフォルト" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" />
         <div class="border">{{ data.multifileupload1.map((item: File) => item.name) }}</div>
       </div>
     </UICard>
