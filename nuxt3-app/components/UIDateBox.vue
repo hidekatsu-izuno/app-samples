@@ -230,7 +230,7 @@ defineExpose({
       class="UIDateBox-Content"
     >
       <div v-if="props.prefix" class="UIDateBox-Prefix">{{ props.prefix }}</div>
-      <div class="relative" :class="props.halign ? 'flex-none' : 'grow'">
+      <div class="UIDateBox-InputArea">
         <input
           class="UIDateBox-Input"
           ref="inputRef"
@@ -247,8 +247,8 @@ defineExpose({
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
         />
-        <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
-          <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-400' : '']" />
+        <div class="UIDateBox-InputCalender" @mousedown="onPickerIconMouseDown">
+          <UIIcon name="calendar" />
         </div>
       </div>
       <div v-if="props.suffix" class="UIDateBox-Suffix">{{ props.suffix }}</div>
@@ -263,14 +263,14 @@ defineExpose({
         class="UIDateBox-CalendarPrevInput"
         @click="onPickerPrevButtonClick"
       >
-        <UIIcon name="arrow-left" class="UIDateBox-CalendarPrevInputIcon" />
+        <UIIcon name="arrow-left" />
       </div>
       <div class="UIDateBox-CalendarMonth">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
       <div
         class="UIDateBox-CalendarNextInput"
         @click="onPickerNextButtonClick"
       >
-        <UIIcon name="arrow-right" class="UIDateBox-CalendarNextInputIcon" />
+        <UIIcon name="arrow-right" />
       </div>
       <div
         v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
@@ -308,6 +308,11 @@ defineExpose({
   @apply flex flex-row items-center gap-2;
 }
 
+.UIDateBox-InputArea {
+  @apply grid
+    w-full;
+}
+
 .UIDateBox-Input {
   @apply focus:ring-2 focus:ring-blue-200
     outline-none
@@ -316,12 +321,22 @@ defineExpose({
     w-full
     disabled:bg-gray-100
     text-gray-900 bg-gray-50 disabled:text-gray-400;
-
+  grid-area: 1/1;
 }
-.UIDateBox-Input::-webkit-inner-spin-button,
+.UIDateBox-Input-webkit-inner-spin-button,
 .UIDateBox-Input::-webkit-outer-spin-button {
-  @apply m-0;
-  -webkit-appearance: none;
+  @apply appearance-none
+    m-0;
+}
+
+.UIDateBox-InputCalender {
+  @apply flex items-center justify-end
+    px-1;
+  grid-area: 1/1;
+
+  .UIIcon {
+    @apply text-2xl;
+  }
 }
 
 .UIDateBox-Text {
@@ -350,11 +365,10 @@ defineExpose({
     w-8 h-8
     hover:bg-gray-100
     cursor-default;
-}
 
-.UIDateBox-CalendarPrevInputIcon,
-.UIDateBox-CalendarNextInputIcon {
-  @apply text-2xl;
+  .UIIcon {
+    @apply text-2xl;
+  }
 }
 
 .UIDateBox-CalendarMonth {
@@ -389,12 +403,52 @@ defineExpose({
   }
 }
 
+.UIDateBox-disabled {
+  .UIDateBox-InputCalender {
+    .UIIcon {
+      @apply text-gray-400;
+    }
+  }
+}
+
 .UIDateBox-readonly {
   .UIDateBox-Content {
     @apply justify-start
       border border-gray-200
       px-2 py-1
       text-gray-900;
+  }
+}
+
+:not(.UIDateBox-readonly) {
+  .UIDateBox-halign-start {
+    .UIDateBox-Content {
+      @apply justify-start;
+    }
+
+    .UIDateBox-InputArea {
+      @apply w-auto;
+    }
+  }
+
+  .UIDateBox-halign-center {
+    .UIDateBox-Content {
+      @apply justify-center;
+    }
+
+    .UIDateBox-InputArea {
+      @apply w-auto;
+    }
+  }
+
+  .UIDateBox-halign-end {
+    .UIDateBox-Content {
+      @apply justify-end;
+    }
+
+    .UIDateBox-InputArea {
+      @apply w-auto;
+    }
   }
 }
 </style>

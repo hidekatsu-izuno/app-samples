@@ -10,8 +10,4 @@ export {
   FixlenWriter,
 } from "jtc-utils"
 
-export function uuid() {
-  return crypto.randomUUID()
-}
-
 export { default as range } from "lodash-es/range"

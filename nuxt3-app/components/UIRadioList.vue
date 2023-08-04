@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { uuid } from "~/utils/functions"
-const { data: id } = await useAsyncData("compId", () => Promise.resolve(uuid()))
+const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",

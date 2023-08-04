@@ -224,8 +224,8 @@ defineExpose({
 
 .UINumberBox-Input::-webkit-inner-spin-button,
 .UINumberBox-Input::-webkit-outer-spin-button {
-  @apply m-0;
-  -webkit-appearance: none;
+  @apply appearance-none
+    m-0;
 }
 
 .UINumberBox-Text {
