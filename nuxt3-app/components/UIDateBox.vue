@@ -271,11 +271,13 @@ defineExpose({
       >
         <UIIcon name="arrow-right" />
       </div>
-      <div
-        v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
-        :key="week"
-        class="UIDateBox-CalenderWeek"
-      >{{ week }}</div>
+      <div class="UIDateBox-CalenderSunday"></div>
+      <div class="UIDateBox-CalenderMonday"></div>
+      <div class="UIDateBox-CalenderTuesday"></div>
+      <div class="UIDateBox-CalenderWednesday"></div>
+      <div class="UIDateBox-CalenderThursday"></div>
+      <div class="UIDateBox-CalenderFriday"></div>
+      <div class="UIDateBox-CalenderSaturday"></div>
       <div
         v-for="date in eachDayOfInterval({
           start: startOfWeek(startOfMonth(pickerData.current)),
@@ -376,10 +378,38 @@ defineExpose({
     h-8;
 }
 
-.UIDateBox-CalenderWeek {
+.UIDateBox-CalenderSunday,
+.UIDateBox-CalenderMonday,
+.UIDateBox-CalenderTuesday,
+.UIDateBox-CalenderWednesday,
+.UIDateBox-CalenderThursday,
+.UIDateBox-CalenderFriday,
+.UIDateBox-CalenderSaturday {
   @apply flex items-center justify-center
     w-8 h-6
     font-bold text-gray-400;
+}
+
+.UIDateBox-CalenderSunday::before {
+  content: '日'
+}
+.UIDateBox-CalenderMonday::before {
+  content: '月'
+}
+.UIDateBox-CalenderTuesday::before {
+  content: '火'
+}
+.UIDateBox-CalenderWednesday::before {
+  content: '水'
+}
+.UIDateBox-CalenderThursday::before {
+  content: '木'
+}
+.UIDateBox-CalenderFriday::before {
+  content: '金'
+}
+.UIDateBox-CalenderSaturday::before {
+  content: '土'
 }
 
 .UIDateBox-CalenderDate {

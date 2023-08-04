@@ -133,14 +133,16 @@ function onFocusout(event: Event) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border-y border-gray-300 hover:enabled:border-0
-    w-48 h-8
+    px-2
+    w-full
     bg-white hover:enabled:bg-blue-800
     hover:enabled:text-white;
 }
 
 .UIPaginator-TotalCount {
   @apply flex items-center
-    px-2;
+    px-2
+    w-full;
 }
 
 .UIPaginator-TotalCount::after {
@@ -153,13 +155,28 @@ function onFocusout(event: Event) {
 
 .UIPaginator[data-halign="start"] {
   @apply justify-start;
+
+  .UIPaginator-Page,
+  .UIPaginator-TotalCount {
+    @apply w-auto;
+  }
 }
 
 .UIPaginator[data-halign="center"] {
   @apply justify-center;
+
+  .UIPaginator-Page,
+  .UIPaginator-TotalCount {
+    @apply w-auto;
+  }
 }
 
 .UIPaginator[data-halign="end"] {
   @apply justify-end;
+
+  .UIPaginator-Page,
+  .UIPaginator-TotalCount {
+    @apply w-auto;
+  }
 }
 </style>

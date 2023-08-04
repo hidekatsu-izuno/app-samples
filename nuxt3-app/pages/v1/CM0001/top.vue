@@ -81,7 +81,7 @@ const data = reactive({
 <template>
   <UIFrame>
     <template #title>
-      <h1 class="text-xl">コンポーネント一覧</h1>
+      <h1 class="text-xl">コンポーネント一覧 (Title)</h1>
     </template>
     <template #actions>
       Actions
@@ -416,7 +416,8 @@ const data = reactive({
         <UIPaginator v-model="data.paginator1" :disabled="data.paginatorDisabled" />
         <div class="border">{{ data.paginator1 }}</div>
 
-        <UIPaginator v-model="data.paginator2" :disabled="data.paginatorDisabled" :page-size="50" :total-count="1000" />
+        <UIPaginator v-model="data.paginator2" :disabled="data.paginatorDisabled"
+          halign="center" :page-size="50" :total-count="1000" />
         <div class="border">{{ data.paginator2 }}</div>
       </div>
     </UICard>
