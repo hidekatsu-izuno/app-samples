@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
-
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
@@ -23,6 +21,12 @@ const props = withDefaults(defineProps<{
   modelValue: () => [],
 })
 
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: string[]): void,
+  (event: "blur", value: Event): void,
+}>()
+
 const data = reactive({
   value: new Array<string>(),
   focused: false,
@@ -32,6 +36,12 @@ const data = reactive({
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
 }, { immediate: true })
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  },
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -46,11 +56,7 @@ if (props.name) {
   }
 }
 
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: string[]): void,
-  (event: "blur", value: Event): void,
-}>()
+const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
 
 function onFocusin(event: Event) {
   if (!data.focused) {
@@ -98,16 +104,11 @@ function validate(value: string[]) {
     return value
   }
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value)
-  }
-})
 </script>
 
 <template>
-  <div class="UICheckList"
+  <div
+    class="UICheckList"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
@@ -122,8 +123,11 @@ defineExpose({
       class="UICheckList-Content"
     >
       <template v-if="data.value.length > 0">
-        <li v-for="(item, index) in props.items.filter(item => data.value.includes(item.value))" :key="index"
-          class="UICheckList-ContentItem">
+        <li
+          v-for="(item, index) in props.items.filter(item => data.value.includes(item.value))"
+          :key="index"
+          class="UICheckList-ContentItem"
+        >
           <div v-if="props.prefix" class="UICheckList-Prefix">{{ props.prefix }}</div>
           <div class="UICheckList-Text">{{ item.text }}</div>
           <div v-if="props.suffix" class="UICheckList-Suffix">{{ props.suffix }}</div>
@@ -138,7 +142,9 @@ defineExpose({
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
-      <div v-for="(item, index) in props.items" :key="index"
+      <div
+        v-for="(item, index) in props.items"
+        :key="index"
         class="UICheckList-ContentItem"
       >
         <div v-if="props.prefix" class="UICheckList-Prefix">{{ props.prefix }}</div>
@@ -157,7 +163,7 @@ defineExpose({
                 :tabindex="props.tabindex"
                 :value="item.value"
                 :checked="data.value.includes(item.value)"
-              />
+              >
               <UIIcon name="check-bold" class="UICheckList-InputCheck hidden peer-checked:block" />
             </div>
             {{ item.text }}

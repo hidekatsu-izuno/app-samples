@@ -2,7 +2,7 @@
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock"
 
 defineOptions({
-  inheritAttrs: false
+  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<{
@@ -44,14 +44,14 @@ const emits = defineEmits<{
   (event: "close", value: any): void,
 }>()
 
+defineExpose({
+  close,
+})
+
 function close(result: any) {
   emits("update:modelValue", false)
   emits("close", result)
 }
-
-defineExpose({
-  close
-})
 </script>
 
 <template>

@@ -17,6 +17,12 @@ const props = withDefaults(defineProps<{
   modelValue: false,
 })
 
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: boolean): void,
+  (event: "blur", value: Event): void,
+}>()
+
 const data = reactive({
   value: false,
   error: "",
@@ -25,12 +31,6 @@ const data = reactive({
 watch(() => props.modelValue, () => {
   data.value = !!props.modelValue
 }, { immediate: true })
-
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: boolean): void,
-  (event: "blur", value: Event): void,
-}>()
 
 function onFocus(event: Event) {
   emits("focus", event)
@@ -71,12 +71,13 @@ function validate(value: boolean) {
 defineExpose({
   validate() {
     return validate(data.value)
-  }
+  },
 })
 </script>
 
 <template>
-  <div class="UICheck"
+  <div
+    class="UICheck"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
@@ -113,7 +114,7 @@ defineExpose({
             @focus="onFocus"
             @change="onChange"
             @blur="onBlur"
-          />
+          >
           <UIIcon name="check-bold" class="UICheck-InputCheck hidden peer-checked:block" />
         </div>
         <slot />

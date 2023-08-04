@@ -26,7 +26,11 @@ const props = withDefaults(defineProps<{
   modelValue: "",
 })
 
-const maxLength = computed(() => props.schema?.maxLength ?? undefined)
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: string): void,
+  (event: "blur", value: Event): void,
+}>()
 
 const data = reactive({
   value: "",
@@ -34,9 +38,17 @@ const data = reactive({
   ime: false,
 })
 
+const maxLength = computed(() => props.schema?.maxLength ?? undefined)
+
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
 }, { immediate: true })
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  },
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -50,12 +62,6 @@ if (props.name) {
     })
   }
 }
-
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: string): void,
-  (event: "blur", value: Event): void,
-}>()
 
 function onFocus(event: Event) {
   emits("focus", event)
@@ -138,12 +144,6 @@ function validate(value: string) {
     return value
   }
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value)
-  }
-})
 </script>
 
 <template>
@@ -186,7 +186,7 @@ defineExpose({
         @blur="onBlur"
         @compositionstart="onCompositionStart"
         @compositionend="onCompositionEnd"
-      />
+      >
       <div v-if="props.suffix" class="UITextBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
@@ -206,8 +206,7 @@ defineExpose({
 }
 
 .UITextBox-Input {
-  @apply
-    focus:ring-2 focus:ring-blue-200
+  @apply focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     px-2 py-1

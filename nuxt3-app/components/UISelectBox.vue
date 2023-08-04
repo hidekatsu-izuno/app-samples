@@ -20,6 +20,12 @@ const props = withDefaults(defineProps<{
   modelValue: "",
 })
 
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: string): void,
+  (event: "blur", value: Event): void,
+}>()
+
 const data = reactive({
   value: "",
   error: "",
@@ -28,6 +34,12 @@ const data = reactive({
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
 }, { immediate: true })
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  },
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -41,12 +53,6 @@ if (props.name) {
     })
   }
 }
-
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: string): void,
-  (event: "blur", value: Event): void,
-}>()
 
 function onFocus(event: Event) {
   emits("focus", event)
@@ -78,16 +84,11 @@ function validate(value: string) {
     return value
   }
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value)
-  }
-})
 </script>
 
 <template>
-  <div class="UISelectBox"
+  <div
+    class="UISelectBox"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"

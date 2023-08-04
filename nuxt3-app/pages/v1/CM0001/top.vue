@@ -193,8 +193,16 @@ const data = reactive({
         />
         <div class="border">{{ data.numberbox2 }}</div>
 
-        <UINumberBox v-model="data.numberbox3" label="装飾" :required="data.numberboxRequired" :disabled="data.numberboxDisabled" :readonly="data.numberboxReadonly"
-        prefix="(" suffix=")" halign="center" />
+        <UINumberBox
+          v-model="data.numberbox3"
+          label="装飾"
+          :required="data.numberboxRequired"
+          :disabled="data.numberboxDisabled"
+          :readonly="data.numberboxReadonly"
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
         <div class="border">{{ data.numberbox3 }}</div>
       </div>
     </UICard>
@@ -213,12 +221,26 @@ const data = reactive({
         <UIDateBox v-model="data.datebox1" label="デフォルト" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly" />
         <div class="border">{{ data.datebox1 }}</div>
 
-        <UIDateBox v-model="data.datebox2" label="フォーマット" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly"
-          format="'('u-M-d')'" />
+        <UIDateBox
+          v-model="data.datebox2"
+          label="フォーマット"
+          :required="data.dateboxRequired"
+          :disabled="data.dateboxDisabled"
+          :readonly="data.dateboxReadonly"
+          format="'('u-M-d')'"
+        />
         <div class="border">{{ data.datebox2 }}</div>
 
-        <UIDateBox v-model="data.datebox3" label="装飾" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly"
-          prefix="(" suffix=")" halign="center" />
+        <UIDateBox
+          v-model="data.datebox3"
+          label="装飾"
+          :required="data.dateboxRequired"
+          :disabled="data.dateboxDisabled"
+          :readonly="data.dateboxReadonly"
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
         <div class="border">{{ data.datebox3 }}</div>
       </div>
     </UICard>
@@ -237,8 +259,16 @@ const data = reactive({
         <UITextArea v-model="data.textarea1" label="デフォルト" :required="data.textareaRequired" :disabled="data.textareaDisabled" :readonly="data.textareaReadonly" />
         <div class="border">{{ data.textarea1 }}</div>
 
-        <UITextArea v-model="data.textarea2" label="装飾" :required="data.textareaRequired" :disabled="data.textareaDisabled" :readonly="data.textareaReadonly"
-          prefix="(" suffix=")" halign="center"/>
+        <UITextArea
+          v-model="data.textarea2"
+          label="装飾"
+          :required="data.textareaRequired"
+          :disabled="data.textareaDisabled"
+          :readonly="data.textareaReadonly"
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
         <div class="border">{{ data.textarea2 }}</div>
       </div>
     </UICard>
@@ -273,7 +303,10 @@ const data = reactive({
           :readonly="data.selectboxReadonly"
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
           placeholder="---"
-          prefix="(" suffix=")" halign="center"/>
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
         <div class="border">{{ data.selectbox2 }}</div>
       </div>
     </UICard>
@@ -292,8 +325,16 @@ const data = reactive({
         <UICheck v-model="data.check1" label="デフォルト" :required="data.checkRequired" :disabled="data.checkDisabled" :readonly="data.checkReadonly">チェックボックス</UICheck>
         <div class="border">{{ data.check1 }}</div>
 
-        <UICheck v-model="data.check2" label="装飾" :required="data.checkRequired" :disabled="data.checkDisabled" :readonly="data.checkReadonly"
-          prefix="(" suffix=")" halign="center">チェックボックス</UICheck>
+        <UICheck
+          v-model="data.check2"
+          label="装飾"
+          :required="data.checkRequired"
+          :disabled="data.checkDisabled"
+          :readonly="data.checkReadonly"
+          prefix="("
+          suffix=")"
+          halign="center"
+        >チェックボックス</UICheck>
         <div class="border">{{ data.check2 }}</div>
       </div>
     </UICard>
@@ -326,7 +367,9 @@ const data = reactive({
           :disabled="data.checklistDisabled"
           :readonly="data.checklistReadonly"
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
-          prefix="(" suffix=")" halign="center"
+          prefix="("
+          suffix=")"
+          halign="center"
         />
         <div class="border">{{ data.checklist2 }}</div>
       </div>
@@ -360,7 +403,9 @@ const data = reactive({
           :disabled="data.radiolistDisabled"
           :readonly="data.radiolistReadonly"
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
-          prefix="(" suffix=")" halign="center"
+          prefix="("
+          suffix=")"
+          halign="center"
         />
         <div class="border">{{ data.radiolist2 }}</div>
       </div>
@@ -379,8 +424,15 @@ const data = reactive({
         <UIFileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" />
         <div class="border">{{ data.fileupload1?.name }}</div>
 
-        <UIFileUpload v-model="data.fileupload2" label="装飾" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled"
-          prefix="(" suffix=")" halign="center" />
+        <UIFileUpload
+          v-model="data.fileupload2"
+          label="装飾"
+          :required="data.fileuploadRequired"
+          :disabled="data.fileuploadDisabled"
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
         <div class="border">{{ data.fileupload2?.name }}</div>
       </div>
     </UICard>
@@ -398,8 +450,15 @@ const data = reactive({
         <UIMultiFileUpload v-model="data.multifileupload1" label="デフォルト" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" />
         <div class="border">{{ data.multifileupload1.map((item: File) => item.name) }}</div>
 
-        <UIMultiFileUpload v-model="data.multifileupload2" label="装飾" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled"
-          prefix="(" suffix=")" halign="center" />
+        <UIMultiFileUpload
+          v-model="data.multifileupload2"
+          label="装飾"
+          :required="data.multifileuploadRequired"
+          :disabled="data.multifileuploadDisabled"
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
         <div class="border">{{ data.multifileupload2.map((item: File) => item.name) }}</div>
       </div>
     </UICard>
@@ -416,8 +475,13 @@ const data = reactive({
         <UIPaginator v-model="data.paginator1" :disabled="data.paginatorDisabled" />
         <div class="border">{{ data.paginator1 }}</div>
 
-        <UIPaginator v-model="data.paginator2" :disabled="data.paginatorDisabled"
-          halign="center" :page-size="50" :total-count="1000" />
+        <UIPaginator
+          v-model="data.paginator2"
+          :disabled="data.paginatorDisabled"
+          halign="center"
+          :page-size="50"
+          :total-count="1000"
+        />
         <div class="border">{{ data.paginator2 }}</div>
       </div>
     </UICard>
@@ -437,8 +501,14 @@ const data = reactive({
         <UIButton label="アウトライン" type="outline" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</UIButton>
         <div class="border">{{ data.button2 }}</div>
 
-        <UIButton label="装飾" :disabled="data.buttonDisabled" @click="data.button3++"
-          prefix="(" suffix=")" halign="center">ボタン</UIButton>
+        <UIButton
+          label="装飾"
+          :disabled="data.buttonDisabled"
+          prefix="("
+          suffix=")"
+          halign="center"
+          @click="data.button3++"
+        >ボタン</UIButton>
         <div class="border">{{ data.button3 }}</div>
       </div>
     </UICard>
@@ -455,8 +525,14 @@ const data = reactive({
         <UILink label="デフォルト" :disabled="data.linkDisabled" @click="data.link1++">リンク</UILink>
         <div class="border">{{ data.link1 }}</div>
 
-        <UILink label="装飾" :disabled="data.linkDisabled" @click="data.link2++"
-          prefix="(" suffix=")" halign="center">リンク</UILink>
+        <UILink
+          label="装飾"
+          :disabled="data.linkDisabled"
+          prefix="("
+          suffix=")"
+          halign="center"
+          @click="data.link2++"
+        >リンク</UILink>
         <div class="border">{{ data.link2 }}</div>
       </div>
     </UICard>

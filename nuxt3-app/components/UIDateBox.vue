@@ -28,7 +28,11 @@ const props = withDefaults(defineProps<{
   modelValue: "",
 })
 
-const maxLength = computed(() => getFormatMaxLength(props.format))
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: string): void,
+  (event: "blur", value: Event): void,
+}>()
 
 const data = reactive({
   focused: false,
@@ -37,9 +41,17 @@ const data = reactive({
   ime: false,
 })
 
+const maxLength = computed(() => getFormatMaxLength(props.format))
+
 watch(() => props.modelValue, () => {
   data.value = data.focused ? props.modelValue : formatDate(props.modelValue, props.format)
 }, { immediate: true })
+
+defineExpose({
+  validate() {
+    return validate(data.value, props.format)
+  },
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -74,12 +86,6 @@ onMounted(() => {
     popper?.destroy()
   })
 })
-
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: string): void,
-  (event: "blur", value: Event): void,
-}>()
 
 function onFocus(event: Event) {
   data.focused = true
@@ -197,16 +203,11 @@ function validate(value: string, format?: string) {
 function getFormatMaxLength(format: string) {
   return format.length * 4
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value, props.format)
-  }
-})
 </script>
 
 <template>
-  <div class="UIDateBox"
+  <div
+    class="UIDateBox"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
@@ -231,8 +232,8 @@ defineExpose({
       <div v-if="props.prefix" class="UIDateBox-Prefix">{{ props.prefix }}</div>
       <div class="UIDateBox-InputArea">
         <input
-          class="UIDateBox-Input"
           ref="inputRef"
+          class="UIDateBox-Input"
           type="text"
           inputmode="numeric"
           :placeholder="props.placeholder"
@@ -245,7 +246,7 @@ defineExpose({
           @blur="onBlur"
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
-        />
+        >
         <div class="UIDateBox-InputCalender" @mousedown="onPickerIconMouseDown">
           <UIIcon name="calendar" />
         </div>
@@ -271,20 +272,20 @@ defineExpose({
       >
         <UIIcon name="arrow-right" />
       </div>
-      <div class="UIDateBox-CalenderSunday"></div>
-      <div class="UIDateBox-CalenderMonday"></div>
-      <div class="UIDateBox-CalenderTuesday"></div>
-      <div class="UIDateBox-CalenderWednesday"></div>
-      <div class="UIDateBox-CalenderThursday"></div>
-      <div class="UIDateBox-CalenderFriday"></div>
-      <div class="UIDateBox-CalenderSaturday"></div>
+      <div class="UIDateBox-CalenderSunday" />
+      <div class="UIDateBox-CalenderMonday" />
+      <div class="UIDateBox-CalenderTuesday" />
+      <div class="UIDateBox-CalenderWednesday" />
+      <div class="UIDateBox-CalenderThursday" />
+      <div class="UIDateBox-CalenderFriday" />
+      <div class="UIDateBox-CalenderSaturday" />
       <div
         v-for="date in eachDayOfInterval({
           start: startOfWeek(startOfMonth(pickerData.current)),
           end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
         })"
-        class="UIDateBox-CalenderDate"
         :key="date.getTime()"
+        class="UIDateBox-CalenderDate"
         :class="[
           isSameDay(pickerData.start, date) ? 'UIDateBox-CalenderDate-today' : '',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])

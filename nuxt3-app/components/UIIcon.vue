@@ -6,7 +6,7 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-  <div class="UIIcon" :data-name="name" />
+  <div class="UIIcon" :data-name="props.name" />
 </template>
 
 <style>

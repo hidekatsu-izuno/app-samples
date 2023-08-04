@@ -12,15 +12,15 @@ const props = withDefaults(defineProps<{
 }>(), {
 })
 
-const data = reactive({
-  error: "",
-})
-
 const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "click", value: MouseEvent): void,
   (event: "blur", value: Event): void,
 }>()
+
+const data = reactive({
+  error: "",
+})
 
 function onFocus(event: MouseEvent) {
   emits("focus", event)
@@ -41,7 +41,8 @@ function onBlur(event: MouseEvent) {
 </script>
 
 <template>
-  <div class="UILink"
+  <div
+    class="UILink"
     :data-disabled="props.disabled || undefined"
     :data-halign="props.halign"
   >

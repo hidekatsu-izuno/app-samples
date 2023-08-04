@@ -20,6 +20,12 @@ const props = withDefaults(defineProps<{
   modelValue: () => [],
 })
 
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: File[]): void,
+  (event: "blur", value: Event): void,
+}>()
+
 const data = reactive({
   value: [] as File[],
   error: "",
@@ -28,6 +34,12 @@ const data = reactive({
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
+})
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  },
 })
 
 if (props.name) {
@@ -42,12 +54,6 @@ if (props.name) {
     })
   }
 }
-
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: File[]): void,
-  (event: "blur", value: Event): void,
-}>()
 
 function onClick(event: Event) {
   data.active = true
@@ -91,16 +97,11 @@ function validate(value: File[]) {
     return value
   }
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value)
-  }
-})
 </script>
 
 <template>
-  <div class="UIMultiFileUpload"
+  <div
+    class="UIMultiFileUpload"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-halign="props.halign"
@@ -125,7 +126,7 @@ defineExpose({
         @focus="onFocus"
         @change="onChange"
         @blur="onBlur"
-      />
+      >
       <div v-if="props.suffix" class="UIMultiFileUpload-Suffix">{{ props.suffix }}</div>
     </div>
     <div

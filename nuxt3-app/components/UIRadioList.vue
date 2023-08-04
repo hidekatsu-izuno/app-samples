@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
-
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
@@ -25,6 +23,12 @@ const props = withDefaults(defineProps<{
   modelValue: "",
 })
 
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: string): void,
+  (event: "blur", value: Event): void,
+}>()
+
 const data = reactive({
   value: "",
   focused: false,
@@ -34,6 +38,12 @@ const data = reactive({
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
 }, { immediate: true })
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  },
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -48,11 +58,7 @@ if (props.name) {
   }
 }
 
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: string): void,
-  (event: "blur", value: Event): void,
-}>()
+const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
 
 function onFocusin(event: Event) {
   if (!data.focused) {
@@ -96,16 +102,11 @@ function validate(value: string) {
     return value
   }
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value)
-  }
-})
 </script>
 
 <template>
-  <div class="UIRadioList"
+  <div
+    class="UIRadioList"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
@@ -131,7 +132,9 @@ defineExpose({
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
-      <div v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])" :key="index"
+      <div
+        v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
+        :key="index"
         class="UIRadioList-ContentItem"
       >
         <div v-if="props.prefix">{{ props.prefix }}</div>
@@ -150,7 +153,7 @@ defineExpose({
                 :checked="item.value === data.value"
                 :disabled="props.disabled"
                 :tabindex="props.tabindex"
-              />
+              >
               <UIIcon name="circle-medium" class="UIRadioList-InputCheck hidden peer-checked:block" />
             </div>
             {{ item.text }}

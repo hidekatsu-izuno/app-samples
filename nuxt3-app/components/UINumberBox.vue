@@ -26,7 +26,11 @@ const props = withDefaults(defineProps<{
   modelValue: "",
 })
 
-const maxLength = computed(() => getFormatMaxLength(props.format))
+const emits = defineEmits<{
+  (event: "focus", value: Event): void,
+  (event: "update:modelValue", value: string): void,
+  (event: "blur", value: Event): void,
+}>()
 
 const data = reactive({
   focused: false,
@@ -35,6 +39,8 @@ const data = reactive({
   ime: false,
 })
 
+const maxLength = computed(() => getFormatMaxLength(props.format))
+
 watch(() => props.modelValue, () => {
   if (data.focused) {
     data.value = props.modelValue
@@ -42,6 +48,12 @@ watch(() => props.modelValue, () => {
     data.value = formatNumber(props.modelValue, props.format)
   }
 }, { immediate: true })
+
+defineExpose({
+  validate() {
+    return validate(data.value, props.format)
+  },
+})
 
 if (props.name) {
   const validator = inject(ValidatorKey, null)
@@ -55,12 +67,6 @@ if (props.name) {
     })
   }
 }
-
-const emits = defineEmits<{
-  (event: "focus", value: Event): void,
-  (event: "update:modelValue", value: string): void,
-  (event: "blur", value: Event): void,
-}>()
 
 function onFocus(event: Event) {
   data.focused = true
@@ -144,16 +150,11 @@ function getFormatMaxLength(format: string) {
   }
   return max
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value, props.format)
-  }
-})
 </script>
 
 <template>
-  <div class="UINumberBox"
+  <div
+    class="UINumberBox"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
@@ -192,7 +193,7 @@ defineExpose({
         @blur="onBlur"
         @compositionstart="onCompositionStart"
         @compositionend="onCompositionEnd"
-      />
+      >
       <div v-if="props.suffix" class="UINumberBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div

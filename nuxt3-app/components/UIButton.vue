@@ -40,7 +40,8 @@ function onBlur(event: Event) {
 </script>
 
 <template>
-  <div class="UIButton"
+  <div
+    class="UIButton"
     :data-type="props.type"
     :data-color="props.color"
     :data-disabled="props.disabled || undefined"
@@ -111,8 +112,6 @@ function onBlur(event: Event) {
       text-blue-700 hover:text-white disabled:text-gray-500;
   }
 }
-
-
 
 .UIButton[data-halign="start"] {
   .UIButton-Content {
