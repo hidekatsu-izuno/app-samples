@@ -56,15 +56,16 @@ function onFocusout(event: Event) {
 <template>
   <div
     class="UIPaginator flex flex-row"
-    :class="disabled && 'text-gray-400'"
+    :class="props.disabled ? 'text-gray-400' : ''"
     @focusin="onFocusin"
     @focusout="onFocusout"
   >
     <button
       type="button"
       class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-      :disabled="disabled || modelValue === 1"
+      :disabled="props.disabled || props.modelValue === 1"
       :data-value="1"
+      :tabindex="props.tabindex"
       @click="onClick"
     >
       <UIIcon name="page-first" class="text-2xl" />
@@ -72,24 +73,24 @@ function onFocusout(event: Event) {
     <button
       type="button"
       class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-      :disabled="disabled || modelValue === 1"
-      :data-value="Math.max(modelValue - 1, 1)"
+      :disabled="props.disabled || props.modelValue === 1"
+      :data-value="Math.max(props.modelValue - 1, 1)"
       @click="onClick"
     >
       <UIIcon name="chevron-left" class="text-2xl" />
     </button>
     <div
       class="flex items-center justify-center bg-white border-y border-gray-300 w-48 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-    >{{ modelValue }} / {{ maxPage }}</div>
+    >{{ props.modelValue }} / {{ maxPage }}</div>
     <button
       type="button"
       class="flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
-      :disabled="disabled || modelValue === maxPage"
-      :data-value="Math.min(modelValue + 1, maxPage)"
+      :disabled="props.disabled || props.modelValue === maxPage"
+      :data-value="Math.min(props.modelValue + 1, maxPage)"
       @click="onClick"
     >
       <UIIcon name="chevron-right" class="text-2xl" />
     </button>
-    <div class="flex items-center px-2">{{ totalCount }} 件</div>
+    <div class="flex items-center px-2">{{ props.totalCount }} 件</div>
   </div>
 </template>

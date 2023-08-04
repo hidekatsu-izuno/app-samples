@@ -8,6 +8,8 @@ const props = withDefaults(defineProps<{
     "lime" | "green" | "emerald" | "teal" |
     "cyan" | "sky" | "blue" | "indigo" |
     "violet" | "purple" | "fuchsia" | "pink" | "rose",
+  prefix?: string,
+  suffix?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -38,29 +40,40 @@ function onBlur(event: Event) {
 </script>
 
 <template>
-  <div class="UIButton flex flex-col">
+  <div class="UIButton">
     <label
-      v-if="label"
+      v-if="props.label"
       class="block"
-    >{{ label }}</label>
-    <button
-      type="button"
-      class="font-medium px-4 py-1.5 m-0 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200"
+    >{{ props.label }}</label>
+    <div class="flex flex-row items-center gap-2"
       :class="[
-        type === 'outline' ? `text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-900` :
-        `text-white bg-blue-700 hover:bg-blue-900`,
-        halign ? `self-${halign}` : 'block w-full',
-        ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+        props.halign === 'start' ? 'justify-start' :
+        props.halign === 'center' ? 'justify-center' :
+        props.halign === 'end' ? 'justify-start' :
+        '',
       ]"
-      :style="props.inputStyle"
-      :disabled="disabled"
-      :tabindex="tabindex"
-      @focus="onFocus"
-      @click="onClick"
-      @blur="onBlur"
     >
-      <slot />
-    </button>
+      <div v-if="props.prefix">{{ props.prefix }}</div>
+      <button
+        type="button"
+        class="font-medium px-4 py-1.5 m-0 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200"
+        :class="[
+          type === 'outline' ? 'text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-900' :
+          'text-white bg-blue-700 hover:bg-blue-900',
+          props.halign ? 'flex-none' : 'block w-full',
+          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+        ]"
+        :style="props.inputStyle"
+        :disabled="props.disabled"
+        :tabindex="props.tabindex"
+        @focus="onFocus"
+        @click="onClick"
+        @blur="onBlur"
+      >
+        <slot />
+      </button>
+      <div v-if="props.suffix">{{ props.suffix }}</div>
+    </div>
     <div
       v-if="error"
       class="block text-sm text-red-500"

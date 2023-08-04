@@ -3,6 +3,8 @@ const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
   href?: string,
+  prefix?: string,
+  suffix?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -25,6 +27,11 @@ function onFocus(event: MouseEvent) {
 }
 
 function onClick(event: MouseEvent) {
+  if (props.disabled) {
+    event.preventDefault()
+    return
+  }
+
   emits("click", event)
 }
 
@@ -34,31 +41,39 @@ function onBlur(event: MouseEvent) {
 </script>
 
 <template>
-  <div class="UILink flex flex-col">
+  <div class="UILink">
     <label
-      v-if="label"
+      v-if="props.label"
       class="block"
-    >{{ label }}</label>
+    >{{ props.label }}</label>
     <div
+      class="flex flex-row items-center gap-2"
       :class="[
-        halign ? `self-${halign}` : 'w-full',
+        props.halign === 'start' ? 'justify-start' :
+        props.halign === 'center' ? 'justify-center' :
+        props.halign === 'end' ? 'justify-start' :
+        '',
       ]"
     >
-      <NuxtLink
-        class="rounded-md outline-none focus:ring-2 focus:ring-blue-200"
-        :class="[
-          disabled ? 'text-gray-400 cursor-default' : 'text-blue-600 hover:underline cursor-pointer',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
-        :style="props.inputStyle"
-        :href="!disabled && href"
-        :tabindex="tabindex"
-        @focus="onFocus"
-        @click="!disabled && onClick"
-        @blur="onBlur"
-      >
-        <slot />
-      </NuxtLink>
+      <div v-if="props.prefix">{{ props.prefix }}</div>
+      <div :class="props.halign ? 'flex-none' : 'grow'">
+        <NuxtLink
+          class="rounded-md outline-none focus:ring-2 focus:ring-blue-200"
+          :class="[
+            props.disabled ? 'text-gray-400 cursor-default' : 'text-blue-600 hover:underline cursor-pointer',
+            ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+          ]"
+          :style="props.inputStyle"
+          :href="!props.disabled && props.href"
+          :tabindex="props.tabindex"
+          @focus="onFocus"
+          @click="onClick"
+          @blur="onBlur"
+        >
+          <slot />
+        </NuxtLink>
+      </div>
+      <div v-if="props.suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"

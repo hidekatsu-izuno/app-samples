@@ -11,16 +11,19 @@ const data = reactive({
   textbox4: "",
   textbox5: "",
   textbox6: "",
+  textbox7: "",
   numberboxRequired: false,
   numberboxDisabled: false,
   numberboxReadonly: false,
   numberbox1: "",
   numberbox2: "",
+  numberbox3: "",
   dateboxRequired: false,
   dateboxDisabled: false,
   dateboxReadonly: false,
   datebox1: "",
   datebox2: "",
+  datebox3: "",
   textareaRequired: false,
   textareaDisabled: false,
   textareaReadonly: false,
@@ -60,26 +63,31 @@ const data = reactive({
   buttonDisabled: false,
   button1: 0,
   button2: 0,
+  button3: 0,
   linkDisabled: false,
   link1: 0,
   link2: 0,
-  messageBox1: false,
-  messageBox2: false,
-  messageBox3: false,
-  messageBox4: false,
+  messageBox1Opend: false,
+  messageBox2Opend: false,
+  messageBox3Opened: false,
+  messageBox4Opened: false,
+  messageBox1: undefined as string | undefined,
+  messageBox2: undefined as string | undefined,
+  messageBox3: undefined as string | undefined,
+  messageBox4: undefined as string | undefined,
 })
 </script>
 
 <template>
   <UIFrame>
-    <template #headerLeft>
-      <h1>コンポーネント一覧</h1>
+    <template #title>
+      <h1 class="text-xl">コンポーネント一覧</h1>
     </template>
-    <template #headerRight>
-      Right
+    <template #actions>
+      Actions
     </template>
-    <template #headerBottom>
-      Bottom
+    <template #header>
+      Header
     </template>
 
     <UICard class="mb-4">
@@ -145,6 +153,19 @@ const data = reactive({
           :readonly="data.textboxReadonly"
         />
         <div class="border">{{ data.textbox6 }}</div>
+
+        <UITextBox
+          v-model="data.textbox7"
+          label="装飾"
+          type="text"
+          prefix="("
+          suffix=")"
+          halign="center"
+          :required="data.textboxRequired"
+          :disabled="data.textboxDisabled"
+          :readonly="data.textboxReadonly"
+        />
+        <div class="border">{{ data.textbox7 }}</div>
       </div>
     </UICard>
 
@@ -171,6 +192,10 @@ const data = reactive({
           :readonly="data.numberboxReadonly"
         />
         <div class="border">{{ data.numberbox2 }}</div>
+
+        <UINumberBox v-model="data.numberbox3" label="装飾" :required="data.numberboxRequired" :disabled="data.numberboxDisabled" :readonly="data.numberboxReadonly"
+        prefix="(" suffix=")" halign="center" />
+        <div class="border">{{ data.numberbox3 }}</div>
       </div>
     </UICard>
 
@@ -187,6 +212,14 @@ const data = reactive({
       <div class="grid grid-cols-2 gap-2">
         <UIDateBox v-model="data.datebox1" label="デフォルト" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly" />
         <div class="border">{{ data.datebox1 }}</div>
+
+        <UIDateBox v-model="data.datebox2" label="フォーマット" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly"
+          format="'('u-M-d')'" />
+        <div class="border">{{ data.datebox2 }}</div>
+
+        <UIDateBox v-model="data.datebox3" label="装飾" :required="data.dateboxRequired" :disabled="data.dateboxDisabled" :readonly="data.dateboxReadonly"
+          prefix="(" suffix=")" halign="center" />
+        <div class="border">{{ data.datebox3 }}</div>
       </div>
     </UICard>
 
@@ -203,6 +236,10 @@ const data = reactive({
       <div class="grid grid-cols-2 gap-2">
         <UITextArea v-model="data.textarea1" label="デフォルト" :required="data.textareaRequired" :disabled="data.textareaDisabled" :readonly="data.textareaReadonly" />
         <div class="border">{{ data.textarea1 }}</div>
+
+        <UITextArea v-model="data.textarea2" label="装飾" :required="data.textareaRequired" :disabled="data.textareaDisabled" :readonly="data.textareaReadonly"
+          prefix="(" suffix=")" halign="center"/>
+        <div class="border">{{ data.textarea2 }}</div>
       </div>
     </UICard>
 
@@ -227,6 +264,17 @@ const data = reactive({
           placeholder="---"
         />
         <div class="border">{{ data.selectbox1 }}</div>
+
+        <UISelectBox
+          v-model="data.selectbox2"
+          label="装飾"
+          :required="data.selectboxRequired"
+          :disabled="data.selectboxDisabled"
+          :readonly="data.selectboxReadonly"
+          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          placeholder="---"
+          prefix="(" suffix=")" halign="center"/>
+        <div class="border">{{ data.selectbox2 }}</div>
       </div>
     </UICard>
 
@@ -243,6 +291,10 @@ const data = reactive({
       <div class="grid grid-cols-2 gap-2">
         <UICheck v-model="data.check1" label="デフォルト" :required="data.checkRequired" :disabled="data.checkDisabled" :readonly="data.checkReadonly">チェックボックス</UICheck>
         <div class="border">{{ data.check1 }}</div>
+
+        <UICheck v-model="data.check2" label="装飾" :required="data.checkRequired" :disabled="data.checkDisabled" :readonly="data.checkReadonly"
+          prefix="(" suffix=")" halign="center">チェックボックス</UICheck>
+        <div class="border">{{ data.check2 }}</div>
       </div>
     </UICard>
 
@@ -266,6 +318,17 @@ const data = reactive({
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
         />
         <div class="border">{{ data.checklist1 }}</div>
+
+        <UICheckList
+          v-model="data.checklist2"
+          label="装飾"
+          :required="data.checklistRequired"
+          :disabled="data.checklistDisabled"
+          :readonly="data.checklistReadonly"
+          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          prefix="(" suffix=")" halign="center"
+        />
+        <div class="border">{{ data.checklist2 }}</div>
       </div>
     </UICard>
 
@@ -289,6 +352,17 @@ const data = reactive({
           :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
         />
         <div class="border">{{ data.radiolist1 }}</div>
+
+        <UIRadioList
+          v-model="data.radiolist2"
+          label="装飾"
+          :required="data.radiolistRequired"
+          :disabled="data.radiolistDisabled"
+          :readonly="data.radiolistReadonly"
+          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          prefix="(" suffix=")" halign="center"
+        />
+        <div class="border">{{ data.radiolist2 }}</div>
       </div>
     </UICard>
 
@@ -304,6 +378,10 @@ const data = reactive({
       <div class="grid grid-cols-2 gap-2">
         <UIFileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" />
         <div class="border">{{ data.fileupload1?.name }}</div>
+
+        <UIFileUpload v-model="data.fileupload2" label="装飾" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled"
+          prefix="(" suffix=")" halign="center" />
+        <div class="border">{{ data.fileupload2?.name }}</div>
       </div>
     </UICard>
 
@@ -319,6 +397,10 @@ const data = reactive({
       <div class="grid grid-cols-2 gap-2">
         <UIMultiFileUpload v-model="data.multifileupload1" label="デフォルト" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" />
         <div class="border">{{ data.multifileupload1.map((item: File) => item.name) }}</div>
+
+        <UIMultiFileUpload v-model="data.multifileupload2" label="装飾" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled"
+          prefix="(" suffix=")" halign="center" />
+        <div class="border">{{ data.multifileupload2.map((item: File) => item.name) }}</div>
       </div>
     </UICard>
 
@@ -353,6 +435,10 @@ const data = reactive({
 
         <UIButton label="アウトライン" type="outline" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</UIButton>
         <div class="border">{{ data.button2 }}</div>
+
+        <UIButton label="装飾" :disabled="data.buttonDisabled" @click="data.button3++"
+          prefix="(" suffix=")" halign="center">ボタン</UIButton>
+        <div class="border">{{ data.button3 }}</div>
       </div>
     </UICard>
 
@@ -368,7 +454,8 @@ const data = reactive({
         <UILink label="デフォルト" :disabled="data.linkDisabled" @click="data.link1++">リンク</UILink>
         <div class="border">{{ data.link1 }}</div>
 
-        <UILink label="デフォルト" :disabled="data.linkDisabled" @click="data.link2++">リンク</UILink>
+        <UILink label="装飾" :disabled="data.linkDisabled" @click="data.link2++"
+          prefix="(" suffix=")" halign="center">リンク</UILink>
         <div class="border">{{ data.link2 }}</div>
       </div>
     </UICard>
@@ -379,18 +466,25 @@ const data = reactive({
           <h2 class="grow">メッセージボックス (UIMessageBox)</h2>
         </div>
       </template>
-      <div class="grid grid-cols-4 gap-2">
-        <UIButton @click="data.messageBox1 = true">OK</UIButton>
-        <UIButton @click="data.messageBox2 = true">OK/CANCEL</UIButton>
-        <UIButton @click="data.messageBox3 = true">YES/NO</UIButton>
-        <UIButton @click="data.messageBox4 = true">YES/NO/CANCEL</UIButton>
+      <div class="grid grid-cols-2 gap-2">
+        <UIButton @click="data.messageBox1Opend = true">OK</UIButton>
+        <div class="border">{{ data.messageBox1 }}</div>
+
+        <UIButton @click="data.messageBox2Opend = true">OK/CANCEL</UIButton>
+        <div class="border">{{ data.messageBox2 }}</div>
+
+        <UIButton @click="data.messageBox3Opened = true">YES/NO</UIButton>
+        <div class="border">{{ data.messageBox3 }}</div>
+
+        <UIButton @click="data.messageBox4Opened = true">YES/NO/CANCEL</UIButton>
+        <div class="border">{{ data.messageBox4 }}</div>
       </div>
     </UICard>
 
-    <UIMessageBox v-model="data.messageBox1" type="ok">あ</UIMessageBox>
-    <UIMessageBox v-model="data.messageBox2" type="ok-cancel">い</UIMessageBox>
-    <UIMessageBox v-model="data.messageBox3" type="yes-no">う</UIMessageBox>
-    <UIMessageBox v-model="data.messageBox4" type="yes-no-cancel">え</UIMessageBox>
+    <UIMessageBox v-model="data.messageBox1Opend" type="ok" @close="data.messageBox1 = $event">あ</UIMessageBox>
+    <UIMessageBox v-model="data.messageBox2Opend" type="ok-cancel" @close="data.messageBox2 = $event">い</UIMessageBox>
+    <UIMessageBox v-model="data.messageBox3Opened" type="yes-no" @close="data.messageBox3 = $event">う</UIMessageBox>
+    <UIMessageBox v-model="data.messageBox4Opened" type="yes-no-cancel" @close="data.messageBox4 = $event">え</UIMessageBox>
 
     <template #footer>
       Footer

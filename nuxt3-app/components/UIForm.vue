@@ -12,7 +12,7 @@ if (props.validator) {
 </script>
 
 <template>
-  <form class="UIForm w-full">
+  <form class="UIForm">
     <slot />
   </form>
 </template>

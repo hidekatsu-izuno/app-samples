@@ -6,6 +6,8 @@ const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
   name?: string,
+  prefix?: string,
+  suffix?: string,
   placeholder?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
@@ -95,58 +97,87 @@ function validate(value: string) {
     return value
   }
 }
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  }
+})
 </script>
 
 <template>
   <div class="UIRadioList">
     <label
-      v-if="label"
+      v-if="props.label"
       class="block"
-    >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
+    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
     <div
       v-if="props.readonly"
-      class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
+      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+    >
+      <template v-if="data.value">
+        <div v-if="props.prefix">{{ props.prefix }}</div>
+        <div class=" whitespace-pre-wrap">{{ props.items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
+        <div v-if="props.suffix">{{ props.suffix }}</div>
+      </template>
+      <template v-else>&#8203;</template>
+    </div>
     <div
       v-else
-      class="grid"
       :class="[
-        `grid-columns-${columns}`,
-        disabled ? 'text-gray-400' : '',
+        props.columns === 2 ? 'grid grid-columns-2' :
+        props.columns === 3 ? 'grid grid-columns-3' :
+        props.columns === 4 ? 'grid grid-columns-4' :
+        props.columns === 5 ? 'grid grid-columns-5' :
+        props.columns === 6 ? 'grid grid-columns-6' :
+        props.columns === 7 ? 'grid grid-columns-7' :
+        props.columns === 8 ? 'grid grid-columns-8' :
+        props.columns === 9 ? 'grid grid-columns-9' :
+        props.columns === 10 ? 'grid grid-columns-10' :
+        props.columns === 11 ? 'grid grid-columns-11' :
+        props.columns === 12 ? 'grid grid-columns-12' :
+        '',
       ]"
       @change="onChange"
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
-      <div v-if="!required">
-        <label
-          class="flex items-center gap-1 py-1"
-          :class="props.inputClass"
-          :style="props.inputStyle"
-        ><input
-          type="radio"
-          class="peer appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
-          value=""
-          :disabled="props.disabled"
-          :tabindex="props.tabindex"
-          :name="id || undefined"
-          :checked="!data.value"
-        ><UIIcon name="circle-medium" class="w-4 h-4 overflow-hidden text-white -ml-[20px] hidden peer-checked:block" />{{ props.placeholder }}</label>
-      </div>
-      <div v-for="(item, index) in items" :key="index">
-        <label
-          class="inline-flex items-center gap-1 py-1"
-          :class="props.inputClass"
-          :style="props.inputStyle"
-        ><input
-          type="radio"
-          class="peer appearance-none w-4 h-4 rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
-          :name="id || undefined"
-          :value="item.value"
-          :checked="item.value === data.value"
-          :disabled="disabled"
-          :tabindex="tabindex"
-        ><UIIcon name="circle-medium" class="w-4 h-4 overflow-hidden text-white -ml-[20px] hidden peer-checked:block" />{{ item.text }}</label>
+      <div v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])" :key="index"
+        class="flex flex-row items-center gap-2"
+        :class="[
+          props.halign === 'start' ? 'justify-start' :
+          props.halign === 'center' ? 'justify-center' :
+          props.halign === 'end' ? 'justify-start' :
+          '',
+        ]"
+      >
+        <div v-if="props.prefix">{{ props.prefix }}</div>
+        <div :class="props.halign ? 'flex-none' : 'grow'">
+          <label
+            class="inline-flex items-center gap-1 py-1"
+            :class="[
+              props.disabled ? 'text-gray-400' : '',
+              ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+            ]"
+            :style="props.inputStyle"
+          >
+            <div class="grid w-4 h-4">
+              <input
+                type="radio"
+                class="peer appearance-none w-full h-full rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
+                style="grid-area: 1/1;"
+                :name="id || undefined"
+                :value="item.value"
+                :checked="item.value === data.value"
+                :disabled="props.disabled"
+                :tabindex="props.tabindex"
+              />
+              <UIIcon name="circle-medium" class=" w-full h-full text-white pointer-events-none hidden peer-checked:block" style="grid-area: 1/1;" />
+            </div>
+            {{ item.text }}
+          </label>
+        </div>
+        <div v-if="props.suffix">{{ props.suffix }}</div>
       </div>
     </div>
     <div

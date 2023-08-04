@@ -8,6 +8,8 @@ const props = withDefaults(defineProps<{
   label?: string,
   name?: string,
   placeholder?: string,
+  prefix?: string,
+  suffix?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -112,36 +114,61 @@ function validate(value: string) {
     return value
   }
 }
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  }
+})
 </script>
 
 <template>
   <div class="UITextArea">
     <label
-      v-if="label"
+      v-if="props.label"
       class="block"
-    >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
+    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
     <div
       v-if="props.readonly"
-      class="block px-2 py-1 text-gray-900 border border-gray-200 whitespace-pre-wrap"
-    >{{ data.value || '&#8203;' }}</div>
-    <textarea
+      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+    >
+      <template v-if="data.value">
+        <div v-if="props.prefix">{{ props.prefix }}</div>
+        <div class=" whitespace-pre-wrap">{{ data.value || "&#8203;" }}</div>
+        <div v-if="props.suffix">{{ props.suffix }}</div>
+      </template>
+      <template v-else>&#8203;</template>
+    </div>
+    <div
       v-else
-      class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+      class="flex flex-row items-center gap-2"
       :class="[
-        halign ? `self-${halign}` : 'block w-full',
-        ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+        props.halign === 'start' ? 'justify-start' :
+        props.halign === 'center' ? 'justify-center' :
+        props.halign === 'end' ? 'justify-start' :
+        '',
       ]"
-      :style="props.inputStyle"
-      :placeholder="placeholder"
-      :value="data.value"
-      :disabled="disabled"
-      :tabindex="tabindex"
-      @focus="onFocus"
-      @input="onInput"
-      @blur="onBlur"
-      @compositionstart="onCompositionStart"
-      @compositionend="onCompositionEnd"
-    />
+    >
+      <div v-if="props.prefix">{{ props.prefix }}</div>
+      <textarea
+        class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+        :class="[
+          props.halign ? '' : 'w-full',
+          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
+        ]"
+        :style="props.inputStyle"
+        :placeholder="props.placeholder"
+        :disabled="props.disabled"
+        :tabindex="props.tabindex"
+        :value="data.value"
+        @focus="onFocus"
+        @input="onInput"
+        @blur="onBlur"
+        @compositionstart="onCompositionStart"
+        @compositionend="onCompositionEnd"
+      />
+      <div v-if="props.suffix">{{ props.suffix }}</div>
+    </div>
     <div
       v-if="data.error"
       class="block text-sm text-red-500"

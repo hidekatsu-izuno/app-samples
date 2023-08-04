@@ -11,6 +11,8 @@ const props = withDefaults(defineProps<{
   label?: string,
   name?: string,
   placeholder?: string,
+  prefix?: string,
+  suffix?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -191,47 +193,64 @@ function validate(value: string, format?: string) {
 function getFormatMaxLength(format: string) {
   return format.length * 4
 }
+
+defineExpose({
+  validate() {
+    return validate(data.value, props.format)
+  }
+})
 </script>
 
 <template>
   <div class="UIDateBox">
     <label
-      v-if="label"
+      v-if="props.label"
       class="block"
-    >{{ label }} <span v-if="required" class="text-red-500">※</span></label>
+    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
     <div
       v-if="props.readonly"
-      class="block px-2 py-1 text-gray-900 border border-gray-200"
-    >{{ data.value || '&#8203;' }}</div>
+      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+    >
+      <template v-if="data.value">
+        <div v-if="props.prefix">{{ props.prefix }}</div>
+        <div class=" whitespace-pre-wrap">{{ data.value || "&#8203;" }}</div>
+        <div v-if="props.suffix">{{ props.suffix }}</div>
+      </template>
+      <template v-else>&#8203;</template>
+    </div>
     <div
       v-else
-      class="relative"
+      class="flex flex-row items-center gap-2"
       :class="[
-        halign ? `self-${halign}` : 'block w-full',
+        props.halign === 'start' ? 'justify-start' :
+        props.halign === 'center' ? 'justify-center' :
+        props.halign === 'end' ? 'justify-start' :
+        '',
       ]"
     >
-      <input
-        ref="inputRef"
-        type="text"
-        inputmode="numeric"
-        class="pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
-        :class="[
-          halign ? `self-${halign}` : 'block w-full',
-        ]"
-        :placeholder="placeholder"
-        :tabindex="tabindex"
-        :maxlength="maxLength"
-        :value="data.value"
-        :disabled="disabled"
-        @input="onInput"
-        @focus="onFocus"
-        @blur="onBlur"
-        @compositionstart="onCompositionStart"
-        @compositionend="onCompositionEnd"
-      />
-      <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
-        <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-400' : '']" />
+      <div v-if="props.prefix">{{ props.prefix }}</div>
+      <div class="relative" :class="props.halign ? 'flex-none' : 'grow'">
+        <input
+          ref="inputRef"
+          type="text"
+          inputmode="numeric"
+          class="w-full pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+          :placeholder="props.placeholder"
+          :tabindex="props.tabindex"
+          :disabled="props.disabled"
+          :maxlength="maxLength"
+          :value="data.value"
+          @input="onInput"
+          @focus="onFocus"
+          @blur="onBlur"
+          @compositionstart="onCompositionStart"
+          @compositionend="onCompositionEnd"
+        />
+        <div class="absolute inset-y-0 right-0 pr-2 flex items-center" @mousedown="onPickerIconMouseDown">
+          <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-400' : '']" />
+        </div>
       </div>
+      <div v-if="props.suffix">{{ props.suffix }}</div>
     </div>
     <div
       ref="pickerRef"
@@ -254,7 +273,7 @@ function getFormatMaxLength(format: string) {
       <div
         v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
         :key="week"
-        class="flex font-medium text-gray-400 items-center justify-center w-8 h-6"
+        class="flex font-bold text-gray-400 items-center justify-center w-8 h-6"
       >{{ week }}</div>
       <div
         v-for="date in eachDayOfInterval({
@@ -262,9 +281,9 @@ function getFormatMaxLength(format: string) {
           end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
         })"
         :key="date.getTime()"
-        class="flex font-medium items-center justify-center h-8 rounded-md cursor-default"
+        class="flex items-center justify-center h-8 rounded-md cursor-default"
         :class="[
-          isSameDay(pickerData.start, date) ? 'text-white bg-blue-700 hover:bg-blue-800' : 'text-gray-400 hover:bg-gray-100',
+          isSameDay(pickerData.start, date) ? 'text-white font-bold bg-blue-700 hover:bg-blue-800' : 'hover:bg-gray-100',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
         :style="props.inputStyle"

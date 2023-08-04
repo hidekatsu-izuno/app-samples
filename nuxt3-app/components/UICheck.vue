@@ -3,6 +3,8 @@ const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
   value?: string,
+  prefix?: string,
+  suffix?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -65,46 +67,69 @@ function validate(value: boolean) {
     return value
   }
 }
+
+defineExpose({
+  validate() {
+    return validate(data.value)
+  }
+})
 </script>
 
 <template>
-  <div class="UICheck flex flex-col">
+  <div class="UICheck">
     <label
-      v-if="label"
+      v-if="props.label"
       class="block"
-    >{{ label }}</label>
+    >{{ props.label }}</label>
     <div
       v-if="props.readonly"
-      class="block px-2 py-1 text-gray-900 border border-gray-200"
+      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
     >
-      <template v-if="data.value"><slot /></template>
+      <template v-if="data.value">
+        <div v-if="props.prefix">{{ props.prefix }}</div>
+        <div class="whitespace-pre-wrap"><slot />&#8203;</div>
+        <div v-if="props.suffix">{{ props.suffix }}</div>
+      </template>
       <template v-else>&#8203;</template>
     </div>
     <div
       v-else
+      class="flex flex-row items-center gap-2"
       :class="[
-        halign ? `flex self-${halign}` : 'w-full',
+        props.halign === 'start' ? 'justify-start' :
+        props.halign === 'center' ? 'justify-center' :
+        props.halign === 'end' ? 'justify-start' :
+        '',
       ]"
     >
+      <div v-if="props.prefix">{{ props.prefix }}</div>
       <label
-        class="inline-flex items-center gap-1 py-1"
+        class="flex items-center gap-1 py-1"
         :class="[
-          disabled ? 'text-gray-400' : '',
+          props.disabled ? 'text-gray-400' : '',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
-      ><input
-        type="checkbox"
-        class="peer appearance-none w-4 h-4 rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
-        :class="props.inputClass"
-        :style="props.inputStyle"
-        :value="props.value"
-        :disabled="props.disabled"
-        :tabindex="props.tabindex"
-        :checked="data.value"
-        @focus="onFocus"
-        @change="onChange"
-        @blur="onBlur"
-      ><UIIcon name="check-bold" class="w-4 h-4 overflow-hidden text-xs text-white -ml-[20px] hidden peer-checked:block" /><slot /></label>
+      >
+        <div class="grid w-4 h-4">
+          <input
+            type="checkbox"
+            class="peer appearance-none w-full h-full rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
+            style="grid-area: 1/1;"
+            :class="props.inputClass"
+            :style="props.inputStyle"
+            :value="props.value"
+            :disabled="props.disabled"
+            :tabindex="props.tabindex"
+            :checked="data.value"
+            @focus="onFocus"
+            @change="onChange"
+            @blur="onBlur"
+          />
+          <UIIcon name="check-bold" class="w-full h-full text-white pointer-events-none hidden peer-checked:block" style="grid-area: 1/1;" />
+        </div>
+        <slot />
+      </label>
+      <div v-if="props.suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"
