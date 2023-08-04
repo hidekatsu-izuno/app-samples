@@ -43,10 +43,10 @@ const onLoginButtonClick = async () => {
       <h1 class="font-bold text-4xl m-4">
         Nuxt3 Sample App
       </h1>
-      <Card>
-        <Form class="grid grid-cols-1 gap-y-4" :validator="validator">
+      <UICard>
+        <UIForm class="grid grid-cols-1 gap-y-4" :validator="validator">
           <div>
-            <TextBox
+            <UITextBox
               v-model="data.email"
               type="email"
               label="メールアドレス"
@@ -56,20 +56,20 @@ const onLoginButtonClick = async () => {
             />
           </div>
           <div>
-            <TextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
+            <UITextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
           </div>
           <div>
-            <LinkButton halign="end" class="text-sm" @click="goChangePasswordPage">
+            <UILink halign="end" class="text-sm" @click="goChangePasswordPage">
               パスワードを忘れた方はこちら
-            </LinkButton>
+            </UILink>
           </div>
           <div>
-            <Button halign="center" @click="onLoginButtonClick">
+            <UIButton halign="center" @click="onLoginButtonClick">
               ログイン
-            </Button>
+            </UIButton>
           </div>
-        </Form>
-      </Card>
+        </UIForm>
+      </UICard>
       <div class="m-4 mb-8">
         Copyright &copy; Hidekatsu Izuno
       </div>

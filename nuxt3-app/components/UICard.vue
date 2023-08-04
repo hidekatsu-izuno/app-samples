@@ -17,6 +17,7 @@
   @apply flex flex-col
     shadow
     border border-slate-300 rounded-lg
+    w-full
     bg-white;
 }
 
