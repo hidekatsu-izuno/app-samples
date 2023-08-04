@@ -108,86 +108,242 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UICheckList">
+  <div class="UICheckList"
+  :class="[
+      props.required ? 'UICheckList-required' : '',
+      props.disabled ? 'UICheckList-disabled' : '',
+      props.readonly ? 'UICheckList-readonly' : '',
+      props.halign ? `UICheckList-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
-    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
+      class="UICheckList-Label"
+    >{{ props.label }}</label>
     <ul
       v-if="props.readonly"
-      class="px-2 py-1 text-gray-900 border border-gray-200"
+      class="UICheckList-Content"
     >
       <template v-if="data.value.length > 0">
         <li v-for="(item, index) in props.items.filter(item => data.value.includes(item.value))" :key="index"
-          class="flex flex-row items-center justify-start gap-2">
-          <div v-if="props.prefix">{{ props.prefix }}</div>
-          <div class=" whitespace-pre-wrap">{{ item.text || "&#8203;" }}</div>
-          <div v-if="props.suffix">{{ props.suffix }}</div>
+          class="UICheckList-ContentItem">
+          <div v-if="props.prefix" class="UICheckList-Prefix">{{ props.prefix }}</div>
+          <div class="UICheckList-Text">{{ item.text }}</div>
+          <div v-if="props.suffix" class="UICheckList-Suffix">{{ props.suffix }}</div>
         </li>
       </template>
       <li v-else>&#8203;</li>
     </ul>
     <div
       v-else
-      :class="[
-        props.columns === 2 ? 'grid grid-columns-2' :
-        props.columns === 3 ? 'grid grid-columns-3' :
-        props.columns === 4 ? 'grid grid-columns-4' :
-        props.columns === 5 ? 'grid grid-columns-5' :
-        props.columns === 6 ? 'grid grid-columns-6' :
-        props.columns === 7 ? 'grid grid-columns-7' :
-        props.columns === 8 ? 'grid grid-columns-8' :
-        props.columns === 9 ? 'grid grid-columns-9' :
-        props.columns === 10 ? 'grid grid-columns-10' :
-        props.columns === 11 ? 'grid grid-columns-11' :
-        props.columns === 12 ? 'grid grid-columns-12' :
-        ''
-      ]"
+      class="UICheckList-Content"
       @change="onChange"
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
       <div v-for="(item, index) in props.items" :key="index"
-        class="flex flex-row items-center gap-2"
-        :class="[
-          props.halign === 'start' ? 'justify-start' :
-          props.halign === 'center' ? 'justify-center' :
-          props.halign === 'end' ? 'justify-start' :
-          '',
-        ]"
+        class="UICheckList-ContentItem"
       >
-        <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div :class="props.halign ? 'flex-none' : 'grow'">
+        <div v-if="props.prefix" class="UICheckList-Prefix">{{ props.prefix }}</div>
+        <div class="UICheckList-Item">
           <label
-            class="inline-flex items-center gap-1 py-1"
-            :class="[
-              props.disabled ? 'text-gray-400' : '',
-              ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-            ]"
+            class="UICheckList-InputLabel"
+            :class="props.inputClass"
             :style="props.inputStyle"
           >
-            <div class="grid w-4 h-4">
+            <div class="UICheckList-InputArea">
               <input
+                class="UICheckList-Input peer"
                 type="checkbox"
-                class="peer appearance-none w-full h-full rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
-                style="grid-area: 1/1;"
                 :name="id || undefined"
                 :disabled="props.disabled"
                 :tabindex="props.tabindex"
                 :value="item.value"
                 :checked="data.value.includes(item.value)"
               />
-              <UIIcon name="check-bold" class="w-full h-full text-white pointer-events-none hidden peer-checked:block" style="grid-area: 1/1;" />
+              <UIIcon name="check-bold" class="UICheckList-InputCheck hidden peer-checked:block" />
             </div>
             {{ item.text }}
           </label>
         </div>
-        <div v-if="props.suffix">{{ props.suffix }}</div>
+        <div v-if="props.suffix" class="UICheckList-Suffix">{{ props.suffix }}</div>
       </div>
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UICheckList-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UICheckList-Label {
+  @apply block;
+}
+
+.UICheckList-ContentItem {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UICheckList-Item {
+  @apply w-full;
+}
+
+.UICheckList-InputLabel {
+  @apply inline-flex items-center gap-1
+    py-1;
+}
+
+.UICheckList-InputArea {
+  @apply grid
+    w-4 h-4;
+}
+
+.UICheckList-Input {
+  @apply appearance-none
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded
+    w-full h-full
+    bg-gray-50 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400;
+  grid-area: 1/1;
+}
+
+.UICheckList-InputCheck {
+  @apply w-full h-full
+    text-white
+    pointer-events-none;
+  grid-area: 1/1;
+}
+
+.UICheckList-Text {
+  @apply whitespace-pre-wrap;
+  min-height: 1rem;
+}
+
+.UICheckList-Error {
+  @apply text-sm text-red-500;
+}
+
+.UICheckList-required {
+  .UICheckList-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UICheckList-disabled {
+  .UICheckList-InputLabel {
+    @apply text-gray-400;
+  }
+}
+
+.UICheckList-readonly {
+  .UICheckList-Content {
+    @apply border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+
+  .UICheckList-ContentItem {
+    @apply justify-start;
+  }
+}
+
+:not(.UICheckList-readonly) {
+  .UICheckList-halign-start {
+    .UICheckList-ContentItem {
+      @apply justify-start;
+    }
+
+    .UICheckList-Item {
+      @apply w-auto;
+    }
+  }
+
+  .UICheckList-halign-center {
+    .UICheckList-ContentItem {
+      @apply justify-center;
+    }
+
+    .UICheckList-Item {
+      @apply w-auto;
+    }
+  }
+
+  .UICheckList-halign-end {
+    .UICheckList-ContentItem {
+      @apply justify-end;
+    }
+
+    .UICheckList-Item {
+      @apply w-auto;
+    }
+  }
+
+  .UICheckList-columns-2 {
+    .UICheckList-Content {
+      @apply grid grid-cols-2;
+    }
+  }
+
+  .UICheckList-columns-3 {
+    .UICheckList-Content {
+      @apply grid grid-cols-3;
+    }
+  }
+
+  .UICheckList-columns-4 {
+    .UICheckList-Content {
+      @apply grid grid-cols-4;
+    }
+  }
+
+  .UICheckList-columns-5 {
+    .UICheckList-Content {
+      @apply grid grid-cols-5;
+    }
+  }
+
+  .UICheckList-columns-6 {
+    .UICheckList-Content {
+      @apply grid grid-cols-6;
+    }
+  }
+
+  .UICheckList-columns-7 {
+    .UICheckList-Content {
+      @apply grid grid-cols-7;
+    }
+  }
+
+  .UICheckList-columns-8 {
+    .UICheckList-Content {
+      @apply grid grid-cols-8;
+    }
+  }
+
+  .UICheckList-columns-9 {
+    .UICheckList-Content {
+      @apply grid grid-cols-9;
+    }
+  }
+
+  .UICheckList-columns-10 {
+    .UICheckList-Content {
+      @apply grid grid-cols-10;
+    }
+  }
+
+  .UICheckList-columns-11 {
+    .UICheckList-Content {
+      @apply grid grid-cols-11;
+    }
+  }
+
+  .UICheckList-columns-12 {
+    .UICheckList-Content {
+      @apply grid grid-cols-12;
+    }
+  }
+}
+</style>

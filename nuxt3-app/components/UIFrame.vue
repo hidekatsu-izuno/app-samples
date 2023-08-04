@@ -17,7 +17,7 @@ function onDrawerClick(e: MouseEvent) {
 </script>
 
 <template>
-  <div class="UIFrame flex flex-row-reverse w-full min-h-screen bg-white">
+  <div class="UIFrame">
     <div class="flex flex-col grow">
       <header class="sticky top-0 left-0 right-0 z-20 overflow-hidden shadow">
         <div class="flex flex-row items-center px-4 h-14 bg-white border-b border-gray-300 gap-2">
@@ -62,3 +62,11 @@ function onDrawerClick(e: MouseEvent) {
     </div>
   </div>
 </template>
+
+<style>
+.UIFrame {
+  @apply flex flex-row-reverse
+    w-full min-h-screen
+    bg-white;
+}
+</style>

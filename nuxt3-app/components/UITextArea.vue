@@ -123,39 +123,33 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UITextArea">
+  <div class="UITextArea"
+  :class="[
+      props.required ? 'UITextArea-required' : '',
+      props.disabled ? 'UITextArea-disabled' : '',
+      props.readonly ? 'UITextArea-readonly' : '',
+      props.halign ? `UITextArea-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
-    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
+      class="UITextArea-Label"
+    >{{ props.label }}</label>
     <div
       v-if="props.readonly"
-      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+      class="UITextArea-Content"
     >
-      <template v-if="data.value">
-        <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div class=" whitespace-pre-wrap">{{ data.value || "&#8203;" }}</div>
-        <div v-if="props.suffix">{{ props.suffix }}</div>
-      </template>
-      <template v-else>&#8203;</template>
+      <div v-if="props.prefix && data.value" class="UITextArea-Prefix">{{ props.prefix }}</div>
+      <div class="UITextArea-Text">{{ data.value }}</div>
+      <div v-if="props.suffix && data.value" class="UITextArea-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-else
-      class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
+      class="UITextArea-Content"
     >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
+      <div v-if="props.prefix" class="UITextArea-Prefix">{{ props.prefix }}</div>
       <textarea
-        class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
-        :class="[
-          props.halign ? '' : 'w-full',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
+        class="UITextArea-Input"
+        :class="props.inputClass"
         :style="props.inputStyle"
         :placeholder="props.placeholder"
         :disabled="props.disabled"
@@ -167,11 +161,85 @@ defineExpose({
         @compositionstart="onCompositionStart"
         @compositionend="onCompositionEnd"
       />
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UITextArea-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UITextArea-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UITextArea-Label {
+  @apply block;
+}
+
+.UITextArea-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UITextArea-Input {
+  @apply
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded-md focus:border-blue-500
+    px-2 py-1
+    w-full
+    bg-gray-50 disabled:bg-gray-100
+    text-gray-900 disabled:text-gray-400
+    resize-none;
+}
+
+.UITextArea-Text {
+  @apply whitespace-pre-wrap;
+  min-height: 1rem;
+}
+
+.UITextArea-Error {
+  @apply text-sm text-red-500;
+}
+
+.UITextArea-required {
+  .UITextArea-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UITextArea-readonly {
+  .UITextArea-Content {
+    @apply justify-start
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+:not(.UITextArea-readonly) {
+  .UITextArea-halign-start {
+    .UITextArea-Content {
+      @apply justify-start;
+    }
+    .UITextArea-Input {
+      @apply w-auto;
+    }
+  }
+  .UITextArea-halign-center {
+    .UITextArea-Content {
+      @apply justify-center;
+    }
+    .UITextArea-Input {
+      @apply w-auto;
+    }
+  }
+  .UITextArea-halign-end {
+    .UITextArea-Content {
+      @apply justify-end;
+    }
+    .UITextArea-Input {
+      @apply w-auto;
+    }
+  }
+}
+</style>

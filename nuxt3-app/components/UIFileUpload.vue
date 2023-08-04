@@ -99,28 +99,22 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UIFileUpload">
+  <div class="UIFileUpload"
+  :class="[
+      props.required ? 'UIFileUpload-required' : '',
+      props.disabled ? 'UIFileUpload-disabled' : '',
+      props.halign ? `UIFileUpload-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
-    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
-    <div
-      class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
-    >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
+      class="UIFileUpload-Label"
+    >{{ props.label }}</label>
+    <div class="UIFileUpload-Content">
+      <div v-if="props.prefix" class="UIFileUpload-Prefix">{{ props.prefix }}</div>
       <input
+        class="UIFileUpload-Input"
         type="file"
-        class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
-        :class="[
-          props.halign ? '' : 'w-full',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
+        :class="props.inputClass"
         :style="props.inputStyle"
         :placeholder="props.placeholder"
         :accept="props.accept"
@@ -131,11 +125,73 @@ defineExpose({
         @change="onChange"
         @blur="onBlur"
       />
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UIFileUpload-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UIFileUpload-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UIFileUpload-Label {
+  @apply block;
+}
+
+.UIFileUpload-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UIFileUpload-Input {
+  @apply focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded-md focus:border-blue-500
+    px-2 py-1
+    w-full
+    bg-gray-50 disabled:bg-gray-100
+    text-gray-900 disabled:text-gray-400
+    resize-none;
+}
+
+.UIFileUpload-Error {
+  @apply text-sm text-red-500;
+}
+
+.UIFileUpload-required {
+  .UIFileUpload-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UIFileUpload-halign-start {
+  .UIFileUpload-Content {
+    @apply justify-start;
+  }
+
+  .UIFileUpload-Input {
+    @apply w-auto;
+  }
+}
+
+.UIFileUpload-halign-center {
+  .UIFileUpload-Content {
+    @apply justify-center;
+  }
+
+  .UIFileUpload-Input {
+    @apply w-auto;
+  }
+}
+
+.UIFileUpload-halign-end {
+  .UIFileUpload-Content {
+    @apply justify-end;
+  }
+
+  .UIFileUpload-Input {
+    @apply w-auto;
+  }
+}
+</style>

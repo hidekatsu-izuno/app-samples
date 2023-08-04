@@ -76,45 +76,35 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UICheck">
+  <div class="UICheck"
+  :class="[
+      props.required ? 'UICheck-required' : '',
+      props.disabled ? 'UICheck-disabled' : '',
+      props.readonly ? 'UICheck-readonly' : '',
+      props.halign ? `UICheck-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
+      class="UICheck-Label"
     >{{ props.label }}</label>
     <div
       v-if="props.readonly"
-      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+      class="UICheck-Content"
     >
-      <template v-if="data.value">
-        <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div class="whitespace-pre-wrap"><slot />&#8203;</div>
-        <div v-if="props.suffix">{{ props.suffix }}</div>
-      </template>
-      <template v-else>&#8203;</template>
+      <div v-if="props.prefix && $slots.default" class="UICheck-Prefix">{{ props.prefix }}</div>
+      <div class="UICheck-Text"><slot /></div>
+      <div v-if="props.suffix && $slots.default" class="UICheck-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-else
-      class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
+      class="UICheck-Content"
     >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
-      <label
-        class="flex items-center gap-1 py-1"
-        :class="[
-          props.disabled ? 'text-gray-400' : '',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
-      >
-        <div class="grid w-4 h-4">
+      <div v-if="props.prefix" class="UICheck-Prefix">{{ props.prefix }}</div>
+      <label class="UICheck-InputLabel">
+        <div class="UICheck-InputArea">
           <input
             type="checkbox"
-            class="peer appearance-none w-full h-full rounded bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
-            style="grid-area: 1/1;"
+            class="UICheck-Input peer"
             :class="props.inputClass"
             :style="props.inputStyle"
             :value="props.value"
@@ -125,15 +115,110 @@ defineExpose({
             @change="onChange"
             @blur="onBlur"
           />
-          <UIIcon name="check-bold" class="w-full h-full text-white pointer-events-none hidden peer-checked:block" style="grid-area: 1/1;" />
+          <UIIcon name="check-bold" class="UICheck-InputCheck hidden peer-checked:block" />
         </div>
         <slot />
       </label>
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UICheck-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UICheck-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UICheck-Label {
+  @apply block;
+}
+
+.UICheck-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UICheck-InputLabel {
+  @apply flex items-center gap-1
+    py-1;
+}
+
+.UICheck-InputArea {
+  @apply grid
+    w-4 h-4;
+}
+
+.UICheck-Input {
+  @apply appearance-none
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded
+    w-full h-full
+    bg-gray-50 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400;
+  grid-area: 1/1;
+}
+
+.UICheck-InputCheck {
+  @apply w-full h-full
+    text-white
+    pointer-events-none;
+  grid-area: 1/1;
+}
+
+.UICheck-Text {
+  @apply whitespace-pre-wrap;
+  min-height: 1rem;
+}
+
+.UICheck-Error {
+  @apply text-sm text-red-500;
+}
+
+.UICheck-required {
+  .UICheck-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UICheck-disabled {
+  .UICheck-InputLabel {
+    @apply text-gray-400;
+  }
+}
+
+.UICheck-readonly {
+  .UICheck-Content {
+    @apply justify-start
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+:not(.UICheck-readonly) {
+  .UICheck-halign-start {
+    .UICheck-Content {
+      @apply justify-start;
+    }
+    .UICheck-Input {
+      @apply w-auto;
+    }
+  }
+  .UICheck-halign-center {
+    .UICheck-Content {
+      @apply justify-center;
+    }
+    .UICheck-Input {
+      @apply w-auto;
+    }
+  }
+  .UICheck-halign-end {
+    .UICheck-Content {
+      @apply justify-end;
+    }
+    .UICheck-Input {
+      @apply w-auto;
+    }
+  }
+}
+</style>

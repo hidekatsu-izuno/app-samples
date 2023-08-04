@@ -1,13 +1,39 @@
 <template>
-  <div class="UICard flex flex-col w-full border border-slate-300 rounded-lg bg-white shadow">
-    <div v-if="$slots.header" class="p-3 bg-slate-50 border-b border-slate-300 rounded-t-lg">
+  <div class="UICard">
+    <div v-if="$slots.header" class="UICard-Header">
       <slot name="header" />
     </div>
-    <div class="grow p-6">
+    <div class="UICard-Content">
       <slot />
     </div>
-    <div v-if="$slots.footer" class="p-3 bg-slate-50 border-t border-slate-300 rounded-b-lg">
+    <div v-if="$slots.footer" class="UICard-Footer">
       <slot name="footer" />
     </div>
   </div>
 </template>
+
+<style>
+.UICard {
+  @apply flex flex-col
+    shadow
+    border border-slate-300 rounded-lg
+    bg-white;
+}
+
+.UICard-Header {
+  @apply border-b border-slate-300 rounded-t-lg
+    p-3
+    bg-slate-50;
+}
+
+.UICard-Content {
+  @apply grow
+    p-6;
+}
+
+.UICard-Footer {
+  @apply border-t border-slate-300 rounded-b-lg
+    p-3
+    bg-slate-50;
+}
+</style>

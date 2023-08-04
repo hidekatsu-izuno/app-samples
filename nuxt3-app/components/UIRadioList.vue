@@ -106,73 +106,54 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UIRadioList">
+  <div class="UIRadioList"
+  :class="[
+      props.required ? 'UIRadioList-required' : '',
+      props.disabled ? 'UIRadioList-disabled' : '',
+      props.readonly ? 'UIRadioList-readonly' : '',
+      props.halign ? `UIRadioList-halign-${props.halign}` : '',
+      props.columns ? `UIRadioList-columns-${props.columns}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
-    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
+      class="UIRadioList-Label"
+    >{{ props.label }}</label>
     <div
       v-if="props.readonly"
-      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+      class="UIRadioList-Content"
     >
-      <template v-if="data.value">
-        <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div class=" whitespace-pre-wrap">{{ props.items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
-        <div v-if="props.suffix">{{ props.suffix }}</div>
-      </template>
-      <template v-else>&#8203;</template>
+      <div v-if="props.prefix && data.value">{{ props.prefix }}</div>
+      <div class="UIRadioList-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
+      <div v-if="props.suffix && data.value">{{ props.suffix }}</div>
     </div>
     <div
       v-else
-      :class="[
-        props.columns === 2 ? 'grid grid-columns-2' :
-        props.columns === 3 ? 'grid grid-columns-3' :
-        props.columns === 4 ? 'grid grid-columns-4' :
-        props.columns === 5 ? 'grid grid-columns-5' :
-        props.columns === 6 ? 'grid grid-columns-6' :
-        props.columns === 7 ? 'grid grid-columns-7' :
-        props.columns === 8 ? 'grid grid-columns-8' :
-        props.columns === 9 ? 'grid grid-columns-9' :
-        props.columns === 10 ? 'grid grid-columns-10' :
-        props.columns === 11 ? 'grid grid-columns-11' :
-        props.columns === 12 ? 'grid grid-columns-12' :
-        '',
-      ]"
+      class="UIRadioList-Content"
       @change="onChange"
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
       <div v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])" :key="index"
-        class="flex flex-row items-center gap-2"
-        :class="[
-          props.halign === 'start' ? 'justify-start' :
-          props.halign === 'center' ? 'justify-center' :
-          props.halign === 'end' ? 'justify-start' :
-          '',
-        ]"
+        class="UIRadioList-ContentItem"
       >
         <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div :class="props.halign ? 'flex-none' : 'grow'">
+        <div class="UIRadioList-Item">
           <label
-            class="inline-flex items-center gap-1 py-1"
-            :class="[
-              props.disabled ? 'text-gray-400' : '',
-              ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-            ]"
+            class="UIRadioList-InputLabel"
+            :class="props.inputClass"
             :style="props.inputStyle"
           >
-            <div class="grid w-4 h-4">
+            <div class="UIRadioList-InputArea">
               <input
+                class="UIRadioList-Input peer"
                 type="radio"
-                class="peer appearance-none w-full h-full rounded-full bg-gray-50 border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400"
-                style="grid-area: 1/1;"
                 :name="id || undefined"
                 :value="item.value"
                 :checked="item.value === data.value"
                 :disabled="props.disabled"
                 :tabindex="props.tabindex"
               />
-              <UIIcon name="circle-medium" class=" w-full h-full text-white pointer-events-none hidden peer-checked:block" style="grid-area: 1/1;" />
+              <UIIcon name="circle-medium" class="UIRadioList-InputCheck hidden peer-checked:block" />
             </div>
             {{ item.text }}
           </label>
@@ -182,7 +163,177 @@ defineExpose({
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UIRadioList-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UIRadioList-Label {
+  @apply block;
+}
+
+.UIRadioList-ContentItem {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UIRadioList-Item {
+  @apply w-full;
+}
+
+.UIRadioList-InputLabel {
+  @apply inline-flex items-center gap-1
+    py-1;
+}
+
+.UIRadioList-InputArea {
+  @apply grid
+    w-4 h-4;
+}
+
+.UIRadioList-Input {
+  @apply appearance-none
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded-full
+    w-full h-full
+    bg-gray-50 checked:bg-blue-500 disabled:bg-gray-200 checked:disabled:bg-gray-400;
+  grid-area: 1/1;
+}
+
+.UIRadioList-InputCheck {
+  @apply w-full h-full
+    text-white
+    pointer-events-none;
+  grid-area: 1/1;
+}
+
+.UIRadioList-Text {
+  @apply whitespace-pre-wrap;
+  min-height: 1rem;
+}
+
+.UIRadioList-Error {
+  @apply text-sm text-red-500;
+}
+
+.UIRadioList-required {
+  .UIRadioList-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UIRadioList-disabled {
+  .UIRadioList-InputLabel {
+    @apply text-gray-400;
+  }
+}
+
+.UIRadioList-readonly {
+  .UIRadioList-Content {
+    @apply flex flex-row items-center justify-start gap-2
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+:not(.UIRadioList-readonly) {
+  .UIRadioList-halign-start {
+    .UIRadioList-ContentItem {
+      @apply justify-start;
+    }
+
+    .UIRadioList-Item {
+      @apply w-auto;
+    }
+  }
+
+  .UIRadioList-halign-center {
+    .UIRadioList-ContentItem {
+      @apply justify-center;
+    }
+
+    .UIRadioList-Item {
+      @apply w-auto;
+    }
+  }
+
+  .UITextBox-halign-end {
+    .UIRadioList-ContentItem {
+      @apply justify-end;
+    }
+
+    .UIRadioList-Item {
+      @apply w-auto;
+    }
+  }
+
+  .UIRadioList-columns-2 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-2;
+    }
+  }
+
+  .UIRadioList-columns-3 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-3;
+    }
+  }
+
+  .UIRadioList-columns-4 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-4;
+    }
+  }
+
+  .UIRadioList-columns-5 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-5;
+    }
+  }
+
+  .UIRadioList-columns-6 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-6;
+    }
+  }
+
+  .UIRadioList-columns-7 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-7;
+    }
+  }
+
+  .UIRadioList-columns-8 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-8;
+    }
+  }
+
+  .UIRadioList-columns-9 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-9;
+    }
+  }
+
+  .UIRadioList-columns-10 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-10;
+    }
+  }
+
+  .UIRadioList-columns-11 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-11;
+    }
+  }
+
+  .UIRadioList-columns-12 {
+    .UIRadioList-Content {
+      @apply grid grid-cols-12;
+    }
+  }
+}
+</style>

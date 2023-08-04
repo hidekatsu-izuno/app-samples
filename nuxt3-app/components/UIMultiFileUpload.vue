@@ -100,29 +100,23 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UIMultiFileUpload">
+  <div class="UIMultiFileUpload"
+  :class="[
+      props.required ? 'UIMultiFileUpload-required' : '',
+      props.disabled ? 'UIMultiFileUpload-disabled' : '',
+      props.halign ? `UIMultiFileUpload-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
-    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
-    <div
-      class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
-    >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
+      class="UIMultiFileUpload-Label"
+    >{{ props.label }}</label>
+    <div class="UIMultiFileUpload-Content">
+      <div v-if="props.prefix" class="UIMultiFileUpload-Prefix">{{ props.prefix }}</div>
       <input
+        class="UIMultiFileUpload-Input"
         type="file"
         multiple="true"
-        class="px-2 py-1 text-gray-900 bg-gray-50 resize-none border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
-        :class="[
-          props.halign ? '' : 'w-full',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
+        :class="props.inputClass"
         :style="props.inputStyle"
         :placeholder="props.placeholder"
         :accept="props.accept"
@@ -133,11 +127,73 @@ defineExpose({
         @change="onChange"
         @blur="onBlur"
       />
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UIMultiFileUpload-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UIMultiFileUpload-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UIMultiFileUpload-Label {
+  @apply block;
+}
+
+.UIMultiFileUpload-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UIMultiFileUpload-Input {
+  @apply focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded-md focus:border-blue-500
+    px-2 py-1
+    w-full
+    bg-gray-50 disabled:bg-gray-100
+    text-gray-900 disabled:text-gray-400
+    resize-none;
+}
+
+.UIMultiFileUpload-Error {
+  @apply text-sm text-red-500;
+}
+
+.UIMultiFileUpload-required {
+  .UIMultiFileUpload-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UIMultiFileUpload-halign-start {
+  .UIMultiFileUpload-Content {
+    @apply justify-start;
+  }
+
+  .UIMultiFileUpload-Input {
+    @apply w-auto;
+  }
+}
+
+.UIMultiFileUpload-halign-center {
+  .UIMultiFileUpload-Content {
+    @apply justify-center;
+  }
+
+  .UIMultiFileUpload-Input {
+    @apply w-auto;
+  }
+}
+
+.UIMultiFileUpload-halign-end {
+  .UIMultiFileUpload-Content {
+    @apply justify-end;
+  }
+
+  .UIMultiFileUpload-Input {
+    @apply w-auto;
+  }
+}
+</style>

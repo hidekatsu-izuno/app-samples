@@ -120,7 +120,9 @@ function onCompositionEnd(event: Event) {
 function onBlur(event: Event) {
   data.focused = false
 
-  pickerRef.value?.classList.add("hidden")
+  if (pickerRef.value) {
+    pickerRef.value.style.display = "none"
+  }
 
   const target = event.target as HTMLInputElement
   const validated = validate(toHalfwidthAscii(target.value))
@@ -143,7 +145,9 @@ function onPickerIconMouseDown(event: Event) {
   pickerData.start = parseDate(data.value) || startOfDay(new Date())
   pickerData.current = pickerData.start
 
-  pickerRef.value?.classList.remove("hidden")
+  if (pickerRef.value) {
+    pickerRef.value.style.display = ""
+  }
   popper?.update()
 }
 
@@ -202,39 +206,36 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UIDateBox">
+  <div class="UIDateBox"
+  :class="[
+      props.required ? 'UIDateBox-required' : '',
+      props.disabled ? 'UIDateBox-disabled' : '',
+      props.readonly ? 'UIDateBox-readonly' : '',
+      props.halign ? `UIDateBox-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
-    >{{ props.label }} <span v-if="props.required" class="text-red-500">※</span></label>
+      class="UIDateBox-Label"
+    >{{ props.label }}</label>
     <div
       v-if="props.readonly"
-      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+      class="UIDateBox-Content"
     >
-      <template v-if="data.value">
-        <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div class=" whitespace-pre-wrap">{{ data.value || "&#8203;" }}</div>
-        <div v-if="props.suffix">{{ props.suffix }}</div>
-      </template>
-      <template v-else>&#8203;</template>
+      <div v-if="props.prefix && data.value" class="UIDateBox-Prefix">{{ props.prefix }}</div>
+      <div class="UIDateBox-Text">{{ data.value }}</div>
+      <div v-if="props.suffix && data.value" class="UIDateBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-else
-      class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
+      class="UIDateBox-Content"
     >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
+      <div v-if="props.prefix" class="UIDateBox-Prefix">{{ props.prefix }}</div>
       <div class="relative" :class="props.halign ? 'flex-none' : 'grow'">
         <input
+          class="UIDateBox-Input"
           ref="inputRef"
           type="text"
           inputmode="numeric"
-          class="w-full pl-2 pr-10 py-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
           :placeholder="props.placeholder"
           :tabindex="props.tabindex"
           :disabled="props.disabled"
@@ -250,40 +251,41 @@ defineExpose({
           <UIIcon name="calendar" class="text-2xl" :class="[disabled ? 'text-gray-400' : '']" />
         </div>
       </div>
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UIDateBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       ref="pickerRef"
-      class="hidden grid grid-cols-7 justify-contents-center align-contents-center text-sm p-2 bg-white rounded-md shadow-lg z-10"
+      class="UIDateBox-Calender"
+      style="display: none"
       @mousedown="onPickerMouseDown"
     >
       <div
-        class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
+        class="UIDateBox-CalendarPrevInput"
         @click="onPickerPrevButtonClick"
       >
-        <UIIcon name="arrow-left" class="text-2xl" />
+        <UIIcon name="arrow-left" class="UIDateBox-CalendarPrevInputIcon" />
       </div>
-      <div class="col-span-5 flex items-center justify-center h-8">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
+      <div class="UIDateBox-CalendarMonth">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
       <div
-        class="flex items-center justify-center w-8 h-8 rounded-md cursor-default hover:bg-gray-100"
+        class="UIDateBox-CalendarNextInput"
         @click="onPickerNextButtonClick"
       >
-        <UIIcon name="arrow-right" class="text-2xl" />
+        <UIIcon name="arrow-right" class="UIDateBox-CalendarNextInputIcon" />
       </div>
       <div
         v-for="week in ['日', '月', '火', '水', '木', '金', '土']"
         :key="week"
-        class="flex font-bold text-gray-400 items-center justify-center w-8 h-6"
+        class="UIDateBox-CalenderWeek"
       >{{ week }}</div>
       <div
         v-for="date in eachDayOfInterval({
           start: startOfWeek(startOfMonth(pickerData.current)),
           end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
         })"
+        class="UIDateBox-CalenderDate"
         :key="date.getTime()"
-        class="flex items-center justify-center h-8 rounded-md cursor-default"
         :class="[
-          isSameDay(pickerData.start, date) ? 'text-white font-bold bg-blue-700 hover:bg-blue-800' : 'hover:bg-gray-100',
+          isSameDay(pickerData.start, date) ? 'UIDateBox-CalenderDate-today' : '',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
         :style="props.inputStyle"
@@ -292,15 +294,107 @@ defineExpose({
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UIDateBox-Error"
     >{{ data.error }}</div>
   </div>
 </template>
 
-<style scoped>
-.DateBox input[type="number"]::-webkit-inner-spin-button,
-.DateBox input[type="number"]::-webkit-outer-spin-button {
+<style>
+.UIDateBox-Label {
+  @apply block;
+}
+
+.UIDateBox-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UIDateBox-Input {
+  @apply focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded-md focus:border-blue-500
+    pl-2 pr-10 py-1
+    w-full
+    disabled:bg-gray-100
+    text-gray-900 bg-gray-50 disabled:text-gray-400;
+
+}
+.UIDateBox-Input::-webkit-inner-spin-button,
+.UIDateBox-Input::-webkit-outer-spin-button {
+  @apply m-0;
   -webkit-appearance: none;
-  margin: 0;
+}
+
+.UIDateBox-Text {
+  @apply whitespace-pre-wrap;
+  min-height: 1rem;
+}
+
+.UIDateBox-Error {
+  @apply text-sm text-red-500;
+}
+
+.UIDateBox-Calender {
+  @apply grid grid-cols-7 justify-center items-center
+    shadow-lg
+    rounded-md
+    p-2
+    bg-white
+    text-sm
+    z-10;
+}
+
+.UIDateBox-CalenderPrevInput,
+.UIDateBox-CalendarNextInput {
+  @apply flex items-center justify-center
+    rounded-md
+    w-8 h-8
+    hover:bg-gray-100
+    cursor-default;
+}
+
+.UIDateBox-CalendarPrevInputIcon,
+.UIDateBox-CalendarNextInputIcon {
+  @apply text-2xl;
+}
+
+.UIDateBox-CalendarMonth {
+  @apply col-span-5
+    flex items-center justify-center
+    h-8;
+}
+
+.UIDateBox-CalenderWeek {
+  @apply flex items-center justify-center
+    w-8 h-6
+    font-bold text-gray-400;
+}
+
+.UIDateBox-CalenderDate {
+  @apply flex items-center justify-center
+    rounded-md
+    h-8
+    hover:bg-gray-100
+    cursor-default;
+}
+
+.UIDateBox-CalenderDate-today {
+  @apply bg-blue-700 hover:bg-blue-800
+    text-white font-bold;
+}
+
+.UIDateBox-required {
+  .UIFileUpload-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UIDateBox-readonly {
+  .UIDateBox-Content {
+    @apply justify-start
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
 }
 </style>

@@ -40,29 +40,22 @@ function onBlur(event: Event) {
 </script>
 
 <template>
-  <div class="UIButton">
+  <div class="UIButton"
+  :class="[
+    props.type ? `UIButton-type-${props.type}` : '',
+    props.disabled ? 'UIButton-disabled' : '',
+    props.halign ? `UIButton-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
+      class="UIButton-Label"
     >{{ props.label }}</label>
-    <div class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
-    >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
+    <div class="UIButton-Content">
+      <div v-if="props.prefix" class="UITextBox-Prefix">{{ props.prefix }}</div>
       <button
+        class="UIButton-Input"
         type="button"
-        class="font-medium px-4 py-1.5 m-0 rounded-md outline-none disabled:text-gray-400 focus:ring-2 focus:ring-blue-200"
-        :class="[
-          type === 'outline' ? 'text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-900' :
-          'text-white bg-blue-700 hover:bg-blue-900',
-          props.halign ? 'flex-none' : 'block w-full',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
+        :class="props.inputClass"
         :style="props.inputStyle"
         :disabled="props.disabled"
         :tabindex="props.tabindex"
@@ -72,11 +65,76 @@ function onBlur(event: Event) {
       >
         <slot />
       </button>
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UITextBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="error"
-      class="block text-sm text-red-500"
+      class="UIButton-Error"
     >{{ error }}</div>
   </div>
 </template>
+
+<style>
+.UIButton-Label {
+  @apply block;
+}
+
+.UIButton-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UIButton-Input {
+  @apply
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    rounded-md
+    m-0
+    w-full
+    px-4 py-1.5
+    font-medium disabled:text-gray-400;
+}
+
+.UIButton-Error {
+  @apply text-sm text-red-500;
+}
+
+.UIButton-type-outline {
+  .UIButton-Input {
+    @apply border border-blue-700
+      hover:bg-blue-900
+      text-blue-700 hover:text-white;
+  }
+}
+
+.UIButton-type-filled {
+  .UIButton-Input {
+    @apply bg-blue-700 hover:bg-blue-900
+      text-white;
+  }
+}
+
+.UIButton-halign-start {
+  .UIButton-Content {
+    @apply justify-start;
+  }
+  .UIButton-Input {
+    @apply w-auto;
+  }
+}
+.UIButton-halign-center {
+  .UIButton-Content {
+    @apply justify-center;
+  }
+  .UIButton-Input {
+    @apply w-auto;
+  }
+}
+.UIButton-halign-end {
+  .UIButton-Content {
+    @apply justify-end;
+  }
+  .UIButton-Input {
+    @apply w-auto;
+  }
+}
+</style>

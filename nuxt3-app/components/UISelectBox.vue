@@ -87,39 +87,33 @@ defineExpose({
 </script>
 
 <template>
-  <div class="UISelectBox">
+  <div class="UISelectBox"
+  :class="[
+      props.required ? 'UISelectBox-required' : '',
+      props.disabled ? 'UISelectBox-disabled' : '',
+      props.readonly ? 'UISelectBox-readonly' : '',
+      props.halign ? `UISelectBox-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
-    >{{ props.label }} <span v-if="required" class="text-red-500">※</span></label>
+      class="UISelectBox-Label"
+    >{{ props.label }}</label>
     <div
       v-if="props.readonly"
-      class="flex flex-row items-center justify-start gap-2 px-2 py-1 text-gray-900 border border-gray-200"
+      class="UISelectBox-Content"
     >
-      <template v-if="data.value">
-        <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div class=" whitespace-pre-wrap">{{ props.items.find(item => item.value === data.value)?.text || '&#8203;' }}</div>
-        <div v-if="props.suffix">{{ props.suffix }}</div>
-      </template>
-      <template v-else>&#8203;</template>
+      <div v-if="props.prefix && data.value" class="UISelectBox-Prefix">{{ props.prefix }}</div>
+      <div class="UISelectBox-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
+      <div v-if="props.suffix && data.value" class="UISelectBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-else
-      class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
+      class="UISelectBox-Content"
     >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
+      <div v-if="props.prefix" class="UISelectBox-Prefix">{{ props.prefix }}</div>
       <select
-        class="px-2 py-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-md outline-none disabled:text-gray-400 disabled:bg-gray-100 focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
-        :class="[
-          props.halign ? '' : 'w-full',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
+        class="UISelectBox-Input"
+        :class="props.inputClass"
         :style="props.inputStyle"
         :disabled="props.disabled"
         :tabindex="props.tabindex"
@@ -131,11 +125,84 @@ defineExpose({
         <option :disabled="required" value="">{{ placeholder }}</option>
         <option v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text }}</option>
       </select>
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UISelectBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UISelectBox-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UISelectBox-Label {
+  @apply block;
+}
+
+.UISelectBox-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UISelectBox-Input {
+  @apply
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 rounded-md focus:border-blue-500
+    px-2 py-1
+    w-full
+    bg-gray-50 disabled:bg-gray-100
+    text-gray-900 disabled:text-gray-400;
+}
+
+.UISelectBox-Text {
+  @apply whitespace-pre-wrap;
+  min-height: 1rem;
+}
+
+.UISelectBox-Error {
+  @apply text-sm text-red-500;
+}
+
+.UISelectBox-required {
+  .UISelectBox-Label::after {
+    @apply text-red-500;
+    content: ' ※';
+  }
+}
+
+.UISelectBox-readonly {
+  .UISelectBox-Content {
+    @apply justify-start
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+:not(.UISelectBox-readonly) {
+  .UISelectBox-halign-start {
+    .UISelectBox-Content {
+      @apply justify-start;
+    }
+    .UISelectBox-Input {
+      @apply w-auto;
+    }
+  }
+  .UISelectBox-halign-center {
+    .UISelectBox-Content {
+      @apply justify-center;
+    }
+    .UISelectBox-Input {
+      @apply w-auto;
+    }
+  }
+  .UISelectBox-halign-end {
+    .UISelectBox-Content {
+      @apply justify-end;
+    }
+    .UISelectBox-Input {
+      @apply w-auto;
+    }
+  }
+}
+</style>

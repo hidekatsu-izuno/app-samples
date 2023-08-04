@@ -41,28 +41,21 @@ function onBlur(event: MouseEvent) {
 </script>
 
 <template>
-  <div class="UILink">
+  <div class="UILink"
+  :class="[
+      props.disabled ? 'UILink-disabled' : '',
+      props.halign ? `UILink-halign-${props.halign}` : '',
+  ]">
     <label
       v-if="props.label"
-      class="block"
+      class="UILink-Label"
     >{{ props.label }}</label>
-    <div
-      class="flex flex-row items-center gap-2"
-      :class="[
-        props.halign === 'start' ? 'justify-start' :
-        props.halign === 'center' ? 'justify-center' :
-        props.halign === 'end' ? 'justify-start' :
-        '',
-      ]"
-    >
-      <div v-if="props.prefix">{{ props.prefix }}</div>
-      <div :class="props.halign ? 'flex-none' : 'grow'">
+    <div class="UILink-Content">
+      <div v-if="props.prefix" class="UILink-Prefix">{{ props.prefix }}</div>
+      <div class="UILink-InputArea">
         <NuxtLink
-          class="rounded-md outline-none focus:ring-2 focus:ring-blue-200"
-          :class="[
-            props.disabled ? 'text-gray-400 cursor-default' : 'text-blue-600 hover:underline cursor-pointer',
-            ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-          ]"
+          class="UILink-Input"
+          :class="props.inputClass"
           :style="props.inputStyle"
           :href="!props.disabled && props.href"
           :tabindex="props.tabindex"
@@ -73,11 +66,75 @@ function onBlur(event: MouseEvent) {
           <slot />
         </NuxtLink>
       </div>
-      <div v-if="props.suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UILink-Suffix">{{ props.suffix }}</div>
     </div>
     <div
       v-if="data.error"
-      class="block text-sm text-red-500"
+      class="UILink-Error"
     >{{ data.error }}</div>
   </div>
 </template>
+
+<style>
+.UILink-Label {
+  @apply block;
+}
+
+.UILink-Content {
+  @apply flex flex-row items-center gap-2;
+}
+
+.UILink-InputArea {
+  @apply w-full;
+}
+
+.UILink-Input {
+  @apply focus:ring-2 focus:ring-blue-200
+    outline-none
+    rounded-md
+    text-blue-600
+    hover:underline
+    cursor-pointer;
+}
+
+.UILink-Error {
+  @apply text-sm text-red-500;
+}
+
+.UILink-disabled {
+  .UILink-Input {
+    @apply text-gray-400
+      cursor-default;
+  }
+}
+
+.UILink-halign-start {
+  .UILink-Content {
+    @apply justify-start;
+  }
+
+  .UILink-InputArea {
+    @apply w-auto;
+  }
+}
+
+.UILink-halign-center {
+  .UILink-Content {
+    @apply justify-center;
+  }
+
+  .UILink-InputArea {
+    @apply w-auto;
+  }
+}
+
+.UILink-halign-end {
+  .UILink-Content {
+    @apply justify-end;
+  }
+
+  .UILink-InputArea {
+    @apply w-auto;
+  }
+}
+</style>

@@ -8,7 +8,6 @@ const props = withDefaults(defineProps<{
   pageSize?: number,
   totalCount?: number,
   disabled?: boolean,
-  readonly?: boolean,
 }>(), {
   modelValue: 1,
   pageSize: 100,
@@ -55,42 +54,116 @@ function onFocusout(event: Event) {
 
 <template>
   <div
-    class="UIPaginator flex flex-row"
-    :class="props.disabled ? 'text-gray-400' : ''"
+    class="UIPaginator"
+    :class="[
+      props.disabled ? 'UIPaginator-disabled' : '',
+      props.halign ? `UIPaginator-halign-${props.halign}` : '',
+    ]"
     @focusin="onFocusin"
     @focusout="onFocusout"
   >
     <button
+      class="UIPaginator-FirstInput"
       type="button"
-      class="flex items-center justify-center bg-white border border-gray-300 rounded-l-lg w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="props.disabled || props.modelValue === 1"
       :data-value="1"
       :tabindex="props.tabindex"
       @click="onClick"
     >
-      <UIIcon name="page-first" class="text-2xl" />
+      <UIIcon name="page-first" class="UIPaginator-FirstInputIcon" />
     </button>
     <button
+      class="UIPaginator-PrevInput"
       type="button"
-      class="-ml-[1px] flex items-center justify-center bg-white border border-gray-300 w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
       :disabled="props.disabled || props.modelValue === 1"
       :data-value="Math.max(props.modelValue - 1, 1)"
       @click="onClick"
     >
-      <UIIcon name="chevron-left" class="text-2xl" />
+      <UIIcon name="chevron-left" class="UIPaginator-PrevInputIcon" />
     </button>
     <div
-      class="flex items-center justify-center bg-white border-y border-gray-300 w-48 h-8 outline-none hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="UIPaginator-Page"
     >{{ props.modelValue }} / {{ maxPage }}</div>
     <button
       type="button"
-      class="flex items-center justify-center bg-white border border-gray-300 rounded-r-lg w-8 h-8 outline-none disabled:text-gray-400 hover:enabled:text-white hover:enabled:border-0 hover:enabled:bg-blue-800 focus:ring-2 focus:ring-blue-200"
+      class="UIPaginator-NextInput"
       :disabled="props.disabled || props.modelValue === maxPage"
       :data-value="Math.min(props.modelValue + 1, maxPage)"
       @click="onClick"
     >
-      <UIIcon name="chevron-right" class="text-2xl" />
+      <UIIcon name="chevron-right" class="UIPaginator-NextInputIcon" />
     </button>
-    <div class="flex items-center px-2">{{ props.totalCount }} 件</div>
+    <div class="UIPaginator-TotalCount">{{ props.totalCount }}</div>
   </div>
 </template>
+
+<style>
+.UIPaginator {
+  @apply flex flex-row;
+}
+
+.UIPaginator-FirstInput,
+.UIPaginator-PrevInput,
+.UIPaginator-NextInput {
+  @apply flex items-center justify-center
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    border border-gray-300 hover:enabled:border-0
+    w-8 h-8
+    bg-white hover:enabled:bg-blue-800
+    disabled:text-gray-400 hover:enabled:text-white;
+}
+
+.UIPaginator-FirstInput {
+  @apply rounded-l-lg;
+}
+
+.UIPaginator-PrevInput {
+  margin-left: -1px;
+}
+
+.UIPaginator-NextInput {
+  @apply rounded-r-lg;
+}
+
+.UIPaginator-FirstInputIcon,
+.UIPaginator-PrevInputIcon,
+.UIPaginator-NextInputIcon {
+  @apply text-2xl;
+}
+
+.UIPaginator-Page {
+  @apply flex items-center justify-center
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    border-y border-gray-300 hover:enabled:border-0
+    w-48 h-8
+    bg-white hover:enabled:bg-blue-800
+    hover:enabled:text-white;
+}
+
+.UIPaginator-TotalCount {
+  @apply flex items-center
+    px-2;
+}
+
+.UIPaginator-TotalCount::after {
+  content: ' 件'
+}
+
+.UIPaginator-disabled {
+  @apply text-gray-400;
+}
+
+.UIPaginator-halign-start {
+  @apply justify-start;
+}
+
+.UIPaginator-halign-center {
+  @apply justify-center;
+}
+
+.UIPaginator-halign-end {
+  @apply justify-end;
+}
+</style>
