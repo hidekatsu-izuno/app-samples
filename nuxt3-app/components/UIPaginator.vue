@@ -55,10 +55,8 @@ function onFocusout(event: Event) {
 <template>
   <div
     class="UIPaginator"
-    :class="[
-      props.disabled ? 'UIPaginator-disabled' : '',
-      props.halign ? `UIPaginator-halign-${props.halign}` : '',
-    ]"
+    :data-disabled="props.disabled || undefined"
+    :data-halign="props.halign"
     @focusin="onFocusin"
     @focusout="onFocusout"
   >
@@ -149,19 +147,19 @@ function onFocusout(event: Event) {
   content: ' 件'
 }
 
-.UIPaginator-disabled {
+.UIPaginator[data-disabled="true"] {
   @apply text-gray-400;
 }
 
-.UIPaginator-halign-start {
+.UIPaginator[data-halign="start"] {
   @apply justify-start;
 }
 
-.UIPaginator-halign-center {
+.UIPaginator[data-halign="center"] {
   @apply justify-center;
 }
 
-.UIPaginator-halign-end {
+.UIPaginator[data-halign="end"] {
   @apply justify-end;
 }
 </style>

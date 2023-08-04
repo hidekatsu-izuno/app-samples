@@ -77,12 +77,11 @@ defineExpose({
 
 <template>
   <div class="UICheck"
-  :class="[
-      props.required ? 'UICheck-required' : '',
-      props.disabled ? 'UICheck-disabled' : '',
-      props.readonly ? 'UICheck-readonly' : '',
-      props.halign ? `UICheck-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UICheck-Label"
@@ -173,20 +172,20 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UICheck-required {
+.UICheck[data-required="true"] {
   .UICheck-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UICheck-disabled {
+.UICheck[data-disabled="true"] {
   .UICheck-InputLabel {
     @apply text-gray-400;
   }
 }
 
-.UICheck-readonly {
+.UICheck[data-readonly="true"] {
   .UICheck-Content {
     @apply justify-start
       border border-gray-200
@@ -195,27 +194,32 @@ defineExpose({
   }
 }
 
-:not(.UICheck-readonly) {
-  .UICheck-halign-start {
+:not(.UICheck[data-readonly="true"]) {
+  .UICheck[data-halign="start"] {
     .UICheck-Content {
       @apply justify-start;
     }
+
     .UICheck-Input {
       @apply w-auto;
     }
   }
-  .UICheck-halign-center {
+
+  .UICheck[data-halign="center"] {
     .UICheck-Content {
       @apply justify-center;
     }
+
     .UICheck-Input {
       @apply w-auto;
     }
   }
-  .UICheck-halign-end {
+
+  .UICheck[data-halign="end"] {
     .UICheck-Content {
       @apply justify-end;
     }
+
     .UICheck-Input {
       @apply w-auto;
     }

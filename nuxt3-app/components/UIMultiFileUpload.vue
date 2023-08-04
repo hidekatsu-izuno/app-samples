@@ -101,11 +101,10 @@ defineExpose({
 
 <template>
   <div class="UIMultiFileUpload"
-  :class="[
-      props.required ? 'UIMultiFileUpload-required' : '',
-      props.disabled ? 'UIMultiFileUpload-disabled' : '',
-      props.halign ? `UIMultiFileUpload-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UIMultiFileUpload-Label"
@@ -160,14 +159,14 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UIMultiFileUpload-required {
+.UIMultiFileUpload[data-required="true"] {
   .UIMultiFileUpload-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UIMultiFileUpload-halign-start {
+.UIMultiFileUpload[data-halign="start"] {
   .UIMultiFileUpload-Content {
     @apply justify-start;
   }
@@ -177,7 +176,7 @@ defineExpose({
   }
 }
 
-.UIMultiFileUpload-halign-center {
+.UIMultiFileUpload[data-halign="center"] {
   .UIMultiFileUpload-Content {
     @apply justify-center;
   }
@@ -187,7 +186,7 @@ defineExpose({
   }
 }
 
-.UIMultiFileUpload-halign-end {
+.UIMultiFileUpload[data-halign="end"] {
   .UIMultiFileUpload-Content {
     @apply justify-end;
   }

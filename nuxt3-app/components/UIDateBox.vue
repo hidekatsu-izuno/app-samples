@@ -207,12 +207,11 @@ defineExpose({
 
 <template>
   <div class="UIDateBox"
-  :class="[
-      props.required ? 'UIDateBox-required' : '',
-      props.disabled ? 'UIDateBox-disabled' : '',
-      props.readonly ? 'UIDateBox-readonly' : '',
-      props.halign ? `UIDateBox-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UIDateBox-Label"
@@ -323,7 +322,7 @@ defineExpose({
     text-gray-900 bg-gray-50 disabled:text-gray-400;
   grid-area: 1/1;
 }
-.UIDateBox-Input-webkit-inner-spin-button,
+.UIDateBox-Input::-webkit-inner-spin-button,
 .UIDateBox-Input::-webkit-outer-spin-button {
   @apply appearance-none
     m-0;
@@ -396,14 +395,14 @@ defineExpose({
     text-white font-bold;
 }
 
-.UIDateBox-required {
+.UIDateBox[data-required="true"] {
   .UIFileUpload-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UIDateBox-disabled {
+.UIDateBox[data-disabled="true"] {
   .UIDateBox-InputCalender {
     .UIIcon {
       @apply text-gray-400;
@@ -411,7 +410,7 @@ defineExpose({
   }
 }
 
-.UIDateBox-readonly {
+.UIDateBox[data-readonly="true"] {
   .UIDateBox-Content {
     @apply justify-start
       border border-gray-200
@@ -420,8 +419,8 @@ defineExpose({
   }
 }
 
-:not(.UIDateBox-readonly) {
-  .UIDateBox-halign-start {
+:not(.UIDateBox[data-readonly="true"]) {
+  .UIDateBox[data-halign="start"] {
     .UIDateBox-Content {
       @apply justify-start;
     }
@@ -431,7 +430,7 @@ defineExpose({
     }
   }
 
-  .UIDateBox-halign-center {
+  .UIDateBox[data-halign="center"] {
     .UIDateBox-Content {
       @apply justify-center;
     }
@@ -441,7 +440,7 @@ defineExpose({
     }
   }
 
-  .UIDateBox-halign-end {
+  .UIDateBox[data-halign="end"] {
     .UIDateBox-Content {
       @apply justify-end;
     }

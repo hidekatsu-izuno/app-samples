@@ -100,11 +100,10 @@ defineExpose({
 
 <template>
   <div class="UIFileUpload"
-  :class="[
-      props.required ? 'UIFileUpload-required' : '',
-      props.disabled ? 'UIFileUpload-disabled' : '',
-      props.halign ? `UIFileUpload-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UIFileUpload-Label"
@@ -158,14 +157,14 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UIFileUpload-required {
+.UIFileUpload[data-required="true"] {
   .UIFileUpload-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UIFileUpload-halign-start {
+.UIFileUpload[data-halign="start"] {
   .UIFileUpload-Content {
     @apply justify-start;
   }
@@ -175,7 +174,7 @@ defineExpose({
   }
 }
 
-.UIFileUpload-halign-center {
+.UIFileUpload[data-halign="center"] {
   .UIFileUpload-Content {
     @apply justify-center;
   }
@@ -185,7 +184,7 @@ defineExpose({
   }
 }
 
-.UIFileUpload-halign-end {
+.UIFileUpload[data-halign="end"] {
   .UIFileUpload-Content {
     @apply justify-end;
   }

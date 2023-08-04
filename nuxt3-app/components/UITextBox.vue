@@ -149,12 +149,10 @@ defineExpose({
 <template>
   <div
     class="UITextBox"
-    :class="[
-      props.required ? 'UITextBox-required' : '',
-      props.disabled ? 'UITextBox-disabled' : '',
-      props.readonly ? 'UITextBox-readonly' : '',
-      props.halign ? `UITextBox-halign-${props.halign}` : '',
-    ]"
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
   >
     <label
       v-if="props.label"
@@ -227,14 +225,14 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UITextBox-required {
+.UITextBox[data-required="true"] {
   .UITextBox-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UITextBox-readonly {
+.UITextBox[data-readonly="true"] {
   .UITextBox-Content {
     @apply justify-start
       border border-gray-200
@@ -243,27 +241,32 @@ defineExpose({
   }
 }
 
-:not(.UITextBox-readonly) {
-  .UITextBox-halign-start {
+:not(.UITextBox[data-readonly="true"]) {
+  .UITextBox[data-halign="start"] {
     .UITextBox-Content {
       @apply justify-start;
     }
+
     .UITextBox-Input {
       @apply w-auto;
     }
   }
-  .UITextBox-halign-center {
+
+  .UITextBox[data-halign="center"] {
     .UITextBox-Content {
       @apply justify-center;
     }
+
     .UITextBox-Input {
       @apply w-auto;
     }
   }
-  .UITextBox-halign-end {
+
+  .UITextBox[data-halign="end"] {
     .UITextBox-Content {
       @apply justify-end;
     }
+
     .UITextBox-Input {
       @apply w-auto;
     }

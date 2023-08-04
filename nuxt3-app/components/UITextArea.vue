@@ -124,12 +124,11 @@ defineExpose({
 
 <template>
   <div class="UITextArea"
-  :class="[
-      props.required ? 'UITextArea-required' : '',
-      props.disabled ? 'UITextArea-disabled' : '',
-      props.readonly ? 'UITextArea-readonly' : '',
-      props.halign ? `UITextArea-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UITextArea-Label"
@@ -200,14 +199,14 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UITextArea-required {
+.UITextArea[data-required="true"] {
   .UITextArea-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UITextArea-readonly {
+.UITextArea[data-readonly="true"] {
   .UITextArea-Content {
     @apply justify-start
       border border-gray-200
@@ -216,27 +215,32 @@ defineExpose({
   }
 }
 
-:not(.UITextArea-readonly) {
-  .UITextArea-halign-start {
+:not(.UITextArea[data-readonly="true"]) {
+  .UITextArea[data-halign="start"] {
     .UITextArea-Content {
       @apply justify-start;
     }
+
     .UITextArea-Input {
       @apply w-auto;
     }
   }
-  .UITextArea-halign-center {
+
+  .UITextArea[data-halign="center"] {
     .UITextArea-Content {
       @apply justify-center;
     }
+
     .UITextArea-Input {
       @apply w-auto;
     }
   }
-  .UITextArea-halign-end {
+
+  .UITextArea[data-halign="end"] {
     .UITextArea-Content {
       @apply justify-end;
     }
+
     .UITextArea-Input {
       @apply w-auto;
     }

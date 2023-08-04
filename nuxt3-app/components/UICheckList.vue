@@ -108,12 +108,11 @@ defineExpose({
 
 <template>
   <div class="UICheckList"
-  :class="[
-      props.required ? 'UICheckList-required' : '',
-      props.disabled ? 'UICheckList-disabled' : '',
-      props.readonly ? 'UICheckList-readonly' : '',
-      props.halign ? `UICheckList-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UICheckList-Label"
@@ -223,20 +222,20 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UICheckList-required {
+.UICheckList[data-required="true"] {
   .UICheckList-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UICheckList-disabled {
+.UICheckList[data-disabled="true"] {
   .UICheckList-InputLabel {
     @apply text-gray-400;
   }
 }
 
-.UICheckList-readonly {
+.UICheckList[data-readonly="true"] {
   .UICheckList-Content {
     @apply border border-gray-200
       px-2 py-1
@@ -248,8 +247,8 @@ defineExpose({
   }
 }
 
-:not(.UICheckList-readonly) {
-  .UICheckList-halign-start {
+:not(.UICheckList[data-readonly="true"]) {
+  .UICheckList[data-halign="start"] {
     .UICheckList-ContentItem {
       @apply justify-start;
     }
@@ -259,7 +258,7 @@ defineExpose({
     }
   }
 
-  .UICheckList-halign-center {
+  .UICheckList[data-halign="center"] {
     .UICheckList-ContentItem {
       @apply justify-center;
     }
@@ -269,7 +268,7 @@ defineExpose({
     }
   }
 
-  .UICheckList-halign-end {
+  .UICheckList[data-halign="end"] {
     .UICheckList-ContentItem {
       @apply justify-end;
     }
@@ -279,67 +278,67 @@ defineExpose({
     }
   }
 
-  .UICheckList-columns-2 {
+  .UICheckList[data-columns="2"] {
     .UICheckList-Content {
       @apply grid grid-cols-2;
     }
   }
 
-  .UICheckList-columns-3 {
+  .UICheckList[data-columns="3"] {
     .UICheckList-Content {
       @apply grid grid-cols-3;
     }
   }
 
-  .UICheckList-columns-4 {
+  .UICheckList[data-columns="4"] {
     .UICheckList-Content {
       @apply grid grid-cols-4;
     }
   }
 
-  .UICheckList-columns-5 {
+  .UICheckList[data-columns="5"] {
     .UICheckList-Content {
       @apply grid grid-cols-5;
     }
   }
 
-  .UICheckList-columns-6 {
+  .UICheckList[data-columns="6"] {
     .UICheckList-Content {
       @apply grid grid-cols-6;
     }
   }
 
-  .UICheckList-columns-7 {
+  .UICheckList[data-columns="7"] {
     .UICheckList-Content {
       @apply grid grid-cols-7;
     }
   }
 
-  .UICheckList-columns-8 {
+  .UICheckList[data-columns="8"] {
     .UICheckList-Content {
       @apply grid grid-cols-8;
     }
   }
 
-  .UICheckList-columns-9 {
+  .UICheckList[data-columns="9"] {
     .UICheckList-Content {
       @apply grid grid-cols-9;
     }
   }
 
-  .UICheckList-columns-10 {
+  .UICheckList[data-columns="10"] {
     .UICheckList-Content {
       @apply grid grid-cols-10;
     }
   }
 
-  .UICheckList-columns-11 {
+  .UICheckList[data-columns="11"] {
     .UICheckList-Content {
       @apply grid grid-cols-11;
     }
   }
 
-  .UICheckList-columns-12 {
+  .UICheckList[data-columns="12"] {
     .UICheckList-Content {
       @apply grid grid-cols-12;
     }

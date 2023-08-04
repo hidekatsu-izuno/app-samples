@@ -41,12 +41,11 @@ function onBlur(event: Event) {
 
 <template>
   <div class="UIButton"
-  :class="[
-    props.type ? `UIButton-type-${props.type}` : '',
-    props.color ? `UIButton-color-${props.color}` : '',
-    props.disabled ? 'UIButton-disabled' : '',
-    props.halign ? `UIButton-halign-${props.halign}` : '',
-  ]">
+    :data-type="props.type"
+    :data-color="props.color"
+    :data-disabled="props.disabled || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UIButton-Label"
@@ -85,8 +84,7 @@ function onBlur(event: Event) {
 }
 
 .UIButton-Input {
-  @apply
-    focus:ring-2 focus:ring-blue-200
+  @apply focus:ring-2 focus:ring-blue-200
     outline-none
     rounded-md
     m-0
@@ -99,41 +97,47 @@ function onBlur(event: Event) {
   @apply text-sm text-red-500;
 }
 
-.UIButton-type-outline {
+.UIButton[data-type="filled"] {
   .UIButton-Input {
-    @apply border border-blue-700
-      hover:bg-blue-900
-      text-blue-700 hover:text-white;
-  }
-}
-
-.UIButton-type-filled {
-  .UIButton-Input {
-    @apply bg-blue-700 hover:bg-blue-900
+    @apply bg-blue-700 hover:bg-blue-900 disabled:bg-gray-500
       text-white;
   }
 }
 
-.UIButton-halign-start {
+.UIButton[data-type="outline"] {
+  .UIButton-Input {
+    @apply border border-blue-700 disabled:border-gray-500
+      bg-transparent hover:bg-blue-900 disabled:hover:bg-transparent
+      text-blue-700 hover:text-white disabled:text-gray-500;
+  }
+}
+
+
+
+.UIButton[data-halign="start"] {
   .UIButton-Content {
     @apply justify-start;
   }
+
   .UIButton-Input {
     @apply w-auto;
   }
 }
-.UIButton-halign-center {
+
+.UIButton[data-halign="center"] {
   .UIButton-Content {
     @apply justify-center;
   }
+
   .UIButton-Input {
     @apply w-auto;
   }
 }
-.UIButton-halign-end {
+.UIButton[data-halign="end"] {
   .UIButton-Content {
     @apply justify-end;
   }
+
   .UIButton-Input {
     @apply w-auto;
   }

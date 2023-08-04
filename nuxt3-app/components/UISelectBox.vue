@@ -88,12 +88,11 @@ defineExpose({
 
 <template>
   <div class="UISelectBox"
-  :class="[
-      props.required ? 'UISelectBox-required' : '',
-      props.disabled ? 'UISelectBox-disabled' : '',
-      props.readonly ? 'UISelectBox-readonly' : '',
-      props.halign ? `UISelectBox-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UISelectBox-Label"
@@ -163,14 +162,14 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UISelectBox-required {
+.UISelectBox[data-required="true"] {
   .UISelectBox-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UISelectBox-readonly {
+.UISelectBox[data-readonly="true"] {
   .UISelectBox-Content {
     @apply justify-start
       border border-gray-200
@@ -179,27 +178,30 @@ defineExpose({
   }
 }
 
-:not(.UISelectBox-readonly) {
-  .UISelectBox-halign-start {
+:not(.UISelectBox[data-readonly="true"]) {
+  .UISelectBox[data-halign="start"] {
     .UISelectBox-Content {
       @apply justify-start;
     }
+
     .UISelectBox-Input {
       @apply w-auto;
     }
   }
-  .UISelectBox-halign-center {
+  .UISelectBox[data-halign="center"] {
     .UISelectBox-Content {
       @apply justify-center;
     }
+
     .UISelectBox-Input {
       @apply w-auto;
     }
   }
-  .UISelectBox-halign-end {
+  .UISelectBox[data-halign="end"] {
     .UISelectBox-Content {
       @apply justify-end;
     }
+
     .UISelectBox-Input {
       @apply w-auto;
     }

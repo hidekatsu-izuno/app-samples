@@ -154,12 +154,11 @@ defineExpose({
 
 <template>
   <div class="UINumberBox"
-  :class="[
-      props.required ? 'UINumberBox-required' : '',
-      props.disabled ? 'UINumberBox-disabled' : '',
-      props.readonly ? 'UINumberBox-readonly' : '',
-      props.halign ? `UINumberBox-halign-${props.halign}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UINumberBox-Label"
@@ -237,14 +236,14 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UINumberBox-required {
+.UINumberBox[data-required="true"] {
   .UINumberBox-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UINumberBox-readonly {
+.UINumberBox[data-readonly="true"] {
   .UINumberBox-Content {
     @apply justify-start
       border border-gray-200
@@ -253,8 +252,8 @@ defineExpose({
   }
 }
 
-:not(.UINumberBox-readonly) {
-  .UINumberBox-halign-start {
+:not(.UINumberBox[data-readonly="true"]) {
+  .UINumberBox[data-halign="start"] {
     .UINumberBox-Content {
       @apply justify-start;
     }
@@ -262,7 +261,8 @@ defineExpose({
       @apply w-auto;
     }
   }
-  .UINumberBox-halign-center {
+
+  .UINumberBox[data-halign="center"] {
     .UINumberBox-Content {
       @apply justify-center;
     }
@@ -270,7 +270,8 @@ defineExpose({
       @apply w-auto;
     }
   }
-  .UINumberBox-halign-end {
+
+  .UINumberBox[data-halign="end"] {
     .UINumberBox-Content {
       @apply justify-end;
     }

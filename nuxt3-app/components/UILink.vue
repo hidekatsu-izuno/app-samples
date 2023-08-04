@@ -42,10 +42,9 @@ function onBlur(event: MouseEvent) {
 
 <template>
   <div class="UILink"
-  :class="[
-      props.disabled ? 'UILink-disabled' : '',
-      props.halign ? `UILink-halign-${props.halign}` : '',
-  ]">
+    :data-disabled="props.disabled || undefined"
+    :data-halign="props.halign"
+  >
     <label
       v-if="props.label"
       class="UILink-Label"
@@ -101,14 +100,14 @@ function onBlur(event: MouseEvent) {
   @apply text-sm text-red-500;
 }
 
-.UILink-disabled {
+.UILink[data-disabled="true"] {
   .UILink-Input {
-    @apply text-gray-400
+    @apply text-gray-400 hover:no-underline
       cursor-default;
   }
 }
 
-.UILink-halign-start {
+.UILink[data-halign="start"] {
   .UILink-Content {
     @apply justify-start;
   }
@@ -118,7 +117,7 @@ function onBlur(event: MouseEvent) {
   }
 }
 
-.UILink-halign-center {
+.UILink[data-halign="center"] {
   .UILink-Content {
     @apply justify-center;
   }
@@ -128,7 +127,7 @@ function onBlur(event: MouseEvent) {
   }
 }
 
-.UILink-halign-end {
+.UILink[data-halign="end"] {
   .UILink-Content {
     @apply justify-end;
   }

@@ -106,13 +106,12 @@ defineExpose({
 
 <template>
   <div class="UIRadioList"
-  :class="[
-      props.required ? 'UIRadioList-required' : '',
-      props.disabled ? 'UIRadioList-disabled' : '',
-      props.readonly ? 'UIRadioList-readonly' : '',
-      props.halign ? `UIRadioList-halign-${props.halign}` : '',
-      props.columns ? `UIRadioList-columns-${props.columns}` : '',
-  ]">
+    :data-required="props.required || undefined"
+    :data-disabled="props.disabled || undefined"
+    :data-readonly="props.readonly || undefined"
+    :data-halign="props.halign"
+    :data-columns="props.columns"
+  >
     <label
       v-if="props.label"
       class="UIRadioList-Label"
@@ -216,20 +215,20 @@ defineExpose({
   @apply text-sm text-red-500;
 }
 
-.UIRadioList-required {
+.UIRadioList[data-required="true"] {
   .UIRadioList-Label::after {
     @apply text-red-500;
     content: ' ※';
   }
 }
 
-.UIRadioList-disabled {
+.UIRadioList[data-disabled="true"] {
   .UIRadioList-InputLabel {
     @apply text-gray-400;
   }
 }
 
-.UIRadioList-readonly {
+.UIRadioList[data-readonly="true"] {
   .UIRadioList-Content {
     @apply flex flex-row items-center justify-start gap-2
       border border-gray-200
@@ -238,8 +237,8 @@ defineExpose({
   }
 }
 
-:not(.UIRadioList-readonly) {
-  .UIRadioList-halign-start {
+:not(.UIRadioList[data-readonly="true"]) {
+  .UIRadioList[data-halign="start"] {
     .UIRadioList-ContentItem {
       @apply justify-start;
     }
@@ -249,7 +248,7 @@ defineExpose({
     }
   }
 
-  .UIRadioList-halign-center {
+  .UIRadioList[data-halign="center"] {
     .UIRadioList-ContentItem {
       @apply justify-center;
     }
@@ -259,7 +258,7 @@ defineExpose({
     }
   }
 
-  .UITextBox-halign-end {
+  .UITextBox[data-halign="end"] {
     .UIRadioList-ContentItem {
       @apply justify-end;
     }
