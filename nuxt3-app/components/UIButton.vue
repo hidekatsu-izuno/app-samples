@@ -43,6 +43,7 @@ function onBlur(event: Event) {
   <div class="UIButton"
   :class="[
     props.type ? `UIButton-type-${props.type}` : '',
+    props.color ? `UIButton-color-${props.color}` : '',
     props.disabled ? 'UIButton-disabled' : '',
     props.halign ? `UIButton-halign-${props.halign}` : '',
   ]">

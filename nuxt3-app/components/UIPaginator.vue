@@ -70,7 +70,7 @@ function onFocusout(event: Event) {
       :tabindex="props.tabindex"
       @click="onClick"
     >
-      <UIIcon name="page-first" class="UIPaginator-FirstInputIcon" />
+      <UIIcon name="page-first" />
     </button>
     <button
       class="UIPaginator-PrevInput"
@@ -79,7 +79,7 @@ function onFocusout(event: Event) {
       :data-value="Math.max(props.modelValue - 1, 1)"
       @click="onClick"
     >
-      <UIIcon name="chevron-left" class="UIPaginator-PrevInputIcon" />
+      <UIIcon name="chevron-left" />
     </button>
     <div
       class="UIPaginator-Page"
@@ -91,7 +91,7 @@ function onFocusout(event: Event) {
       :data-value="Math.min(props.modelValue + 1, maxPage)"
       @click="onClick"
     >
-      <UIIcon name="chevron-right" class="UIPaginator-NextInputIcon" />
+      <UIIcon name="chevron-right" />
     </button>
     <div class="UIPaginator-TotalCount">{{ props.totalCount }}</div>
   </div>
@@ -112,6 +112,10 @@ function onFocusout(event: Event) {
     w-8 h-8
     bg-white hover:enabled:bg-blue-800
     disabled:text-gray-400 hover:enabled:text-white;
+
+    .UIIcon {
+      @apply text-2xl;
+    }
 }
 
 .UIPaginator-FirstInput {
@@ -124,12 +128,6 @@ function onFocusout(event: Event) {
 
 .UIPaginator-NextInput {
   @apply rounded-r-lg;
-}
-
-.UIPaginator-FirstInputIcon,
-.UIPaginator-PrevInputIcon,
-.UIPaginator-NextInputIcon {
-  @apply text-2xl;
 }
 
 .UIPaginator-Page {
