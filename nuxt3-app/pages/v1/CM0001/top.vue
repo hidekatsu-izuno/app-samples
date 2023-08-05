@@ -77,6 +77,15 @@ const data = reactive({
   messageBox3: undefined as string | undefined,
   messageBox4: undefined as string | undefined,
 })
+
+const textbox1Ref = ref()
+
+function textboxValidate() {
+  const result = validate({
+    textbox1: textbox1Ref,
+    value: 1,
+  })
+}
 </script>
 
 <template>
@@ -98,10 +107,11 @@ const data = reactive({
           <div class="shrink"><input v-model="data.textboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.textboxDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.textboxReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><button @click="textboxValidate">validate</button></div>
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2">
-        <UITextBox v-model="data.textbox1" label="デフォルト" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
+        <UITextBox ref="textbox1Ref" v-model="data.textbox1" label="デフォルト" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
         <div class="border">{{ data.textbox1 }}</div>
 
         <UITextBox
