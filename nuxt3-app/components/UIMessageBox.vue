@@ -20,7 +20,7 @@ defineExpose({
   close,
 })
 
-function onClose(result?: "ok" | "yes" | "no" | "cancel") {
+function close(result?: "ok" | "yes" | "no" | "cancel") {
   emits("update:modelValue", false)
   emits("close", result)
 }
@@ -44,33 +44,33 @@ function onClose(result?: "ok" | "yes" | "no" | "cancel") {
           type="button"
           autofocus
           class="PopupOkButton text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-          @click="onClose('ok')"
+          @click="close('ok')"
         >OK</button>
         <button
           v-if="type === 'yes-no' || type === 'yes-no-cancel'"
           type="button"
           autofocus
           class="PopupYesButton text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-          @click="onClose('yes')"
+          @click="close('yes')"
         >Yes</button>
         <button
           v-if="type === 'yes-no' || type === 'yes-no-cancel'"
           type="button"
           class="PopupNoButton text-gray-400 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
-          @click="onClose('no')"
+          @click="close('no')"
         >No</button>
         <button
           v-if="type === 'ok-cancel' || type === 'yes-no-cancel'"
           type="button"
           class="PopupCancelButton text-gray-400 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
-          @click="onClose('cancel')"
+          @click="close('cancel')"
         >キャンセル</button>
       </div>
     </div>
     <button
       type="button"
       class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-      @click="onClose()"
+      @click="close()"
     >
       <UIIcon name="close-circle" class="text-2xl" />
     </button>

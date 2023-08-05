@@ -60,6 +60,7 @@ const data = reactive({
   paginatorDisabled: false,
   paginator1: 1,
   paginator2: 1,
+  buttonColor: "blue",
   buttonDisabled: false,
   button1: 0,
   button2: 0,
@@ -490,19 +491,43 @@ const data = reactive({
       <template #header>
         <div class="flex flex-row gap-1">
           <h2 class="grow">ボタン (UIButton)</h2>
+          <div class="shrink">color: <select v-model="data.buttonColor">
+            <option value="blue">blue</option>
+            <option value="slate">slate</option>
+            <option value="gray">gray</option>
+            <option value="zinc">zinc</option>
+            <option value="neutral">neutral</option>
+            <option value="stone">stone</option>
+            <option value="red">red</option>
+            <option value="orange">orange</option>
+            <option value="amber">amber</option>
+            <option value="lime">lime</option>
+            <option value="green">green</option>
+            <option value="emerald">emerald</option>
+            <option value="teal">teal</option>
+            <option value="cyan">cyan</option>
+            <option value="sky">sky</option>
+            <option value="indigo">indigo</option>
+            <option value="violet">violet</option>
+            <option value="purple">purple</option>
+            <option value="fuchsia">fuchsia</option>
+            <option value="pink">pink</option>
+            <option value="rose">rose</option>
+          </select></div>
           <div class="shrink"><input v-model="data.buttonDisabled" type="checkbox"> disabled</div>
         </div>
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <UIButton label="デフォルト" :disabled="data.buttonDisabled" @click="data.button1++">ボタン</UIButton>
+        <UIButton label="デフォルト" :color="data.buttonColor" :disabled="data.buttonDisabled" @click="data.button1++">ボタン</UIButton>
         <div class="border">{{ data.button1 }}</div>
 
-        <UIButton label="アウトライン" type="outline" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</UIButton>
+        <UIButton label="アウトライン" type="outline" :color="data.buttonColor" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</UIButton>
         <div class="border">{{ data.button2 }}</div>
 
         <UIButton
           label="装飾"
+          :color="data.buttonColor"
           :disabled="data.buttonDisabled"
           prefix="("
           suffix=")"
