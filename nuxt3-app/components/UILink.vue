@@ -18,10 +18,6 @@ const emits = defineEmits<{
   (event: "blur", value: Event): void,
 }>()
 
-const data = reactive({
-  error: "",
-})
-
 function onFocus(event: MouseEvent) {
   emits("focus", event)
 }
@@ -68,10 +64,6 @@ function onBlur(event: MouseEvent) {
       </div>
       <div v-if="props.suffix" class="UILink-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      v-if="data.error"
-      class="UILink-Error"
-    >{{ data.error }}</div>
   </div>
 </template>
 

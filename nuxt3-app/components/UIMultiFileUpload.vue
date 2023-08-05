@@ -87,7 +87,7 @@ function onBlur(event: Event) {
 function validate(value: File[]) {
   data.error = ""
 
-  if (value && value.length > 0) {
+  if (value.length > 0) {
     // no handle
   } else if (props.required) {
     data.error = "必須入力です。"

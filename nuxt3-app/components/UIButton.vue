@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<{
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
-  error?: string,
   disabled?: boolean,
 }>(), {
   type: "filled",
@@ -68,10 +67,6 @@ function onBlur(event: Event) {
       </button>
       <div v-if="props.suffix" class="UITextBox-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      v-if="error"
-      class="UIButton-Error"
-    >{{ error }}</div>
   </div>
 </template>
 

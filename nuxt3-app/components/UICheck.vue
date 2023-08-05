@@ -32,6 +32,12 @@ watch(() => props.modelValue, () => {
   data.value = !!props.modelValue
 }, { immediate: true })
 
+defineExpose({
+  validate() {
+    return validate(data.value)
+  },
+})
+
 function onFocus(event: Event) {
   emits("focus", event)
 }
@@ -46,8 +52,7 @@ function onChange(event: Event) {
 }
 
 function onBlur(event: Event) {
-  const target = event.target as HTMLInputElement
-  validate(target.checked)
+  validate(data.value)
   emits("blur", event)
 }
 
@@ -62,17 +67,11 @@ function validate(value: boolean) {
 
   if (!data.error) {
     if (props.value) {
-      return value ? props.value : null
+      return value ? props.value : undefined
     }
     return value
   }
 }
-
-defineExpose({
-  validate() {
-    return validate(data.value)
-  },
-})
 </script>
 
 <template>

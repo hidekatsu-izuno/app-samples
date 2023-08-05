@@ -51,7 +51,7 @@ watch(() => props.modelValue, () => {
 
 defineExpose({
   validate() {
-    return validate(data.value, props.format)
+    return validate(data.value)
   },
 })
 
@@ -59,7 +59,7 @@ if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
     validator.on("validate", props.name, () => {
-      return validate(data.value, props.format)
+      return validate(data.value)
     })
 
     validator.on("clear", props.name, () => {
@@ -108,15 +108,14 @@ function onBlur(event: Event) {
   data.focused = false
 
   const target = event.target as HTMLInputElement
-  data.value = toHalfwidthAscii(target.value)
-  const validated = validate(data.value)
+  const validated = validate(toHalfwidthAscii(target.value))
   if (validated) {
     data.value = formatNumber(validated, props.format)
     emits("update:modelValue", data.value)
   }
 }
 
-function validate(value: string, format?: string) {
+function validate(value: string) {
   data.error = ""
 
   let num = parseNumber(value)

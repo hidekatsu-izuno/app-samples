@@ -49,7 +49,7 @@ watch(() => props.modelValue, () => {
 
 defineExpose({
   validate() {
-    return validate(data.value, props.format)
+    return validate(data.value)
   },
 })
 
@@ -57,7 +57,7 @@ if (props.name) {
   const validator = inject(ValidatorKey, null)
   if (validator) {
     validator.on("validate", props.name, () => {
-      return validate(data.value, props.format)
+      return validate(data.value)
     })
 
     validator.on("clear", props.name, () => {
@@ -174,10 +174,10 @@ function onPickerDateClick(date: Date) {
   nextTick(() => inputRef.value?.blur())
 }
 
-function validate(value: string, format?: string) {
+function validate(value: string) {
   data.error = ""
 
-  let date = parseDate(value, format)
+  let date = parseDate(value, data.focused ? "uuuuMMdd" : props.format)
   if (date) {
     if (props.schema) {
       const result = props.schema.safeParse(date, {
