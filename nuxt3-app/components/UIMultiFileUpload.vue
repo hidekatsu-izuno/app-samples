@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   required?: boolean,
   disabled?: boolean,
   modelValue?: File[],
-  error: string,
+  error?: string,
 }>(), {
   required: false,
   modelValue: () => [],

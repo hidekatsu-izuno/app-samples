@@ -6,11 +6,9 @@ type JSONValue = null
   | JSONObject;
 
 interface JSONArray extends Array<JSONValue> {
-
 }
 
 interface JSONObject extends Record<string, JSONValue> {
-
 }
 
 type VJSONValue = null | undefined

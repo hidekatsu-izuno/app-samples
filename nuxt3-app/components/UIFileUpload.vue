@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ValidatorKey } from "~/utils/validator"
-
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
@@ -14,7 +12,7 @@ const props = withDefaults(defineProps<{
   required?: boolean,
   disabled?: boolean,
   modelValue?: File,
-  error: string,
+  error?: string,
 }>(), {
   required: false,
   error: "",

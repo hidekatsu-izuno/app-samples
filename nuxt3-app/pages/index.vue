@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { onBackupState, useHistoryState } from "vue-history-state"
-import { Validator } from "~/utils/validator"
 import { EmailSchema, UserPasswordSchema } from "~/utils/schemas"
 import { HTTPClient } from "~/utils/http"
 
 const historyState = useHistoryState()
-const validator = new Validator()
 
 const data = reactive(historyState.data || {
   email: "",
   showMessage: false,
   message: "",
 })
+
+const emailRef = ref()
+const passwordRef = ref()
 
 onBackupState(() => data)
 
@@ -20,8 +21,13 @@ const goChangePasswordPage = () => {
 }
 
 const onLoginButtonClick = async () => {
-  const validated = validator.validate()
-  if (!validated) {
+  let validated
+  try {
+    validated = validate({
+      email: emailRef,
+      password: passwordRef,
+    })
+  } catch (err) {
     data.message = "入力に誤りがあります。"
     data.showMessageBox = true
     return
@@ -44,36 +50,29 @@ const onLoginButtonClick = async () => {
         Nuxt3 Sample App
       </h1>
       <UICard>
-        <UIForm class="grid grid-cols-1 gap-y-4" :validator="validator">
-          <div>
-            <UITextBox
-              v-model="data.email"
-              type="email"
-              label="メールアドレス"
-              name="email"
-              required
-              :schema="EmailSchema"
-            />
-          </div>
-          <div>
-            <UITextBox type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
-          </div>
-          <div>
-            <UILink halign="end" class="text-sm" @click="goChangePasswordPage">
-              パスワードを忘れた方はこちら
-            </UILink>
-          </div>
-          <div>
-            <UIButton halign="center" @click="onLoginButtonClick">
-              ログイン
-            </UIButton>
-          </div>
-        </UIForm>
+        <div class="grid grid-cols-1 gap-y-4">
+          <UITextBox
+            ref="emailRef"
+            type="email"
+            label="メールアドレス"
+            required
+            :schema="EmailSchema"
+          />
+          <UITextBox
+            ref="passwirdRef"
+            type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
+          <UILink halign="end" class="text-sm" @click="goChangePasswordPage">
+            パスワードを忘れた方はこちら
+          </UILink>
+          <UIButton halign="center" @click="onLoginButtonClick">
+            ログイン
+          </UIButton>
+        </div>
       </UICard>
       <div class="m-4 mb-8">
         Copyright &copy; Hidekatsu Izuno
       </div>
     </div>
-    <MessageBox v-model="data.showMessageBox" :message="data.message" />
+    <UIMessageBox v-model="data.showMessageBox" :message="data.message" />
   </div>
 </template>

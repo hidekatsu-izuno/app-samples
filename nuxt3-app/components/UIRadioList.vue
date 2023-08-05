@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   readonly?: boolean,
   modelValue?: string,
-  error: string,
+  error?: string,
 }>(), {
   placeholder: "未選択",
   items: () => [],

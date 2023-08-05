@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<{
   schema?: ZodString,
   modelValue?: string,
   filter?: (input: string) => string,
-  error: string,
+  error?: string,
 }>(), {
   type: "text",
   required: false,

@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   readonly?: boolean,
   modelValue?: string[],
-  error: string,
+  error?: string,
 }>(), {
   items: () => [],
   columns: 1,

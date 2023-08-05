@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<{
   readonly?: boolean,
   schema?: ZodString,
   modelValue?: string,
-  error: string,
+  error?: string,
   filter?: (input: string) => string,
 }>(), {
   required: false,

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ZodNumber } from "zod"
-import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 
@@ -19,7 +18,7 @@ const props = withDefaults(defineProps<{
   format?: string,
   schema?: ZodNumber,
   modelValue?: string,
-  error: string,
+  error?: string,
 }>(), {
   required: false,
   format: ",###.###",

@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
   format?: string,
   schema?: ZodDate,
   modelValue?: string,
-  error: string,
+  error?: string,
 }>(), {
   required: false,
   format: "uuuu/MM/dd",

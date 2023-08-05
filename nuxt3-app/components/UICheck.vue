@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   readonly?: boolean,
   modelValue?: boolean,
-  error: string,
+  error?: string,
 }>(), {
   required: false,
   modelValue: false,
