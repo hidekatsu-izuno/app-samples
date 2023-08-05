@@ -31,7 +31,7 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
     class="UIMessageBox"
     :modaless="props.modaless"
     :model-value="props.modelValue"
-    @close="onClose"
+    @close="close"
   >
     <div class="p-6 text-center">
       <UIIcon name="alert-circle-outline" class="text-red-500 text-6xl" />
