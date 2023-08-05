@@ -2,12 +2,10 @@
 const props = withDefaults(defineProps<{
   type?: "ok" | "ok-cancel" | "yes-no" | "yes-no-cancel",
   modelValue?: boolean,
-  message?: string,
   modaless?: boolean,
 }>(), {
   type: "ok",
   modelValue: false,
-  message: "",
   modaless: false,
 })
 

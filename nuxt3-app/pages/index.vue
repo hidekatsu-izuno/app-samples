@@ -23,7 +23,7 @@ const goChangePasswordPage = () => {
 const onLoginButtonClick = async () => {
   let validated
   try {
-    validated = validate({
+    validated = await validate({
       email: emailRef,
       password: passwordRef,
     })
@@ -73,6 +73,6 @@ const onLoginButtonClick = async () => {
         Copyright &copy; Hidekatsu Izuno
       </div>
     </div>
-    <UIMessageBox v-model="data.showMessageBox" :message="data.message" />
+    <UIMessageBox v-model="data.showMessageBox">{{ data.message }}</UIMessageBox>
   </div>
 </template>

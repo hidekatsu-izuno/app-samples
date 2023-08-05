@@ -25,21 +25,21 @@ interface VJSONArray extends Array<VJSONValue> {
 interface VJSONObject extends Record<string, VJSONValue> {
 }
 
-export function validate(target: undefined): undefined;
-export function validate(target: null): null;
-export function validate(target: string): string;
-export function validate(target: number): number;
-export function validate(target: Ref<any>): string | number | null | undefined;
-export function validate(target: VJSONArray): JSONArray;
-export function validate(target: VJSONObject): JSONObject;
-export function validate(target: VJSONValue): JSONValue;
-export function validate(target: VJSONValue) {
+export function validate(target: undefined): Promise<undefined>;
+export function validate(target: null): Promise<null>;
+export function validate(target: string): Promise<string>;
+export function validate(target: number): Promise<number>;
+export function validate(target: Ref<any>): Promise<string | number | null | undefined>;
+export function validate(target: VJSONArray): Promise<JSONArray>;
+export function validate(target: VJSONObject): Promise<JSONObject>;
+export function validate(target: VJSONValue): Promise<JSONValue>;
+export async function validate(target: VJSONValue) {
   if (target == null) {
     return target
   } else if (isRef(target)) {
     const func = (target.value as any)?.validate
     if (typeof func === "function") {
-      return func.call(target.value)
+      return await func.call(target.value)
     }
     return null
   }
@@ -51,7 +51,7 @@ export function validate(target: VJSONValue) {
     const varray = target as VJSONArray
     const array = new Array<JSONValue>(varray.length)
     for (let i = 0; i < target.length; i++) {
-      const item = validate(varray[i])
+      const item = await validate(varray[i])
       if (item !== undefined) {
         array[i] = item
       } else {
@@ -63,7 +63,7 @@ export function validate(target: VJSONValue) {
     const vobj = target as VJSONObject
     const obj = {} as JSONObject
     for (let key in vobj) {
-      const item = validate(vobj[key])
+      const item = await validate(vobj[key])
       if (item !== undefined) {
         obj[key] = item
       }
