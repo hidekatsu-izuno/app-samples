@@ -2,7 +2,6 @@
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
-  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -14,15 +13,18 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   readonly?: boolean,
   modelValue?: string,
+  error: string,
 }>(), {
   items: () => [],
   required: false,
   modelValue: "",
+  error: "",
 })
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: string): void,
+  (event: "update:error", value: string): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -35,30 +37,26 @@ watch(() => props.modelValue, () => {
   data.value = props.modelValue
 }, { immediate: true })
 
+watch(() => props.error, () => {
+  data.error = props.error
+}, { immediate: true })
+
 defineExpose({
   validate() {
     return validate(data.value)
   },
 })
 
-if (props.name) {
-  const validator = inject(ValidatorKey, null)
-  if (validator) {
-    validator.on("validate", props.name, () => {
-      return validate(data.value)
-    })
-
-    validator.on("clear", props.name, () => {
-      data.error = ""
-    })
-  }
-}
-
 function onFocus(event: Event) {
   emits("focus", event)
 }
 
 function onChange(event: Event) {
+  if (data.error) {
+    data.error = ""
+    emits("update:error", data.error)
+  }
+
   const target = event.target as HTMLSelectElement
   validate(target.value)
   data.value = target.value
@@ -72,16 +70,21 @@ function onBlur(event: Event) {
 }
 
 function validate(value: string) {
-  data.error = ""
+  let error = ""
 
   if (value) {
     // no handle
   } else if (props.required) {
-    data.error = "必須入力です。"
+    error = "必須入力です。"
   }
 
-  if (!data.error) {
+  if (!error) {
     return value
+  }
+
+  if (error !== data.error) {
+    data.error = error
+    emits("update:error", data.error)
   }
 }
 </script>

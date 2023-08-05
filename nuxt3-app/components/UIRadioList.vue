@@ -2,7 +2,6 @@
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
-  name?: string,
   prefix?: string,
   suffix?: string,
   placeholder?: string,
@@ -15,17 +14,20 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   readonly?: boolean,
   modelValue?: string,
+  error: string,
 }>(), {
   placeholder: "未選択",
   items: () => [],
   columns: 1,
   required: false,
   modelValue: "",
+  error: "",
 })
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: string): void,
+  (event: "update:error", value: string): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -39,24 +41,15 @@ watch(() => props.modelValue, () => {
   data.value = props.modelValue
 }, { immediate: true })
 
+watch(() => props.error, () => {
+  data.error = props.error
+}, { immediate: true })
+
 defineExpose({
   validate() {
     return validate(data.value)
   },
 })
-
-if (props.name) {
-  const validator = inject(ValidatorKey, null)
-  if (validator) {
-    validator.on("validate", props.name, () => {
-      return validate(data.value)
-    })
-
-    validator.on("clear", props.name, () => {
-      data.error = ""
-    })
-  }
-}
 
 const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
 
@@ -68,6 +61,11 @@ function onFocusin(event: Event) {
 }
 
 function onChange(event: Event) {
+  if (data.error) {
+    data.error = ""
+    emits("update:error", data.error)
+  }
+
   const currentTarget = event.currentTarget as HTMLElement
   const target = currentTarget.querySelector(`[name="${id.value}"]:checked`) as HTMLInputElement | null
   const newValue = target ? target.value : ""
@@ -90,16 +88,21 @@ function onFocusout(event: Event) {
 }
 
 function validate(value: string) {
-  data.error = ""
+  let error = ""
 
   if (value) {
     // no handle
   } else if (props.required) {
-    data.error = "必ず選択してください。"
+    error = "必ず選択してください。"
   }
 
-  if (!data.error) {
+  if (!error) {
     return value
+  }
+
+  if (error !== data.error) {
+    data.error = error
+    emits("update:error", data.error)
   }
 }
 </script>

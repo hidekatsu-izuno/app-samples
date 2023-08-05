@@ -12,14 +12,17 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   readonly?: boolean,
   modelValue?: boolean,
+  error: string,
 }>(), {
   required: false,
   modelValue: false,
+  error: "",
 })
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: boolean): void,
+  (event: "update:error", value: string): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -30,6 +33,10 @@ const data = reactive({
 
 watch(() => props.modelValue, () => {
   data.value = !!props.modelValue
+}, { immediate: true })
+
+watch(() => props.error, () => {
+  data.error = props.error
 }, { immediate: true })
 
 defineExpose({
@@ -43,6 +50,11 @@ function onFocus(event: Event) {
 }
 
 function onChange(event: Event) {
+  if (data.error) {
+    data.error = ""
+    emits("update:error", data.error)
+  }
+
   const target = event.target as HTMLInputElement
   if (data.value !== target.checked) {
     data.value = target.checked
@@ -57,19 +69,24 @@ function onBlur(event: Event) {
 }
 
 function validate(value: boolean) {
-  data.error = ""
+  let error = ""
 
   if (value) {
     // no handle
   } else if (props.required) {
-    data.error = "必ず選択してください。"
+    error = "必ず選択してください。"
   }
 
-  if (!data.error) {
-    if (props.value) {
+  if (!error) {
+    if (value) {
       return value ? props.value : undefined
     }
     return value
+  }
+
+  if (error !== data.error) {
+    data.error = error
+    emits("update:error", data.error)
   }
 }
 </script>

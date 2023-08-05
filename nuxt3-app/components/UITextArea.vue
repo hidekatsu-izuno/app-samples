@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ZodString } from "zod"
-import { ValidatorKey } from "~/utils/validator"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
-  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -18,15 +16,18 @@ const props = withDefaults(defineProps<{
   readonly?: boolean,
   schema?: ZodString,
   modelValue?: string,
+  error: string,
   filter?: (input: string) => string,
 }>(), {
   required: false,
   modelValue: "",
+  error: "",
 })
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: string): void,
+  (event: "update:error", value: string): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -40,24 +41,15 @@ watch(() => props.modelValue, () => {
   data.value = props.modelValue
 }, { immediate: true })
 
+watch(() => props.error, () => {
+  data.error = props.error
+}, { immediate: true })
+
 defineExpose({
   validate() {
     return validate(data.value)
   },
 })
-
-if (props.name) {
-  const validator = inject(ValidatorKey, null)
-  if (validator) {
-    validator.on("validate", props.name, () => {
-      return validate(data.value)
-    })
-
-    validator.on("clear", props.name, () => {
-      data.error = ""
-    })
-  }
-}
 
 function onFocus(event: Event) {
   emits("focus", event)
@@ -68,11 +60,13 @@ function onInput(event: Event) {
     return
   }
 
-  const target = event.target as HTMLInputElement
-  data.value = target.value
   if (data.error) {
     data.error = ""
+    emits("update:error", data.error)
   }
+
+  const target = event.target as HTMLInputElement
+  data.value = target.value
   emits("update:modelValue", target.value)
 }
 
@@ -97,7 +91,7 @@ function onBlur(event: Event) {
 }
 
 function validate(value: string) {
-  data.error = ""
+  let error = ""
 
   if (value) {
     const schema = props.schema
@@ -109,15 +103,20 @@ function validate(value: string) {
       if (result.success) {
         value = result.data
       } else {
-        data.error = result.error.issues[0].message
+        error = result.error.issues[0].message
       }
     }
   } else if (props.required) {
-    data.error = "必須入力です。"
+    error = "必須入力です。"
   }
 
-  if (!data.error) {
+  if (!error) {
     return value
+  }
+
+  if (error !== data.error) {
+    data.error = error
+    emits("update:error", data.error)
   }
 }
 </script>

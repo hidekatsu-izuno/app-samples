@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ValidatorKey } from "~/utils/validator"
-
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   label?: string,
-  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -15,26 +12,33 @@ const props = withDefaults(defineProps<{
   required?: boolean,
   disabled?: boolean,
   modelValue?: File[],
+  error: string,
 }>(), {
   required: false,
   modelValue: () => [],
+  error: "",
 })
 
 const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: File[]): void,
+  (event: "update:error", value: string): void,
   (event: "blur", value: Event): void,
 }>()
 
 const data = reactive({
   value: [] as File[],
   error: "",
-  active: false,
+  clicked: false,
 })
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
 })
+
+watch(() => props.error, () => {
+  data.error = props.error
+}, { immediate: true })
 
 defineExpose({
   validate() {
@@ -42,21 +46,8 @@ defineExpose({
   },
 })
 
-if (props.name) {
-  const validator = inject(ValidatorKey, null)
-  if (validator) {
-    validator.on("validate", props.name, () => {
-      return validate(data.value)
-    })
-
-    validator.on("clear", props.name, () => {
-      data.error = ""
-    })
-  }
-}
-
 function onClick(event: Event) {
-  data.active = true
+  data.clicked = true
 }
 
 function onFocus(event: Event) {
@@ -64,20 +55,23 @@ function onFocus(event: Event) {
 }
 
 function onChange(event: Event) {
-  if (data.active) {
-    data.active = false
+  if (data.clicked) {
+    data.clicked = false
   }
-  const target = event.target as HTMLInputElement
-  data.value = target.files ? Array.from(target.files) : []
+
   if (data.error) {
     data.error = ""
+    emits("update:error", data.error)
   }
+
+  const target = event.target as HTMLInputElement
+  data.value = target.files ? Array.from(target.files) : []
   emits("update:modelValue", data.value)
 }
 
 function onBlur(event: Event) {
-  if (data.active) {
-    data.active = false
+  if (data.clicked) {
+    data.clicked = false
     return
   }
   validate(data.value)
@@ -85,16 +79,21 @@ function onBlur(event: Event) {
 }
 
 function validate(value: File[]) {
-  data.error = ""
+  let error = ""
 
   if (value.length > 0) {
     // no handle
   } else if (props.required) {
-    data.error = "必須入力です。"
+    error = "必須入力です。"
   }
 
-  if (!data.error) {
+  if (!error) {
     return value
+  }
+
+  if (error !== data.error) {
+    data.error = error
+    emits("update:error", data.error)
   }
 }
 </script>
