@@ -117,14 +117,14 @@ function onCompositionEnd(event: Event) {
   onInput(event)
 }
 
-async function onBlur(event: Event) {
+function onBlur(event: Event) {
   if (pickerRef.value) {
     pickerRef.value.style.display = "none"
   }
 
   const target = event.target as HTMLInputElement
   try {
-    const value = await validate(toHalfwidthAscii(target.value))
+    const value = validate(toHalfwidthAscii(target.value))
     let svalue = value != null ? formatDate(value, props.format) : ""
     if (svalue !== data.value) {
       data.value = svalue
@@ -134,8 +134,8 @@ async function onBlur(event: Event) {
     // no handle
   }
 
-  emits("blur", event)
   data.focused = false
+  emits("blur", event)
 }
 
 function onPickerIconMouseDown(event: Event) {
@@ -172,13 +172,13 @@ function onPickerDateClick(date: Date) {
   nextTick(() => inputRef.value?.blur())
 }
 
-async function validate(value: string) {
+function validate(value: string) {
   let error = ""
 
   let date = parseDate(value, data.focused ? "uuuuMMdd" : props.format)
   if (date) {
     if (props.schema) {
-      const result = await props.schema.safeParseAsync(date, {
+      const result = props.schema.safeParse(date, {
         errorMap: JapaneseErrorMap,
       })
       if (result.success) {

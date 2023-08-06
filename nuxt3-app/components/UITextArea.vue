@@ -79,7 +79,7 @@ function onCompositionEnd(event: Event) {
   onInput(event)
 }
 
-async function onBlur(event: Event) {
+function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   let value = props.filter ? props.filter(target.value) : target.value
   if (value !== data.value) {
@@ -88,7 +88,7 @@ async function onBlur(event: Event) {
   }
 
   try {
-    await validate(data.value)
+    validate(data.value)
   } catch (err) {
     // no handle
   }
@@ -96,12 +96,12 @@ async function onBlur(event: Event) {
   emits("blur", event)
 }
 
-async function validate(value: string) {
+function validate(value: string) {
   let error = ""
 
   if (value) {
     if (props.schema) {
-      const result = await props.schema.safeParseAsync(value, {
+      const result = props.schema.safeParse(value, {
         errorMap: JapaneseErrorMap,
       })
       if (result.success) {

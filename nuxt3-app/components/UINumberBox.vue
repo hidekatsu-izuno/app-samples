@@ -98,10 +98,10 @@ function onCompositionEnd(event: Event) {
   onInput(event)
 }
 
-async function onBlur(event: Event) {
+function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   try {
-    const value = await validate(toHalfwidthAscii(target.value))
+    const value = validate(toHalfwidthAscii(target.value))
     const svalue = value != null ? formatNumber(value, props.format) : ""
     if (svalue !== data.value) {
       data.value = svalue
@@ -111,17 +111,17 @@ async function onBlur(event: Event) {
     // no handle
   }
 
-  emits("blur", event)
   data.focused = false
+  emits("blur", event)
 }
 
-async function validate(value: string) {
+function validate(value: string) {
   let error = ""
 
   let num = parseNumber(value, !data.focused ? props.format : undefined)
   if (num) {
     if (props.schema) {
-      const result = await props.schema.safeParseAsync(num, {
+      const result = props.schema.safeParse(num, {
         errorMap: JapaneseErrorMap,
       })
       if (result.success) {
