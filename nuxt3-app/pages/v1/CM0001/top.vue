@@ -80,8 +80,8 @@ const data = reactive({
 
 const textbox1Ref = ref()
 
-function textboxValidate() {
-  const result = validate({
+async function textboxValidate() {
+  const result = await validate({
     textbox1: textbox1Ref,
     value: 1,
   })

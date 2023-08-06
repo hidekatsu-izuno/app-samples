@@ -18,7 +18,7 @@ const emits = defineEmits<{
   (event: "blur", value: Event): void,
 }>()
 
-function onFocus(event: MouseEvent) {
+function onFocus(event: Event) {
   emits("focus", event)
 }
 
@@ -31,7 +31,7 @@ function onClick(event: MouseEvent) {
   emits("click", event)
 }
 
-function onBlur(event: MouseEvent) {
+function onBlur(event: Event) {
   emits("blur", event)
 }
 </script>

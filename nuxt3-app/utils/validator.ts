@@ -86,6 +86,13 @@ async function validateInternal(context: { success: boolean }, target: Unvalidat
   }
 }
 
+export interface UIInputEvent<T> {
+  get value(): T
+  set value(value: T)
+  get error(): string
+  set error(value: string)
+}
+
 export interface Schema {
   get required(): boolean
 }
