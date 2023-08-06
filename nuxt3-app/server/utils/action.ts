@@ -17,13 +17,13 @@ export declare type AppSession = {
 
 export declare type SqlConnection = typeof sql
 
-export function defineAction(handler: EventHandler): EventHandler;
-export function defineAction(options: ControllerOptions, handler: EventHandler): EventHandler;
-export function defineAction(arg1: ControllerOptions | EventHandler, arg2?: EventHandler): EventHandler {
+export function defineAction<T = any>(handler: EventHandler<T>): EventHandler<T>;
+export function defineAction<T = any>(options: ControllerOptions, handler: EventHandler<T>): EventHandler<T>;
+export function defineAction<T = any>(arg1: ControllerOptions | EventHandler<T>, arg2?: EventHandler<T>): EventHandler<T> {
   const handler = arg2 ?? (arg1 as EventHandler)
   const options = arg2 ? arg1 as ControllerOptions : {}
 
-  return defineEventHandler(async (event) => {
+  return defineEventHandler<T>(async (event) => {
     const method = getMethod(event)
     if (method !== "GET" && method !== "POST") {
       throw createError({ statusCode: 400 })

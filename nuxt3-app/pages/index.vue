@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onBackupState, useHistoryState } from "vue-history-state"
 import { EmailSchema, UserPasswordSchema } from "~/utils/schemas"
-import { HTTPClient } from "~/utils/http"
 
 const historyState = useHistoryState()
 
@@ -21,9 +20,9 @@ const goChangePasswordPage = () => {
 }
 
 const onLoginButtonClick = async () => {
-  let validated
+  let params
   try {
-    validated = await validate({
+    params = await validate({
       email: emailRef,
       password: passwordRef,
     })
@@ -34,7 +33,7 @@ const onLoginButtonClick = async () => {
   }
 
   try {
-    const result = await HTTPClient.post("/api/auth/signin", validated)
+    const result = await http("/api/auth/signin", { method: "POST" })
     location.href = result.redirect
   } catch (err) {
     data.message = "ログインに失敗しました。"
