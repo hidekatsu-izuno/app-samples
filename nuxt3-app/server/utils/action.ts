@@ -59,7 +59,7 @@ export function defineAction(arg1: ControllerOptions | EventHandler, arg2?: Even
       if (err instanceof ZodError) {
         newErr = createError({ statusCode: 400, cause: err })
       }
-      console.error(newErr)
+      event.context.error(newErr)
       return newErr
     }
   })
