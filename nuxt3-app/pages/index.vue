@@ -20,23 +20,24 @@ const goChangePasswordPage = () => {
 }
 
 const onLoginButtonClick = async () => {
-  let params
   try {
-    params = await validate({
+    const data = await validate({
       email: emailRef,
       password: passwordRef,
     })
+
+    try {
+      const result = await fetchData("/api/auth/signin", {
+        method: "POST",
+        data,
+      })
+      location.href = result.redirect
+    } catch (err) {
+      data.message = "ログインに失敗しました。"
+      data.showMessageBox = true
+    }
   } catch (err) {
     data.message = "入力に誤りがあります。"
-    data.showMessageBox = true
-    return
-  }
-
-  try {
-    const result = await http("/api/auth/signin", { method: "POST" })
-    location.href = result.redirect
-  } catch (err) {
-    data.message = "ログインに失敗しました。"
     data.showMessageBox = true
   }
 }
