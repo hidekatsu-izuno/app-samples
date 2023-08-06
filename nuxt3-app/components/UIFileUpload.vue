@@ -94,6 +94,8 @@ function validate(value?: File) {
     data.error = error
     emits("update:error", data.error)
   }
+
+  throw new RangeError(error)
 }
 </script>
 

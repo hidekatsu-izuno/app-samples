@@ -29,19 +29,33 @@ export function validate(target: undefined): Promise<undefined>;
 export function validate(target: null): Promise<null>;
 export function validate(target: string): Promise<string>;
 export function validate(target: number): Promise<number>;
-export function validate(target: Ref<any>): Promise<string | number | null | undefined>;
+export function validate(target: Ref<any>): Promise<string | number | null>;
 export function validate(target: VJSONArray): Promise<JSONArray>;
 export function validate(target: VJSONObject): Promise<JSONObject>;
 export function validate(target: VJSONValue): Promise<JSONValue>;
 export async function validate(target: VJSONValue) {
+  const context = { success: true }
+  const result = await validateInternal(context, target)
+  if (!context.success) {
+    throw createError({ message: "入力に誤りがあります。", statusCode: 400 })
+  }
+  return result
+}
+
+async function validateInternal(context: { success: boolean }, target: VJSONValue) {
   if (target == null) {
     return target
   } else if (isRef(target)) {
     const func = (target.value as any)?.validate
     if (typeof func === "function") {
-      return await func.call(target.value)
+      try {
+        return await func.call(target.value)
+      } catch (err) {
+        context.success = false
+        return null
+      }
     }
-    return null
+    return undefined
   }
 
   const type = typeof target
@@ -51,7 +65,7 @@ export async function validate(target: VJSONValue) {
     const varray = target as VJSONArray
     const array = new Array<JSONValue>(varray.length)
     for (let i = 0; i < target.length; i++) {
-      const item = await validate(varray[i])
+      const item = await validateInternal(context, varray[i])
       if (item !== undefined) {
         array[i] = item
       } else {
@@ -63,7 +77,7 @@ export async function validate(target: VJSONValue) {
     const vobj = target as VJSONObject
     const obj = {} as JSONObject
     for (let key in vobj) {
-      const item = await validate(vobj[key])
+      const item = await validateInternal(context, vobj[key])
       if (item !== undefined) {
         obj[key] = item
       }

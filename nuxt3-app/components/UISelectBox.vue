@@ -86,6 +86,8 @@ function validate(value: string) {
     data.error = error
     emits("update:error", data.error)
   }
+
+  throw new RangeError(error)
 }
 </script>
 

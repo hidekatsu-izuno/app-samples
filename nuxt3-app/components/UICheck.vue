@@ -88,6 +88,8 @@ function validate(value: boolean) {
     data.error = error
     emits("update:error", data.error)
   }
+
+  throw new RangeError(error)
 }
 </script>
 
