@@ -3,6 +3,7 @@ export {
   formatNumber,
   parseNumber,
   formatDate,
+  isTelephoneNo,
   toHalfwidthAscii,
   CsvReader,
   CsvWriter,

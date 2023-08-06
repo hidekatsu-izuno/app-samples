@@ -58,14 +58,22 @@ function onChange(event: Event) {
   }
 
   const target = event.target as HTMLSelectElement
-  validate(target.value)
   data.value = target.value
-  emits("update:modelValue", target.value)
+  emits("update:modelValue", data.value)
+
+  try {
+    validate(target.value)
+  } catch (err) {
+    // no handle
+  }
 }
 
 function onBlur(event: Event) {
-  const target = event.target as HTMLSelectElement
-  validate(target.value)
+  try {
+    validate(data.value)
+  } catch (err) {
+    // no handle
+  }
   emits("blur", event)
 }
 

@@ -11,18 +11,18 @@ interface JSONArray extends Array<JSONValue> {
 interface JSONObject extends Record<string, JSONValue> {
 }
 
-type VJSONValue = null | undefined
+type UnvalidatedJSONValue = null | undefined
   | string
   | number
   | boolean
-  | VJSONArray
-  | VJSONObject
+  | UnValidatedJSONArray
+  | UnvalidatedJSONObject
   | Ref<any>;
 
-interface VJSONArray extends Array<VJSONValue> {
+interface UnValidatedJSONArray extends Array<UnvalidatedJSONValue> {
 }
 
-interface VJSONObject extends Record<string, VJSONValue> {
+interface UnvalidatedJSONObject extends Record<string, UnvalidatedJSONValue> {
 }
 
 export function validate(target: undefined): Promise<undefined>;
@@ -30,10 +30,10 @@ export function validate(target: null): Promise<null>;
 export function validate(target: string): Promise<string>;
 export function validate(target: number): Promise<number>;
 export function validate(target: Ref<any>): Promise<string | number | null>;
-export function validate(target: VJSONArray): Promise<JSONArray>;
-export function validate(target: VJSONObject): Promise<JSONObject>;
-export function validate(target: VJSONValue): Promise<JSONValue>;
-export async function validate(target: VJSONValue) {
+export function validate(target: UnValidatedJSONArray): Promise<JSONArray>;
+export function validate(target: UnvalidatedJSONObject): Promise<JSONObject>;
+export function validate(target: UnvalidatedJSONValue): Promise<JSONValue>;
+export async function validate(target: UnvalidatedJSONValue) {
   const context = { success: true }
   const result = await validateInternal(context, target)
   if (!context.success) {
@@ -42,7 +42,7 @@ export async function validate(target: VJSONValue) {
   return result
 }
 
-async function validateInternal(context: { success: boolean }, target: VJSONValue) {
+async function validateInternal(context: { success: boolean }, target: UnvalidatedJSONValue) {
   if (target == null) {
     return target
   } else if (isRef(target)) {
@@ -62,7 +62,7 @@ async function validateInternal(context: { success: boolean }, target: VJSONValu
   if (type === "string" || type === "number" || type === "boolean") {
     return target
   } else if (Array.isArray(target)) {
-    const varray = target as VJSONArray
+    const varray = target as UnValidatedJSONArray
     const array = new Array<JSONValue>(varray.length)
     for (let i = 0; i < target.length; i++) {
       const item = await validateInternal(context, varray[i])
@@ -74,7 +74,7 @@ async function validateInternal(context: { success: boolean }, target: VJSONValu
     }
     return array
   } else {
-    const vobj = target as VJSONObject
+    const vobj = target as UnvalidatedJSONObject
     const obj = {} as JSONObject
     for (let key in vobj) {
       const item = await validateInternal(context, vobj[key])
@@ -143,7 +143,7 @@ export const schema = {
 
   array(options?: {
     schema?: Schema,
-    required: boolean,
+    required?: boolean,
     minLength?: number,
     maxLength?: number
   }): Schema {
@@ -151,7 +151,7 @@ export const schema = {
   },
 
   string(options?: {
-    required: boolean,
+    required?: boolean,
     minLength?: number,
     maxLength?: number,
   }): Schema {
@@ -159,7 +159,7 @@ export const schema = {
   },
 
   number(options?: {
-    required: boolean,
+    required?: boolean,
     minValue?: number,
     maxValue?: number,
   }): Schema {
@@ -167,7 +167,7 @@ export const schema = {
   },
 
   boolean(options?: {
-    required: boolean,
+    required?: boolean,
   }): Schema {
     return {} as Schema
   },

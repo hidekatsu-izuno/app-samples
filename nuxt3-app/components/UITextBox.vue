@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { z, ZodString } from "zod"
+import { z, ZodSchema, ZodString } from "zod"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
@@ -64,12 +64,13 @@ function onInput(event: Event) {
     return
   }
 
-  const target = event.target as HTMLInputElement
-  data.value = target.value
   if (data.error) {
     data.error = ""
     emits("update:error", data.error)
   }
+
+  const target = event.target as HTMLInputElement
+  data.value = target.value
   emits("update:modelValue", data.value)
 }
 
@@ -82,45 +83,43 @@ function onCompositionEnd(event: Event) {
   onInput(event)
 }
 
-function onBlur(event: Event) {
+async function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   let value = props.filter ? props.filter(target.value) : target.value
   if (props.type === "email" || props.type === "tel") {
     value = toHalfwidthAscii(value)
   }
-  const validated = validate(value)
-  if (validated) {
-    data.value = validated
+  if (value !== data.value) {
+    data.value = value
     emits("update:modelValue", data.value)
+  }
+
+  try {
+    await validate(data.value)
+  } catch (err) {
+    // no handle
   }
 
   emits("blur", event)
 }
 
-function validate(value: string) {
+async function validate(value: string) {
   let error = ""
 
   if (value) {
-    let schema = props.schema
-    if (props.type === "email") {
-      if (!schema) {
-        schema = z.string()
+    let schema: ZodSchema | undefined = props.schema
+    if (!schema) {
+      if (props.type === "email") {
+        schema = z.string().email()
+      } else if (props.type === "tel") {
+        schema = z.string().refine(isTelephoneNo, "電話番号の書式に誤りがあります。")
+      } else if (props.type === "url") {
+        schema = z.string().url()
       }
-      schema = schema.email()
-    } else if (props.type === "tel") {
-      if (!schema) {
-        schema = z.string()
-      }
-      schema = schema.regex(/^0[0-9-]{8,9}[0-9]$/, "電話番号の書式に誤りがあります。")
-    } else if (props.type === "url") {
-      if (!schema) {
-        schema = z.string()
-      }
-      schema = schema.url("URLの書式に誤りがあります。")
     }
 
     if (schema) {
-      const result = schema.safeParse(value, {
+      const result = await schema.safeParseAsync(value, {
         errorMap: JapaneseErrorMap,
       })
       if (result.success) {

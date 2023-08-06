@@ -67,7 +67,7 @@ function onInput(event: Event) {
 
   const target = event.target as HTMLInputElement
   data.value = target.value
-  emits("update:modelValue", target.value)
+  emits("update:modelValue", data.value)
 }
 
 function onCompositionStart(event: Event) {
@@ -79,25 +79,29 @@ function onCompositionEnd(event: Event) {
   onInput(event)
 }
 
-function onBlur(event: Event) {
+async function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
-  const validated = validate(props.filter ? props.filter(target.value) : target.value)
-  if (validated) {
-    data.value = validated
+  let value = props.filter ? props.filter(target.value) : target.value
+  if (value !== data.value) {
+    data.value = value
     emits("update:modelValue", data.value)
+  }
+
+  try {
+    await validate(data.value)
+  } catch (err) {
+    // no handle
   }
 
   emits("blur", event)
 }
 
-function validate(value: string) {
+async function validate(value: string) {
   let error = ""
 
   if (value) {
-    const schema = props.schema
-
-    if (schema) {
-      const result = schema.safeParse(value, {
+    if (props.schema) {
+      const result = await props.schema.safeParseAsync(value, {
         errorMap: JapaneseErrorMap,
       })
       if (result.success) {

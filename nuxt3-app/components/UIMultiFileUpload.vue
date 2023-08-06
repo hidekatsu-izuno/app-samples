@@ -74,7 +74,13 @@ function onBlur(event: Event) {
     data.clicked = false
     return
   }
-  validate(data.value)
+
+  try {
+    validate(data.value)
+  } catch (err) {
+    // no handle
+  }
+
   emits("blur", event)
 }
 

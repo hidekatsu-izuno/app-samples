@@ -56,15 +56,22 @@ function onChange(event: Event) {
   }
 
   const target = event.target as HTMLInputElement
-  if (data.value !== target.checked) {
-    data.value = target.checked
+  data.value = target.checked
+  emits("update:modelValue", data.value)
+
+  try {
     validate(data.value)
-    emits("update:modelValue", data.value)
+  } catch (err) {
+    // no handle
   }
 }
 
 function onBlur(event: Event) {
-  validate(data.value)
+  try {
+    validate(data.value)
+  } catch (err) {
+    // no handle
+  }
   emits("blur", event)
 }
 

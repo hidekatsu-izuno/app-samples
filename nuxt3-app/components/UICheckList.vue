@@ -70,11 +70,13 @@ function onChange(event: Event) {
   for (let i = 0; i < targets.length; i++) {
     values.add(targets[i].value)
   }
+  data.value = [...values].sort()
+  emits("update:modelValue", data.value)
 
-  if (data.value.length !== values.size || !data.value.every(item => values.has(item))) {
-    data.value = [...values].sort()
+  try {
     validate(data.value)
-    emits("update:modelValue", data.value)
+  } catch (err) {
+    // no handle
   }
 }
 
@@ -82,7 +84,11 @@ function onFocusout(event: Event) {
   const currentTarget = event.currentTarget as HTMLElement
   requestAnimationFrame(() => {
     if (!currentTarget.contains(document.activeElement)) {
-      validate(data.value)
+      try {
+        validate(data.value)
+      } catch (err) {
+        // no handle
+      }
       emits("blur", event)
       data.focused = false
     }

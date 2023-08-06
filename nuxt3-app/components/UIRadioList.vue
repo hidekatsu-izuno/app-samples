@@ -68,11 +68,13 @@ function onChange(event: Event) {
 
   const currentTarget = event.currentTarget as HTMLElement
   const target = currentTarget.querySelector(`[name="${id.value}"]:checked`) as HTMLInputElement | null
-  const newValue = target ? target.value : ""
-  if (data.value !== newValue) {
-    data.value = newValue
+  data.value = target ? target.value : ""
+  emits("update:modelValue", data.value)
+
+  try {
     validate(data.value)
-    emits("update:modelValue", data.value)
+  } catch (err) {
+    // no handle
   }
 }
 
@@ -80,7 +82,11 @@ function onFocusout(event: Event) {
   const currentTarget = event.currentTarget as HTMLElement
   requestAnimationFrame(() => {
     if (!currentTarget.contains(document.activeElement)) {
-      validate(data.value)
+      try {
+        validate(data.value)
+      } catch (err) {
+        // no handle
+      }
       emits("blur", event)
       data.focused = false
     }
