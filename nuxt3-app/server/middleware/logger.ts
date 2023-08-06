@@ -17,7 +17,11 @@ declare module 'h3' {
 }
 
 export default defineEventHandler(event => {
-  event.context.info = logger.info.bind(logger)
-  event.context.warn = logger.warn.bind(logger)
-  event.context.error = logger.error.bind(logger)
+  const method = getMethod(event)
+  const path = getRequestPath(event)
+
+  const child = logger.child({ method, path })
+  event.context.info = child.info.bind(child)
+  event.context.warn = child.warn.bind(child)
+  event.context.error = child.error.bind(child)
 })
