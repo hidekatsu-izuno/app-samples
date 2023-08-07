@@ -30,6 +30,7 @@ const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: string): void,
   (event: "update:error", value: string): void,
+  (event: "change", value: Event): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -106,6 +107,7 @@ function onBlur(event: Event) {
     if (svalue !== data.value) {
       data.value = svalue
       emits("update:modelValue", data.value)
+      emits("change", event)
     }
   } catch (err) {
     // no handle

@@ -23,6 +23,7 @@ watch(() => props.modelValue, () => {
 const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: string): void,
+  (event: "change", value: Event): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -37,9 +38,9 @@ function onClick(event: MouseEvent) {
   const target = event.currentTarget as HTMLButtonElement
   const value = target.dataset.value
   if (value) {
-    console.log(value)
     data.value = value
     emits("update:modelValue", data.value)
+    emits("change", event)
   }
 }
 

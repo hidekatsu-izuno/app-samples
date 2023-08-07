@@ -23,6 +23,7 @@ const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: File[]): void,
   (event: "update:error", value: string): void,
+  (event: "change", value: Event): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -67,6 +68,13 @@ function onChange(event: Event) {
   const target = event.target as HTMLInputElement
   data.value = target.files ? Array.from(target.files) : []
   emits("update:modelValue", data.value)
+
+  try {
+    validate(data.value)
+    emits("change", event)
+  } catch (err) {
+    // no handle
+  }
 }
 
 function onBlur(event: Event) {
