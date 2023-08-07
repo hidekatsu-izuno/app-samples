@@ -86,7 +86,7 @@ function onFocusout(event: Event) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border-b border-gray-300 disabled:border-b-2 disabled:border-blue-700
-    p-4
+    p-4 enabled:pb-[17px]
     text-gray-400 font-bold disabled:text-blue-700;
 }
 </style>
