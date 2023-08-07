@@ -130,8 +130,7 @@ function onFocusout(event: Event) {
 
 .UIPaginator-Page {
   @apply flex items-center justify-center
-    focus:ring-2 focus:ring-blue-200
-    outline-none
+    outline-2 outline-blue-200
     border-y border-gray-300 hover:enabled:border-0
     px-2
     w-full

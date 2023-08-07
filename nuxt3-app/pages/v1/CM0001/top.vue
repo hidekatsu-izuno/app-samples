@@ -575,6 +575,15 @@ async function textboxValidate() {
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row gap-1">
+          <h2 class="grow">タブパネル (UITabPanel)</h2>
+        </div>
+      </template>
+      <UITabPanel :items="[{ value: 'tab1', text: 'タブ１' }, { value: 'tab2', text: 'タブ２' }, { value: 'tab3', text: 'タブ３' }]" />
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row gap-1">
           <h2 class="grow">メッセージボックス (UIMessageBox)</h2>
         </div>
       </template>
