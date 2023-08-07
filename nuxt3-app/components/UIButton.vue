@@ -365,76 +365,76 @@ function onBlur(event: Event) {
 
 .UIButton[data-color="indigo"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-indigo-500 enabled:hover:bg-indigo-600 disabled:bg-gray-400
+    @apply bg-indigo-600 enabled:hover:bg-indigo-700 disabled:bg-gray-400
       text-white;
   }
 }
 
 .UIButton[data-color="indigo"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-indigo-500 disabled:border-gray-400
-      enabled:hover:bg-indigo-500
-      text-indigo-500 enabled:hover:text-white disabled:text-gray-400;
+    @apply border border-indigo-600 disabled:border-gray-400
+      enabled:hover:bg-indigo-600
+      text-indigo-600 enabled:hover:text-white disabled:text-gray-400;
   }
 }
 
 .UIButton[data-color="violet"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-violet-500 enabled:hover:bg-violet-600 disabled:bg-gray-400
+    @apply bg-violet-600 enabled:hover:bg-violet-700 disabled:bg-gray-400
       text-white;
   }
 }
 
 .UIButton[data-color="violet"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-violet-500 disabled:border-gray-400
-      enabled:hover:bg-violet-500
-      text-violet-500 enabled:hover:text-white disabled:text-gray-400;
+    @apply border border-violet-600 disabled:border-gray-400
+      enabled:hover:bg-violet-600
+      text-violet-600 enabled:hover:text-white disabled:text-gray-400;
   }
 }
 
 .UIButton[data-color="purple"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-purple-500 enabled:hover:bg-purple-600 disabled:bg-gray-400
+    @apply bg-purple-600 enabled:hover:bg-purple-700 disabled:bg-gray-400
       text-white;
   }
 }
 
 .UIButton[data-color="purple"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-purple-500 disabled:border-gray-400
-      enabled:hover:bg-purple-500
-      text-purple-500 enabled:hover:text-white disabled:text-gray-400;
+    @apply border border-purple-600 disabled:border-gray-400
+      enabled:hover:bg-purple-600
+      text-purple-600 enabled:hover:text-white disabled:text-gray-400;
   }
 }
 
 .UIButton[data-color="fuchsia"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-fuchsia-500 enabled:hover:bg-fuchsia-600 disabled:bg-gray-400
+    @apply bg-fuchsia-600 enabled:hover:bg-fuchsia-700 disabled:bg-gray-400
       text-white;
   }
 }
 
 .UIButton[data-color="fuchsia"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-fuchsia-500 disabled:border-gray-400
-      enabled:hover:bg-fuchsia-500
-      text-fuchsia-500 enabled:hover:text-white disabled:text-gray-400;
+    @apply border border-fuchsia-600 disabled:border-gray-400
+      enabled:hover:bg-fuchsia-600
+      text-fuchsia-600 enabled:hover:text-white disabled:text-gray-400;
   }
 }
 
 .UIButton[data-color="pink"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-pink-400 enabled:hover:bg-pink-500 disabled:bg-gray-400
+    @apply bg-pink-500 enabled:hover:bg-pink-600 disabled:bg-gray-400
       text-white;
   }
 }
 
 .UIButton[data-color="pink"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-pink-400 disabled:border-gray-400
-      enabled:hover:bg-pink-400
-      text-pink-400 enabled:hover:text-white disabled:text-gray-400;
+    @apply border border-pink-500 disabled:border-gray-400
+      enabled:hover:bg-pink-500
+      text-pink-500 enabled:hover:text-white disabled:text-gray-400;
   }
 }
 
