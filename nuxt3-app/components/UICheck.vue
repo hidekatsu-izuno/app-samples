@@ -23,6 +23,7 @@ const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: boolean): void,
   (event: "update:error", value: string): void,
+  (event: "change", value: Event): void,
   (event: "blur", value: Event): void,
 }>()
 
@@ -61,6 +62,7 @@ function onChange(event: Event) {
 
   try {
     validate(data.value)
+    emits("change", event)
   } catch (err) {
     // no handle
   }
