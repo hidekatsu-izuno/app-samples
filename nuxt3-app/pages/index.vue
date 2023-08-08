@@ -27,7 +27,7 @@ const onLoginButtonClick = async () => {
     })
 
     try {
-      const result = await fetchData("/api/auth/signin", {
+      const result = await fetchURL("/api/auth/signin", {
         method: "POST",
         data,
       })
