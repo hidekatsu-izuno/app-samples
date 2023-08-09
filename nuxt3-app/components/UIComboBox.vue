@@ -103,11 +103,45 @@ function onCompositionEnd(event: Event) {
   onInput(event)
 }
 
-function onDownKeydown(event: Event) {
+function onKeydown(event: KeyboardEvent) {
+  if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key !== "Enter") {
+    return
+  }
+
   if (pickerRef.value) {
     const pickerEl = pickerRef.value
     if (pickerEl.style.display === "none") {
       onInputPickerButtonMouseDown(event)
+    } else {
+      if (event.key === "Enter") {
+        const itemEl = pickerEl.querySelector('.UIComboBox-PickerItem[data-selected="true"]')
+        if (itemEl) {
+          itemEl.dispatchEvent(new MouseEvent("mousedown"))
+        }
+      } else {
+        const isUp = event.key === "ArrowUp"
+        const itemEls = pickerEl.querySelectorAll(".UIComboBox-PickerItem")
+        let prevSelected = true
+        let selected
+        for (let i = 0; i < itemEls.length; i++) {
+          const itemEl = (itemEls[isUp ? itemEls.length - i - 1 : i] as HTMLElement)
+          if (itemEl.dataset.selected) {
+            if (i === itemEls.length - 1) {
+              selected = undefined
+            } else {
+              delete itemEl.dataset.selected
+              prevSelected = true
+            }
+          } else if (prevSelected) {
+            selected = itemEl
+            prevSelected = false
+          }
+        }
+
+        if (selected) {
+          selected.dataset.selected = "true"
+        }
+      }
     }
   }
 }
@@ -159,12 +193,15 @@ function onInputPickerButtonMouseDown(event: Event) {
     }
     for (let i = 0; i < itemValueEls.length; i++) {
       itemValueEls[i].style.width = `${maxOffsetWidth}px`
+    }
 
-      const itemEl = itemValueEls[i].parentElement
+    const itemEls = pickerEl.querySelectorAll(".UIComboBox-PickerItem")
+    for (let i = 0; i < itemEls.length; i++) {
+      const itemEl = itemEls[i]
       if ((itemEl.dataset.value ?? "") === data.value) {
         itemEl.dataset.selected = "true"
       } else {
-        itemEl.dataset.selected = undefined
+        delete itemEl.dataset.selected
       }
     }
   }
@@ -185,10 +222,11 @@ function onPickerItemMouseDown(event: Event) {
 
 function onPikcerItemMouseEnter(event: Event) {
   const target = event.target as HTMLElement
-  const itemsEls = target.parentElement?.querySelectorAll('.UIComboBox-PickerItem[data-selected="true"]')
-  if (itemsEls) {
-    for (let i = 0; i < itemsEls.length; i++) {
-      (itemsEls[i] as HTMLElement).dataset.selected = undefined
+  const itemEls = target.parentElement?.querySelectorAll('.UIComboBox-PickerItem[data-selected="true"]')
+  if (itemEls) {
+    for (let i = 0; i < itemEls.length; i++) {
+      const itemEl = (itemEls[i] as HTMLElement)
+      delete itemEl.dataset.selected
     }
   }
   target.dataset.selected = "true"
@@ -272,7 +310,7 @@ function validate(value: string) {
           @blur="onBlur"
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
-          @keydown.down="onDownKeydown"
+          @keydown="onKeydown"
         />
         <div class="UIComboBox-InputPickerButton" @mousedown="onInputPickerButtonMouseDown">
           <UIIcon name="chevron-down" />

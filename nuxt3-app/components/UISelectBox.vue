@@ -126,21 +126,26 @@ function validate(value: string) {
       class="UISelectBox-Content"
     >
       <div v-if="props.prefix" class="UISelectBox-Prefix">{{ props.prefix }}</div>
-      <select
-        class="UISelectBox-Input"
-        :class="props.inputClass"
-        :style="props.inputStyle"
-        :disabled="props.disabled"
-        :tabindex="props.tabindex"
-        :value="data.value"
-        :data-empty="!data.value"
-        @focus="onFocus"
-        @change="onChange"
-        @blur="onBlur"
-      >
-        <option class="UISelectBox-InputOption" :disabled="required" value="">{{ placeholder }}</option>
-        <option class="UISelectBox-InputOption" v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text == null ? item.value : item.text }}</option>
-      </select>
+      <div class="UISelectBox-InputArea">
+        <select
+          class="UISelectBox-Input"
+          :class="props.inputClass"
+          :style="props.inputStyle"
+          :disabled="props.disabled"
+          :tabindex="props.tabindex"
+          :value="data.value"
+          :data-empty="!data.value"
+          @focus="onFocus"
+          @change="onChange"
+          @blur="onBlur"
+        >
+          <option class="UISelectBox-InputOption" :disabled="required" value="">{{ placeholder }}</option>
+          <option class="UISelectBox-InputOption" v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text == null ? item.value : item.text }}</option>
+        </select>
+        <div class="UISelectBox-InputPickerButton">
+          <UIIcon name="chevron-down" />
+        </div>
+      </div>
       <div v-if="props.suffix" class="UISelectBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
@@ -159,8 +164,13 @@ function validate(value: string) {
   @apply flex flex-row items-center gap-2;
 }
 
+.UISelectBox-InputArea {
+  @apply grid
+    w-full;
+}
+
 .UISelectBox-Input {
-  @apply
+  @apply appearance-none
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
@@ -168,6 +178,7 @@ function validate(value: string) {
     w-full
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
+  grid-area: 1/1;
 }
 
 .UISelectBox-Input[data-empty="true"] {
@@ -176,6 +187,17 @@ function validate(value: string) {
 
 .UISelectBox-InputOption {
   @apply text-gray-900;
+}
+
+.UISelectBox-InputPickerButton {
+  @apply flex items-center justify-end
+    px-1
+    pointer-events-none;
+  grid-area: 1/1;
+
+  .UIIcon {
+    @apply text-2xl;
+  }
 }
 
 .UISelectBox-Text {
