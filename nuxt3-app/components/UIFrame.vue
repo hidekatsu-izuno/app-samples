@@ -18,44 +18,44 @@ function onDrawerClick(e: MouseEvent) {
 
 <template>
   <div class="UIFrame">
-    <div class="flex flex-col grow">
-      <header class="sticky top-0 left-0 right-0 z-20 overflow-hidden shadow">
-        <div class="flex flex-row items-center px-4 h-14 bg-white border-b border-gray-300 gap-2">
-          <UIIcon name="menu" class="text-4xl xl:hidden cursor-pointer" @click="openDrawer" />
-          <div v-if="$slots.title" class="grow overflow-hidden">
+    <div class="UIFrame-Body">
+      <header class="UIFrame-Header">
+        <div class="UIFrame-HeaderContent">
+          <UIIcon name="menu" @click="openDrawer" />
+          <div v-if="$slots.title" class="UIFrame-HeaderTitle">
             <slot name="title" />
           </div>
-          <div v-if="$slots.actions" class="shrink justify-self-end overflow-hidden">
+          <div v-if="$slots.actions" class="UIFrame-HeaderActions">
             <slot name="actions" />
           </div>
         </div>
-        <div v-if="$slots.header" class="px-4 py-1 bg-white border-b border-gray-400 overflow-hidden">
-          <slot name="header" />
+        <div v-if="$slots.top" class="UIFrame-HeaderTop">
+          <slot name="top" />
         </div>
       </header>
-      <main class="grow p-4 bg-slate-50 overflow-hidden">
+      <main class="UIFrame-Content">
         <slot />
       </main>
       <footer
-        v-if="$slots.footer"
-        class="sticky bottom-0 left-0 right-0 px-4 py-2 bg-white border-t border-gray-400 z-20 overflow-hidden shadow"
+        v-if="$slots.bottom"
+        class="UIFrame-Footer"
       >
-        <slot name="footer" />
+        <slot name="bottom" />
       </footer>
     </div>
     <div
       v-if="$slots.drawer"
-      class="fixed top-0 bottom-0 left-0 right-0 xl:block xl:static bg-black/[.5] z-20"
+      class="UIFrame-Drawer"
       :class="{ hidden: !data.showDrawer }"
       @click="closeDrawer"
     >
       <div
-        class="sticky top-0 w-fit h-screen overflow-y-auto bg-slate-900 text-white"
+        class="UIFrame-DrawerBackdrop"
         @click="onDrawerClick"
       >
-        <div class="flex items-center px-4 w-64 h-14">
-          <UIIcon name="menu-open" class="text-4xl xl:hidden cursor-pointer mr-2" @click="closeDrawer" />
-          <div class="grow text-lg font-bold">Nuxt3 App</div>
+        <div class="UIFrame-DrawerContent">
+          <UIIcon name="menu-open" @click="closeDrawer" />
+          <div class="UIFrame-DrawerTitle">Nuxt3 App</div>
         </div>
         <slot name="drawer" />
       </div>
@@ -68,5 +68,94 @@ function onDrawerClick(e: MouseEvent) {
   @apply flex flex-row-reverse
     w-full min-h-screen
     bg-white;
+}
+
+.UIFrame-Body {
+  @apply flex flex-col grow;
+}
+
+.UIFrame-Header {
+  @apply sticky top-0 left-0 right-0
+    shadow
+    overflow-hidden
+    z-20;
+}
+
+.UIFrame-HeaderContent {
+  @apply flex flex-row items-center gap-2
+    border-b border-gray-300
+    px-4 h-14
+    bg-white;
+
+  .UIIcon {
+    @apply xl:hidden
+      text-4xl
+      cursor-pointer;
+  }
+}
+
+.UIFrame-HeaderTitle {
+  @apply grow
+    overflow-hidden;
+}
+
+.UIFrame-HeaderActions {
+  @apply shrink justify-self-end
+    overflow-hidden;
+}
+
+.UIFrame-HeaderTop {
+  @apply px-4 py-1
+    border-b border-gray-400 overflow-hidden
+    bg-white;
+}
+
+.UIFrame-Content {
+  @apply grow
+    p-4
+    bg-slate-50
+    overflow-hidden;
+}
+
+.UIFrame-Footer {
+  @apply sticky bottom-0 left-0 right-0
+    shadow
+    border-t border-gray-400
+    px-4 py-2
+    bg-white
+    overflow-hidden
+    z-20;
+}
+
+.UIFrame-Drawer {
+  @apply fixed top-0 bottom-0 left-0 right-0 xl:block xl:static
+    bg-black/[.5]
+    z-20;
+}
+
+.UIFrame-DrawerBackdrop {
+  @apply sticky top-0
+    w-fit h-screen
+    overflow-y-auto
+    bg-slate-900
+    text-white;
+}
+
+.UIFrame-DrawerContent {
+  @apply flex items-center
+    px-4
+    w-64 h-14;
+
+  .UIIcon {
+    @apply xl:hidden
+      mr-2
+      text-4xl
+      cursor-pointer;
+  }
+}
+
+.UIFrame-DrawerTitle {
+  @apply grow
+    text-lg font-bold;
 }
 </style>

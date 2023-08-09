@@ -101,8 +101,8 @@ async function textboxValidate() {
     <template #actions>
       Actions
     </template>
-    <template #header>
-      Header
+    <template #top>
+      Top
     </template>
 
     <UICard class="mb-4">
@@ -650,8 +650,8 @@ async function textboxValidate() {
     <UIMessageBox v-model="data.messageBox3Opened" type="yes-no" @close="data.messageBox3 = $event">う</UIMessageBox>
     <UIMessageBox v-model="data.messageBox4Opened" type="yes-no-cancel" @close="data.messageBox4 = $event">え</UIMessageBox>
 
-    <template #footer>
-      Footer
+    <template #bottom>
+      Bottom
     </template>
     <template #drawer>
       <MenuList />
