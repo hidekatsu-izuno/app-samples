@@ -126,7 +126,7 @@ function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   try {
     const value = validate(toHalfwidthAscii(target.value))
-    let svalue = value != null ? formatDate(value, props.format) : ""
+    let svalue = formatDate(value, props.format)
     if (svalue !== data.value) {
       data.value = svalue
       emits("update:modelValue", data.value)
@@ -183,7 +183,15 @@ function onPickerDateClick(event: Event, date: Date) {
 function validate(value: string) {
   let error = ""
 
-  let date = parseDate(value, data.focused ? "uuuuMMdd" : props.format)
+  let date
+  if (value) {
+    if (/^[0-9]{8}|[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
+      date = parseDate(value)
+    } else {
+      date = parseDate(value, props.format)
+    }
+  }
+
   if (date) {
     if (props.schema) {
       const result = props.schema.safeParse(date, {
@@ -340,7 +348,8 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox-InputPickerButton {
-  @apply flex items-center justify-end
+  @apply justify-self-end
+    flex items-center justify-end
     px-1;
   grid-area: 1/1;
 

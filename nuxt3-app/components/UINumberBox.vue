@@ -103,7 +103,7 @@ function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   try {
     const value = validate(toHalfwidthAscii(target.value))
-    const svalue = value != null ? formatNumber(value, props.format) : ""
+    const svalue = formatNumber(value, props.format)
     if (svalue !== data.value) {
       data.value = svalue
       emits("update:modelValue", data.value)
@@ -120,7 +120,15 @@ function onBlur(event: Event) {
 function validate(value: string) {
   let error = ""
 
-  let num = parseNumber(value, !data.focused ? props.format : undefined)
+  let num
+  if (value) {
+    if (/^[0-9,]+(.[0-9]*)?$/.test(value)) {
+      num = parseNumber(value)
+    } else {
+      num = parseNumber(value, props.format)
+    }
+  }
+
   if (num) {
     if (props.schema) {
       const result = props.schema.safeParse(num, {
