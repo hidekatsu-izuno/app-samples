@@ -344,7 +344,7 @@ async function textboxValidate() {
           :required="data.comboboxRequired"
           :disabled="data.comboboxDisabled"
           :readonly="data.comboboxReadonly"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          :items="[{ value: '1', text: 'AAA' }, { value: '23', text: 'BBB' }]"
           placeholder="---"
         />
         <div class="border">{{ data.combobox1 }}</div>

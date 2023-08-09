@@ -109,7 +109,8 @@ function onBlur(event: Event) {
   }
 
   const target = event.target as HTMLInputElement
-  const value = props.filter ? props.filter(target.value) : target.value
+  let value = props.filter ? props.filter(target.value) : target.value
+  value = props.items.find(item => item.value === value || item.text === value)?.value || data.value
   if (value !== data.value) {
     data.value = value
     emits("update:modelValue", data.value)
@@ -132,15 +133,26 @@ function onInputPickerButtonMouseDown(event: Event) {
     return
   }
 
-  inputRef.value?.focus()
-
   if (pickerRef.value) {
-    const width = inputRef.value?.offsetWidth
-    if (width) {
-      pickerRef.value.style.width = `${width}px`
+    const pickerEl = pickerRef.value
+    if (inputRef.value) {
+      const inputEl = inputRef.value
+      inputEl.focus()
+      pickerEl.style.width = `${inputEl.offsetWidth}px`
     }
-    pickerRef.value.style.display = ""
+    pickerEl.style.display = ""
+
+    const itemValueEls = pickerEl.querySelectorAll(".UIComboBox-PickerItemValue")
+    let maxOffsetWidth = 0
+    for (let i = 0; i < itemValueEls.length; i++) {
+      itemValueEls[i].style.width = undefined
+      maxOffsetWidth = Math.max(itemValueEls[i].offsetWidth, maxOffsetWidth)
+    }
+    for (let i = 0; i < itemValueEls.length; i++) {
+      itemValueEls[i].style.width = `${maxOffsetWidth}px`
+    }
   }
+
   popper?.update()
 }
 
@@ -244,12 +256,19 @@ function validate(value: string) {
       @mousedown="onPickerMouseDown"
     >
       <li
-          v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
-          :key="index"
-          class="UIComboBox-PickerItem"
-          @mousedown="(event) => onPickerItemMouseDown(event, item.value)"
+        v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
+        :key="index"
+        class="UIComboBox-PickerItem"
+        @mousedown="(event) => onPickerItemMouseDown(event, item.value)"
         >
-        <div class="UIComboBox-PickerItemValue">{{ item.value }}</div><div class="UIComboBox-PickerItemText">{{ item.text }}</div>
+        <div
+          v-if="item.value"
+          class="UIComboBox-PickerItemValue"
+        >{{ item.value }}</div>
+        <div
+          v-if="item.text"
+          class="UIComboBox-PickerItemText"
+        >{{ item.text }}</div>
       </li>
     </ul>
     <div
@@ -303,20 +322,15 @@ function validate(value: string) {
 }
 
 .UIComboBox-PickerItem {
-  @apply flex items-center
+  @apply flex flex-row items-center
     first:rounded-t-md last:rounded-b-md
     bg-white hover:bg-blue-500
     hover:text-white;
 }
 
-.UIComboBox-PickerItemValue {
-  @apply flex items-center
-    px-2
-    select-none;
-}
-
+.UIComboBox-PickerItemValue,
 .UIComboBox-PickerItemText {
-  @apply flex items-center
+  @apply flex flex-row items-center
     px-2
     select-none;
 }
@@ -334,6 +348,14 @@ function validate(value: string) {
   .UIComboBox-Label::after {
     @apply text-red-500;
     content: ' ※';
+  }
+}
+
+.UIComboBox[data-disabled="true"] {
+  .UIComboBox-InputPickerButton {
+    .UIIcon {
+      @apply text-gray-400;
+    }
   }
 }
 
