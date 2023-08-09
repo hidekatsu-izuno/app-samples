@@ -236,6 +236,7 @@ function validate(value: string) {
           :placeholder="props.placeholder"
           :disabled="props.disabled"
           :tabindex="props.tabindex"
+          :maxlength="maxLength"
           :value="data.value"
           @focus="onFocus"
           @input="onInput"

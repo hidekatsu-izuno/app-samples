@@ -24,6 +24,12 @@ const data = reactive({
   datebox1: "",
   datebox2: "",
   datebox3: "",
+  timeboxRequired: false,
+  timeboxDisabled: false,
+  timeboxReadonly: false,
+  timebox1: "",
+  timebox2: "",
+  timebox3: "",
   textareaRequired: false,
   textareaDisabled: false,
   textareaReadonly: false,
@@ -258,6 +264,45 @@ async function textboxValidate() {
           halign="center"
         />
         <div class="border">{{ data.datebox3 }}</div>
+      </div>
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row gap-1">
+          <h2 class="font-bold grow">時刻ボックス (UITimeBox)</h2>
+          <div class="shrink"><input v-model="data.timeboxRequired" type="checkbox"> required</div>
+          <div class="shrink"><input v-model="data.timeboxDisabled" type="checkbox"> disabled</div>
+          <div class="shrink"><input v-model="data.timeboxReadonly" type="checkbox"> readonly</div>
+        </div>
+      </template>
+
+      <div class="grid grid-cols-2 gap-2">
+        <UITimeBox v-model="data.timebox1" label="デフォルト" :required="data.timeboxRequired" :disabled="data.timeboxDisabled" :readonly="data.dateboxReadonly" />
+        <div class="border">{{ data.timebox1 }}</div>
+
+        <UITimeBox
+          v-model="data.timebox2"
+          type="HHmmss"
+          label="フォーマット"
+          :required="data.timeboxRequired"
+          :disabled="data.timeboxDisabled"
+          :readonly="data.timeboxReadonly"
+        />
+        <div class="border">{{ data.timebox2 }}</div>
+
+        <UITimeBox
+          v-model="data.timebox3"
+          label="装飾"
+          format="H#m#s.SSS"
+          :required="data.timeboxRequired"
+          :disabled="data.timeboxDisabled"
+          :readonly="data.timeboxReadonly"
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
+        <div class="border">{{ data.timebox3 }}</div>
       </div>
     </UICard>
 
