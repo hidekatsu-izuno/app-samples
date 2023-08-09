@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
-  items?: Array<{ value: string, text: string }>,
+  items?: Array<{ value: string, text?: string }>,
   required?: boolean,
   disabled?: boolean,
   readonly?: boolean,
