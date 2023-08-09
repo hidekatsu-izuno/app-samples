@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
-  items?: Array<{ value: string, text: string }>,
+  items?: Array<{ value: string, text?: string }>,
   required?: boolean,
   disabled?: boolean,
   readonly?: boolean,
@@ -139,7 +139,7 @@ function validate(value: string) {
         @blur="onBlur"
       >
         <option class="UISelectBox-InputOption" :disabled="required" value="">{{ placeholder }}</option>
-        <option class="UISelectBox-InputOption" v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text }}</option>
+        <option class="UISelectBox-InputOption" v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text == null ? item.value : item.text }}</option>
       </select>
       <div v-if="props.suffix" class="UISelectBox-Suffix">{{ props.suffix }}</div>
     </div>
