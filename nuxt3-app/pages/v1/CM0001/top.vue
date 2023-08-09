@@ -34,6 +34,11 @@ const data = reactive({
   selectboxReadonly: false,
   selectbox1: "",
   selectbox2: "",
+  comboboxRequired: false,
+  comboboxDisabled: false,
+  comboboxReadonly: false,
+  combobox1: "",
+  combobox2: "",
   checkRequired: false,
   checkDisabled: false,
   checkReadonly: false,
@@ -319,6 +324,44 @@ async function textboxValidate() {
           halign="center"
         />
         <div class="border">{{ data.selectbox2 }}</div>
+      </div>
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row gap-1">
+          <h2 class="font-bold grow">コンボボックス (UIComboBox)</h2>
+          <div class="shrink"><input v-model="data.comboboxRequired" type="checkbox"> required</div>
+          <div class="shrink"><input v-model="data.comboboxDisabled" type="checkbox"> disabled</div>
+          <div class="shrink"><input v-model="data.comboboxReadonly" type="checkbox"> readonly</div>
+        </div>
+      </template>
+
+      <div class="grid grid-cols-2 gap-2">
+        <UIComboBox
+          v-model="data.combobox1"
+          label="デフォルト"
+          :required="data.comboboxRequired"
+          :disabled="data.comboboxDisabled"
+          :readonly="data.comboboxReadonly"
+          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          placeholder="---"
+        />
+        <div class="border">{{ data.combobox1 }}</div>
+
+        <UIComboBox
+          v-model="data.combobox2"
+          label="装飾"
+          :required="data.comboboxRequired"
+          :disabled="data.comboboxDisabled"
+          :readonly="data.comboboxReadonly"
+          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          placeholder="---"
+          prefix="("
+          suffix=")"
+          halign="center"
+        />
+        <div class="border">{{ data.combobox2 }}</div>
       </div>
     </UICard>
 

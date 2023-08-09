@@ -140,7 +140,7 @@ function onBlur(event: Event) {
   emits("blur", event)
 }
 
-function onPickerIconMouseDown(event: Event) {
+function onInputPickerButtonMouseDown(event: Event) {
   event.preventDefault()
   if (props.disabled) {
     return
@@ -169,8 +169,14 @@ function onPickerNextButtonClick() {
   pickerData.current = add(pickerData.current, { months: 1 })
 }
 
-function onPickerDateClick(date: Date) {
-  data.value = formatDate(date, "uuuuMMdd")
+function onPickerDateClick(event: Event, date: Date) {
+  const value = formatDate(date, "uuuuMMdd")
+  if (value !== data.value) {
+    data.value = value
+    emits("update:modelValue", data.value)
+    emits("change", event)
+  }
+
   nextTick(() => inputRef.value?.blur())
 }
 
@@ -253,8 +259,8 @@ function getFormatMaxLength(format: string) {
           @blur="onBlur"
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
-        >
-        <div class="UIDateBox-InputCalender" @mousedown="onPickerIconMouseDown">
+        />
+        <div class="UIDateBox-InputPickerButton" @mousedown="onInputPickerButtonMouseDown">
           <UIIcon name="calendar" />
         </div>
       </div>
@@ -262,43 +268,43 @@ function getFormatMaxLength(format: string) {
     </div>
     <div
       ref="pickerRef"
-      class="UIDateBox-Calender"
+      class="UIDateBox-Picker"
       style="display: none"
       @mousedown="onPickerMouseDown"
     >
       <div
-        class="UIDateBox-CalendarPrevInput"
+        class="UIDateBox-PickerPrevInput"
         @click="onPickerPrevButtonClick"
       >
         <UIIcon name="arrow-left" />
       </div>
-      <div class="UIDateBox-CalendarMonth">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
+      <div class="UIDateBox-PickerMonth">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
       <div
-        class="UIDateBox-CalendarNextInput"
+        class="UIDateBox-PickerNextInput"
         @click="onPickerNextButtonClick"
       >
         <UIIcon name="arrow-right" />
       </div>
-      <div class="UIDateBox-CalenderSunday" />
-      <div class="UIDateBox-CalenderMonday" />
-      <div class="UIDateBox-CalenderTuesday" />
-      <div class="UIDateBox-CalenderWednesday" />
-      <div class="UIDateBox-CalenderThursday" />
-      <div class="UIDateBox-CalenderFriday" />
-      <div class="UIDateBox-CalenderSaturday" />
+      <div class="UIDateBox-PickerSunday" />
+      <div class="UIDateBox-PickerMonday" />
+      <div class="UIDateBox-PickerTuesday" />
+      <div class="UIDateBox-PickerWednesday" />
+      <div class="UIDateBox-PickerThursday" />
+      <div class="UIDateBox-PickerFriday" />
+      <div class="UIDateBox-PickerSaturday" />
       <div
         v-for="date in eachDayOfInterval({
           start: startOfWeek(startOfMonth(pickerData.current)),
           end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
         })"
         :key="date.getTime()"
-        class="UIDateBox-CalenderDate"
+        class="UIDateBox-PickerDate"
         :class="[
-          isSameDay(pickerData.start, date) ? 'UIDateBox-CalenderDate-today' : '',
+          isSameDay(pickerData.start, date) ? 'UIDateBox-PickerDate-today' : '',
           ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
         ]"
         :style="props.inputStyle"
-        @click="() => onPickerDateClick(date)"
+        @click="(event) => onPickerDateClick(event, date)"
       >{{ date.getDate() }}</div>
     </div>
     <div
@@ -332,13 +338,8 @@ function getFormatMaxLength(format: string) {
     text-gray-900 bg-gray-50 disabled:text-gray-400;
   grid-area: 1/1;
 }
-.UIDateBox-Input::-webkit-inner-spin-button,
-.UIDateBox-Input::-webkit-outer-spin-button {
-  @apply appearance-none
-    m-0;
-}
 
-.UIDateBox-InputCalender {
+.UIDateBox-InputPickerButton {
   @apply flex items-center justify-end
     px-1;
   grid-area: 1/1;
@@ -357,7 +358,7 @@ function getFormatMaxLength(format: string) {
   @apply text-sm text-red-500;
 }
 
-.UIDateBox-Calender {
+.UIDateBox-Picker {
   @apply grid grid-cols-7 justify-center items-center
     shadow-lg
     rounded-md
@@ -367,8 +368,8 @@ function getFormatMaxLength(format: string) {
     z-10;
 }
 
-.UIDateBox-CalenderPrevInput,
-.UIDateBox-CalendarNextInput {
+.UIDateBox-PickerPrevInput,
+.UIDateBox-PickerNextInput {
   @apply flex items-center justify-center
     rounded-md
     w-8 h-8
@@ -380,47 +381,47 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-.UIDateBox-CalendarMonth {
+.UIDateBox-PickerMonth {
   @apply col-span-5
     flex items-center justify-center
     h-8;
 }
 
-.UIDateBox-CalenderSunday,
-.UIDateBox-CalenderMonday,
-.UIDateBox-CalenderTuesday,
-.UIDateBox-CalenderWednesday,
-.UIDateBox-CalenderThursday,
-.UIDateBox-CalenderFriday,
-.UIDateBox-CalenderSaturday {
+.UIDateBox-PickerSunday,
+.UIDateBox-PickerMonday,
+.UIDateBox-PickerTuesday,
+.UIDateBox-PickerWednesday,
+.UIDateBox-PickerThursday,
+.UIDateBox-PickerFriday,
+.UIDateBox-PickerSaturday {
   @apply flex items-center justify-center
     w-8 h-6
     font-bold text-gray-400;
 }
 
-.UIDateBox-CalenderSunday::before {
+.UIDateBox-PickerSunday::before {
   content: '日'
 }
-.UIDateBox-CalenderMonday::before {
+.UIDateBox-PickerMonday::before {
   content: '月'
 }
-.UIDateBox-CalenderTuesday::before {
+.UIDateBox-PickerTuesday::before {
   content: '火'
 }
-.UIDateBox-CalenderWednesday::before {
+.UIDateBox-PickerWednesday::before {
   content: '水'
 }
-.UIDateBox-CalenderThursday::before {
+.UIDateBox-PickerThursday::before {
   content: '木'
 }
-.UIDateBox-CalenderFriday::before {
+.UIDateBox-PickerFriday::before {
   content: '金'
 }
-.UIDateBox-CalenderSaturday::before {
+.UIDateBox-PickerSaturday::before {
   content: '土'
 }
 
-.UIDateBox-CalenderDate {
+.UIDateBox-PickerDate {
   @apply flex items-center justify-center
     rounded-md
     h-8
@@ -428,7 +429,7 @@ function getFormatMaxLength(format: string) {
     cursor-default;
 }
 
-.UIDateBox-CalenderDate-today {
+.UIDateBox-PickerDate-today {
   @apply bg-blue-700 hover:bg-blue-800
     text-white font-bold;
 }
@@ -441,7 +442,7 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox[data-disabled="true"] {
-  .UIDateBox-InputCalender {
+  .UIDateBox-InputPickerButton {
     .UIIcon {
       @apply text-gray-400;
     }

@@ -133,12 +133,13 @@ function validate(value: string) {
         :disabled="props.disabled"
         :tabindex="props.tabindex"
         :value="data.value"
+        :data-empty="!data.value"
         @focus="onFocus"
         @change="onChange"
         @blur="onBlur"
       >
-        <option :disabled="required" value="">{{ placeholder }}</option>
-        <option v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text }}</option>
+        <option class="UISelectBox-InputOption" :disabled="required" value="">{{ placeholder }}</option>
+        <option class="UISelectBox-InputOption" v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text }}</option>
       </select>
       <div v-if="props.suffix" class="UISelectBox-Suffix">{{ props.suffix }}</div>
     </div>
@@ -167,6 +168,14 @@ function validate(value: string) {
     w-full
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
+}
+
+.UISelectBox-Input[data-empty="true"] {
+  @apply text-gray-400;
+}
+
+.UISelectBox-InputOption {
+  @apply text-gray-900;
 }
 
 .UISelectBox-Text {
@@ -204,6 +213,7 @@ function validate(value: string) {
       @apply w-auto;
     }
   }
+
   .UISelectBox[data-halign="center"] {
     .UISelectBox-Content {
       @apply justify-center;
@@ -213,6 +223,7 @@ function validate(value: string) {
       @apply w-auto;
     }
   }
+
   .UISelectBox[data-halign="end"] {
     .UISelectBox-Content {
       @apply justify-end;

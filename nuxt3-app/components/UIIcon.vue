@@ -34,6 +34,14 @@ const props = withDefaults(defineProps<{
   @apply icon-[mdi--check-bold];
 }
 
+.UIIcon[data-name="chevron-up"] {
+  @apply icon-[mdi--chevron-up];
+}
+
+.UIIcon[data-name="chevron-down"] {
+  @apply icon-[mdi--chevron-down];
+}
+
 .UIIcon[data-name="chevron-left"] {
   @apply icon-[mdi--chevron-left];
 }
