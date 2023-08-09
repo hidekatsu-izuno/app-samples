@@ -140,6 +140,12 @@ function onBlur(event: Event) {
   emits("blur", event)
 }
 
+function onMouseDown(event: Event) {
+  if (pickerRef.value) {
+    pickerRef.value.style.display = "none"
+  }
+}
+
 function onInputPickerButtonMouseDown(event: Event) {
   event.preventDefault()
   if (props.disabled) {
@@ -265,6 +271,7 @@ function getFormatMaxLength(format: string) {
           @input="onInput"
           @focus="onFocus"
           @blur="onBlur"
+          @mousedown="onMouseDown"
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
         />
