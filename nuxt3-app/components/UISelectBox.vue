@@ -142,7 +142,7 @@ function validate(value: string) {
           @blur="onBlur"
         >
           <option class="UISelectBox-InputOption" :disabled="required" value="">{{ placeholder }}</option>
-          <option class="UISelectBox-InputOption" v-for="(item, index) in items" :key="index" :value="item.value">{{ item.text == null ? item.value : item.text }}</option>
+          <option v-for="(item, index) in items" :key="index" class="UISelectBox-InputOption" :value="item.value">{{ item.text == null ? item.value : item.text }}</option>
         </select>
         <div class="UISelectBox-InputPickerButton">
           <UIIcon name="chevron-down" />

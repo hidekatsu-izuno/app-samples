@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   type: "HHmm",
   required: false,
-  format: (props) => props.type === "HHmmss" ? "HH:mm:ss" : "HH:mm",
+  format: props => props.type === "HHmmss" ? "HH:mm:ss" : "HH:mm",
   modelValue: "",
   error: "",
 })
@@ -104,7 +104,7 @@ function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   try {
     const value = validate(toHalfwidthAscii(target.value))
-    let svalue = value != null ? formatDate(value, props.format) : ""
+    const svalue = value != null ? formatDate(value, props.format) : ""
     if (svalue !== data.value) {
       data.value = svalue
       emits("update:modelValue", data.value)
@@ -197,7 +197,7 @@ function getFormatMaxLength(format: string) {
         @blur="onBlur"
         @compositionstart="onCompositionStart"
         @compositionend="onCompositionEnd"
-      />
+      >
       <div v-if="props.suffix" class="UITimeBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div

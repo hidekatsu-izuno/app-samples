@@ -13,6 +13,7 @@ module.exports = {
     "no-console": "off",
     "func-call-spacing": "off",
     "space-before-function-paren": ["error", { named: "never" }],
+    "no-use-before-define": "off",
     "import/no-named-default": "off",
     "vue/require-default-prop": "off",
     "vue/singleline-html-element-content-newline": "off",

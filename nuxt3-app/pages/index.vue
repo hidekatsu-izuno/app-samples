@@ -60,7 +60,12 @@ const onLoginButtonClick = async () => {
           />
           <UITextBox
             ref="passwordRef"
-            type="password" label="パスワード" name="password" required :schema="UserPasswordSchema" />
+            type="password"
+            label="パスワード"
+            name="password"
+            required
+            :schema="UserPasswordSchema"
+          />
           <UILink halign="end" class="text-sm" @click="goChangePasswordPage">
             パスワードを忘れた方はこちら
           </UILink>

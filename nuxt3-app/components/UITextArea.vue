@@ -83,7 +83,7 @@ function onCompositionEnd(event: Event) {
 
 function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
-  let value = props.filter ? props.filter(target.value) : target.value
+  const value = props.filter ? props.filter(target.value) : target.value
   if (value !== data.value) {
     data.value = value
     emits("update:modelValue", data.value)

@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     },
     logger: {
       level: process.env.LOG_LEVEL,
-    }
+    },
   },
 
   sourcemap: true,

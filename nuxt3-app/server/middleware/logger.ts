@@ -1,11 +1,11 @@
-import pino from "pino"
 import type { IncomingMessage, ServerResponse } from "http"
+import { default as pino, stdTimeFunctions } from "pino"
 
 const runtimeConfig = useRuntimeConfig()
 
 const logger = pino({
   level: runtimeConfig.logger.level || "info",
-  timestamp: pino.stdTimeFunctions.isoTime,
+  timestamp: stdTimeFunctions.isoTime,
   formatters: {
     level(label, number) {
       return { level: label }
@@ -20,19 +20,19 @@ export default defineEventHandler((event) => {
   const startTime = Date.now()
   const reqInfo = serializeRequest(req)
   event.context.logger = logger.child({
-    req: reqInfo
+    req: reqInfo,
   })
 
   const onResponseComplete = (err: any) => {
-    res.removeListener('close', onResponseComplete)
-    res.removeListener('finish', onResponseComplete)
-    res.removeListener('error', onResponseComplete)
+    res.removeListener("close", onResponseComplete)
+    res.removeListener("finish", onResponseComplete)
+    res.removeListener("error", onResponseComplete)
 
     const resInfo = serializeResponse(res)
     resInfo.responseTime = Date.now() - startTime
     const httpLogger = logger.child({
       req: reqInfo,
-      res: resInfo
+      res: resInfo,
     })
 
     if (err || res.statusCode >= 500) {
@@ -44,15 +44,15 @@ export default defineEventHandler((event) => {
     }
   }
 
-  res.on('close', onResponseComplete)
-  res.on('finish', onResponseComplete)
-  res.on('error', onResponseComplete)
+  res.on("close", onResponseComplete)
+  res.on("finish", onResponseComplete)
+  res.on("error", onResponseComplete)
 })
 
 function serializeRequest(req: IncomingMessage) {
   let ip = req.socket.remoteAddress
 
-  let xFowardedFor = req.headers["x-forwarded-for"]
+  const xFowardedFor = req.headers["x-forwarded-for"]
   if (xFowardedFor) {
     let xFowardedForStr = Array.isArray(xFowardedFor) ? xFowardedFor[0] : xFowardedFor
     xFowardedForStr = xFowardedForStr.split(/,/)[0].trim()
@@ -68,11 +68,11 @@ function serializeRequest(req: IncomingMessage) {
     url: req.url,
     ip,
     headers: {
-      'host': req.headers.host,
-      'user-agent': req.headers['user-agent'],
-      'referer': req.headers.referer,
-      'cookie': req.headers.cookie,
-    }
+      host: req.headers.host,
+      "user-agent": req.headers["user-agent"],
+      referer: req.headers.referer,
+      cookie: req.headers.cookie,
+    },
   }
 }
 
@@ -81,8 +81,8 @@ function serializeResponse(res: ServerResponse) {
     statusCode: res.statusCode,
     responseTime: 0,
     headers: {
-      'content-type': res.getHeader('content-type'),
-      'content-length': res.getHeader('content-length'),
-    }
+      "content-type": res.getHeader("content-type"),
+      "content-length": res.getHeader("content-length"),
+    },
   }
 }

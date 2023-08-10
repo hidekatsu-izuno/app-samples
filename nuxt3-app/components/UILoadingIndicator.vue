@@ -18,7 +18,7 @@ const emits = defineEmits<{
 const data = reactive({
   throttleTimerId: undefined as NodeJS.Timeout | undefined,
   durationTimerId: undefined as NodeJS.Timeout | undefined,
-  value: false
+  value: false,
 })
 
 watch(() => props.modelValue, () => {

@@ -27,7 +27,7 @@ const data = reactive({
   timeboxRequired: false,
   timeboxDisabled: false,
   timeboxReadonly: false,
-  textboxSize: "",
+  textboxSize: undefined,
   timebox1: "",
   timebox2: "",
   timebox3: "",
@@ -98,10 +98,7 @@ async function onValidate() {
     textbox1: textbox1Ref,
     value: 1,
   })
-}
-
-async function onIndicator() {
-
+  alert(JSON.stringify(result))
 }
 </script>
 
@@ -114,7 +111,6 @@ async function onIndicator() {
       <div class="flex flex-row items-center gap-2">
         Actions:
         <UIButton @click="onValidate">Validate</UIButton>
-        <UIButton @click="onIndicator">Indicator</UIButton>
       </div>
     </template>
     <template #top>
@@ -128,8 +124,8 @@ async function onIndicator() {
           <input v-model="data.textboxRequired" type="checkbox">required
           <input v-model="data.textboxDisabled" type="checkbox">disabled
           <input v-model="data.textboxReadonly" type="checkbox">readonly
-          <UISelectBox size="small" v-model="data.textboxSize" :items="[{ value: 'large' }, { value: 'small' }]" />
-          <UIButton size="small" @click="textboxValidate">validate</UIButton>
+          <UISelectBox v-model="data.textboxSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UIButton size="small" @click="onValidate">validate</UIButton>
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2">
@@ -614,28 +610,31 @@ async function onIndicator() {
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">ボタン (UIButton)</h2>
-          color: <UISelectBox v-model="data.buttonColor" :items="[
-            { value: 'blue' },
-            { value: 'slate' }, { value: 'gray' }, { value: 'zinc' }, { value: 'neutral' }, { value: 'stone' },
-            { value: 'red' }, { value: 'orange' }, { value: 'amber' }, { value: 'lime' },
-            { value: 'green' }, { value: 'emerald' }, { value: 'teal' },
-            { value: 'cyan' }, { value: 'sky' }, { value: 'indigo' },
-            { value: 'violet' }, { value: 'purple' }, { value: 'fuchsia' }, { value: 'pink' }, { value: 'rose' },
-          ]" />
+          color: <UISelectBox
+            v-model="data.buttonColor"
+            :items="[
+              { value: 'blue' },
+              { value: 'slate' }, { value: 'gray' }, { value: 'zinc' }, { value: 'neutral' }, { value: 'stone' },
+              { value: 'red' }, { value: 'orange' }, { value: 'amber' }, { value: 'lime' },
+              { value: 'green' }, { value: 'emerald' }, { value: 'teal' },
+              { value: 'cyan' }, { value: 'sky' }, { value: 'indigo' },
+              { value: 'violet' }, { value: 'purple' }, { value: 'fuchsia' }, { value: 'pink' }, { value: 'rose' },
+            ]"
+          />
           <input v-model="data.buttonDisabled" type="checkbox"> disabled
         </div>
       </template>
 
       <div class="grid grid-cols-2 gap-2">
-        <UIButton label="デフォルト" :color="data.buttonColor" :disabled="data.buttonDisabled" @click="data.button1++">ボタン</UIButton>
+        <UIButton label="デフォルト" :color="(data.buttonColor as any)" :disabled="data.buttonDisabled" @click="data.button1++">ボタン</UIButton>
         <div class="border">{{ data.button1 }}</div>
 
-        <UIButton label="アウトライン" type="outline" :color="data.buttonColor" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</UIButton>
+        <UIButton label="アウトライン" type="outline" :color="(data.buttonColor as any)" :disabled="data.buttonDisabled" @click="data.button2++">ボタン</UIButton>
         <div class="border">{{ data.button2 }}</div>
 
         <UIButton
           label="装飾"
-          :color="data.buttonColor"
+          :color="(data.buttonColor as any)"
           :disabled="data.buttonDisabled"
           prefix="("
           suffix=")"

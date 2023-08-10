@@ -166,7 +166,7 @@ function validate(value: string) {
                 :checked="item.value === data.value"
                 :disabled="props.disabled"
                 :tabindex="props.tabindex"
-              />
+              >
               <UIIcon name="circle-medium" class="UIRadioList-InputCheck hidden peer-checked:block" />
             </div>
             {{ item.text }}

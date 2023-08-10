@@ -113,7 +113,7 @@ export declare type ArraySchema = Schema & {
   maxLength?: number,
 }
 
-export declare type StringSchema = Schema &  {
+export declare type StringSchema = Schema & {
   type?: "email" | "url" | "tel" | "date",
   format?: string,
   minLength?: number,
@@ -121,7 +121,7 @@ export declare type StringSchema = Schema &  {
   in?: string[],
 }
 
-export declare type NumberSchema = Schema &  {
+export declare type NumberSchema = Schema & {
   type?: "integer" | "int8" | "uint8" | "int16" | "uint16" | "int32" | "uint32",
   precision?: number,
   scale?: number,

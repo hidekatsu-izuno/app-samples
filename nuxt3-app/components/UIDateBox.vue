@@ -127,7 +127,7 @@ function onBlur(event: Event) {
   const target = event.target as HTMLInputElement
   try {
     const value = validate(toHalfwidthAscii(target.value))
-    let svalue = formatDate(value, props.format)
+    const svalue = formatDate(value, props.format)
     if (svalue !== data.value) {
       data.value = svalue
       emits("update:modelValue", data.value)
@@ -276,7 +276,7 @@ function getFormatMaxLength(format: string) {
           @mousedown="onMouseDown"
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
-        />
+        >
         <div class="UIDateBox-InputPickerButton" @mousedown="onInputPickerButtonMouseDown">
           <UIIcon name="calendar" />
         </div>

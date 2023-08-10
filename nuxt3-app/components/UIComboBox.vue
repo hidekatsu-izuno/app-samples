@@ -113,35 +113,33 @@ function onKeydown(event: KeyboardEvent) {
     const pickerEl = pickerRef.value
     if (pickerEl.style.display === "none") {
       onInputPickerButtonMouseDown(event)
+    } else if (event.key === "Enter") {
+      const itemEl = pickerEl.querySelector('.UIComboBox-PickerItem[data-selected="true"]')
+      if (itemEl) {
+        itemEl.dispatchEvent(new MouseEvent("mousedown"))
+      }
     } else {
-      if (event.key === "Enter") {
-        const itemEl = pickerEl.querySelector('.UIComboBox-PickerItem[data-selected="true"]')
-        if (itemEl) {
-          itemEl.dispatchEvent(new MouseEvent("mousedown"))
-        }
-      } else {
-        const isUp = event.key === "ArrowUp"
-        const itemEls = pickerEl.querySelectorAll(".UIComboBox-PickerItem")
-        let prevSelected = true
-        let selected
-        for (let i = 0; i < itemEls.length; i++) {
-          const itemEl = (itemEls[isUp ? itemEls.length - i - 1 : i] as HTMLElement)
-          if (itemEl.dataset.selected) {
-            if (i === itemEls.length - 1) {
-              selected = undefined
-            } else {
-              delete itemEl.dataset.selected
-              prevSelected = true
-            }
-          } else if (prevSelected) {
-            selected = itemEl
-            prevSelected = false
+      const isUp = event.key === "ArrowUp"
+      const itemEls = pickerEl.querySelectorAll(".UIComboBox-PickerItem")
+      let prevSelected = true
+      let selected
+      for (let i = 0; i < itemEls.length; i++) {
+        const itemEl = (itemEls[isUp ? itemEls.length - i - 1 : i] as HTMLElement)
+        if (itemEl.dataset.selected) {
+          if (i === itemEls.length - 1) {
+            selected = undefined
+          } else {
+            delete itemEl.dataset.selected
+            prevSelected = true
           }
+        } else if (prevSelected) {
+          selected = itemEl
+          prevSelected = false
         }
+      }
 
-        if (selected) {
-          selected.dataset.selected = "true"
-        }
+      if (selected) {
+        selected.dataset.selected = "true"
       }
     }
   }
@@ -313,7 +311,7 @@ function validate(value: string) {
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
           @keydown="onKeydown"
-        />
+        >
         <div class="UIComboBox-InputPickerButton" @mousedown="onInputPickerButtonMouseDown">
           <UIIcon name="chevron-down" />
         </div>

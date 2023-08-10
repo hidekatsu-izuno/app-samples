@@ -13,7 +13,7 @@ export {
 
 export { default as range } from "lodash-es/range"
 
-export const wait = async (ms: number) => {
+export const wait = (ms: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
   })

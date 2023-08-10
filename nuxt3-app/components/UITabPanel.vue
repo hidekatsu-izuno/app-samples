@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
   modelValue?: string,
 }>(), {
   items: () => [],
-  modelValue: (props) => props.items?.[0].value ?? "",
+  modelValue: props => props.items?.[0].value ?? "",
 })
 
 const data = reactive({
@@ -56,14 +56,15 @@ function onFocusout(event: Event) {
 </script>
 
 <template>
-  <div class="UITabPanel"
+  <div
+    class="UITabPanel"
     @focus="onFocusin"
     @blur="onFocusout"
   >
     <button
-      class="UITabPanel-Input"
       v-for="(item, index) in props.items"
       :key="index"
+      class="UITabPanel-Input"
       type="button"
       :class="props.inputClass"
       :style="props.inputStyle"
