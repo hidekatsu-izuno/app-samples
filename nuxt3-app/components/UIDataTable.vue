@@ -34,7 +34,6 @@ watch(() => props.modelValue, () => {
 }, { immediate: true })
 
 watch(() => props.items, () => {
-  data.widths = props.items.map(item => item.width ?? "100px")
   data.footerValues = props.footer?.(props.modelValue, props.items)
 }, { immediate: true })
 
@@ -76,7 +75,8 @@ function onMouseLeave(event: MouseEvent) {
             class="UIDataTable-HeaderCell"
             :data-col="colIndex"
             :data-halign="item.halign"
-            :style="{ width: data.widths[colIndex] }"
+            :data-width="item.width != null ? 'fill' : undefined"
+            :style="{ 'flex-basis': item.width ?? '100px' }"
           ><slot
               name="footerCell"
               :item="item"
@@ -97,7 +97,8 @@ function onMouseLeave(event: MouseEvent) {
             :data-col="colIndex"
             :data-row="rowIndex"
             :data-halign="item.halign"
-            :style="{ width: data.widths[colIndex] }"
+            :data-width="item.width != null ? 'fill' : undefined"
+            :style="{ 'flex-basis': item.width ?? '100px' }"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave"
 
@@ -120,7 +121,8 @@ function onMouseLeave(event: MouseEvent) {
             class="UIDataTable-FooterCell"
             :data-col="colIndex"
             :data-halign="item.halign"
-            :style="{ width: data.widths[colIndex] }"
+            :data-width="item.width != null ? 'fill' : undefined"
+            :style="{ 'flex-basis': item.width ?? '100px' }"
           ><slot
               name="footerCell"
               :rowValues="data.footerValues"
@@ -180,7 +182,7 @@ function onMouseLeave(event: MouseEvent) {
 .UIDataTable-HeaderSeparator,
 .UIDataTable-ContentSeparator,
 .UIDataTable-FooterSeparator {
-  @apply w-[3px]
+  @apply flex-[0_0_3px]
     px-[1px]
     bg-clip-content
     cursor-col-resize;
@@ -212,6 +214,12 @@ function onMouseLeave(event: MouseEvent) {
   .UIDataTable-ContentRow,
   .UIDataTable-FooterRow {
     @apply flex-wrap;
+  }
+
+  .UIDataTable-HeaderCell[data-width="fill"],
+  .UIDataTable-ContentCell[data-width="fill"],
+  .UIDataTable-FooterCell[data-width="fill"] {
+    @apply flex-1;
   }
 }
 
