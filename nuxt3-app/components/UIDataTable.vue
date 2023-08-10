@@ -24,6 +24,7 @@ const data = reactive({
   value: [] as Array<Record<string, any>>,
   widths: [] as Array<string>,
   footerValues: undefined as Record<string, any> | undefined,
+  colResize: false,
 })
 
 const elRef = ref()
@@ -37,7 +38,7 @@ watch(() => props.items, () => {
   data.footerValues = props.footer?.(props.modelValue, props.items)
 }, { immediate: true })
 
-function onMouseEnter(event: MouseEvent) {
+function onContentCellMouseEnter(event: MouseEvent) {
   if (!props.ellipsis) {
     return
   }
@@ -48,7 +49,7 @@ function onMouseEnter(event: MouseEvent) {
   }
 }
 
-function onMouseLeave(event: MouseEvent) {
+function onContentCellMouseLeave(event: MouseEvent) {
   if (!props.ellipsis) {
     return
   }
@@ -57,6 +58,13 @@ function onMouseLeave(event: MouseEvent) {
   if (target.hasAttribute("title")) {
     target.removeAttribute("title")
   }
+}
+
+function onSeparatorMouseDown(event: MouseEvent) {
+  data.colResize = true
+  window.addEventListener("mouseup", () => {
+    data.colResize = false
+  }, { once: true })
 }
 </script>
 
@@ -67,6 +75,7 @@ function onMouseLeave(event: MouseEvent) {
     :data-columns="props.items.length"
     :data-wrap="props.wrap || undefined"
     :data-ellipsis="props.ellipsis || undefined"
+    :data-colresize="data.colResize || undefined"
   >
     <div class="UIDataTable-Header">
       <div class="UIDataTable-HeaderRow">
@@ -76,13 +85,21 @@ function onMouseLeave(event: MouseEvent) {
             :data-col="colIndex"
             :data-halign="item.halign"
             :data-width="item.width != null ? 'fill' : undefined"
-            :style="{ 'flex-basis': item.width ?? '100px' }"
+            :style="{
+              'flex-basis': item.width ?? '100px',
+              width: item.width ?? '100px',
+            }"
+            @mouseenter="onContentCellMouseEnter"
+            @mouseleave="onContentCellMouseLeave"
           ><slot
               name="footerCell"
               :item="item"
               :value="item.label || item.key"
           >{{ item.label || item.key }}</slot></div>
-          <div class="UIDataTable-HeaderSeparator"></div>
+          <div
+            class="UIDataTable-HeaderSeparator"
+            @mousedown="onSeparatorMouseDown"
+          ></div>
         </template>
       </div>
     </div>
@@ -98,9 +115,12 @@ function onMouseLeave(event: MouseEvent) {
             :data-row="rowIndex"
             :data-halign="item.halign"
             :data-width="item.width != null ? 'fill' : undefined"
-            :style="{ 'flex-basis': item.width ?? '100px' }"
-            @mouseenter="onMouseEnter"
-            @mouseleave="onMouseLeave"
+            :style="{
+              'flex-basis': item.width ?? '100px',
+              width: item.width ?? '100px',
+            }"
+            @mouseenter="onContentCellMouseEnter"
+            @mouseleave="onContentCellMouseLeave"
 
           ><slot
             name="contentCell"
@@ -110,7 +130,10 @@ function onMouseLeave(event: MouseEvent) {
             :item="item"
             :value="rowValues?.[item.key]"
           >{{ rowValues?.[item.key] }}</slot></div>
-          <div class="UIDataTable-ContentSeparator"></div>
+          <div
+            class="UIDataTable-ContentSeparator"
+            @mousedown="onSeparatorMouseDown"
+          ></div>
         </template>
       </div>
     </div>
@@ -122,14 +145,22 @@ function onMouseLeave(event: MouseEvent) {
             :data-col="colIndex"
             :data-halign="item.halign"
             :data-width="item.width != null ? 'fill' : undefined"
-            :style="{ 'flex-basis': item.width ?? '100px' }"
+            :style="{
+              'flex-basis': item.width ?? '100px',
+              width: item.width ?? '100px',
+            }"
+            @mouseenter="onContentCellMouseEnter"
+            @mouseleave="onContentCellMouseLeave"
           ><slot
               name="footerCell"
               :rowValues="data.footerValues"
               :item="item"
               :value="data.footerValues[item.key]"
           >{{ data.footerValues[item.key] }}</slot></div>
-          <div class="UIDataTable-FooterSeparator"></div>
+          <div
+            class="UIDataTable-FooterSeparator"
+            @mousedown="onSeparatorMouseDown"
+          ></div>
         </template>
       </div>
     </div>
@@ -150,7 +181,8 @@ function onMouseLeave(event: MouseEvent) {
 .UIDataTable-HeaderRow,
 .UIDataTable-ContentRow,
 .UIDataTable-FooterRow {
-  @apply flex flex-row items-stretch;
+  @apply flex flex-row items-stretch
+    min-w-fit;
 }
 
 .UIDataTable-HeaderRow {
@@ -185,7 +217,8 @@ function onMouseLeave(event: MouseEvent) {
   @apply flex-[0_0_3px]
     px-[1px]
     bg-clip-content
-    cursor-col-resize;
+    cursor-col-resize
+    select-none;
 }
 
 .UIDataTable-HeaderSeparator {
@@ -195,6 +228,10 @@ function onMouseLeave(event: MouseEvent) {
 .UIDataTable-ContentSeparator,
 .UIDataTable-FooterSeparator {
   @apply bg-slate-100;
+}
+
+.UIDataTable[data-colresize="true"] {
+  @apply cursor-col-resize;
 }
 
 .UIDataTable-HeaderCell[data-halign="center"],
