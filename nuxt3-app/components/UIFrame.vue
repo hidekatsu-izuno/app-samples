@@ -21,7 +21,7 @@ function onDrawerClick(e: MouseEvent) {
     <div class="UIFrame-Body">
       <header class="UIFrame-Header">
         <div class="UIFrame-HeaderContent">
-          <UIIcon name="menu" @click="openDrawer" />
+          <UIIcon name="menu" v-if="$slots.drawer" @click="openDrawer" />
           <div v-if="$slots.title" class="UIFrame-HeaderTitle">
             <slot name="title" />
           </div>

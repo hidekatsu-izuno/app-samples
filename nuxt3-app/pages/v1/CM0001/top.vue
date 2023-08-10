@@ -80,6 +80,15 @@ const data = reactive({
   linkDisabled: false,
   link1: 0,
   link2: 0,
+  dataTable: [
+    { number: 1, string: "aaa", date: "2020-01-01" },
+    { number: 2, string: "bbb", date: "2020-02-01" },
+    { number: 3, string: "ccc", date: "2020-03-01" },
+    { number: 4, string: "ddd", date: "2020-04-01" },
+    { number: 5, string: "eee", date: "2020-05-01" },
+    { number: 6, string: "fff", date: "2020-06-01" },
+    { number: 7, string: "long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-", date: "2020-06-01" },
+  ],
   messageBox1Opend: false,
   messageBox2Opend: false,
   messageBox3Opened: false,
@@ -99,6 +108,14 @@ async function onValidate() {
     value: 1,
   })
   alert(JSON.stringify(result))
+}
+
+function onFooter(modelValue: Record<string, any>[], items: Record<string, any>) {
+  const result = { number: 0 }
+  for (const rowValue of modelValue) {
+    result.number += (rowValue.number ?? 0)
+  }
+  return result
 }
 </script>
 
@@ -676,6 +693,29 @@ async function onValidate() {
         </div>
       </template>
       <UITabBar :items="[{ value: 'tab1', text: 'タブ１' }, { value: 'tab2', text: 'タブ２' }, { value: 'tab3', text: 'タブ３' }]" />
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
+          <h2 class="font-bold grow">データテーブル (UIDataTable)</h2>
+        </div>
+      </template>
+      <UIDataTable
+        :items="[
+          { key: 'string', label: '文字列' },
+          { key: 'date', label: '日付', halign: 'center' },
+          { key: 'number', label: '数値', halign: 'end' },
+        ]"
+        v-model="data.dataTable"
+        :footer="onFooter"
+      >
+        <template v-slot:contentCell="{ item, value }">
+          <template v-if="item.key === 'date'">{{
+            formatDate(value, 'uuuu/MM/dd')
+          }}</template>
+        </template>
+      </UIDataTable>
     </UICard>
 
     <UICard class="mb-4">
