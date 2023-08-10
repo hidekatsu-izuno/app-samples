@@ -712,7 +712,7 @@ async function onIndicator() {
       </template>
       <div class="grid grid-cols-2 gap-2">
         <UILoadingIndicator ref="loadingIndicatorRef" />
-        <UIButton @click="loadingIndicatorRef.show({ duration: 2000 })">Show</UIButton>
+        <UIButton @click="loadingIndicatorRef.show({ throttle: 3000, duration: 5000 })">Show</UIButton>
       </div>
     </UICard>
 

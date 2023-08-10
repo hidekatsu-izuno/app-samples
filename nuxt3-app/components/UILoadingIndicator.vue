@@ -21,6 +21,10 @@ const data = reactive({
   value: false
 })
 
+watch(() => props.modelValue, () => {
+  data.value = props.modelValue
+}, { immediate: true })
+
 const elRef = ref()
 
 onMounted(() => {
@@ -46,14 +50,11 @@ defineExpose({
   hide,
 })
 
-async function show(options?: { throttle: number, duration: number }) {
+function show(options?: { throttle: number, duration: number }) {
   if (options?.throttle) {
-    await new Promise(resolve => {
-      data.throttleTimerId = setTimeout(() => {
-        data.throttleTimerId = undefined
-        resolve(undefined)
-      }, options.throttle)
-    })
+    data.throttleTimerId = setTimeout(() => {
+      data.throttleTimerId = undefined
+    }, options.duration)
   }
   if (!data.value) {
     data.value = true
@@ -63,7 +64,7 @@ async function show(options?: { throttle: number, duration: number }) {
     data.durationTimerId = setTimeout(() => {
       hide()
       data.durationTimerId = undefined
-    }, options.duration)
+    }, options.duration + (options?.throttle || 0))
   }
 }
 
@@ -85,7 +86,12 @@ function hide() {
 
 <template>
   <Teleport to="body">
-    <dialog ref="elRef" class="UILoadingIndicator" v-bind="$attrs">
+    <dialog
+      ref="elRef"
+      class="UILoadingIndicator"
+      :data-throttled="data.throttleTimerId != null"
+      v-bind="$attrs"
+    >
       <div class="UILoadingIndicator-Loading" />
     </dialog>
   </Teleport>
@@ -102,6 +108,10 @@ function hide() {
     z-50;
 }
 
+.UILoadingIndicator::backdrop {
+  @apply opacity-0;
+}
+
 .UILoadingIndicator-Loading {
   @apply border border-8 border-t-blue-700 border-l-blue-400 border-b-blue-200 border-r-blue-50 rounded-full
     w-full h-full;
@@ -109,6 +119,10 @@ function hide() {
   animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+}
+
+.UILoadingIndicator[data-throttled="true"] {
+  @apply opacity-0;
 }
 
 @keyframes spin {
