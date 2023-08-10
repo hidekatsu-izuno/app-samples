@@ -672,10 +672,10 @@ async function onValidate() {
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2">
-          <h2 class="font-bold grow">タブパネル (UITabPanel)</h2>
+          <h2 class="font-bold grow">タブ (UITabBar)</h2>
         </div>
       </template>
-      <UITabPanel :items="[{ value: 'tab1', text: 'タブ１' }, { value: 'tab2', text: 'タブ２' }, { value: 'tab3', text: 'タブ３' }]" />
+      <UITabBar :items="[{ value: 'tab1', text: 'タブ１' }, { value: 'tab2', text: 'タブ２' }, { value: 'tab3', text: 'タブ３' }]" />
     </UICard>
 
     <UICard class="mb-4">

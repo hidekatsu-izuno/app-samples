@@ -57,14 +57,14 @@ function onFocusout(event: Event) {
 
 <template>
   <div
-    class="UITab"
+    class="UITabBar"
     @focus="onFocusin"
     @blur="onFocusout"
   >
     <button
       v-for="(item, index) in props.items"
       :key="index"
-      class="UITab-Input"
+      class="UITabBar-Input"
       type="button"
       :class="props.inputClass"
       :style="props.inputStyle"
@@ -77,12 +77,12 @@ function onFocusout(event: Event) {
 </template>
 
 <style>
-.UITab {
+.UITabBar {
   @apply flex flex-row items-center
     bg-white;
 }
 
-.UITab-Input {
+.UITabBar-Input {
   @apply appearance-none
     flex-auto
     focus:ring-2 focus:ring-blue-200
