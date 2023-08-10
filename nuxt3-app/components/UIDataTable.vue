@@ -39,7 +39,7 @@ watch(() => props.items, () => {
 }, { immediate: true })
 
 function onMouseEnter(event: MouseEvent) {
-  if (props.wrap) {
+  if (!props.ellipsis) {
     return
   }
 
@@ -50,7 +50,7 @@ function onMouseEnter(event: MouseEvent) {
 }
 
 function onMouseLeave(event: MouseEvent) {
-  if (props.wrap) {
+  if (!props.ellipsis) {
     return
   }
 
@@ -173,7 +173,7 @@ function onMouseLeave(event: MouseEvent) {
   @apply flex-none
     align-middle
     px-2 py-1
-    min-h-[1rem]
+    min-h-[calc(1rem+8px)]
     whitespace-pre-wrap;
 }
 

@@ -409,8 +409,8 @@ function validate(value: string) {
 }
 
 .UIComboBox-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UIComboBox-Error {
@@ -429,12 +429,20 @@ function validate(value: string) {
     @apply pl-3 pr-9 py-1.5
       text-lg;
   }
+
+  .UIComboBox-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
 }
 
 .UIComboBox[data-size="small"] {
   .UIComboBox-Input {
     @apply pl-1 pr-7 py-0.5
       text-sm;
+  }
+
+  .UIComboBox-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

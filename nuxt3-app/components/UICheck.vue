@@ -192,8 +192,8 @@ function validate(value: boolean) {
 }
 
 .UICheck-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UICheck-Error {
@@ -204,6 +204,28 @@ function validate(value: boolean) {
   .UICheck-Label::after {
     @apply text-red-500;
     content: ' ※';
+  }
+}
+
+.UICheck[data-size="large"] {
+  .UICheck-InputLabel {
+    @apply py-1.5
+      text-lg;
+  }
+
+  .UICheck-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
+}
+
+.UICheck[data-size="small"] {
+  .UICheck-InputLabel {
+    @apply py-0.5
+      text-sm;
+  }
+
+  .UICheck-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

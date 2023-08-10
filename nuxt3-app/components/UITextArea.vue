@@ -200,8 +200,8 @@ function validate(value: string) {
 }
 
 .UITextArea-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UITextArea-Error {
@@ -220,12 +220,20 @@ function validate(value: string) {
     @apply px-3 py-1.5
       text-lg;
   }
+
+  .UITextArea-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
 }
 
 .UITextArea[data-size="small"] {
   .UITextArea-Input {
     @apply px-1 py-0.5
       text-sm;
+  }
+
+  .UITextArea-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

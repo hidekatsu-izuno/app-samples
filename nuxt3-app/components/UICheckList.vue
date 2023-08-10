@@ -233,8 +233,8 @@ function validate(value: string[]) {
 }
 
 .UICheckList-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UICheckList-Error {
@@ -245,6 +245,28 @@ function validate(value: string[]) {
   .UICheckList-Label::after {
     @apply text-red-500;
     content: ' ※';
+  }
+}
+
+.UICheckList[data-size="large"] {
+  .UICheckList-InputLabel {
+    @apply py-1.5
+      text-lg;
+  }
+
+  .UICheckList-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
+}
+
+.UICheckList[data-size="small"] {
+  .UICheckList-InputLabel {
+    @apply py-0.5
+      text-sm;
+  }
+
+  .UICheckList-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

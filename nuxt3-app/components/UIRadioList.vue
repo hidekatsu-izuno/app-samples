@@ -223,8 +223,8 @@ function validate(value: string) {
 }
 
 .UIRadioList-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UIRadioList-Error {
@@ -235,6 +235,28 @@ function validate(value: string) {
   .UIRadioList-Label::after {
     @apply text-red-500;
     content: ' ※';
+  }
+}
+
+.UIRadioList[data-size="large"] {
+  .UIRadioList-InputLabel {
+    @apply py-1.5
+      text-lg;
+  }
+
+  .UIRadioList-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
+}
+
+.UIRadioList[data-size="small"] {
+  .UIRadioList-InputLabel {
+    @apply py-0.5
+      text-sm;
+  }
+
+  .UIRadioList-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

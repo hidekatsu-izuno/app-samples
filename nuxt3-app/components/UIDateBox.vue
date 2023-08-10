@@ -368,8 +368,8 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UIDateBox-Error {
@@ -464,12 +464,20 @@ function getFormatMaxLength(format: string) {
     @apply pl-3 pr-9 py-1.5
       text-lg;
   }
+
+  .UIDateBox-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
 }
 
 .UIDateBox[data-size="small"] {
   .UIDateBox-Input {
     @apply pl-1 pr-7 py-0.5
       text-sm;
+  }
+
+  .UIDateBox-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

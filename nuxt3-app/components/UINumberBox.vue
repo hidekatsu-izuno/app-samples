@@ -247,8 +247,8 @@ function getFormatMaxLength(format: string) {
 }
 
 .UINumberBox-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UINumberBox-Error {
@@ -267,12 +267,20 @@ function getFormatMaxLength(format: string) {
     @apply px-3 py-1.5
       text-lg;
   }
+
+  .UINumberBox-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
 }
 
 .UINumberBox[data-size="small"] {
   .UINumberBox-Input {
     @apply px-1 py-0.5
       text-sm;
+  }
+
+  .UINumberBox-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

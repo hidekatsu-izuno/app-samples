@@ -203,8 +203,8 @@ function validate(value: string) {
 }
 
 .UISelectBox-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UISelectBox-Error {
@@ -223,12 +223,20 @@ function validate(value: string) {
     @apply pl-3 pr-9 py-1.5
       text-lg;
   }
+
+  .UISelectBox-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
 }
 
 .UISelectBox[data-size="small"] {
   .UISelectBox-Input {
     @apply pl-1 pr-7 py-0.5
       text-sm;
+  }
+
+  .UISelectBox-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

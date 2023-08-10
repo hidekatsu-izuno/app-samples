@@ -219,8 +219,8 @@ function validate(value: string) {
 }
 
 .UITextBox-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UITextBox-Error {
@@ -239,12 +239,20 @@ function validate(value: string) {
     @apply px-3 py-1.5
       text-lg;
   }
+
+  .UITextBox-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
 }
 
 .UITextBox[data-size="small"] {
   .UITextBox-Input {
     @apply px-1 py-0.5
       text-sm;
+  }
+
+  .UITextBox-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 

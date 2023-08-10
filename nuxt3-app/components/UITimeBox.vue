@@ -226,8 +226,8 @@ function getFormatMaxLength(format: string) {
 }
 
 .UITimeBox-Text {
-  @apply whitespace-pre-wrap;
-  min-height: 1rem;
+  @apply min-h-[calc(1rem+8px)]
+    whitespace-pre-wrap;
 }
 
 .UITimeBox-Error {
@@ -246,12 +246,20 @@ function getFormatMaxLength(format: string) {
     @apply px-3 py-1.5
       text-lg;
   }
+
+  .UITimeBox-Text {
+    @apply min-h-[calc(1rem+12px)];
+  }
 }
 
 .UITimeBox[data-size="small"] {
   .UITimeBox-Input {
     @apply px-1 py-0.5
       text-sm;
+  }
+
+  .UITimeBox-Text {
+    @apply min-h-[calc(1rem+4px)];
   }
 }
 
