@@ -66,12 +66,14 @@ function onDrawerClick(e: MouseEvent) {
 <style>
 .UIFrame {
   @apply flex flex-row-reverse
-    w-full min-h-screen
+    w-full min-h-screen max-w-full
     bg-white;
 }
 
 .UIFrame-Body {
-  @apply flex flex-col grow;
+  @apply
+    flex flex-col grow
+    overflow-x-clip;
 }
 
 .UIFrame-Header {

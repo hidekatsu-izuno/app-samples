@@ -80,6 +80,7 @@ const data = reactive({
   linkDisabled: false,
   link1: 0,
   link2: 0,
+  dataTableWrap: false,
   dataTable: [
     { number: 1, string: "aaa", date: "2020-01-01" },
     { number: 2, string: "bbb", date: "2020-02-01" },
@@ -692,20 +693,28 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <h2 class="font-bold grow">タブ (UITabBar)</h2>
         </div>
       </template>
-      <UITabBar :items="[{ value: 'tab1', text: 'タブ１' }, { value: 'tab2', text: 'タブ２' }, { value: 'tab3', text: 'タブ３' }]" />
+
+      <UITabBar :items="[
+        { value: 'tab1', text: 'タブ１' },
+        { value: 'tab2', text: 'タブ２' },
+        { value: 'tab3', text: 'タブ３' }
+      ]" />
     </UICard>
 
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">データテーブル (UIDataTable)</h2>
+          <div class="shrink"><input v-model="data.dataTableWrap" type="checkbox"> wrap</div>
         </div>
       </template>
+
       <UIDataTable
+        :wrap="data.dataTableWrap"
         :items="[
-          { key: 'string', label: '文字列' },
+          { key: 'string', label: '文字列', width: '400px' },
           { key: 'date', label: '日付', halign: 'center' },
-          { key: 'number', label: '数値', halign: 'end' },
+          { key: 'number', label: '数値', halign: 'end', width: '300px' },
         ]"
         v-model="data.dataTable"
         :footer="onFooter"

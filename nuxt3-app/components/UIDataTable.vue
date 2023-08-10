@@ -5,9 +5,9 @@ const props = withDefaults(defineProps<{
   tabindex?: number,
   items?: Array<{
     key: string,
+    width?: string,
     label?: string,
     halign?: "start" | "center" | "end",
-    width?: string,
   }>,
   modelValue?: Array<Record<string, any>>,
   footer?: (modelValue:  Array<Record<string, any>>, items: Record<string, any>) => Record<string, any>,
@@ -19,10 +19,12 @@ const props = withDefaults(defineProps<{
 
 const data = reactive({
   focused: false,
-  value: [] as Record<string, any>[],
-  widthes: [] as string[],
+  value: [] as Array<Record<string, any>>,
+  widths: [] as Array<string>,
   footerValues: undefined as Record<string, any> | undefined,
 })
+
+const elRef = ref()
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
@@ -30,6 +32,7 @@ watch(() => props.modelValue, () => {
 }, { immediate: true })
 
 watch(() => props.items, () => {
+  data.widths = props.items.map(item => item.width ?? "100px")
   data.footerValues = props.footer?.(props.modelValue, props.items)
 }, { immediate: true })
 
@@ -58,26 +61,25 @@ function onMouseLeave(event: MouseEvent) {
 
 <template>
   <div
+    ref="elRef"
     class="UIDataTable"
     :data-columns="props.items.length"
     :data-wrap="props.wrap || undefined"
   >
     <div class="UIDataTable-Header">
       <div class="UIDataTable-HeaderRow">
-        <template v-for="(item, colIndex) in items" :key="colIndex">
-          <div
-            v-if="colIndex > 0"
-            class="UIDataTable-HeaderSeparator"
-          ></div>
+        <template v-for="(item, colIndex) in items">
           <div
             class="UIDataTable-HeaderCell"
+            :data-col="colIndex"
             :data-halign="item.halign"
-            :style="{ width: item.width }"
+            :style="{ width: data.widths[colIndex] }"
           ><slot
               name="footerCell"
               :item="item"
               :value="item.label || item.key"
           >{{ item.label || item.key }}</slot></div>
+          <div class="UIDataTable-HeaderSeparator"></div>
         </template>
       </div>
     </div>
@@ -85,17 +87,14 @@ function onMouseLeave(event: MouseEvent) {
       <div
         class="UIDataTable-ContentRow"
         v-for="(rowValues, rowIndex) in data.value"
-        :key="rowIndex"
       >
-        <template v-for="(item, colIndex) in items" :key="colIndex">
-          <div
-            v-if="colIndex > 0"
-            class="UIDataTable-ContentSeparator"
-          ></div>
+        <template v-for="(item, colIndex) in items">
           <div
             class="UIDataTable-ContentCell"
+            :data-col="colIndex"
+            :data-row="rowIndex"
             :data-halign="item.halign"
-            :style="{ width: item.width }"
+            :style="{ width: data.widths[colIndex] }"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave"
 
@@ -107,26 +106,25 @@ function onMouseLeave(event: MouseEvent) {
             :item="item"
             :value="rowValues?.[item.key]"
           >{{ rowValues?.[item.key] }}</slot></div>
+          <div class="UIDataTable-ContentSeparator"></div>
         </template>
       </div>
     </div>
     <div class="UIDataTable-Footer" v-if="data.footerValues">
       <div class="UIDataTable-FooterRow">
-        <template v-for="(item, colIndex) in items" :key="colIndex">
-          <div
-            v-if="colIndex > 0"
-            class="UIDataTable-FooterSeparator"
-          ></div>
+        <template v-for="(item, colIndex) in items">
           <div
             class="UIDataTable-FooterCell"
+            :data-col="colIndex"
             :data-halign="item.halign"
-            :style="{ width: item.width }"
+            :style="{ width: data.widths[colIndex] }"
           ><slot
               name="footerCell"
               :rowValues="data.footerValues"
               :item="item"
               :value="data.footerValues[item.key]"
           >{{ data.footerValues[item.key] }}</slot></div>
+          <div class="UIDataTable-FooterSeparator"></div>
         </template>
       </div>
     </div>
@@ -138,41 +136,50 @@ function onMouseLeave(event: MouseEvent) {
   @apply overflow-auto;
 }
 
+.UIDataTable-Header,
+.UIDataTable-Content,
+.UIDataTable-Footer {
+  @apply min-w-fit;
+}
+
 .UIDataTable-HeaderRow,
 .UIDataTable-ContentRow,
 .UIDataTable-FooterRow {
-  @apply flex flex-row items-stretch
-    border-b border-gray-300;
+  @apply flex flex-row items-stretch;
 }
 
 .UIDataTable-HeaderRow {
-  @apply bg-slate-50
+  @apply border-b border-gray-300
+    bg-slate-50
     font-bold;
 }
 
 .UIDataTable-ContentRow {
-  @apply bg-white;
+  @apply border-b last:border-b-0 border-gray-300
+    bg-white;
 }
 
 .UIDataTable-FooterRow {
-  @apply bg-slate-50;
+  @apply border-t border-gray-300
+    bg-slate-50;
 }
 
 .UIDataTable-HeaderCell,
 .UIDataTable-ContentCell,
 .UIDataTable-FooterCell {
-  @apply flex-auto
+  @apply flex-none
     align-middle
-    overflow-hidden
     px-2 py-1
+    min-h-[1rem]
     whitespace-pre-wrap;
-  min-height: 1rem;
 }
 
 .UIDataTable-HeaderSeparator,
 .UIDataTable-ContentSeparator,
 .UIDataTable-FooterSeparator {
-  @apply w-[1px]
+  @apply w-[3px]
+    px-[1px]
+    bg-clip-content
     cursor-col-resize;
 }
 
@@ -195,6 +202,14 @@ function onMouseLeave(event: MouseEvent) {
 .UIDataTable-ContentCell[data-halign="end"],
 .UIDataTable-FooterCell[data-halign="end"] {
   @apply text-right;
+}
+
+.UIDataTable[data-wrap="true"] {
+  .UIDataTable-HeaderCell,
+  .UIDataTable-ContentCell,
+  .UIDataTable-FooterCell {
+    @apply break-words;
+  }
 }
 
 .UIDataTable:not([data-wrap="true"]) {
