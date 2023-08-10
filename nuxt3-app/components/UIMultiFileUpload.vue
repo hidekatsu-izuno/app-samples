@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  size?: "small" | "large",
   halign?: "start" | "center" | "end",
   label?: string,
   placeholder?: string,
@@ -118,6 +119,7 @@ function validate(value: File[]) {
   <div
     class="UIMultiFileUpload"
     :data-required="props.required || undefined"
+    :data-size="props.size"
     :data-disabled="props.disabled || undefined"
     :data-halign="props.halign"
   >
@@ -161,11 +163,11 @@ function validate(value: File[]) {
 }
 
 .UIMultiFileUpload-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply flex-auto
+    focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     px-2 py-1
-    w-full
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400
     resize-none;
@@ -182,13 +184,27 @@ function validate(value: File[]) {
   }
 }
 
+.UIMultiFileUpload[data-size="large"] {
+  .UIMultiFileUpload-Input {
+    @apply px-3 py-1.5
+      text-lg;
+  }
+}
+
+.UIMultiFileUpload[data-size="small"] {
+  .UIMultiFileUpload-Input {
+    @apply px-1 py-0.5
+      text-sm;
+  }
+}
+
 .UIMultiFileUpload[data-halign="start"] {
   .UIMultiFileUpload-Content {
     @apply justify-start;
   }
 
   .UIMultiFileUpload-Input {
-    @apply w-auto;
+    @apply flex-none;
   }
 }
 
@@ -198,7 +214,7 @@ function validate(value: File[]) {
   }
 
   .UIMultiFileUpload-Input {
-    @apply w-auto;
+    @apply flex-none;
   }
 }
 
@@ -208,7 +224,7 @@ function validate(value: File[]) {
   }
 
   .UIMultiFileUpload-Input {
-    @apply w-auto;
+    @apply flex-none;
   }
 }
 </style>

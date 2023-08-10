@@ -4,8 +4,9 @@ import { ZodString } from "zod"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end",
   label?: string,
+  size?: "small" | "large",
+  halign?: "start" | "center" | "end",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -272,6 +273,7 @@ function validate(value: string) {
   <div
     class="UIComboBox"
     :data-required="props.required || undefined"
+    :data-size="props.size"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
     :data-halign="props.halign"
@@ -364,11 +366,11 @@ function validate(value: string) {
 }
 
 .UIComboBox-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply flex-auto
+    focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    pl-2 pr-10 py-1
-    w-full
+    pl-2 pr-8 py-1
     disabled:bg-gray-100
     text-gray-900 bg-gray-50 disabled:text-gray-400;
   grid-area: 1/1;
@@ -424,6 +426,20 @@ function validate(value: string) {
   }
 }
 
+.UIComboBox[data-size="large"] {
+  .UIComboBox-Input {
+    @apply pl-3 pr-9 py-1.5
+      text-lg;
+  }
+}
+
+.UIComboBox[data-size="small"] {
+  .UIComboBox-Input {
+    @apply pl-1 pr-7 py-0.5
+      text-sm;
+  }
+}
+
 .UIComboBox[data-disabled="true"] {
   .UIComboBox-InputPickerButton {
     .UIIcon {
@@ -448,7 +464,7 @@ function validate(value: string) {
     }
 
     .UIComboBox-InputArea {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -458,7 +474,7 @@ function validate(value: string) {
     }
 
     .UIComboBox-InputArea {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -468,7 +484,7 @@ function validate(value: string) {
     }
 
     .UIComboBox-InputArea {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 }

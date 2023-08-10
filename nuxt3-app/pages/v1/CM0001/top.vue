@@ -27,6 +27,7 @@ const data = reactive({
   timeboxRequired: false,
   timeboxDisabled: false,
   timeboxReadonly: false,
+  textboxSize: "",
   timebox1: "",
   timebox2: "",
   timebox3: "",
@@ -90,12 +91,17 @@ const data = reactive({
 })
 
 const textbox1Ref = ref()
+const loadingIndicatorRef = ref()
 
-async function textboxValidate() {
+async function onValidate() {
   const result = await validate({
     textbox1: textbox1Ref,
     value: 1,
   })
+}
+
+async function onIndicator() {
+
 }
 </script>
 
@@ -105,7 +111,11 @@ async function textboxValidate() {
       <h1 class="font-bold text-xl">コンポーネント一覧 (Title)</h1>
     </template>
     <template #actions>
-      Actions
+      <div class="flex flex-row items-center gap-2">
+        Actions:
+        <UIButton @click="onValidate">Validate</UIButton>
+        <UIButton @click="onIndicator">Indicator</UIButton>
+      </div>
     </template>
     <template #top>
       Top
@@ -113,16 +123,25 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">テキストボックス (UITextBox)</h2>
-          <div class="shrink"><input v-model="data.textboxRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.textboxDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.textboxReadonly" type="checkbox"> readonly</div>
-          <div class="shrink"><button @click="textboxValidate">validate</button></div>
+          <input v-model="data.textboxRequired" type="checkbox">required
+          <input v-model="data.textboxDisabled" type="checkbox">disabled
+          <input v-model="data.textboxReadonly" type="checkbox">readonly
+          <UISelectBox size="small" v-model="data.textboxSize" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UIButton size="small" @click="textboxValidate">validate</UIButton>
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2">
-        <UITextBox ref="textbox1Ref" v-model="data.textbox1" label="デフォルト" :required="data.textboxRequired" :disabled="data.textboxDisabled" :readonly="data.textboxReadonly" />
+        <UITextBox
+          ref="textbox1Ref"
+          v-model="data.textbox1"
+          label="デフォルト"
+          :required="data.textboxRequired"
+          :disabled="data.textboxDisabled"
+          :readonly="data.textboxReadonly"
+          :size="data.textboxSize"
+        />
         <div class="border">{{ data.textbox1 }}</div>
 
         <UITextBox
@@ -132,6 +151,7 @@ async function textboxValidate() {
           :required="data.textboxRequired"
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
+          :size="data.textboxSize"
         />
         <div class="border">{{ data.textbox2 }}</div>
 
@@ -142,6 +162,7 @@ async function textboxValidate() {
           :required="data.textboxRequired"
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
+          :size="data.textboxSize"
         />
         <div class="border">{{ data.textbox3 }}</div>
 
@@ -152,6 +173,7 @@ async function textboxValidate() {
           :required="data.textboxRequired"
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
+          :size="data.textboxSize"
         />
         <div class="border">{{ data.textbox4 }}</div>
 
@@ -162,6 +184,7 @@ async function textboxValidate() {
           :required="data.textboxRequired"
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
+          :size="data.textboxSize"
         />
         <div class="border">{{ data.textbox5 }}</div>
 
@@ -173,6 +196,7 @@ async function textboxValidate() {
           :required="data.textboxRequired"
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
+          :size="data.textboxSize"
         />
         <div class="border">{{ data.textbox6 }}</div>
 
@@ -186,6 +210,7 @@ async function textboxValidate() {
           :required="data.textboxRequired"
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
+          :size="data.textboxSize"
         />
         <div class="border">{{ data.textbox7 }}</div>
       </div>
@@ -193,7 +218,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">数値ボックス (UINumberBox)</h2>
           <div class="shrink"><input v-model="data.numberboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.numberboxDisabled" type="checkbox"> disabled</div>
@@ -231,7 +256,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">日付ボックス (UIDateBox)</h2>
           <div class="shrink"><input v-model="data.dateboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.dateboxDisabled" type="checkbox"> disabled</div>
@@ -269,7 +294,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">時刻ボックス (UITimeBox)</h2>
           <div class="shrink"><input v-model="data.timeboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.timeboxDisabled" type="checkbox"> disabled</div>
@@ -308,7 +333,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">テキストエリア (UITextArea)</h2>
           <div class="shrink"><input v-model="data.textareaRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.textareaDisabled" type="checkbox"> disabled</div>
@@ -336,7 +361,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">セレクトボックス (UISelectBox)</h2>
           <div class="shrink"><input v-model="data.selectboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.selectboxDisabled" type="checkbox"> disabled</div>
@@ -374,7 +399,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">コンボボックス (UIComboBox)</h2>
           <div class="shrink"><input v-model="data.comboboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.comboboxDisabled" type="checkbox"> disabled</div>
@@ -412,7 +437,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">チェックボックス (UICheck)</h2>
           <div class="shrink"><input v-model="data.checkRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.checkDisabled" type="checkbox"> disabled</div>
@@ -440,7 +465,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">チェックリスト (UICheckList)</h2>
           <div class="shrink"><input v-model="data.checklistRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.checklistDisabled" type="checkbox"> disabled</div>
@@ -476,7 +501,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">ラジオリスト (UIRadioList)</h2>
           <div class="shrink"><input v-model="data.radiolistRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.radiolistDisabled" type="checkbox"> disabled</div>
@@ -512,7 +537,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">ファイル選択 (UIFileUpload)</h2>
           <div class="shrink"><input v-model="data.fileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.fileuploadDisabled" type="checkbox"> disabled</div>
@@ -538,7 +563,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">複数ファイル選択 (UIMultiFileUpload)</h2>
           <div class="shrink"><input v-model="data.multifileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.multifileuploadDisabled" type="checkbox"> disabled</div>
@@ -564,7 +589,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">ページング (UIPaginator)</h2>
           <div class="shrink"><input v-model="data.paginatorDisabled" type="checkbox"> disabled</div>
         </div>
@@ -587,32 +612,17 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">ボタン (UIButton)</h2>
-          <div class="shrink">color: <select v-model="data.buttonColor">
-            <option value="blue">blue</option>
-            <option value="slate">slate</option>
-            <option value="gray">gray</option>
-            <option value="zinc">zinc</option>
-            <option value="neutral">neutral</option>
-            <option value="stone">stone</option>
-            <option value="red">red</option>
-            <option value="orange">orange</option>
-            <option value="amber">amber</option>
-            <option value="lime">lime</option>
-            <option value="green">green</option>
-            <option value="emerald">emerald</option>
-            <option value="teal">teal</option>
-            <option value="cyan">cyan</option>
-            <option value="sky">sky</option>
-            <option value="indigo">indigo</option>
-            <option value="violet">violet</option>
-            <option value="purple">purple</option>
-            <option value="fuchsia">fuchsia</option>
-            <option value="pink">pink</option>
-            <option value="rose">rose</option>
-          </select></div>
-          <div class="shrink"><input v-model="data.buttonDisabled" type="checkbox"> disabled</div>
+          color: <UISelectBox v-model="data.buttonColor" :items="[
+            { value: 'blue' },
+            { value: 'slate' }, { value: 'gray' }, { value: 'zinc' }, { value: 'neutral' }, { value: 'stone' },
+            { value: 'red' }, { value: 'orange' }, { value: 'amber' }, { value: 'lime' },
+            { value: 'green' }, { value: 'emerald' }, { value: 'teal' },
+            { value: 'cyan' }, { value: 'sky' }, { value: 'indigo' },
+            { value: 'violet' }, { value: 'purple' }, { value: 'fuchsia' }, { value: 'pink' }, { value: 'rose' },
+          ]" />
+          <input v-model="data.buttonDisabled" type="checkbox"> disabled
         </div>
       </template>
 
@@ -638,7 +648,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">リンク (UILink)</h2>
           <div class="shrink"><input v-model="data.linkDisabled" type="checkbox"> disabled</div>
         </div>
@@ -662,7 +672,7 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">タブパネル (UITabPanel)</h2>
         </div>
       </template>
@@ -671,29 +681,40 @@ async function textboxValidate() {
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">メッセージボックス (UIMessageBox)</h2>
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2">
+        <UIMessageBox v-model="data.messageBox1Opend" type="ok" @close="data.messageBox1 = $event">あ</UIMessageBox>
         <UIButton @click="data.messageBox1Opend = true">OK</UIButton>
         <div class="border">{{ data.messageBox1 }}</div>
 
+        <UIMessageBox v-model="data.messageBox2Opend" type="ok-cancel" @close="data.messageBox2 = $event">い</UIMessageBox>
         <UIButton @click="data.messageBox2Opend = true">OK/CANCEL</UIButton>
         <div class="border">{{ data.messageBox2 }}</div>
 
+        <UIMessageBox v-model="data.messageBox3Opened" type="yes-no" @close="data.messageBox3 = $event">う</UIMessageBox>
         <UIButton @click="data.messageBox3Opened = true">YES/NO</UIButton>
         <div class="border">{{ data.messageBox3 }}</div>
 
+        <UIMessageBox v-model="data.messageBox4Opened" type="yes-no-cancel" @close="data.messageBox4 = $event">え</UIMessageBox>
         <UIButton @click="data.messageBox4Opened = true">YES/NO/CANCEL</UIButton>
         <div class="border">{{ data.messageBox4 }}</div>
       </div>
     </UICard>
 
-    <UIMessageBox v-model="data.messageBox1Opend" type="ok" @close="data.messageBox1 = $event">あ</UIMessageBox>
-    <UIMessageBox v-model="data.messageBox2Opend" type="ok-cancel" @close="data.messageBox2 = $event">い</UIMessageBox>
-    <UIMessageBox v-model="data.messageBox3Opened" type="yes-no" @close="data.messageBox3 = $event">う</UIMessageBox>
-    <UIMessageBox v-model="data.messageBox4Opened" type="yes-no-cancel" @close="data.messageBox4 = $event">え</UIMessageBox>
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row justify-items-stretch items-center gap-2">
+          <h2 class="font-bold grow">ローディング表示 (UILoadingIndicator)</h2>
+        </div>
+      </template>
+      <div class="grid grid-cols-2 gap-2">
+        <UILoadingIndicator ref="loadingIndicatorRef" />
+        <UIButton @click="loadingIndicatorRef.show({ duration: 2000 })">Show</UIButton>
+      </div>
+    </UICard>
 
     <template #bottom>
       Bottom

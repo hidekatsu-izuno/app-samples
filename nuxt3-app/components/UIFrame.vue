@@ -100,7 +100,8 @@ function onDrawerClick(e: MouseEvent) {
 }
 
 .UIFrame-HeaderActions {
-  @apply shrink justify-self-end
+  @apply flex flex-row items-center
+    justify-self-end
     overflow-hidden;
 }
 

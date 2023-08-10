@@ -13,8 +13,14 @@ export {
 
 export { default as range } from "lodash-es/range"
 
+export const wait = async (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 export const fetchURL = $fetch.create({
-  async onRequestError({ error }) {
+  onRequestError({ error }) {
     const err = error as any
     if (isNuxtError(err)) {
       err.fatal = true
@@ -29,7 +35,7 @@ export const fetchURL = $fetch.create({
     }
   },
 
-  async onResponseError({ response }) {
+  onResponseError({ response }) {
     throw createError({
       statusCode: response.status,
       statusMessage: response.statusText,

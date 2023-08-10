@@ -15,11 +15,11 @@ type UnvalidatedJSONValue = null | undefined
   | string
   | number
   | boolean
-  | UnValidatedJSONArray
+  | UnvalidatedJSONArray
   | UnvalidatedJSONObject
   | Ref<any>;
 
-interface UnValidatedJSONArray extends Array<UnvalidatedJSONValue> {
+interface UnvalidatedJSONArray extends Array<UnvalidatedJSONValue> {
 }
 
 interface UnvalidatedJSONObject extends Record<string, UnvalidatedJSONValue> {
@@ -30,7 +30,7 @@ export function validate(target: null): Promise<null>;
 export function validate(target: string): Promise<string>;
 export function validate(target: number): Promise<number>;
 export function validate(target: Ref<any>): Promise<string | number | null>;
-export function validate(target: UnValidatedJSONArray): Promise<JSONArray>;
+export function validate(target: UnvalidatedJSONArray): Promise<JSONArray>;
 export function validate(target: UnvalidatedJSONObject): Promise<JSONObject>;
 export function validate(target: UnvalidatedJSONValue): Promise<JSONValue>;
 export async function validate(target: UnvalidatedJSONValue) {
@@ -62,7 +62,7 @@ async function validateInternal(context: { success: boolean }, target: Unvalidat
   if (type === "string" || type === "number" || type === "boolean") {
     return target
   } else if (Array.isArray(target)) {
-    const varray = target as UnValidatedJSONArray
+    const varray = target as UnvalidatedJSONArray
     const array = new Array<JSONValue>(varray.length)
     for (let i = 0; i < target.length; i++) {
       const item = await validateInternal(context, varray[i])
@@ -76,7 +76,7 @@ async function validateInternal(context: { success: boolean }, target: Unvalidat
   } else {
     const vobj = target as UnvalidatedJSONObject
     const obj = {} as JSONObject
-    for (let key in vobj) {
+    for (const key in vobj) {
       const item = await validateInternal(context, vobj[key])
       if (item !== undefined) {
         obj[key] = item

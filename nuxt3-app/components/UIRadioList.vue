@@ -192,7 +192,7 @@ function validate(value: string) {
 }
 
 .UIRadioList-Item {
-  @apply w-full;
+  @apply flex-auto;
 }
 
 .UIRadioList-InputLabel {
@@ -260,7 +260,7 @@ function validate(value: string) {
     }
 
     .UIRadioList-Item {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -270,7 +270,7 @@ function validate(value: string) {
     }
 
     .UIRadioList-Item {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -280,7 +280,7 @@ function validate(value: string) {
     }
 
     .UIRadioList-Item {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 

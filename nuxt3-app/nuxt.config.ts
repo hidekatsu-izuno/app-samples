@@ -19,6 +19,9 @@ export default defineNuxtConfig({
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
     },
+    logger: {
+      level: process.env.LOG_LEVEL,
+    }
   },
 
   sourcemap: true,

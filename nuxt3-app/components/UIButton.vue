@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
   label?: string,
+  size?: "small" | "large",
   halign?: "start" | "center" | "end",
   type?: "filled" | "outline",
   color?: "slate" | "gray" | "zinc" | "neutral" | "stone" |
@@ -42,6 +43,7 @@ function onBlur(event: Event) {
   <div
     class="UIButton"
     :data-type="props.type"
+    :data-size="props.size"
     :data-color="props.color"
     :data-disabled="props.disabled || undefined"
     :data-halign="props.halign"
@@ -51,7 +53,7 @@ function onBlur(event: Event) {
       class="UIButton-Label"
     >{{ props.label }}</label>
     <div class="UIButton-Content">
-      <div v-if="props.prefix" class="UITextBox-Prefix">{{ props.prefix }}</div>
+      <div v-if="props.prefix" class="UIButton-Prefix">{{ props.prefix }}</div>
       <button
         class="UIButton-Input"
         type="button"
@@ -65,7 +67,7 @@ function onBlur(event: Event) {
       >
         <slot />
       </button>
-      <div v-if="props.suffix" class="UITextBox-Suffix">{{ props.suffix }}</div>
+      <div v-if="props.suffix" class="UIButton-Suffix">{{ props.suffix }}</div>
     </div>
   </div>
 </template>
@@ -80,17 +82,27 @@ function onBlur(event: Event) {
 }
 
 .UIButton-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply block flex-auto
+    focus:ring-2 focus:ring-blue-200
     outline-none
     rounded-md
     m-0
-    w-full
     px-4 py-1.5
-    font-medium;
+    font-bold;
 }
 
-.UIButton-Error {
-  @apply text-sm text-red-500;
+.UIButton[data-size="large"] {
+  .UIButton-Input {
+    @apply px-6 py-3
+      text-lg;
+  }
+}
+
+.UIButton[data-size="small"] {
+  .UIButton-Input {
+    @apply px-2 py-1
+      text-sm;
+  }
 }
 
 .UIButton[data-halign="start"] {
@@ -99,7 +111,7 @@ function onBlur(event: Event) {
   }
 
   .UIButton-Input {
-    @apply w-auto;
+    @apply flex-none;
   }
 }
 
@@ -109,7 +121,7 @@ function onBlur(event: Event) {
   }
 
   .UIButton-Input {
-    @apply w-auto;
+    @apply flex-none;
   }
 }
 
@@ -119,7 +131,7 @@ function onBlur(event: Event) {
   }
 
   .UIButton-Input {
-    @apply w-auto;
+    @apply flex-none;
   }
 }
 

@@ -6,8 +6,9 @@ import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end",
   label?: string,
+  size?: "small" | "large",
+  halign?: "start" | "center" | "end",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -236,6 +237,7 @@ function getFormatMaxLength(format: string) {
   <div
     class="UIDateBox"
     :data-required="props.required || undefined"
+    :data-size="props.size"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
     :data-halign="props.halign"
@@ -344,11 +346,11 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply flex-auto
+    focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    pl-2 pr-10 py-1
-    w-full
+    pl-2 pr-8 py-1
     disabled:bg-gray-100
     text-gray-900 bg-gray-50 disabled:text-gray-400;
   grid-area: 1/1;
@@ -451,9 +453,23 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox[data-required="true"] {
-  .UIFileUpload-Label::after {
+  .UIDateBox-Label::after {
     @apply text-red-500;
     content: ' ※';
+  }
+}
+
+.UIDateBox[data-size="large"] {
+  .UIDateBox-Input {
+    @apply pl-3 pr-9 py-1.5
+      text-lg;
+  }
+}
+
+.UIDateBox[data-size="small"] {
+  .UIDateBox-Input {
+    @apply pl-1 pr-7 py-0.5
+      text-sm;
   }
 }
 
@@ -481,7 +497,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UIDateBox-InputArea {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -491,7 +507,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UIDateBox-InputArea {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -501,7 +517,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UIDateBox-InputArea {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 }

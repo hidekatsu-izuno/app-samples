@@ -24,11 +24,6 @@ export function defineAction<T = any>(arg1: ControllerOptions | EventHandler<T>,
   const options = arg2 ? arg1 as ControllerOptions : {}
 
   return defineEventHandler<T>(async (event) => {
-    const method = getMethod(event)
-    if (method !== "GET" && method !== "POST") {
-      throw createError({ statusCode: 400 })
-    }
-
     if (options.session !== false) {
       const path = getRequestPath(event)
       if (!/^\/api\/auth\/.*/.test(path)) {
@@ -59,7 +54,6 @@ export function defineAction<T = any>(arg1: ControllerOptions | EventHandler<T>,
       if (err instanceof ZodError) {
         newErr = createError({ statusCode: 400, cause: err })
       }
-      event.context.error(newErr)
       return newErr
     }
   })

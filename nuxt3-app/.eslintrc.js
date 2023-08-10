@@ -19,5 +19,6 @@ module.exports = {
     "vue/multiline-html-element-content-newline": "off",
     "@typescript-eslint/func-call-spacing": "error",
     "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
+    "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
   },
 }

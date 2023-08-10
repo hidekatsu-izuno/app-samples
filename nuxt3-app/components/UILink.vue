@@ -89,10 +89,6 @@ function onBlur(event: Event) {
     cursor-pointer;
 }
 
-.UILink-Error {
-  @apply text-sm text-red-500;
-}
-
 .UILink[data-disabled="true"] {
   .UILink-Input {
     @apply text-gray-400 hover:no-underline

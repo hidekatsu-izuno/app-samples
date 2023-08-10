@@ -4,6 +4,7 @@ import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
+  size?: "small" | "large",
   halign?: "start" | "center" | "end",
   label?: string,
   placeholder?: string,
@@ -172,6 +173,7 @@ function getFormatMaxLength(format: string) {
   <div
     class="UINumberBox"
     :data-required="props.required || undefined"
+    :data-size="props.size"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
     :data-halign="props.halign"
@@ -229,11 +231,11 @@ function getFormatMaxLength(format: string) {
 }
 
 .UINumberBox-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply flex-auto
+    focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     px-2 py-1
-    w-full
     bg-gray-50 disabled:bg-gray-100
     text-right text-gray-900 disabled:text-gray-400;
 }
@@ -260,6 +262,20 @@ function getFormatMaxLength(format: string) {
   }
 }
 
+.UINumberBox[data-size="large"] {
+  .UINumberBox-Input {
+    @apply px-3 py-1.5
+      text-lg;
+  }
+}
+
+.UINumberBox[data-size="small"] {
+  .UINumberBox-Input {
+    @apply px-1 py-0.5
+      text-sm;
+  }
+}
+
 .UINumberBox[data-readonly="true"] {
   .UINumberBox-Content {
     @apply justify-start
@@ -275,7 +291,7 @@ function getFormatMaxLength(format: string) {
       @apply justify-start;
     }
     .UINumberBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -284,7 +300,7 @@ function getFormatMaxLength(format: string) {
       @apply justify-center;
     }
     .UINumberBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -293,7 +309,7 @@ function getFormatMaxLength(format: string) {
       @apply justify-end;
     }
     .UINumberBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 }

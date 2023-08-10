@@ -5,6 +5,7 @@ import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
   type?: "HHmm" | "HHmmss",
+  size?: "small" | "large",
   halign?: "start" | "center" | "end",
   label?: string,
   placeholder?: string,
@@ -159,6 +160,7 @@ function getFormatMaxLength(format: string) {
   <div
     class="UITimeBox"
     :data-required="props.required || undefined"
+    :data-size="props.size"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
     :data-halign="props.halign"
@@ -215,11 +217,10 @@ function getFormatMaxLength(format: string) {
 }
 
 .UITimeBox-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply flex-auto focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     px-2 py-1
-    w-full
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
 }
@@ -234,9 +235,23 @@ function getFormatMaxLength(format: string) {
 }
 
 .UITimeBox[data-required="true"] {
-  .UIFileUpload-Label::after {
+  .UITimeBox-Label::after {
     @apply text-red-500;
     content: ' ※';
+  }
+}
+
+.UITimeBox[data-size="large"] {
+  .UITimeBox-Input {
+    @apply px-3 py-1.5
+      text-lg;
+  }
+}
+
+.UITimeBox[data-size="small"] {
+  .UITimeBox-Input {
+    @apply px-1 py-0.5
+      text-sm;
   }
 }
 
@@ -256,7 +271,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UITimeBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -266,7 +281,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UITimeBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -276,7 +291,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UITimeBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 }

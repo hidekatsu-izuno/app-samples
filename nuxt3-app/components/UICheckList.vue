@@ -202,7 +202,7 @@ function validate(value: string[]) {
 }
 
 .UICheckList-Item {
-  @apply w-full;
+  @apply flex-auto;
 }
 
 .UICheckList-InputLabel {
@@ -273,7 +273,7 @@ function validate(value: string[]) {
     }
 
     .UICheckList-Item {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -283,7 +283,7 @@ function validate(value: string[]) {
     }
 
     .UICheckList-Item {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -293,7 +293,7 @@ function validate(value: string[]) {
     }
 
     .UICheckList-Item {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 

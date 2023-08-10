@@ -5,6 +5,7 @@ import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   type?: "text" | "password" | "email" | "tel" | "url",
+  size?: "small" | "large",
   label?: string,
   placeholder?: string,
   prefix?: string,
@@ -151,6 +152,7 @@ function validate(value: string) {
   <div
     class="UITextBox"
     :data-required="props.required || undefined"
+    :data-size="props.size"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
     :data-halign="props.halign"
@@ -207,11 +209,11 @@ function validate(value: string) {
 }
 
 .UITextBox-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply flex-auto
+    focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     px-2 py-1
-    w-full
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
 }
@@ -232,6 +234,20 @@ function validate(value: string) {
   }
 }
 
+.UITextBox[data-size="large"] {
+  .UITextBox-Input {
+    @apply px-3 py-1.5
+      text-lg;
+  }
+}
+
+.UITextBox[data-size="small"] {
+  .UITextBox-Input {
+    @apply px-1 py-0.5
+      text-sm;
+  }
+}
+
 .UITextBox[data-readonly="true"] {
   .UITextBox-Content {
     @apply justify-start
@@ -248,7 +264,7 @@ function validate(value: string) {
     }
 
     .UITextBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -258,7 +274,7 @@ function validate(value: string) {
     }
 
     .UITextBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 
@@ -268,7 +284,7 @@ function validate(value: string) {
     }
 
     .UITextBox-Input {
-      @apply w-auto;
+      @apply flex-none;
     }
   }
 }
