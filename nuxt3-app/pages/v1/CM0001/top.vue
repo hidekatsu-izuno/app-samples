@@ -81,6 +81,7 @@ const data = reactive({
   link1: 0,
   link2: 0,
   dataTableWrap: false,
+  dataTableEllipsis: false,
   dataTable: [
     { number: 1, string: "aaa", date: "2020-01-01" },
     { number: 2, string: "bbb", date: "2020-02-01" },
@@ -706,11 +707,13 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         <div class="flex flex-row justify-items-stretch items-center gap-2">
           <h2 class="font-bold grow">データテーブル (UIDataTable)</h2>
           <div class="shrink"><input v-model="data.dataTableWrap" type="checkbox"> wrap</div>
+          <div class="shrink"><input v-model="data.dataTableEllipsis" type="checkbox"> ellipsis</div>
         </div>
       </template>
 
       <UIDataTable
         :wrap="data.dataTableWrap"
+        :ellipsis="data.dataTableEllipsis"
         :items="[
           { key: 'string', label: '文字列', width: '400px' },
           { key: 'date', label: '日付', halign: 'center' },

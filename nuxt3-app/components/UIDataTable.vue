@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
   columns?: number,
-  wrap?: boolean
+  wrap?: boolean,
+  ellipsis?: boolean,
   tabindex?: number,
   items?: Array<{
     key: string,
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<{
   footer?: (modelValue:  Array<Record<string, any>>, items: Record<string, any>) => Record<string, any>,
 }>(), {
   wrap: false,
+  ellipsis: false,
   items: () => [],
   modelValue: () => [],
 })
@@ -65,6 +67,7 @@ function onMouseLeave(event: MouseEvent) {
     class="UIDataTable"
     :data-columns="props.items.length"
     :data-wrap="props.wrap || undefined"
+    :data-ellipsis="props.ellipsis || undefined"
   >
     <div class="UIDataTable-Header">
       <div class="UIDataTable-HeaderRow">
@@ -205,18 +208,26 @@ function onMouseLeave(event: MouseEvent) {
 }
 
 .UIDataTable[data-wrap="true"] {
-  .UIDataTable-HeaderCell,
-  .UIDataTable-ContentCell,
-  .UIDataTable-FooterCell {
-    @apply break-words;
+  .UIDataTable-HeaderRow,
+  .UIDataTable-ContentRow,
+  .UIDataTable-FooterRow {
+    @apply flex-wrap;
   }
 }
 
-.UIDataTable:not([data-wrap="true"]) {
+.UIDataTable[data-ellipsis="true"] {
   .UIDataTable-HeaderCell,
   .UIDataTable-ContentCell,
   .UIDataTable-FooterCell {
     @apply truncate;
+  }
+}
+
+.UIDataTable:not([data-ellipsis="true"]) {
+  .UIDataTable-HeaderCell,
+  .UIDataTable-ContentCell,
+  .UIDataTable-FooterCell {
+    @apply break-words;
   }
 }
 </style>
