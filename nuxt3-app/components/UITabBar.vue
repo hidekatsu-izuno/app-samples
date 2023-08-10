@@ -85,7 +85,7 @@ function onFocusout(event: Event) {
 .UITabBar-Input {
   @apply appearance-none
     flex-auto
-    focus:ring-2 focus:ring-blue-200
+    focus-visible:ring-2 focus-visible:ring-blue-200
     outline-none
     border-b border-gray-300 disabled:border-b-2 disabled:border-blue-700
     p-4 enabled:pb-[17px]

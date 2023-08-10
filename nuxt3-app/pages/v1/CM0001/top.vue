@@ -91,7 +91,7 @@ const data = reactive({
 })
 
 const textbox1Ref = ref()
-const loadingIndicatorRef = ref()
+const indicator = useLoadingIndicator()
 
 async function onValidate() {
   const result = await validate({
@@ -710,8 +710,7 @@ async function onValidate() {
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2">
-        <UILoadingIndicator ref="loadingIndicatorRef" />
-        <UIButton @click="loadingIndicatorRef.show({ throttle: 3000, duration: 5000 })">Show</UIButton>
+        <UIButton @click="indicator.open({ throttle: 1000, duration: 4000 })">Show</UIButton>
       </div>
     </UICard>
 

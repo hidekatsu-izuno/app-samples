@@ -1,19 +1,11 @@
 <script setup lang="ts">
+// @ts-expect-error virtual file
+import { globalMiddleware } from '#build/middleware'
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock"
 
 defineOptions({
   inheritAttrs: false,
 })
-
-const props = withDefaults(defineProps<{
-  modelValue?: boolean,
-}>(), {
-  modelValue: false,
-})
-
-const emits = defineEmits<{
-  (event: "update:modelValue", value: boolean): void,
-}>()
 
 const data = reactive({
   throttleTimerId: undefined as NodeJS.Timeout | undefined,
@@ -21,54 +13,89 @@ const data = reactive({
   value: false,
 })
 
-watch(() => props.modelValue, () => {
-  data.value = props.modelValue
-}, { immediate: true })
-
 const elRef = ref()
 
-onMounted(() => {
-  watch(() => data.value, () => {
-    if (data.value) {
-      elRef.value.showModal()
-      disableBodyScroll(elRef.value, {
-        reserveScrollBarGap: true,
-      })
-    } else {
-      enableBodyScroll(elRef.value)
-      elRef.value.close()
+init()
+
+provide("useLoadingIndicator", {
+  open,
+  close,
+  clear,
+})
+
+function init() {
+  const router = useRouter()
+  router.onError(() => {
+    close()
+  })
+  router.beforeResolve((to, from) => {
+    if (to === from || to.matched.every((comp, index) => comp.components && comp.components?.default === from.matched[index]?.components?.default)) {
+      close()
     }
-  }, { flush: "post" })
+  })
+  router.afterEach((_to, _from, failure) => {
+    if (failure) {
+      close()
+    }
+  })
+
+  const nuxtApp = useNuxtApp()
+  nuxtApp.hook('page:finish', close)
+  nuxtApp.hook('vue:error', close)
+
+  onMounted(() => {
+    open()
+  })
+
+  onBeforeUnmount(() => {
+    const index = globalMiddleware.indexOf(open)
+    if (index >= 0) {
+      globalMiddleware.splice(index, 1)
+    }
+    clear()
+  })
 
   onUnmounted(() => {
     clearAllBodyScrollLocks()
   })
-})
+}
 
-defineExpose({
-  show,
-  hide,
-})
+function open(options?: { throttle: number, duration: number }) {
+  clear()
 
-function show(options?: { throttle: number, duration: number }) {
   if (options?.throttle) {
     data.throttleTimerId = setTimeout(() => {
       data.throttleTimerId = undefined
-    }, options.duration)
-  }
-  if (!data.value) {
-    data.value = true
-    emits("update:modelValue", data.value)
+    }, options.throttle)
   }
   if (options?.duration) {
     data.durationTimerId = setTimeout(() => {
-      hide()
       data.durationTimerId = undefined
+      close()
     }, options.duration + (options?.throttle || 0))
+  }
+  if (!data.value && elRef.value) {
+    elRef.value.showModal()
+    disableBodyScroll(elRef.value, {
+      reserveScrollBarGap: true,
+    })
+    data.value = true
   }
 }
 
-function hide() {
+function close() {
+  clear()
+
+  if (data.value) {
+    if (elRef.value) {
+      enableBodyScroll(elRef.value)
+      elRef.value.close()
+    }
+    data.value = false
+  }
+}
+
+function clear() {
   if (data.throttleTimerId) {
     clearTimeout(data.throttleTimerId)
     data.throttleTimerId = undefined
@@ -76,10 +103,6 @@ function hide() {
   if (data.durationTimerId) {
     clearTimeout(data.durationTimerId)
     data.durationTimerId = undefined
-  }
-  if (data.value) {
-    data.value = false
-    emits("update:modelValue", data.value)
   }
 }
 </script>
@@ -95,12 +118,14 @@ function hide() {
       <div class="UILoadingIndicator-Loading" />
     </dialog>
   </Teleport>
+  <slot />
 </template>
 
 <style>
 .UILoadingIndicator {
   @apply fixed
     shadow-2xl
+    outline-none
     rounded-lg
     p-2
     w-16 h-16
