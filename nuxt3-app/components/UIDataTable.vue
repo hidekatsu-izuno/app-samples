@@ -21,7 +21,6 @@ const props = withDefaults(defineProps<{
 
 const data = reactive({
   focused: false,
-  value: [] as Array<Record<string, any>>,
   widths: [] as Array<string>,
   footerValues: undefined as Record<string, any> | undefined,
   colResize: false,
@@ -30,7 +29,6 @@ const data = reactive({
 const elRef = ref()
 
 watch(() => props.modelValue, () => {
-  data.value = props.modelValue
   data.footerValues = props.footer?.(props.modelValue, props.items)
 }, { immediate: true })
 
@@ -95,7 +93,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
               name="footerCell"
               :item="item"
               :value="item.label || item.key"
-          >{{ item.label || item.key }}</slot></div>
+          >{{ item.label ?? item.key }}</slot></div>
           <div
             class="UIDataTable-HeaderSeparator"
             @mousedown="onSeparatorMouseDown"
@@ -106,7 +104,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
     <div class="UIDataTable-Content">
       <div
         class="UIDataTable-ContentRow"
-        v-for="(rowValues, rowIndex) in data.value"
+        v-for="(rowValues, rowIndex) in props.modelValue"
       >
         <template v-for="(item, colIndex) in items">
           <div

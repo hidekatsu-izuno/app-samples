@@ -96,13 +96,13 @@ const data = reactive({
   dataTableWrap: false,
   dataTableEllipsis: false,
   dataTable: [
-    { number: 1, string: "aaa", date: "2020-01-01" },
-    { number: 2, string: "bbb", date: "2020-02-01" },
-    { number: 3, string: "ccc", date: "2020-03-01" },
-    { number: 4, string: "ddd", date: "2020-04-01" },
-    { number: 5, string: "eee", date: "2020-05-01" },
-    { number: 6, string: "fff", date: "2020-06-01" },
-    { number: 7, string: "long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-", date: "2020-06-01" },
+    { boolean: false, number: 1, string: "aaa", date: "2020-01-01" },
+    { boolean: false, number: 2, string: "bbb", date: "2020-02-01" },
+    { boolean: false, number: 3, string: "ccc", date: "2020-03-01" },
+    { boolean: false, number: 4, string: "ddd", date: "2020-04-01" },
+    { boolean: false, number: 5, string: "eee", date: "2020-05-01" },
+    { boolean: false, number: 6, string: "fff", date: "2020-06-01" },
+    { boolean: false, number: 7, string: "long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-", date: "2020-06-01" },
   ],
   messageBox1Opend: false,
   messageBox2Opend: false,
@@ -834,6 +834,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
         :items="[
+          { key: 'boolean', label: '', width: '80px' },
           { key: 'string', label: '文字列', width: '400px' },
           { key: 'date', label: '日付', halign: 'center' },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },
@@ -841,8 +842,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         v-model="data.dataTable"
         :footer="onFooter"
       >
-        <template v-slot:contentCell="{ item, value }">
-          <template v-if="item.key === 'date'">{{
+        <template v-slot:contentCell="{ item, value, rowValues }">
+          <template v-if="item.key === 'boolean'">
+            <UICheck halign="center" v-model="rowValues[item.key]" />
+          </template>
+          <template v-else-if="item.key === 'date'">{{
             formatDate(value, 'uuuu/MM/dd')
           }}</template>
         </template>
