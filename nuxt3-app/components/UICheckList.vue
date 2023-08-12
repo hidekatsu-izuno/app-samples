@@ -149,7 +149,7 @@ function validate(value: string[]) {
           <div v-if="props.suffix" class="UICheckList-Suffix">{{ props.suffix }}</div>
         </li>
       </template>
-      <li v-else>&#8203;</li>
+      <li v-else class="UICheckList-Text"></li>
     </ul>
     <div
       v-else
