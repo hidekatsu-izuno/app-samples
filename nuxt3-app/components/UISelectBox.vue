@@ -167,8 +167,8 @@ function validate(value: string) {
 }
 
 .UISelectBox-InputArea {
-  @apply grid
-    w-full;
+  @apply flex-auto
+    grid;
 }
 
 .UISelectBox-Input {
@@ -255,7 +255,7 @@ function validate(value: string) {
       @apply justify-start;
     }
 
-    .UISelectBox-Input {
+    .UISelectBox-InputArea {
       @apply flex-none;
     }
   }
@@ -265,7 +265,7 @@ function validate(value: string) {
       @apply justify-center;
     }
 
-    .UISelectBox-Input {
+    .UISelectBox-InputArea {
       @apply flex-none;
     }
   }
@@ -275,7 +275,7 @@ function validate(value: string) {
       @apply justify-end;
     }
 
-    .UISelectBox-Input {
+    .UISelectBox-InputArea {
       @apply flex-none;
     }
   }

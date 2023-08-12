@@ -341,8 +341,8 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox-InputArea {
-  @apply grid
-    w-full;
+  @apply flex-auto
+    grid;
 }
 
 .UIDateBox-Input {

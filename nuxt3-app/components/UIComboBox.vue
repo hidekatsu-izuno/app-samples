@@ -359,8 +359,8 @@ function validate(value: string) {
 }
 
 .UIComboBox-InputArea {
-  @apply grid
-    w-full;
+  @apply flex-auto
+    grid;
 }
 
 .UIComboBox-Input {
