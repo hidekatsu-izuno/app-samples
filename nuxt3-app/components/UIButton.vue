@@ -43,10 +43,10 @@ function onBlur(event: Event) {
   <div
     class="UIButton"
     :data-type="props.type"
-    :data-size="props.size"
+    :data-size="props.size || undefined"
     :data-color="props.color"
     :data-disabled="props.disabled || undefined"
-    :data-halign="props.halign"
+    :data-halign="props.halign || undefined"
   >
     <label
       v-if="props.label"

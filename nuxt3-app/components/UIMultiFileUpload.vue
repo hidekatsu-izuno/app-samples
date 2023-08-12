@@ -119,9 +119,9 @@ function validate(value: File[]) {
   <div
     class="UIMultiFileUpload"
     :data-required="props.required || undefined"
-    :data-size="props.size"
+    :data-size="props.size || undefined"
     :data-disabled="props.disabled || undefined"
-    :data-halign="props.halign"
+    :data-halign="props.halign || undefined"
   >
     <label
       v-if="props.label"

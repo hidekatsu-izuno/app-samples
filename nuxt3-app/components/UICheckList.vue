@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  size?: "small" | "large",
   halign?: "start" | "center" | "end",
   label?: string,
   prefix?: string,
@@ -125,7 +126,9 @@ function validate(value: string[]) {
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
-    :data-halign="props.halign"
+    :data-size="props.size || undefined"
+    :data-halign="props.halign || undefined"
+    :data-columns="props.columns"
   >
     <label
       v-if="props.label"
@@ -227,7 +230,7 @@ function validate(value: string[]) {
 
 .UICheckList-InputCheck {
   @apply w-full h-full
-    text-white
+    text-white text-base
     pointer-events-none;
   grid-area: 1/1;
 }

@@ -274,7 +274,7 @@ function validate(value: string) {
     :data-size="props.size"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
-    :data-halign="props.halign"
+    :data-halign="props.halign || undefined"
   >
     <label
       v-if="props.label"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  size?: "small" | "large",
   halign?: "start" | "center" | "end",
   label?: string,
   href?: string,
@@ -40,7 +41,8 @@ function onBlur(event: Event) {
   <div
     class="UILink"
     :data-disabled="props.disabled || undefined"
-    :data-halign="props.halign"
+    :data-halign="props.halign || undefined"
+    :data-size="props.size || undefined"
   >
     <label
       v-if="props.label"
@@ -93,6 +95,20 @@ function onBlur(event: Event) {
   .UILink-Input {
     @apply text-gray-400 hover:no-underline
       cursor-default;
+  }
+}
+
+.UILink[data-size="large"] {
+  .UILink-Input {
+    @apply px-6 py-3
+      text-lg;
+  }
+}
+
+.UILink[data-size="small"] {
+  .UILink-Input {
+    @apply px-2 py-1
+      text-sm;
   }
 }
 

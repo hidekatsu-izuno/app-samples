@@ -160,10 +160,10 @@ function getFormatMaxLength(format: string) {
   <div
     class="UITimeBox"
     :data-required="props.required || undefined"
-    :data-size="props.size"
+    :data-size="props.size || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
-    :data-halign="props.halign"
+    :data-halign="props.halign || undefined"
   >
     <label
       v-if="props.label"
