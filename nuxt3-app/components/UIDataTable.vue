@@ -178,11 +178,20 @@ function onSeparatorMouseDown(event: MouseEvent) {
   @apply min-w-fit;
 }
 
+.UIDataTable-Header {
+  @apply sticky top-0 left-0 right-0;
+}
+
+.UIDataTable-Footer {
+  @apply sticky bottom-0 left-0 right-0;
+}
+
 .UIDataTable-HeaderRow,
 .UIDataTable-ContentRow,
 .UIDataTable-FooterRow {
   @apply flex flex-row items-stretch
-    min-w-fit;
+    min-w-fit
+    pr-4;
 }
 
 .UIDataTable-HeaderRow {
@@ -251,7 +260,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
   .UIDataTable-HeaderRow,
   .UIDataTable-ContentRow,
   .UIDataTable-FooterRow {
-    @apply flex-wrap;
+    @apply flex-wrap pr-0;
   }
 
   .UIDataTable-HeaderCell[data-width="fill"],

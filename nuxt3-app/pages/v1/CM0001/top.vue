@@ -828,6 +828,25 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           }}</template>
         </template>
       </UIDataTable>
+      <br />
+      <UIDataTable
+        style="height: 200px"
+        :wrap="data.dataTableWrap"
+        :ellipsis="data.dataTableEllipsis"
+        :items="[
+          { key: 'string', label: '文字列', width: '400px' },
+          { key: 'date', label: '日付', halign: 'center' },
+          { key: 'number', label: '数値', halign: 'end', width: '300px' },
+        ]"
+        v-model="data.dataTable"
+        :footer="onFooter"
+      >
+        <template v-slot:contentCell="{ item, value }">
+          <template v-if="item.key === 'date'">{{
+            formatDate(value, 'uuuu/MM/dd')
+          }}</template>
+        </template>
+      </UIDataTable>
     </UICard>
 
     <UICard class="mb-4">
