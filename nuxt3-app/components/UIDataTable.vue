@@ -215,6 +215,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
 .UIDataTable-ContentSeparator,
 .UIDataTable-FooterSeparator {
   @apply flex-[0_0_3px]
+    mx-[-1px]
     px-[1px]
     bg-clip-content
     cursor-col-resize
