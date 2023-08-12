@@ -288,6 +288,12 @@ function onSeparatorMouseDown(event: MouseEvent) {
     @apply flex-wrap pr-0;
   }
 
+  .UIDataTable-HeaderCell,
+  .UIDataTable-ContentCell,
+  .UIDataTable-FooterCell {
+    @apply flex-auto;
+  }
+
   .UIDataTable-HeaderSeparator,
   .UIDataTable-ContentSeparator,
   .UIDataTable-FooterSeparator {
