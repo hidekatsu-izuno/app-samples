@@ -50,14 +50,16 @@ function onDrawerClick(e: MouseEvent) {
       @click="closeDrawer"
     >
       <div
-        class="UIFrame-DrawerBackdrop"
+        class="UIFrame-DrawerPanel"
         @click="onDrawerClick"
       >
-        <div class="UIFrame-DrawerContent">
+        <div class="UIFrame-DrawerHeader">
           <UIIcon name="menu-open" @click="closeDrawer" />
           <div class="UIFrame-DrawerTitle">Nuxt3 App</div>
         </div>
-        <slot name="drawer" />
+        <div class="UIFrame-DrawerContent">
+          <slot name="drawer" />
+        </div>
       </div>
     </div>
   </div>
@@ -136,7 +138,7 @@ function onDrawerClick(e: MouseEvent) {
     z-20;
 }
 
-.UIFrame-DrawerBackdrop {
+.UIFrame-DrawerPanel {
   @apply sticky top-0
     w-fit h-screen
     overflow-y-auto
@@ -144,7 +146,7 @@ function onDrawerClick(e: MouseEvent) {
     text-white;
 }
 
-.UIFrame-DrawerContent {
+.UIFrame-DrawerHeader {
   @apply flex items-center
     px-4
     w-64 h-14;
