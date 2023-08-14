@@ -202,7 +202,7 @@ function validate(value?: File) {
   }
 
   .UIFileUpload-Input {
-    @apply flex-none;
+    @apply flex-initial;
   }
 }
 
@@ -212,7 +212,7 @@ function validate(value?: File) {
   }
 
   .UIFileUpload-Input {
-    @apply flex-none;
+    @apply flex-initial;
   }
 }
 
@@ -222,7 +222,7 @@ function validate(value?: File) {
   }
 
   .UIFileUpload-Input {
-    @apply flex-none;
+    @apply flex-initial;
   }
 }
 </style>

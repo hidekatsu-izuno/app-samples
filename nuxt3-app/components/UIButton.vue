@@ -88,7 +88,8 @@ function onBlur(event: Event) {
     rounded-md
     m-0
     px-4 py-1.5
-    font-bold;
+    font-bold
+    truncate;
 }
 
 .UIButton[data-size="large"] {
@@ -111,7 +112,7 @@ function onBlur(event: Event) {
   }
 
   .UIButton-Input {
-    @apply flex-none;
+    @apply flex-initial;
   }
 }
 
@@ -121,7 +122,7 @@ function onBlur(event: Event) {
   }
 
   .UIButton-Input {
-    @apply flex-none;
+    @apply flex-initial;
   }
 }
 
@@ -131,7 +132,7 @@ function onBlur(event: Event) {
   }
 
   .UIButton-Input {
-    @apply flex-none;
+    @apply flex-initial;
   }
 }
 

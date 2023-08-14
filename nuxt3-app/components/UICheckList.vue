@@ -298,7 +298,7 @@ function validate(value: string[]) {
     }
 
     .UICheckList-Item {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -308,7 +308,7 @@ function validate(value: string[]) {
     }
 
     .UICheckList-Item {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -318,7 +318,7 @@ function validate(value: string[]) {
     }
 
     .UICheckList-Item {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 

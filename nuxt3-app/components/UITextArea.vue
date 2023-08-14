@@ -253,7 +253,7 @@ function validate(value: string) {
     }
 
     .UITextArea-Input {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -263,7 +263,7 @@ function validate(value: string) {
     }
 
     .UITextArea-Input {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -273,7 +273,7 @@ function validate(value: string) {
     }
 
     .UITextArea-Input {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 }

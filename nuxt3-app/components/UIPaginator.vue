@@ -135,13 +135,15 @@ function onFocusout(event: Event) {
     px-2
     w-full
     bg-white hover:enabled:bg-blue-800
-    hover:enabled:text-white;
+    hover:enabled:text-white
+    whitespace-nowrap;
 }
 
 .UIPaginator-TotalCount {
   @apply flex items-center
     px-2
-    w-full;
+    w-full
+    whitespace-nowrap;
 }
 
 .UIPaginator-TotalCount::after {

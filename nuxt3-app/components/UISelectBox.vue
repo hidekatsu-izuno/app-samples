@@ -256,7 +256,7 @@ function validate(value: string) {
     }
 
     .UISelectBox-InputArea {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -266,7 +266,7 @@ function validate(value: string) {
     }
 
     .UISelectBox-InputArea {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -276,7 +276,7 @@ function validate(value: string) {
     }
 
     .UISelectBox-InputArea {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 }

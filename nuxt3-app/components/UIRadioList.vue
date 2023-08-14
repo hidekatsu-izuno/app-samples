@@ -284,7 +284,7 @@ function validate(value: string) {
     }
 
     .UIRadioList-Item {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -294,7 +294,7 @@ function validate(value: string) {
     }
 
     .UIRadioList-Item {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -304,7 +304,7 @@ function validate(value: string) {
     }
 
     .UIRadioList-Item {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 

@@ -351,6 +351,7 @@ function getFormatMaxLength(format: string) {
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     pl-2 pr-8 py-1
+    min-w-0
     disabled:bg-gray-100
     text-gray-900 bg-gray-50 disabled:text-gray-400;
   grid-area: 1/1;
@@ -505,7 +506,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UIDateBox-InputArea {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -515,7 +516,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UIDateBox-InputArea {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -525,7 +526,7 @@ function getFormatMaxLength(format: string) {
     }
 
     .UIDateBox-InputArea {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 }

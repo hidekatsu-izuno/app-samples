@@ -236,6 +236,7 @@ function getFormatMaxLength(format: string) {
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     px-2 py-1
+    min-w-0
     bg-gray-50 disabled:bg-gray-100
     text-right text-gray-900 disabled:text-gray-400;
 }
@@ -299,7 +300,7 @@ function getFormatMaxLength(format: string) {
       @apply justify-start;
     }
     .UINumberBox-Input {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -308,7 +309,7 @@ function getFormatMaxLength(format: string) {
       @apply justify-center;
     }
     .UINumberBox-Input {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 
@@ -317,7 +318,7 @@ function getFormatMaxLength(format: string) {
       @apply justify-end;
     }
     .UINumberBox-Input {
-      @apply flex-none;
+      @apply flex-initial;
     }
   }
 }
