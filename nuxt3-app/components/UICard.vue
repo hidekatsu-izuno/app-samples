@@ -17,11 +17,12 @@
   @apply flex flex-col
     shadow
     border border-slate-300 rounded-lg
-    bg-white;
+    bg-white
+    overflow-hidden;
 }
 
 .UICard-Header {
-  @apply border-b border-slate-300 rounded-t-lg
+  @apply border-b border-slate-300
     p-3
     bg-slate-50;
 }
@@ -31,7 +32,7 @@
 }
 
 .UICard-Footer {
-  @apply border-t border-slate-300 rounded-b-lg
+  @apply border-t border-slate-300
     p-3
     bg-slate-50;
 }

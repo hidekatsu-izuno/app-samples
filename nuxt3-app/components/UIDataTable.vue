@@ -196,11 +196,13 @@ function onSeparatorMouseDown(event: MouseEvent) {
 }
 
 .UIDataTable-Header {
-  @apply sticky top-0 left-0 right-0;
+  @apply sticky top-0 left-0 right-0
+    z-[2];
 }
 
 .UIDataTable-Footer {
-  @apply sticky bottom-0 left-0 right-0;
+  @apply sticky bottom-0 left-0 right-0
+    z-[2];
 }
 
 .UIDataTable-HeaderRow,
@@ -218,7 +220,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
 }
 
 .UIDataTable-ContentRow {
-  @apply border-b last:border-b-0 border-gray-300
+  @apply border-t first:border-t-0 border-gray-300
     bg-white;
 }
 
@@ -243,18 +245,10 @@ function onSeparatorMouseDown(event: MouseEvent) {
   @apply flex-[0_0_5px]
     mx-[-2px]
     px-[2px]
+    bg-slate-300
     bg-clip-content
     cursor-col-resize select-none
     z-[1];
-}
-
-.UIDataTable-HeaderSeparator {
-  @apply bg-slate-300;
-}
-
-.UIDataTable-ContentSeparator,
-.UIDataTable-FooterSeparator {
-  @apply bg-slate-100;
 }
 
 .UIDataTable[data-colresize="true"] {
@@ -290,10 +284,29 @@ function onSeparatorMouseDown(event: MouseEvent) {
       pr-0;
   }
 
+  .UIDataTable-HeaderRow {
+    @apply border-b-0
+      mb-[-1px];
+  }
+
+  .UIDataTable-ContentRow,
+  .UIDataTable-FooterRow {
+    @apply border-t-0;
+  }
+
   .UIDataTable-HeaderCell,
   .UIDataTable-ContentCell,
   .UIDataTable-FooterCell {
     @apply flex-auto;
+  }
+
+  .UIDataTable-HeaderCell {
+    @apply border-b border-slate-300;
+  }
+
+  .UIDataTable-ContentCell,
+  .UIDataTable-FooterCell {
+    @apply border-t border-slate-300;
   }
 
   .UIDataTable-HeaderSeparator,
