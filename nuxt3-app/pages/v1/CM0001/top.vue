@@ -160,7 +160,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <UIButton size="small" @click="onValidate">validate</UIButton>
         </div>
       </template>
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6 p-6">
         <UITextBox
           ref="textbox1Ref"
           v-model="data.textbox1"
@@ -255,7 +255,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6 p-6">
         <UINumberBox
           v-model="data.numberbox1"
           label="デフォルト"
@@ -303,7 +303,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIDateBox
           v-model="data.datebox1"
           label="デフォルト"
@@ -351,7 +351,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UITimeBox
           v-model="data.timebox1"
           label="デフォルト"
@@ -400,7 +400,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UITextArea
           v-model="data.textarea1"
           label="デフォルト"
@@ -437,7 +437,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UISelectBox
           v-model="data.selectbox1"
           label="デフォルト"
@@ -478,7 +478,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIComboBox
           v-model="data.combobox1"
           label="デフォルト"
@@ -519,7 +519,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UICheck
           v-model="data.check1"
           label="デフォルト"
@@ -556,7 +556,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UICheckList
           v-model="data.checklist1"
           label="デフォルト"
@@ -595,7 +595,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIRadioList
           v-model="data.radiolist1"
           label="デフォルト"
@@ -633,7 +633,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIFileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" />
         <div class="border">{{ data.fileupload1?.name }}</div>
 
@@ -661,7 +661,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIMultiFileUpload v-model="data.multifileupload1" label="デフォルト" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" />
         <div class="border">{{ data.multifileupload1.map((item: File) => item.name) }}</div>
 
@@ -687,7 +687,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIPaginator v-model="data.paginator1" :disabled="data.paginatorDisabled" />
         <div class="border">{{ data.paginator1 }}</div>
 
@@ -723,7 +723,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIButton
           label="デフォルト"
           :color="(data.buttonColor as any)"
@@ -766,7 +766,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UILink
           label="デフォルト"
           :disabled="data.linkDisabled"
@@ -859,7 +859,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <h2 class="font-bold grow">メッセージボックス (UIMessageBox)</h2>
         </div>
       </template>
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIMessageBox v-model="data.messageBox1Opend" type="ok" @close="data.messageBox1 = $event">あ</UIMessageBox>
         <UIButton @click="data.messageBox1Opend = true">OK</UIButton>
         <div class="border">{{ data.messageBox1 }}</div>
@@ -884,7 +884,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <h2 class="font-bold grow">ローディング表示 (UILoadingIndicator)</h2>
         </div>
       </template>
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-2 p-6">
         <UIButton @click="indicator.open({ throttle: 1000, duration: 4000 })">Show</UIButton>
       </div>
     </UICard>

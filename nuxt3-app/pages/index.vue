@@ -45,12 +45,12 @@ const onLoginButtonClick = async () => {
 
 <template>
   <div class="min-h-screen flex bg-gray-50 items-center justify-center">
-    <div class="w-full max-w-md flex flex-col items-center">
-      <h1 class="font-bold text-4xl m-4">
+    <div class="w-full max-w-md">
+      <h1 class="m-4 font-bold text-4xl text-center">
         Nuxt3 Sample App
       </h1>
       <UICard>
-        <div class="grid grid-cols-1 gap-y-4">
+        <div class="grid grid-cols-1 gap-y-4 p-6">
           <UITextBox
             ref="emailRef"
             type="email"
@@ -74,7 +74,7 @@ const onLoginButtonClick = async () => {
           </UIButton>
         </div>
       </UICard>
-      <div class="m-4 mb-8">
+      <div class="m-4 mb-8 text-center">
         Copyright &copy; Hidekatsu Izuno
       </div>
     </div>

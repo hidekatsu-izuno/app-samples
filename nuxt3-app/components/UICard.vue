@@ -27,8 +27,7 @@
 }
 
 .UICard-Content {
-  @apply grow
-    p-6;
+  @apply grow;
 }
 
 .UICard-Footer {
