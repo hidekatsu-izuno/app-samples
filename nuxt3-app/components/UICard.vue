@@ -23,7 +23,6 @@
 
 .UICard-Header {
   @apply border-b border-slate-300
-    p-3
     bg-slate-50;
 }
 
@@ -33,7 +32,6 @@
 
 .UICard-Footer {
   @apply border-t border-slate-300
-    p-3
     bg-slate-50;
 }
 </style>

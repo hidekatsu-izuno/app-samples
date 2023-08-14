@@ -151,7 +151,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">テキストボックス (UITextBox)</h2>
           <input v-model="data.textboxRequired" type="checkbox">required
           <input v-model="data.textboxDisabled" type="checkbox">disabled
@@ -246,7 +246,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">数値ボックス (UINumberBox)</h2>
           <div class="shrink"><input v-model="data.numberboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.numberboxDisabled" type="checkbox"> disabled</div>
@@ -294,7 +294,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">日付ボックス (UIDateBox)</h2>
           <div class="shrink"><input v-model="data.dateboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.dateboxDisabled" type="checkbox"> disabled</div>
@@ -342,7 +342,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">時刻ボックス (UITimeBox)</h2>
           <div class="shrink"><input v-model="data.timeboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.timeboxDisabled" type="checkbox"> disabled</div>
@@ -391,7 +391,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">テキストエリア (UITextArea)</h2>
           <div class="shrink"><input v-model="data.textareaRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.textareaDisabled" type="checkbox"> disabled</div>
@@ -428,7 +428,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">セレクトボックス (UISelectBox)</h2>
           <div class="shrink"><input v-model="data.selectboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.selectboxDisabled" type="checkbox"> disabled</div>
@@ -469,7 +469,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">コンボボックス (UIComboBox)</h2>
           <div class="shrink"><input v-model="data.comboboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.comboboxDisabled" type="checkbox"> disabled</div>
@@ -510,7 +510,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">チェックボックス (UICheck)</h2>
           <div class="shrink"><input v-model="data.checkRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.checkDisabled" type="checkbox"> disabled</div>
@@ -547,7 +547,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">チェックリスト (UICheckList)</h2>
           <div class="shrink"><input v-model="data.checklistRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.checklistDisabled" type="checkbox"> disabled</div>
@@ -586,7 +586,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ラジオリスト (UIRadioList)</h2>
           <div class="shrink"><input v-model="data.radiolistRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.radiolistDisabled" type="checkbox"> disabled</div>
@@ -625,7 +625,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ファイル選択 (UIFileUpload)</h2>
           <div class="shrink"><input v-model="data.fileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.fileuploadDisabled" type="checkbox"> disabled</div>
@@ -653,7 +653,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">複数ファイル選択 (UIMultiFileUpload)</h2>
           <div class="shrink"><input v-model="data.multifileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.multifileuploadDisabled" type="checkbox"> disabled</div>
@@ -681,7 +681,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ページング (UIPaginator)</h2>
           <div class="shrink"><input v-model="data.paginatorDisabled" type="checkbox"> disabled</div>
         </div>
@@ -704,7 +704,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ボタン (UIButton)</h2>
           <input v-model="data.buttonDisabled" type="checkbox"> disabled
           <UISelectBox
@@ -759,7 +759,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">リンク (UILink)</h2>
           <div class="shrink"><input v-model="data.linkDisabled" type="checkbox"> disabled</div>
           <UISelectBox v-model="data.linkSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
@@ -790,7 +790,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">タブ (UITabBar)</h2>
         </div>
       </template>
@@ -804,7 +804,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">データテーブル (UIDataTable)</h2>
           <div class="shrink"><input v-model="data.dataTableWrap" type="checkbox"> wrap</div>
           <div class="shrink"><input v-model="data.dataTableEllipsis" type="checkbox"> ellipsis</div>
@@ -855,7 +855,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">メッセージボックス (UIMessageBox)</h2>
         </div>
       </template>
@@ -880,7 +880,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
     <UICard class="mb-4">
       <template #header>
-        <div class="flex flex-row justify-items-stretch items-center gap-2">
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ローディング表示 (UILoadingIndicator)</h2>
         </div>
       </template>
