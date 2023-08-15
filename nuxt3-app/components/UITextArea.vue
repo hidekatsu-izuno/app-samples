@@ -216,9 +216,18 @@ function validate(value: string) {
 }
 
 .UITextArea[data-size="large"] {
+  .UITextArea-Content {
+    @apply text-lg;
+  }
+
   .UITextArea-Input {
-    @apply px-3 py-1.5
-      text-lg;
+    @apply px-3 py-1.5;
+  }
+}
+
+.UITextArea[data-size="large"][data-readonly="true"] {
+  .UITextArea-Content {
+    @apply px-3 py-1.5;
   }
 
   .UITextArea-Text {
@@ -227,9 +236,18 @@ function validate(value: string) {
 }
 
 .UITextArea[data-size="small"] {
+  .UITextArea-Content {
+    @apply text-sm;
+  }
+
   .UITextArea-Input {
-    @apply px-1 py-0.5
-      text-sm;
+    @apply px-1 py-0.5;
+  }
+}
+
+.UITextArea[data-size="small"][data-readonly="true"] {
+  .UITextArea-Content {
+    @apply px-1 py-0.5;
   }
 
   .UITextArea-Text {
@@ -246,35 +264,36 @@ function validate(value: string) {
   }
 }
 
-:not(.UITextArea[data-readonly="true"]) {
-  .UITextArea[data-halign="start"] {
-    .UITextArea-Content {
-      @apply justify-start;
-    }
-
-    .UITextArea-Input {
-      @apply flex-initial;
-    }
+.UITextArea[data-halign="start"] {
+  .UITextArea-Content {
+    @apply justify-start;
   }
 
-  .UITextArea[data-halign="center"] {
-    .UITextArea-Content {
-      @apply justify-center;
-    }
+  .UITextArea-Input,
+  .UITextArea-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UITextArea-Input {
-      @apply flex-initial;
-    }
+.UITextArea[data-halign="center"] {
+  .UITextArea-Content {
+    @apply justify-center;
   }
 
-  .UITextArea[data-halign="end"] {
-    .UITextArea-Content {
-      @apply justify-end;
-    }
+  .UITextArea-Input,
+  .UITextArea-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UITextArea-Input {
-      @apply flex-initial;
-    }
+.UITextArea[data-halign="end"] {
+  .UITextArea-Content {
+    @apply justify-end;
+  }
+
+  .UITextArea-Input,
+  .UITextArea-Text {
+    @apply flex-initial;
   }
 }
 </style>
