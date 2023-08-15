@@ -99,16 +99,22 @@ function onBlur(event: Event) {
 }
 
 .UILink[data-size="large"] {
+  .UILink-Content {
+    @apply text-lg;
+  }
+
   .UILink-Input {
-    @apply px-6 py-3
-      text-lg;
+    @apply px-6 py-3;
   }
 }
 
 .UILink[data-size="small"] {
+  .UILink-Content {
+    @apply text-sm;
+  }
+
   .UILink-Input {
-    @apply px-2 py-1
-      text-sm;
+    @apply px-2 py-1;
   }
 }
 
