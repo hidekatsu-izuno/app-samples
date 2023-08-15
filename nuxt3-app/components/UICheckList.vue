@@ -252,9 +252,18 @@ function validate(value: string[]) {
 }
 
 .UICheckList[data-size="large"] {
+  .UITextBox-Content {
+    @apply text-lg;
+  }
+
   .UICheckList-InputLabel {
-    @apply py-1.5
-      text-lg;
+    @apply py-1.5;
+  }
+}
+
+.UICheckList[data-size="large"][data-readonly="true"] {
+  .UICheckList-Content {
+    @apply px-3 py-1.5;
   }
 
   .UICheckList-Text {
@@ -263,9 +272,18 @@ function validate(value: string[]) {
 }
 
 .UICheckList[data-size="small"] {
+  .UICheckList-Content {
+    @apply text-sm;
+  }
+
   .UICheckList-InputLabel {
-    @apply py-0.5
-      text-sm;
+    @apply py-0.5;
+  }
+}
+
+.UICheckList[data-size="small"][data-readonly="true"] {
+  .UICheckList-Content {
+    @apply px-1 py-0.5;
   }
 
   .UICheckList-Text {
@@ -291,37 +309,40 @@ function validate(value: string[]) {
   }
 }
 
+.UICheckList[data-halign="start"] {
+  .UICheckList-ContentItem {
+    @apply justify-start;
+  }
+
+  .UICheckList-Item,
+  .UICheckList-Text {
+    @apply flex-initial;
+  }
+}
+
+.UICheckList[data-halign="center"] {
+  .UICheckList-ContentItem {
+    @apply justify-center;
+  }
+
+  .UICheckList-Item,
+  .UICheckList-Text {
+    @apply flex-initial;
+  }
+}
+
+.UICheckList[data-halign="end"] {
+  .UICheckList-ContentItem {
+    @apply justify-end;
+  }
+
+  .UICheckList-Item,
+  .UICheckList-Text {
+    @apply flex-initial;
+  }
+}
+
 :not(.UICheckList[data-readonly="true"]) {
-  .UICheckList[data-halign="start"] {
-    .UICheckList-ContentItem {
-      @apply justify-start;
-    }
-
-    .UICheckList-Item {
-      @apply flex-initial;
-    }
-  }
-
-  .UICheckList[data-halign="center"] {
-    .UICheckList-ContentItem {
-      @apply justify-center;
-    }
-
-    .UICheckList-Item {
-      @apply flex-initial;
-    }
-  }
-
-  .UICheckList[data-halign="end"] {
-    .UICheckList-ContentItem {
-      @apply justify-end;
-    }
-
-    .UICheckList-Item {
-      @apply flex-initial;
-    }
-  }
-
   .UICheckList[data-columns="2"] {
     .UICheckList-Content {
       @apply grid grid-cols-2;

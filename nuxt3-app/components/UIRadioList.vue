@@ -241,9 +241,18 @@ function validate(value: string) {
 }
 
 .UIRadioList[data-size="large"] {
+  .UIRadioList-Content {
+    @apply text-lg;
+  }
+
   .UIRadioList-InputLabel {
-    @apply py-1.5
-      text-lg;
+    @apply py-1.5;
+  }
+}
+
+.UIRadioList[data-size="large"][data-readonly="true"] {
+  .UIRadioList-Content {
+    @apply px-3 py-1.5;
   }
 
   .UIRadioList-Text {
@@ -252,9 +261,18 @@ function validate(value: string) {
 }
 
 .UIRadioList[data-size="small"] {
+  .UIRadioList-Content {
+    @apply text-sm;
+  }
+
   .UIRadioList-InputLabel {
-    @apply py-0.5
-      text-sm;
+    @apply py-0.5;
+  }
+}
+
+.UIRadioList[data-size="small"][data-readonly="true"] {
+  .UIRadioList-Content {
+    @apply px-1 py-0.5;
   }
 
   .UIRadioList-Text {
@@ -274,6 +292,36 @@ function validate(value: string) {
       border border-gray-200
       px-2 py-1
       text-gray-900;
+  }
+
+  .UIRadioList[data-halign="start"] {
+    .UIRadioList-Content {
+      @apply justify-start;
+    }
+
+    .UIRadioList-Text {
+      @apply flex-initial;
+    }
+  }
+
+  .UIRadioList[data-halign="center"] {
+    .UIRadioList-Content {
+      @apply justify-center;
+    }
+
+    .UIRadioList-Text {
+      @apply flex-initial;
+    }
+  }
+
+  .UITextBox[data-halign="end"] {
+    .UIRadioList-Content {
+      @apply justify-end;
+    }
+
+    .UIRadioList-Text {
+      @apply flex-initial;
+    }
   }
 }
 

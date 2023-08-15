@@ -185,16 +185,22 @@ function validate(value: File[]) {
 }
 
 .UIMultiFileUpload[data-size="large"] {
+  .UIMultiFileUpload-Content {
+    @apply text-lg;
+  }
+
   .UIMultiFileUpload-Input {
-    @apply px-3 py-1.5
-      text-lg;
+    @apply px-3 py-1.5;
   }
 }
 
 .UIMultiFileUpload[data-size="small"] {
+  .UIMultiFileUpload-Content {
+    @apply text-sm;
+  }
+
   .UIMultiFileUpload-Input {
-    @apply px-1 py-0.5
-      text-sm;
+    @apply px-1 py-0.5;
   }
 }
 

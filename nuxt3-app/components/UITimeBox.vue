@@ -243,9 +243,18 @@ function getFormatMaxLength(format: string) {
 }
 
 .UITimeBox[data-size="large"] {
+  .UITimeBox-Content {
+    @apply text-lg;
+  }
+
   .UITimeBox-Input {
-    @apply px-3 py-1.5
-      text-lg;
+    @apply px-3 py-1.5;
+  }
+}
+
+.UITimeBox[data-size="large"][data-readonly="true"] {
+  .UITimeBox-Content {
+    @apply px-3 py-1.5;
   }
 
   .UITimeBox-Text {
@@ -254,9 +263,18 @@ function getFormatMaxLength(format: string) {
 }
 
 .UITimeBox[data-size="small"] {
+  .UITimeBox-Content {
+    @apply text-sm;
+  }
+
   .UITimeBox-Input {
-    @apply px-1 py-0.5
-      text-sm;
+    @apply px-1 py-0.5;
+  }
+}
+
+.UITimeBox[data-size="small"][data-readonly="true"] {
+  .UITimeBox-Content {
+    @apply px-1 py-0.5;
   }
 
   .UITimeBox-Text {
@@ -273,35 +291,36 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-:not(.UITimeBox[data-readonly="true"]) {
-  .UITimeBox[data-halign="start"] {
-    .UITimeBox-Content {
-      @apply justify-start;
-    }
-
-    .UITimeBox-Input {
-      @apply flex-initial;
-    }
+.UITimeBox[data-halign="start"] {
+  .UITimeBox-Content {
+    @apply justify-start;
   }
 
-  .UITimeBox[data-halign="center"] {
-    .UITimeBox-Content {
-      @apply justify-center;
-    }
+  .UITimeBox-Input,
+  .UITimeBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UITimeBox-Input {
-      @apply flex-initial;
-    }
+.UITimeBox[data-halign="center"] {
+  .UITimeBox-Content {
+    @apply justify-center;
   }
 
-  .UITimeBox[data-halign="end"] {
-    .UITimeBox-Content {
-      @apply justify-end;
-    }
+  .UITimeBox-Input,
+  .UITimeBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UITimeBox-Input {
-      @apply flex-initial;
-    }
+.UITimeBox[data-halign="end"] {
+  .UITimeBox-Content {
+    @apply justify-end;
+  }
+
+  .UITimeBox-Input,
+  .UITimeBox-Text {
+    @apply flex-initial;
   }
 }
 </style>

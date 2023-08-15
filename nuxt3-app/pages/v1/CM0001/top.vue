@@ -634,7 +634,13 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       </template>
 
       <div class="grid grid-cols-2 gap-2 p-6">
-        <UIFileUpload v-model="data.fileupload1" label="デフォルト" :required="data.fileuploadRequired" :disabled="data.fileuploadDisabled" />
+        <UIFileUpload
+          v-model="data.fileupload1"
+          label="デフォルト"
+          :required="data.fileuploadRequired"
+          :disabled="data.fileuploadDisabled"
+          :size="data.fileuploadSize"
+        />
         <div class="border">{{ data.fileupload1?.name }}</div>
 
         <UIFileUpload
@@ -662,7 +668,13 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       </template>
 
       <div class="grid grid-cols-2 gap-2 p-6">
-        <UIMultiFileUpload v-model="data.multifileupload1" label="デフォルト" :required="data.multifileuploadRequired" :disabled="data.multifileuploadDisabled" />
+        <UIMultiFileUpload
+          v-model="data.multifileupload1"
+          label="デフォルト"
+          :required="data.multifileuploadRequired"
+          :disabled="data.multifileuploadDisabled"
+          :size="data.multifileuploadSize"
+        />
         <div class="border">{{ data.multifileupload1.map((item: File) => item.name) }}</div>
 
         <UIMultiFileUpload

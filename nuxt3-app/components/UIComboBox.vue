@@ -426,9 +426,18 @@ function validate(value: string) {
 }
 
 .UIComboBox[data-size="large"] {
+  .UIComboBox-Content {
+    @apply text-lg;
+  }
+
   .UIComboBox-Input {
-    @apply pl-3 pr-9 py-1.5
-      text-lg;
+    @apply pl-3 pr-9 py-1.5;
+  }
+}
+
+.UIComboBox[data-size="large"][data-readonly="true"] {
+  .UIComboBox-Content {
+    @apply px-3 py-1.5;
   }
 
   .UIComboBox-Text {
@@ -437,9 +446,18 @@ function validate(value: string) {
 }
 
 .UIComboBox[data-size="small"] {
+  .UIComboBox-Content {
+    @apply text-sm;
+  }
+
   .UIComboBox-Input {
-    @apply pl-1 pr-7 py-0.5
-      text-sm;
+    @apply pl-1 pr-7 py-0.5;
+  }
+}
+
+.UIComboBox[data-size="small"][data-readonly="true"] {
+  .UIComboBox-Content {
+    @apply px-1 py-0.5;
   }
 
   .UIComboBox-Text {
@@ -464,35 +482,37 @@ function validate(value: string) {
   }
 }
 
-:not(.UIComboBox[data-readonly="true"]) {
-  .UIComboBox[data-halign="start"] {
-    .UIComboBox-Content {
-      @apply justify-start;
-    }
 
-    .UIComboBox-InputArea {
-      @apply flex-initial;
-    }
+.UIComboBox[data-halign="start"] {
+  .UIComboBox-Content {
+    @apply justify-start;
   }
 
-  .UIComboBox[data-halign="center"] {
-    .UIComboBox-Content {
-      @apply justify-center;
-    }
+  .UIComboBox-InputArea,
+  .UIComboBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UIComboBox-InputArea {
-      @apply flex-initial;
-    }
+.UIComboBox[data-halign="center"] {
+  .UIComboBox-Content {
+    @apply justify-center;
   }
 
-  .UIComboBox[data-halign="end"] {
-    .UIComboBox-Content {
-      @apply justify-end;
-    }
+  .UIComboBox-InputArea,
+  .UIComboBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UIComboBox-InputArea {
-      @apply flex-initial;
-    }
+.UIComboBox[data-halign="end"] {
+  .UIComboBox-Content {
+    @apply justify-end;
+  }
+
+  .UIComboBox-InputArea,
+  .UIComboBox-Text {
+    @apply flex-initial;
   }
 }
 </style>

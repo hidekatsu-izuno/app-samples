@@ -219,9 +219,18 @@ function validate(value: string) {
 }
 
 .UISelectBox[data-size="large"] {
+  .UISelectBox-Content {
+    @apply text-lg;
+  }
+
   .UISelectBox-Input {
-    @apply pl-3 pr-9 py-1.5
-      text-lg;
+    @apply px-3 py-1.5;
+  }
+}
+
+.UISelectBox[data-size="large"][data-readonly="true"] {
+  .UISelectBox-Content {
+    @apply px-3 py-1.5;
   }
 
   .UISelectBox-Text {
@@ -230,9 +239,18 @@ function validate(value: string) {
 }
 
 .UISelectBox[data-size="small"] {
+  .UISelectBox-Content {
+    @apply text-sm;
+  }
+
   .UISelectBox-Input {
-    @apply pl-1 pr-7 py-0.5
-      text-sm;
+    @apply px-1 py-0.5;
+  }
+}
+
+.UISelectBox[data-size="small"][data-readonly="true"] {
+  .UISelectBox-Content {
+    @apply px-1 py-0.5;
   }
 
   .UISelectBox-Text {
@@ -249,35 +267,36 @@ function validate(value: string) {
   }
 }
 
-:not(.UISelectBox[data-readonly="true"]) {
-  .UISelectBox[data-halign="start"] {
-    .UISelectBox-Content {
-      @apply justify-start;
-    }
-
-    .UISelectBox-InputArea {
-      @apply flex-initial;
-    }
+.UISelectBox[data-halign="start"] {
+  .UISelectBox-Content {
+    @apply justify-start;
   }
 
-  .UISelectBox[data-halign="center"] {
-    .UISelectBox-Content {
-      @apply justify-center;
-    }
+  .UISelectBox-InputArea,
+  .UISelectBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UISelectBox-InputArea {
-      @apply flex-initial;
-    }
+.UISelectBox[data-halign="center"] {
+  .UISelectBox-Content {
+    @apply justify-center;
   }
 
-  .UISelectBox[data-halign="end"] {
-    .UISelectBox-Content {
-      @apply justify-end;
-    }
+  .UISelectBox-InputArea,
+  .UISelectBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UISelectBox-InputArea {
-      @apply flex-initial;
-    }
+.UISelectBox[data-halign="end"] {
+  .UISelectBox-Content {
+    @apply justify-end;
+  }
+
+  .UISelectBox-InputArea,
+  .UISelectBox-Text {
+    @apply flex-initial;
   }
 }
 </style>

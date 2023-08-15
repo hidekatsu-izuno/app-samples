@@ -93,16 +93,22 @@ function onBlur(event: Event) {
 }
 
 .UIButton[data-size="large"] {
+  .UIButton-Content {
+    @apply text-lg;
+  }
+
   .UIButton-Input {
-    @apply px-6 py-3
-      text-lg;
+    @apply px-6 py-3;
   }
 }
 
 .UIButton[data-size="small"] {
+  .UIButton-Content {
+    @apply text-sm;
+  }
+
   .UIButton-Input {
-    @apply px-2 py-1
-      text-sm;
+    @apply px-2 py-1;
   }
 }
 

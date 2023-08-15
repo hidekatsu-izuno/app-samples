@@ -209,21 +209,40 @@ function validate(value: boolean) {
   }
 }
 
+
 .UICheck[data-size="large"] {
-  .UICheck-InputLabel {
-    @apply py-1.5
-      text-lg;
+  .UICheck-Content {
+    @apply text-lg;
   }
 
-  .UICheck-Text {
+  .UICheck-Input {
+    @apply py-1.5;
+  }
+}
+
+.UICheck[data-size="large"][data-readonly="true"] {
+  .UITextBox-Content {
+    @apply px-3 py-1.5;
+  }
+
+  .UITextBox-Text {
     @apply min-h-[calc(1rem+12px)];
   }
 }
 
 .UICheck[data-size="small"] {
-  .UICheck-InputLabel {
-    @apply py-0.5
-      text-sm;
+  .UITextBox-Content {
+    @apply text-sm;
+  }
+
+  .UITextBox-Input {
+    @apply py-0.5;
+  }
+}
+
+.UICheck[data-size="small"][data-readonly="true"] {
+  .UICheck-Content {
+    @apply px-1 py-0.5;
   }
 
   .UICheck-Text {
@@ -246,35 +265,36 @@ function validate(value: boolean) {
   }
 }
 
-:not(.UICheck[data-readonly="true"]) {
-  .UICheck[data-halign="start"] {
-    .UICheck-Content {
-      @apply justify-start;
-    }
-
-    .UICheck-Input {
-      @apply w-auto;
-    }
+.UICheck[data-halign="start"] {
+  .UICheck-Content {
+    @apply justify-start;
   }
 
-  .UICheck[data-halign="center"] {
-    .UICheck-Content {
-      @apply justify-center;
-    }
+  .UICheck-Input,
+  .UICheck-Text {
+    @apply w-auto;
+  }
+}
 
-    .UICheck-Input {
-      @apply w-auto;
-    }
+.UICheck[data-halign="center"] {
+  .UICheck-Content {
+    @apply justify-center;
   }
 
-  .UICheck[data-halign="end"] {
-    .UICheck-Content {
-      @apply justify-end;
-    }
+  .UICheck-Input,
+  .UICheck-Text {
+    @apply w-auto;
+  }
+}
 
-    .UICheck-Input {
-      @apply w-auto;
-    }
+.UICheck[data-halign="end"] {
+  .UICheck-Content {
+    @apply justify-end;
+  }
+
+  .UICheck-Input,
+  .UICheck-Text {
+    @apply w-auto;
   }
 }
 </style>

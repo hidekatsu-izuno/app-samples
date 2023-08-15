@@ -461,9 +461,18 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox[data-size="large"] {
+  .UIDateBox-Content {
+    @apply text-lg;
+  }
+
   .UIDateBox-Input {
-    @apply pl-3 pr-9 py-1.5
-      text-lg;
+    @apply pl-3 pr-9 py-1.5;
+  }
+}
+
+.UIDateBox[data-size="large"][data-readonly="true"] {
+  .UIDateBox-Content {
+    @apply px-3 py-1.5;
   }
 
   .UIDateBox-Text {
@@ -472,13 +481,31 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox[data-size="small"] {
+  .UIDateBox-Content {
+    @apply text-sm;
+  }
+
   .UIDateBox-Input {
-    @apply pl-1 pr-7 py-0.5
-      text-sm;
+    @apply pl-1 pr-7 py-0.5;
+  }
+}
+
+.UIDateBox[data-size="small"][data-readonly="true"] {
+  .UIDateBox-Content {
+    @apply px-1 py-0.5;
   }
 
   .UIDateBox-Text {
     @apply min-h-[calc(1rem+4px)];
+  }
+}
+
+.UITextBox[data-readonly="true"] {
+  .UITextBox-Content {
+    @apply justify-start
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
   }
 }
 
@@ -499,35 +526,36 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-:not(.UIDateBox[data-readonly="true"]) {
-  .UIDateBox[data-halign="start"] {
-    .UIDateBox-Content {
-      @apply justify-start;
-    }
-
-    .UIDateBox-InputArea {
-      @apply flex-initial;
-    }
+.UIDateBox[data-halign="start"] {
+  .UIDateBox-Content {
+    @apply justify-start;
   }
 
-  .UIDateBox[data-halign="center"] {
-    .UIDateBox-Content {
-      @apply justify-center;
-    }
+  .UIDateBox-InputArea,
+  .UIDateBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UIDateBox-InputArea {
-      @apply flex-initial;
-    }
+.UIDateBox[data-halign="center"] {
+  .UIDateBox-Content {
+    @apply justify-center;
   }
 
-  .UIDateBox[data-halign="end"] {
-    .UIDateBox-Content {
-      @apply justify-end;
-    }
+  .UIDateBox-InputArea,
+  .UIDateBox-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UIDateBox-InputArea {
-      @apply flex-initial;
-    }
+.UIDateBox[data-halign="end"] {
+  .UIDateBox-Content {
+    @apply justify-end;
+  }
+
+  .UIDateBox-InputArea,
+  .UIDateBox-Text {
+    @apply flex-initial;
   }
 }
 </style>

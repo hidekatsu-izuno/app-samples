@@ -264,9 +264,18 @@ function getFormatMaxLength(format: string) {
 }
 
 .UINumberBox[data-size="large"] {
+  .UINumberBox-Content {
+    @apply text-lg;
+  }
+
   .UINumberBox-Input {
-    @apply px-3 py-1.5
-      text-lg;
+    @apply px-3 py-1.5;
+  }
+}
+
+.UINumberBox[data-size="large"][data-readonly="true"] {
+  .UINumberBox-Content {
+    @apply px-3 py-1.5;
   }
 
   .UINumberBox-Text {
@@ -275,9 +284,18 @@ function getFormatMaxLength(format: string) {
 }
 
 .UINumberBox[data-size="small"] {
+  .UINumberBox-Content {
+    @apply text-sm;
+  }
+
   .UINumberBox-Input {
-    @apply px-1 py-0.5
-      text-sm;
+    @apply px-1 py-0.5;
+  }
+}
+
+.UINumberBox[data-size="small"][data-readonly="true"] {
+  .UINumberBox-Content {
+    @apply px-1 py-0.5;
   }
 
   .UINumberBox-Text {
@@ -294,32 +312,36 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-:not(.UINumberBox[data-readonly="true"]) {
-  .UINumberBox[data-halign="start"] {
-    .UINumberBox-Content {
-      @apply justify-start;
-    }
-    .UINumberBox-Input {
-      @apply flex-initial;
-    }
+.UINumberBox[data-halign="start"] {
+  .UINumberBox-Content {
+    @apply justify-start;
   }
 
-  .UINumberBox[data-halign="center"] {
-    .UINumberBox-Content {
-      @apply justify-center;
-    }
-    .UINumberBox-Input {
-      @apply flex-initial;
-    }
+  .UINumberBox-Input,
+  .UINumberBox-Text {
+    @apply flex-initial;
+  }
+}
+
+.UINumberBox[data-halign="center"] {
+  .UINumberBox-Content {
+    @apply justify-center;
   }
 
-  .UINumberBox[data-halign="end"] {
-    .UINumberBox-Content {
-      @apply justify-end;
-    }
-    .UINumberBox-Input {
-      @apply flex-initial;
-    }
+  .UINumberBox-Input,
+  .UINumberBox-Text {
+    @apply flex-initial;
+  }
+}
+
+.UINumberBox[data-halign="end"] {
+  .UINumberBox-Content {
+    @apply justify-end;
+  }
+
+  .UINumberBox-Input,
+  .UINumberBox-Text {
+    @apply flex-initial;
   }
 }
 </style>
