@@ -224,7 +224,7 @@ function validate(value: string) {
   }
 
   .UISelectBox-Input {
-    @apply px-3 py-1.5;
+    @apply pl-3 pr-9 py-1.5;
   }
 }
 
@@ -244,7 +244,7 @@ function validate(value: string) {
   }
 
   .UISelectBox-Input {
-    @apply px-1 py-0.5;
+    @apply pl-1 pr-7 py-0.5;
   }
 }
 
