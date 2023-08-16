@@ -150,10 +150,9 @@ function validate(value: string) {
       <div
         v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
         :key="index"
-        class="UIRadioList-ContentItem"
+        class="UIRadioList-Item"
       >
         <div v-if="props.prefix">{{ props.prefix }}</div>
-        <div class="UIRadioList-Item">
           <label
             class="UIRadioList-InputLabel"
             :class="props.inputClass"
@@ -173,7 +172,6 @@ function validate(value: string) {
             </div>
             {{ item.text }}
           </label>
-        </div>
         <div v-if="props.suffix">{{ props.suffix }}</div>
       </div>
     </div>
@@ -189,16 +187,13 @@ function validate(value: string) {
   @apply block;
 }
 
-.UIRadioList-ContentItem {
-  @apply flex flex-row items-center gap-2;
-}
-
 .UIRadioList-Item {
-  @apply flex-auto;
+  @apply flex flex-row items-center gap-2;
 }
 
 .UIRadioList-InputLabel {
   @apply inline-flex items-center gap-1
+    mr-auto
     py-1;
 }
 
@@ -293,69 +288,54 @@ function validate(value: string) {
       px-2 py-1
       text-gray-900;
   }
+}
 
-  .UIRadioList[data-halign="start"] {
-    .UIRadioList-Content {
-      @apply justify-start;
-    }
-
-    .UIRadioList-Text {
-      @apply flex-initial;
-    }
+.UIRadioList[data-halign="start"] {
+  .UIRadioList-Content,
+  .UIRadioList-Item {
+    @apply justify-start;
   }
 
-  .UIRadioList[data-halign="center"] {
-    .UIRadioList-Content {
-      @apply justify-center;
-    }
-
-    .UIRadioList-Text {
-      @apply flex-initial;
-    }
+  .UIRadioList-InputLabel {
+    @apply mr-0;
   }
 
-  .UITextBox[data-halign="end"] {
-    .UIRadioList-Content {
-      @apply justify-end;
-    }
+  .UIRadioList-Text {
+    @apply flex-initial;
+  }
+}
 
-    .UIRadioList-Text {
-      @apply flex-initial;
-    }
+.UIRadioList[data-halign="center"] {
+  .UIRadioList-Content,
+  .UIRadioList-Item {
+    @apply justify-center;
+  }
+
+  .UIRadioList-InputLabel {
+    @apply mr-0;
+  }
+
+  .UIRadioList-Text {
+    @apply flex-initial;
+  }
+}
+
+.UITextBox[data-halign="end"] {
+  .UIRadioList-Content,
+  .UIRadioList-Item {
+    @apply justify-end;
+  }
+
+  .UIRadioList-InputLabel {
+    @apply mr-0;
+  }
+
+  .UIRadioList-Text {
+    @apply flex-initial;
   }
 }
 
 :not(.UIRadioList[data-readonly="true"]) {
-  .UIRadioList[data-halign="start"] {
-    .UIRadioList-ContentItem {
-      @apply justify-start;
-    }
-
-    .UIRadioList-Item {
-      @apply flex-initial;
-    }
-  }
-
-  .UIRadioList[data-halign="center"] {
-    .UIRadioList-ContentItem {
-      @apply justify-center;
-    }
-
-    .UIRadioList-Item {
-      @apply flex-initial;
-    }
-  }
-
-  .UITextBox[data-halign="end"] {
-    .UIRadioList-ContentItem {
-      @apply justify-end;
-    }
-
-    .UIRadioList-Item {
-      @apply flex-initial;
-    }
-  }
-
   .UIRadioList-columns-2 {
     .UIRadioList-Content {
       @apply grid grid-cols-2;

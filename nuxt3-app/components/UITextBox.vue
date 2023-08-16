@@ -165,14 +165,19 @@ function validate(value: string) {
       v-if="props.readonly"
       class="UITextBox-Content"
     >
-      <div v-if="props.prefix && data.value" class="UITextBox-Prefix">{{ props.prefix }}</div>
-      <div class="UITextBox-Text">{{ data.value }}</div>
-      <div v-if="props.suffix && data.value" class="UITextBox-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UITextBox-Item">
+        <div v-if="props.prefix && data.value" class="UITextBox-Prefix">{{ props.prefix }}</div>
+        <div class="UITextBox-Text">{{ data.value }}</div>
+        <div v-if="props.suffix && data.value" class="UITextBox-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UITextBox-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UITextBox-Prefix">{{ props.prefix }}</div>
       <input
         class="UITextBox-Input"
@@ -189,8 +194,9 @@ function validate(value: string) {
         @blur="onBlur"
         @compositionstart="onCompositionStart"
         @compositionend="onCompositionEnd"
-      >
+      />
       <div v-if="props.suffix" class="UITextBox-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -276,7 +282,7 @@ function validate(value: string) {
 }
 
 .UITextBox[data-readonly="true"] {
-  .UITextBox-Content {
+  .UITextBox-Item {
     @apply justify-start
       border border-gray-200
       px-2 py-1

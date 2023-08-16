@@ -142,7 +142,7 @@ function validate(value: string[]) {
         <li
           v-for="(item, index) in props.items.filter(item => data.value.includes(item.value))"
           :key="index"
-          class="UICheckList-ContentItem"
+          class="UICheckList-Item"
         >
           <div v-if="props.prefix" class="UICheckList-Prefix">{{ props.prefix }}</div>
           <div class="UICheckList-Text">{{ item.text }}</div>
@@ -161,10 +161,9 @@ function validate(value: string[]) {
       <div
         v-for="(item, index) in props.items"
         :key="index"
-        class="UICheckList-ContentItem"
+        class="UICheckList-Item"
       >
         <div v-if="props.prefix" class="UICheckList-Prefix">{{ props.prefix }}</div>
-        <div class="UICheckList-Item">
           <label
             class="UICheckList-InputLabel"
             :class="props.inputClass"
@@ -184,7 +183,6 @@ function validate(value: string[]) {
             </div>
             {{ item.text }}
           </label>
-        </div>
         <div v-if="props.suffix" class="UICheckList-Suffix">{{ props.suffix }}</div>
       </div>
     </div>
@@ -200,16 +198,13 @@ function validate(value: string[]) {
   @apply block;
 }
 
-.UICheckList-ContentItem {
-  @apply flex flex-row items-center gap-2;
-}
-
 .UICheckList-Item {
-  @apply flex-auto;
+  @apply flex flex-row items-center gap-2;
 }
 
 .UICheckList-InputLabel {
   @apply inline-flex items-center gap-1
+    mr-auto
     py-1;
 }
 
@@ -304,39 +299,48 @@ function validate(value: string[]) {
       text-gray-900;
   }
 
-  .UICheckList-ContentItem {
+  .UICheckList-Item {
     @apply justify-start;
   }
 }
 
 .UICheckList[data-halign="start"] {
-  .UICheckList-ContentItem {
+  .UICheckList-Item {
     @apply justify-start;
   }
 
-  .UICheckList-Item,
+  .UICheckList-InputLabel {
+    @apply mr-0;
+  }
+
   .UICheckList-Text {
     @apply flex-initial;
   }
 }
 
 .UICheckList[data-halign="center"] {
-  .UICheckList-ContentItem {
+  .UICheckList-Item {
     @apply justify-center;
   }
 
-  .UICheckList-Item,
+  .UICheckList-InputLabel {
+    @apply mr-0;
+  }
+
   .UICheckList-Text {
     @apply flex-initial;
   }
 }
 
 .UICheckList[data-halign="end"] {
-  .UICheckList-ContentItem {
+  .UICheckList-Item {
     @apply justify-end;
   }
 
-  .UICheckList-Item,
+  .UICheckList-InputLabel {
+    @apply mr-0;
+  }
+
   .UICheckList-Text {
     @apply flex-initial;
   }

@@ -160,7 +160,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <UIButton size="small" @click="onValidate">validate</UIButton>
         </div>
       </template>
-      <div class="grid grid-cols-2 gap-2 p-6 p-6">
+      <div class="grid gap-2 p-6 p-6">
         <UITextBox
           ref="textbox1Ref"
           v-model="data.textbox1"
@@ -169,8 +169,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
           :size="data.textboxSize"
-        />
-        <div class="border">{{ data.textbox1 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.textbox1 }}</div>
+          </template>
+        </UITextBox>
 
         <UITextBox
           v-model="data.textbox2"
@@ -180,8 +183,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
           :size="data.textboxSize"
-        />
-        <div class="border">{{ data.textbox2 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.textbox2 }}</div>
+          </template>
+        </UITextBox>
 
         <UITextBox
           v-model="data.textbox3"
@@ -191,8 +197,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
           :size="data.textboxSize"
-        />
-        <div class="border">{{ data.textbox3 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.textbox3 }}</div>
+          </template>
+        </UITextBox>
 
         <UITextBox
           v-model="data.textbox4"
@@ -202,8 +211,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
           :size="data.textboxSize"
-        />
-        <div class="border">{{ data.textbox4 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.textbox4 }}</div>
+          </template>
+        </UITextBox>
 
         <UITextBox
           v-model="data.textbox5"
@@ -213,8 +225,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
           :size="data.textboxSize"
-        />
-        <div class="border">{{ data.textbox5 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.textbox5 }}</div>
+          </template>
+        </UITextBox>
 
         <UITextBox
           v-model="data.textbox6"
@@ -225,8 +240,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
           :size="data.textboxSize"
-        />
-        <div class="border">{{ data.textbox6 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.textbox6 }}</div>
+          </template>
+        </UITextBox>
 
         <UITextBox
           v-model="data.textbox7"
@@ -239,8 +257,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.textboxDisabled"
           :readonly="data.textboxReadonly"
           :size="data.textboxSize"
-        />
-        <div class="border">{{ data.textbox7 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.textbox7 }}</div>
+          </template>
+        </UITextBox>
       </div>
     </UICard>
 
