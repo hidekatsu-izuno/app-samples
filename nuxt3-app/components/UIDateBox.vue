@@ -250,14 +250,19 @@ function getFormatMaxLength(format: string) {
       v-if="props.readonly"
       class="UIDateBox-Content"
     >
-      <div v-if="props.prefix && data.value" class="UIDateBox-Prefix">{{ props.prefix }}</div>
-      <div class="UIDateBox-Text">{{ data.value }}</div>
-      <div v-if="props.suffix && data.value" class="UIDateBox-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UIDateBox-Item">
+        <div v-if="props.prefix && data.value" class="UIDateBox-Prefix">{{ props.prefix }}</div>
+        <div class="UIDateBox-Text">{{ data.value }}</div>
+        <div v-if="props.suffix && data.value" class="UIDateBox-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UIDateBox-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UIDateBox-Prefix">{{ props.prefix }}</div>
       <div class="UIDateBox-InputArea">
         <input
@@ -282,6 +287,7 @@ function getFormatMaxLength(format: string) {
         </div>
       </div>
       <div v-if="props.suffix" class="UIDateBox-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <div
       ref="pickerRef"
@@ -500,10 +506,9 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-.UITextBox[data-readonly="true"] {
-  .UITextBox-Content {
-    @apply justify-start
-      border border-gray-200
+.UIDateBox[data-readonly="true"] {
+  .UIDateBox-Item {
+    @apply border border-gray-200
       px-2 py-1
       text-gray-900;
   }
@@ -517,23 +522,9 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-.UIDateBox[data-readonly="true"] {
-  .UIDateBox-Content {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
 .UIDateBox[data-halign="start"] {
   .UIDateBox-Content {
     @apply justify-start;
-  }
-
-  .UIDateBox-InputArea,
-  .UIDateBox-Text {
-    @apply flex-initial;
   }
 }
 
@@ -541,19 +532,35 @@ function getFormatMaxLength(format: string) {
   .UIDateBox-Content {
     @apply justify-center;
   }
-
-  .UIDateBox-InputArea,
-  .UIDateBox-Text {
-    @apply flex-initial;
-  }
 }
 
 .UIDateBox[data-halign="end"] {
   .UIDateBox-Content {
     @apply justify-end;
   }
+}
 
-  .UIDateBox-InputArea,
+.UIDateBox[data-halign="start"],
+.UIDateBox[data-halign="center"],
+.UIDateBox[data-halign="end"] {
+  .UIDateBox-InputArea {
+    @apply flex-initial;
+  }
+}
+
+.UIDateBox[data-readonly="true"] {
+  .UIDateBox-Content {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UIDateBox[data-readonly="true"][data-halign="start"],
+.UIDateBox[data-readonly="true"][data-halign="center"],
+.UIDateBox[data-readonly="true"][data-halign="end"] {
+  .UIDateBox-Item,
   .UIDateBox-Text {
     @apply flex-initial;
   }

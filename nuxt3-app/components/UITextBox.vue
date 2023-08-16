@@ -281,23 +281,9 @@ function validate(value: string) {
   }
 }
 
-.UITextBox[data-readonly="true"] {
-  .UITextBox-Item {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
 .UITextBox[data-halign="start"] {
   .UITextBox-Content {
     @apply justify-start;
-  }
-
-  .UITextBox-Input,
-  .UITextBox-Text {
-    @apply flex-initial;
   }
 }
 
@@ -305,19 +291,35 @@ function validate(value: string) {
   .UITextBox-Content {
     @apply justify-center;
   }
-
-  .UITextBox-Input,
-  .UITextBox-Text {
-    @apply flex-initial;
-  }
 }
 
 .UITextBox[data-halign="end"] {
   .UITextBox-Content {
     @apply justify-end;
   }
+}
 
-  .UITextBox-Input,
+.UITextBox[data-halign="start"],
+.UITextBox[data-halign="center"],
+.UITextBox[data-halign="end"] {
+  .UITextBox-Input {
+    @apply flex-initial;
+  }
+}
+
+.UITextBox[data-readonly="true"] {
+  .UITextBox-Item {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UITextBox[data-readonly="true"][data-halign="start"],
+.UITextBox[data-readonly="true"][data-halign="center"],
+.UITextBox[data-readonly="true"][data-halign="end"] {
+  .UITextBox-Item,
   .UITextBox-Text {
     @apply flex-initial;
   }

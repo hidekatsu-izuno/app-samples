@@ -324,7 +324,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
+      <div class="grid gap-2 p-6">
         <UIDateBox
           v-model="data.datebox1"
           label="デフォルト"
@@ -332,8 +332,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.dateboxDisabled"
           :readonly="data.dateboxReadonly"
           :size="data.dateboxSize"
-        />
-        <div class="border">{{ data.datebox1 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.datebox1 }}</div>
+          </template>
+        </UIDateBox>
 
         <UIDateBox
           v-model="data.datebox2"
@@ -343,8 +346,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :readonly="data.dateboxReadonly"
           :size="data.dateboxSize"
           format="'('u-M-d')'"
-        />
-        <div class="border">{{ data.datebox2 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.datebox2 }}</div>
+          </template>
+        </UIDateBox>
 
         <UIDateBox
           v-model="data.datebox3"
@@ -356,8 +362,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           prefix="("
           suffix=")"
           halign="center"
-        />
-        <div class="border">{{ data.datebox3 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.datebox3 }}</div>
+          </template>
+        </UIDateBox>
       </div>
     </UICard>
 
@@ -372,7 +381,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
+      <div class="grid gap-2 p-6">
         <UITimeBox
           v-model="data.timebox1"
           label="デフォルト"
@@ -380,8 +389,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.timeboxDisabled"
           :readonly="data.dateboxReadonly"
           :size="data.timeboxSize"
-        />
-        <div class="border">{{ data.timebox1 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.timebox1 }}</div>
+          </template>
+        </UITimeBox>
 
         <UITimeBox
           v-model="data.timebox2"
@@ -391,8 +403,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.timeboxDisabled"
           :readonly="data.timeboxReadonly"
           :size="data.timeboxSize"
-        />
-        <div class="border">{{ data.timebox2 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.timebox2 }}</div>
+          </template>
+        </UITimeBox>
 
         <UITimeBox
           v-model="data.timebox3"
@@ -405,8 +420,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           prefix="("
           suffix=")"
           halign="center"
-        />
-        <div class="border">{{ data.timebox3 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.timebox3 }}</div>
+          </template>
+        </UITimeBox>
       </div>
     </UICard>
 

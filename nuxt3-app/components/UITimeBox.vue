@@ -173,14 +173,19 @@ function getFormatMaxLength(format: string) {
       v-if="props.readonly"
       class="UITimeBox-Content"
     >
-      <div v-if="props.prefix && data.value" class="UITimeBox-Prefix">{{ props.prefix }}</div>
-      <div class="UITimeBox-Text">{{ data.value }}</div>
-      <div v-if="props.suffix && data.value" class="UITimeBox-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UITimeBox-Item">
+        <div v-if="props.prefix && data.value" class="UITimeBox-Prefix">{{ props.prefix }}</div>
+        <div class="UITimeBox-Text">{{ data.value }}</div>
+        <div v-if="props.suffix && data.value" class="UITimeBox-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UITimeBox-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UITimeBox-Prefix">{{ props.prefix }}</div>
       <input
         ref="inputRef"
@@ -199,6 +204,7 @@ function getFormatMaxLength(format: string) {
         @compositionend="onCompositionEnd"
       >
       <div v-if="props.suffix" class="UITimeBox-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -282,23 +288,9 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-.UITimeBox[data-readonly="true"] {
-  .UITimeBox-Content {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
 .UITimeBox[data-halign="start"] {
   .UITimeBox-Content {
     @apply justify-start;
-  }
-
-  .UITimeBox-Input,
-  .UITimeBox-Text {
-    @apply flex-initial;
   }
 }
 
@@ -306,19 +298,35 @@ function getFormatMaxLength(format: string) {
   .UITimeBox-Content {
     @apply justify-center;
   }
-
-  .UITimeBox-Input,
-  .UITimeBox-Text {
-    @apply flex-initial;
-  }
 }
 
 .UITimeBox[data-halign="end"] {
   .UITimeBox-Content {
     @apply justify-end;
   }
+}
 
-  .UITimeBox-Input,
+.UITimeBox[data-halign="start"],
+.UITimeBox[data-halign="center"],
+.UITimeBox[data-halign="end"] {
+  .UITimeBox-Input {
+    @apply flex-initial;
+  }
+}
+
+.UITimeBox[data-readonly="true"] {
+  .UITimeBox-Item {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UITimeBox[data-readonly="true"][data-halign="start"],
+.UITimeBox[data-readonly="true"][data-halign="center"],
+.UITimeBox[data-readonly="true"][data-halign="end"] {
+  .UITimeBox-Item,
   .UITimeBox-Text {
     @apply flex-initial;
   }
