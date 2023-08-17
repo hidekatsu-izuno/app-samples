@@ -134,11 +134,12 @@ function validate(value: string[]) {
       v-if="props.label"
       class="UICheckList-Label"
     >{{ props.label }}</label>
-    <ul
+    <div
       v-if="props.readonly"
       class="UICheckList-Content"
     >
-      <template v-if="data.value.length > 0">
+      <slot name="start" />
+      <ul class="UICheckList-ItemList">
         <li
           v-for="(item, index) in props.items.filter(item => data.value.includes(item.value))"
           :key="index"
@@ -148,9 +149,9 @@ function validate(value: string[]) {
           <div class="UICheckList-Text">{{ item.text }}</div>
           <div v-if="props.suffix" class="UICheckList-Suffix">{{ props.suffix }}</div>
         </li>
-      </template>
-      <li v-else class="UICheckList-Text"></li>
-    </ul>
+      </ul>
+      <slot name="end" />
+    </div>
     <div
       v-else
       class="UICheckList-Content"
@@ -158,6 +159,7 @@ function validate(value: string[]) {
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
+      <slot name="start" />
       <div
         v-for="(item, index) in props.items"
         :key="index"
@@ -185,6 +187,7 @@ function validate(value: string[]) {
           </label>
         <div v-if="props.suffix" class="UICheckList-Suffix">{{ props.suffix }}</div>
       </div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -196,6 +199,11 @@ function validate(value: string[]) {
 <style>
 .UICheckList-Label {
   @apply block;
+}
+
+.UICheckList-ItemList,
+.UICheckList-Text {
+  @apply min-h-[calc(1rem+8px)];
 }
 
 .UICheckList-Item {
@@ -231,8 +239,7 @@ function validate(value: string[]) {
 }
 
 .UICheckList-Text {
-  @apply min-h-[calc(1rem+8px)]
-    whitespace-pre-wrap;
+  @apply whitespace-pre-wrap;
 }
 
 .UICheckList-Error {
@@ -257,10 +264,11 @@ function validate(value: string[]) {
 }
 
 .UICheckList[data-size="large"][data-readonly="true"] {
-  .UICheckList-Content {
+  .UICheckList-ItemList {
     @apply px-3 py-1.5;
   }
 
+  .UICheckList-ItemList,
   .UICheckList-Text {
     @apply min-h-[calc(1rem+12px)];
   }
@@ -277,10 +285,11 @@ function validate(value: string[]) {
 }
 
 .UICheckList[data-size="small"][data-readonly="true"] {
-  .UICheckList-Content {
+  .UICheckList-ItemList {
     @apply px-1 py-0.5;
   }
 
+  .UICheckList-ItemList,
   .UICheckList-Text {
     @apply min-h-[calc(1rem+4px)];
   }
@@ -293,7 +302,7 @@ function validate(value: string[]) {
 }
 
 .UICheckList[data-readonly="true"] {
-  .UICheckList-Content {
+  .UICheckList-ItemList {
     @apply border border-gray-200
       px-2 py-1
       text-gray-900;
