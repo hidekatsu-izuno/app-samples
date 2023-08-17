@@ -276,7 +276,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6 p-6">
+      <div class="grid gap-2 p-6 p-6">
         <UINumberBox
           v-model="data.numberbox1"
           label="デフォルト"
@@ -284,8 +284,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.numberboxDisabled"
           :readonly="data.numberboxReadonly"
           :size="data.numberboxSize"
-        />
-        <div class="border">{{ data.numberbox1 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.numberbox1 }}</div>
+          </template>
+        </UINumberBox>
 
         <UINumberBox
           v-model="data.numberbox2"
@@ -295,8 +298,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.numberboxDisabled"
           :readonly="data.numberboxReadonly"
           :size="data.numberboxSize"
-        />
-        <div class="border">{{ data.numberbox2 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.numberbox2 }}</div>
+          </template>
+        </UINumberBox>
 
         <UINumberBox
           v-model="data.numberbox3"
@@ -308,8 +314,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           prefix="("
           suffix=")"
           halign="center"
-        />
-        <div class="border">{{ data.numberbox3 }}</div>
+        >
+          <template #end>
+            <div class="border w-1/2 self-stretch">{{ data.numberbox3 }}</div>
+          </template>
+        </UINumberBox>
       </div>
     </UICard>
 

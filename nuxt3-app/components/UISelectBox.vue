@@ -119,14 +119,19 @@ function validate(value: string) {
       v-if="props.readonly"
       class="UISelectBox-Content"
     >
-      <div v-if="props.prefix && data.value" class="UISelectBox-Prefix">{{ props.prefix }}</div>
-      <div class="UISelectBox-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
-      <div v-if="props.suffix && data.value" class="UISelectBox-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UISelectBox-Item">
+        <div v-if="props.prefix && data.value" class="UISelectBox-Prefix">{{ props.prefix }}</div>
+        <div class="UISelectBox-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
+        <div v-if="props.suffix && data.value" class="UISelectBox-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UISelectBox-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UISelectBox-Prefix">{{ props.prefix }}</div>
       <div class="UISelectBox-InputArea">
         <select
@@ -149,6 +154,7 @@ function validate(value: string) {
         </div>
       </div>
       <div v-if="props.suffix" class="UISelectBox-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -200,6 +206,10 @@ function validate(value: string) {
   .UIIcon {
     @apply text-2xl;
   }
+}
+
+.UISelectBox-Item {
+  @apply flex flex-row items-center gap-2;
 }
 
 .UISelectBox-Text {
@@ -258,23 +268,9 @@ function validate(value: string) {
   }
 }
 
-.UISelectBox[data-readonly="true"] {
-  .UISelectBox-Content {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
 .UISelectBox[data-halign="start"] {
   .UISelectBox-Content {
     @apply justify-start;
-  }
-
-  .UISelectBox-InputArea,
-  .UISelectBox-Text {
-    @apply flex-initial;
   }
 }
 
@@ -282,19 +278,35 @@ function validate(value: string) {
   .UISelectBox-Content {
     @apply justify-center;
   }
-
-  .UISelectBox-InputArea,
-  .UISelectBox-Text {
-    @apply flex-initial;
-  }
 }
 
 .UISelectBox[data-halign="end"] {
   .UISelectBox-Content {
     @apply justify-end;
   }
+}
 
-  .UISelectBox-InputArea,
+.UISelectBox[data-halign="start"],
+.UISelectBox[data-halign="center"],
+.UISelectBox[data-halign="end"] {
+  .UISelectBox-InputArea {
+    @apply flex-initial;
+  }
+}
+
+.UISelectBox[data-readonly="true"] {
+  .UISelectBox-Item {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UISelectBox[data-readonly="true"][data-halign="start"],
+.UISelectBox[data-readonly="true"][data-halign="center"],
+.UISelectBox[data-readonly="true"][data-halign="end"] {
+  .UISelectBox-Item,
   .UISelectBox-Text {
     @apply flex-initial;
   }

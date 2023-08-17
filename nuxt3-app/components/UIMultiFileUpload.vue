@@ -128,6 +128,7 @@ function validate(value: File[]) {
       class="UIMultiFileUpload-Label"
     >{{ props.label }}</label>
     <div class="UIMultiFileUpload-Content">
+      <slot name="start"/>
       <div v-if="props.prefix" class="UIMultiFileUpload-Prefix">{{ props.prefix }}</div>
       <input
         class="UIMultiFileUpload-Input"
@@ -145,6 +146,7 @@ function validate(value: File[]) {
         @blur="onBlur"
       >
       <div v-if="props.suffix" class="UIMultiFileUpload-Suffix">{{ props.suffix }}</div>
+      <slot name="end"/>
     </div>
     <div
       v-if="data.error"
@@ -208,19 +210,11 @@ function validate(value: File[]) {
   .UIMultiFileUpload-Content {
     @apply justify-start;
   }
-
-  .UIMultiFileUpload-Input {
-    @apply flex-initial;
-  }
 }
 
 .UIMultiFileUpload[data-halign="center"] {
   .UIMultiFileUpload-Content {
     @apply justify-center;
-  }
-
-  .UIMultiFileUpload-Input {
-    @apply flex-initial;
   }
 }
 
@@ -228,7 +222,11 @@ function validate(value: File[]) {
   .UIMultiFileUpload-Content {
     @apply justify-end;
   }
+}
 
+.UIMultiFileUpload[data-halign="start"],
+.UIMultiFileUpload[data-halign="center"],
+.UIMultiFileUpload[data-halign="end"] {
   .UIMultiFileUpload-Input {
     @apply flex-initial;
   }

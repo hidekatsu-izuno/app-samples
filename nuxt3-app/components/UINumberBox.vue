@@ -186,14 +186,19 @@ function getFormatMaxLength(format: string) {
       v-if="props.readonly"
       class="UINumberBox-Content"
     >
-      <div v-if="props.prefix && data.value" class="UINumberBox-Prefix">{{ props.prefix }}</div>
-      <div class="UINumberBox-Text">{{ data.value }}</div>
-      <div v-if="props.suffix && data.value" class="UINumberBox-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UINumberBox-Item">
+        <div v-if="props.prefix && data.value" class="UINumberBox-Prefix">{{ props.prefix }}</div>
+        <div class="UINumberBox-Text">{{ data.value }}</div>
+        <div v-if="props.suffix && data.value" class="UINumberBox-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UINumberBox-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UINumberBox-Prefix">{{ props.prefix }}</div>
       <input
         class="UINumberBox-Input"
@@ -213,6 +218,7 @@ function getFormatMaxLength(format: string) {
         @compositionend="onCompositionEnd"
       >
       <div v-if="props.suffix" class="UINumberBox-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -245,6 +251,10 @@ function getFormatMaxLength(format: string) {
 .UINumberBox-Input::-webkit-outer-spin-button {
   @apply appearance-none
     m-0;
+}
+
+.UINumberBox-Item {
+  @apply flex flex-row items-center gap-2;
 }
 
 .UINumberBox-Text {
@@ -303,23 +313,9 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-.UINumberBox[data-readonly="true"] {
-  .UINumberBox-Content {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
 .UINumberBox[data-halign="start"] {
   .UINumberBox-Content {
     @apply justify-start;
-  }
-
-  .UINumberBox-Input,
-  .UINumberBox-Text {
-    @apply flex-initial;
   }
 }
 
@@ -327,19 +323,35 @@ function getFormatMaxLength(format: string) {
   .UINumberBox-Content {
     @apply justify-center;
   }
-
-  .UINumberBox-Input,
-  .UINumberBox-Text {
-    @apply flex-initial;
-  }
 }
 
 .UINumberBox[data-halign="end"] {
   .UINumberBox-Content {
     @apply justify-end;
   }
+}
 
-  .UINumberBox-Input,
+.UINumberBox[data-halign="start"],
+.UINumberBox[data-halign="center"],
+.UINumberBox[data-halign="end"] {
+  .UINumberBox-Input {
+    @apply flex-initial;
+  }
+}
+
+.UINumberBox[data-readonly="true"] {
+  .UINumberBox-Item {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UINumberBox[data-readonly="true"][data-halign="start"],
+.UINumberBox[data-readonly="true"][data-halign="center"],
+.UINumberBox[data-readonly="true"][data-halign="end"] {
+  .UINumberBox-Item,
   .UINumberBox-Text {
     @apply flex-initial;
   }

@@ -232,6 +232,10 @@ function getFormatMaxLength(format: string) {
     text-gray-900 disabled:text-gray-400;
 }
 
+.UITimeBox-Item {
+  @apply flex flex-row items-center gap-2;
+}
+
 .UITimeBox-Text {
   @apply min-h-[calc(1rem+8px)]
     whitespace-pre-wrap;

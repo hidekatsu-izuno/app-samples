@@ -53,6 +53,7 @@ function onBlur(event: Event) {
       class="UIButton-Label"
     >{{ props.label }}</label>
     <div class="UIButton-Content">
+      <slot name="start" />
       <div v-if="props.prefix" class="UIButton-Prefix">{{ props.prefix }}</div>
       <button
         class="UIButton-Input"
@@ -68,6 +69,7 @@ function onBlur(event: Event) {
         <slot />
       </button>
       <div v-if="props.suffix" class="UIButton-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
   </div>
 </template>

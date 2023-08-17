@@ -284,14 +284,19 @@ function validate(value: string) {
       v-if="props.readonly"
       class="UIComboBox-Content"
     >
-      <div v-if="props.prefix && data.value" class="UIComboBox-Prefix">{{ props.prefix }}</div>
-      <div class="UIComboBox-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
-      <div v-if="props.suffix && data.value" class="UIComboBox-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UIComboBox-Item">
+        <div v-if="props.prefix && data.value" class="UIComboBox-Prefix">{{ props.prefix }}</div>
+        <div class="UIComboBox-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
+        <div v-if="props.suffix && data.value" class="UIComboBox-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UIComboBox-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UIComboBox-Prefix">{{ props.prefix }}</div>
       <div class="UIComboBox-InputArea">
         <input
@@ -317,6 +322,7 @@ function validate(value: string) {
         </div>
       </div>
       <div v-if="props.suffix" class="UIComboBox-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <ul
       ref="pickerRef"
@@ -409,6 +415,10 @@ function validate(value: string) {
     select-none pointer-events-none;
 }
 
+.UIComboBox-Item {
+  @apply flex flex-row items-center gap-2;
+}
+
 .UIComboBox-Text {
   @apply min-h-[calc(1rem+8px)]
     whitespace-pre-wrap;
@@ -473,24 +483,9 @@ function validate(value: string) {
   }
 }
 
-.UIComboBox[data-readonly="true"] {
-  .UIComboBox-Content {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
-
 .UIComboBox[data-halign="start"] {
   .UIComboBox-Content {
     @apply justify-start;
-  }
-
-  .UIComboBox-InputArea,
-  .UIComboBox-Text {
-    @apply flex-initial;
   }
 }
 
@@ -498,19 +493,35 @@ function validate(value: string) {
   .UIComboBox-Content {
     @apply justify-center;
   }
-
-  .UIComboBox-InputArea,
-  .UIComboBox-Text {
-    @apply flex-initial;
-  }
 }
 
 .UIComboBox[data-halign="end"] {
   .UIComboBox-Content {
     @apply justify-end;
   }
+}
 
-  .UIComboBox-InputArea,
+.UIComboBox[data-halign="start"],
+.UIComboBox[data-halign="center"],
+.UIComboBox[data-halign="end"] {
+  .UIComboBox-InputArea {
+    @apply flex-initial;
+  }
+}
+
+.UIComboBox[data-readonly="true"] {
+  .UIComboBox-Item {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UIComboBox[data-readonly="true"][data-halign="start"],
+.UIComboBox[data-readonly="true"][data-halign="center"],
+.UIComboBox[data-readonly="true"][data-halign="end"] {
+  .UIComboBox-Item,
   .UIComboBox-Text {
     @apply flex-initial;
   }

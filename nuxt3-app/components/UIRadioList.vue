@@ -136,9 +136,13 @@ function validate(value: string) {
       v-if="props.readonly"
       class="UIRadioList-Content"
     >
-      <div v-if="props.prefix && data.value">{{ props.prefix }}</div>
-      <div class="UIRadioList-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
-      <div v-if="props.suffix && data.value">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UIRadioList-Item">
+        <div v-if="props.prefix && data.value">{{ props.prefix }}</div>
+        <div class="UIRadioList-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
+        <div v-if="props.suffix && data.value">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
@@ -147,6 +151,7 @@ function validate(value: string) {
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
+      <slot name="start" />
       <div
         v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
         :key="index"
@@ -174,6 +179,7 @@ function validate(value: string) {
           </label>
         <div v-if="props.suffix">{{ props.suffix }}</div>
       </div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -185,6 +191,10 @@ function validate(value: string) {
 <style>
 .UIRadioList-Label {
   @apply block;
+}
+
+.UIRadioList-Content {
+  @apply flex flex-col;
 }
 
 .UIRadioList-Item {
@@ -281,55 +291,50 @@ function validate(value: string) {
   }
 }
 
-.UIRadioList[data-readonly="true"] {
+.UIRadioList[data-halign="start"] {
   .UIRadioList-Content {
-    @apply flex flex-row items-center justify-start gap-2
+    @apply items-start;
+  }
+}
+
+.UIRadioList[data-halign="center"] {
+  .UIRadioList-Content {
+    @apply items-center;
+  }
+}
+
+.UIRadioList[data-halign="end"] {
+  .UIRadioList-Content {
+    @apply items-end;
+  }
+}
+
+.UIRadioList[data-halign="start"],
+.UIRadioList[data-halign="center"],
+.UIRadioList[data-halign="end"] {
+  .UIRadioList-InputLabel {
+    @apply mr-0;
+  }
+
+  .UIRadioList-InputArea {
+    @apply flex-initial;
+  }
+}
+
+.UIRadioList[data-readonly="true"] {
+  .UIRadioList-Item {
+    @apply flex-auto
+      flex flex-row items-center gap-2
       border border-gray-200
       px-2 py-1
       text-gray-900;
   }
 }
 
-.UIRadioList[data-halign="start"] {
-  .UIRadioList-Content,
-  .UIRadioList-Item {
-    @apply justify-start;
-  }
-
-  .UIRadioList-InputLabel {
-    @apply mr-0;
-  }
-
-  .UIRadioList-Text {
-    @apply flex-initial;
-  }
-}
-
-.UIRadioList[data-halign="center"] {
-  .UIRadioList-Content,
-  .UIRadioList-Item {
-    @apply justify-center;
-  }
-
-  .UIRadioList-InputLabel {
-    @apply mr-0;
-  }
-
-  .UIRadioList-Text {
-    @apply flex-initial;
-  }
-}
-
-.UITextBox[data-halign="end"] {
-  .UIRadioList-Content,
-  .UIRadioList-Item {
-    @apply justify-end;
-  }
-
-  .UIRadioList-InputLabel {
-    @apply mr-0;
-  }
-
+.UIRadioList[data-readonly="true"][data-halign="start"],
+.UIRadioList[data-readonly="true"][data-halign="center"],
+.UIRadioList[data-readonly="true"][data-halign="end"] {
+  .UIRadioList-Item,
   .UIRadioList-Text {
     @apply flex-initial;
   }

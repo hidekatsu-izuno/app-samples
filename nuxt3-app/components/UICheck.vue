@@ -120,14 +120,19 @@ function validate(value: boolean) {
       v-if="props.readonly"
       class="UICheck-Content"
     >
-      <div v-if="props.prefix && $slots.default" class="UICheck-Prefix">{{ props.prefix }}</div>
-      <div class="UICheck-Text"><slot /></div>
-      <div v-if="props.suffix && $slots.default" class="UICheck-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UICheck-Item">
+        <div v-if="props.prefix && $slots.default" class="UICheck-Prefix">{{ props.prefix }}</div>
+        <div class="UICheck-Text"><slot /></div>
+        <div v-if="props.suffix && $slots.default" class="UICheck-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UICheck-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UICheck-Prefix">{{ props.prefix }}</div>
       <label class="UICheck-InputLabel">
         <div class="UICheck-InputArea">
@@ -149,6 +154,7 @@ function validate(value: boolean) {
         <slot />
       </label>
       <div v-if="props.suffix" class="UICheck-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -193,6 +199,10 @@ function validate(value: boolean) {
   grid-area: 1/1;
 }
 
+.UICheck-Item {
+  @apply flex flex-row items-center gap-2;
+}
+
 .UICheck-Text {
   @apply min-h-[calc(1rem+8px)]
     whitespace-pre-wrap;
@@ -209,7 +219,6 @@ function validate(value: boolean) {
   }
 }
 
-
 .UICheck[data-size="large"] {
   .UICheck-Content {
     @apply text-lg;
@@ -221,21 +230,21 @@ function validate(value: boolean) {
 }
 
 .UICheck[data-size="large"][data-readonly="true"] {
-  .UITextBox-Content {
+  .UICheck-Content {
     @apply px-3 py-1.5;
   }
 
-  .UITextBox-Text {
+  .UICheck-Text {
     @apply min-h-[calc(1rem+12px)];
   }
 }
 
 .UICheck[data-size="small"] {
-  .UITextBox-Content {
+  .UICheck-Content {
     @apply text-sm;
   }
 
-  .UITextBox-Input {
+  .UICheck-Input {
     @apply py-0.5;
   }
 }
@@ -256,23 +265,9 @@ function validate(value: boolean) {
   }
 }
 
-.UICheck[data-readonly="true"] {
-  .UICheck-Content {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
 .UICheck[data-halign="start"] {
   .UICheck-Content {
     @apply justify-start;
-  }
-
-  .UICheck-Input,
-  .UICheck-Text {
-    @apply w-auto;
   }
 }
 
@@ -280,21 +275,37 @@ function validate(value: boolean) {
   .UICheck-Content {
     @apply justify-center;
   }
-
-  .UICheck-Input,
-  .UICheck-Text {
-    @apply w-auto;
-  }
 }
 
 .UICheck[data-halign="end"] {
   .UICheck-Content {
     @apply justify-end;
   }
+}
 
-  .UICheck-Input,
-  .UICheck-Text {
+.UICheck[data-halign="start"],
+.UICheck[data-halign="center"],
+.UICheck[data-halign="end"] {
+  .UICheck-Input {
     @apply w-auto;
+  }
+}
+
+.UICheck[data-readonly="true"] {
+  .UICheck-Item {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UICheck[data-readonly="true"][data-halign="start"],
+.UICheck[data-readonly="true"][data-halign="center"],
+.UICheck[data-readonly="true"][data-halign="end"] {
+  .UICheck-Item,
+  .UICheck-Text {
+    @apply flex-initial;
   }
 }
 </style>

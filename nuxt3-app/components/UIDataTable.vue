@@ -103,6 +103,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
           <div
             class="UIDataTable-HeaderCell"
             :data-col="colIndex"
+            :data-key="item.key"
             :data-halign="item.halign"
             :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
             :style="{
@@ -132,6 +133,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
             class="UIDataTable-ContentCell"
             :data-col="colIndex"
             :data-row="rowIndex"
+            :data-key="item.key"
             :data-halign="item.halign"
             :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
             :style="{
@@ -161,6 +163,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
           <div
             class="UIDataTable-FooterCell"
             :data-col="colIndex"
+            :data-key="item.key"
             :data-halign="item.halign"
             :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
             :style="{

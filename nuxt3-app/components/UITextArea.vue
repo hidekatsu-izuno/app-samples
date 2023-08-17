@@ -147,14 +147,19 @@ function validate(value: string) {
       v-if="props.readonly"
       class="UITextArea-Content"
     >
-      <div v-if="props.prefix && data.value" class="UITextArea-Prefix">{{ props.prefix }}</div>
-      <div class="UITextArea-Text">{{ data.value }}</div>
-      <div v-if="props.suffix && data.value" class="UITextArea-Suffix">{{ props.suffix }}</div>
+      <slot name="start" />
+      <div class="UITextArea-Item">
+        <div v-if="props.prefix && data.value" class="UITextArea-Prefix">{{ props.prefix }}</div>
+        <div class="UITextArea-Text">{{ data.value }}</div>
+        <div v-if="props.suffix && data.value" class="UITextArea-Suffix">{{ props.suffix }}</div>
+      </div>
+      <slot name="end" />
     </div>
     <div
       v-else
       class="UITextArea-Content"
     >
+      <slot name="start" />
       <div v-if="props.prefix" class="UITextArea-Prefix">{{ props.prefix }}</div>
       <textarea
         class="UITextArea-Input"
@@ -171,6 +176,7 @@ function validate(value: string) {
         @compositionend="onCompositionEnd"
       />
       <div v-if="props.suffix" class="UITextArea-Suffix">{{ props.suffix }}</div>
+      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -197,6 +203,10 @@ function validate(value: string) {
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400
     resize-none;
+}
+
+.UITextArea-Item {
+  @apply flex flex-row items-center gap-2;
 }
 
 .UITextArea-Text {
@@ -255,23 +265,9 @@ function validate(value: string) {
   }
 }
 
-.UITextArea[data-readonly="true"] {
-  .UITextArea-Content {
-    @apply justify-start
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
 .UITextArea[data-halign="start"] {
   .UITextArea-Content {
     @apply justify-start;
-  }
-
-  .UITextArea-Input,
-  .UITextArea-Text {
-    @apply flex-initial;
   }
 }
 
@@ -279,19 +275,35 @@ function validate(value: string) {
   .UITextArea-Content {
     @apply justify-center;
   }
-
-  .UITextArea-Input,
-  .UITextArea-Text {
-    @apply flex-initial;
-  }
 }
 
 .UITextArea[data-halign="end"] {
   .UITextArea-Content {
     @apply justify-end;
   }
+}
 
-  .UITextArea-Input,
+.UITextArea[data-halign="start"],
+.UITextArea[data-halign="center"],
+.UITextArea[data-halign="end"] {
+  .UITextArea-Input {
+    @apply flex-initial;
+  }
+}
+
+.UITextArea[data-readonly="true"] {
+  .UITextArea-Item {
+    @apply flex-auto
+      border border-gray-200
+      px-2 py-1
+      text-gray-900;
+  }
+}
+
+.UITextArea[data-readonly="true"][data-halign="start"],
+.UITextArea[data-readonly="true"][data-halign="center"],
+.UITextArea[data-readonly="true"][data-halign="end"] {
+  .UITextArea-Item,
   .UITextArea-Text {
     @apply flex-initial;
   }

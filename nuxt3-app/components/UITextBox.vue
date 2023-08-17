@@ -225,6 +225,10 @@ function validate(value: string) {
     text-gray-900 disabled:text-gray-400;
 }
 
+.UITextBox-Item {
+  @apply flex flex-row items-center gap-2;
+}
+
 .UITextBox-Text {
   @apply min-h-[calc(1rem+8px)]
     whitespace-pre-wrap;
