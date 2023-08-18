@@ -33,6 +33,7 @@ const emits = defineEmits<{
 }>()
 
 const data = reactive({
+  id: crypto.randomUUID(),
   value: "",
   focused: false,
   error: "",
@@ -52,8 +53,6 @@ defineExpose({
   },
 })
 
-const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
-
 function onFocusin(event: Event) {
   if (!data.focused) {
     data.focused = true
@@ -68,7 +67,8 @@ function onChange(event: Event) {
   }
 
   const currentTarget = event.currentTarget as HTMLElement
-  const target = currentTarget.querySelector(`[name="${id.value}"]:checked`) as HTMLInputElement | null
+  const name = (event.target as HTMLElement).getAttribute("name")
+  const target = currentTarget.querySelector(`[name="${name}"]:checked`) as HTMLInputElement | null
   data.value = target ? target.value : ""
   emits("update:modelValue", data.value)
 
@@ -135,9 +135,9 @@ function validate(value: string) {
     <div
       v-else
       class="UIRadioList-Content"
-      @change="onChange"
       @focusin="onFocusin"
       @focusout="onFocusout"
+      @change="onChange"
     >
       <div
         v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
@@ -154,7 +154,7 @@ function validate(value: string) {
             <input
               class="UIRadioList-Input peer"
               type="radio"
-              :name="id || undefined"
+              :name="data.id"
               :value="item.value"
               :checked="item.value === data.value"
               :disabled="props.disabled"

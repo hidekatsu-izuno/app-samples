@@ -31,6 +31,7 @@ const emits = defineEmits<{
 }>()
 
 const data = reactive({
+  id: crypto.randomUUID(),
   value: new Array<string>(),
   focused: false,
   error: "",
@@ -50,8 +51,6 @@ defineExpose({
   },
 })
 
-const { data: id } = await useAsyncData("compId", () => Promise.resolve(crypto.randomUUID()))
-
 function onFocusin(event: Event) {
   if (!data.focused) {
     data.focused = true
@@ -66,7 +65,8 @@ function onChange(event: Event) {
   }
 
   const currentTarget = event.currentTarget as HTMLElement
-  const targets = currentTarget.querySelectorAll(`[name="${id.value}"]:checked`) as NodeListOf<HTMLInputElement>
+  const name = (event.target as HTMLElement).getAttribute("name")
+  const targets = currentTarget.querySelectorAll(`[name="${name}"]:checked`) as NodeListOf<HTMLInputElement>
   const values = new Set<string>()
   for (let i = 0; i < targets.length; i++) {
     values.add(targets[i].value)
@@ -143,9 +143,9 @@ function validate(value: string[]) {
     <div
       v-else
       class="UICheckList-Content"
-      @change="onChange"
       @focusin="onFocusin"
       @focusout="onFocusout"
+      @change="onChange"
     >
       <div
         v-for="(item, index) in props.items"
@@ -162,7 +162,7 @@ function validate(value: string[]) {
             <input
               class="UICheckList-Input peer"
               type="checkbox"
-              :name="id || undefined"
+              :name="data.id"
               :disabled="props.disabled"
               :tabindex="props.tabindex"
               :value="item.value"
