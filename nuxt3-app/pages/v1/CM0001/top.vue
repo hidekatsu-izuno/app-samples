@@ -557,7 +557,18 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.selectboxDisabled"
             :readonly="data.selectboxReadonly"
             :size="data.selectboxSize"
-            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }, { value: '3' }]"
+            :items="[
+              { value: '1', text: 'AAA' },
+              { value: '2', text: 'BBB' },
+              { value: '3' },
+              { value: '4' },
+              { value: '5' },
+              { value: '6', text: 'CCC' },
+              { value: '7' },
+              { value: '8' },
+              { value: '9' },
+              { value: '10', text: 'CCC' },
+            ]"
             placeholder="---"
             prefix="("
             suffix=")"
@@ -608,7 +619,14 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.comboboxDisabled"
             :readonly="data.comboboxReadonly"
             :size="data.comboboxSize"
-            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }, { value: '3' }]"
+            :items="[
+              { value: '1', text: 'AAA' },
+              { value: '2', text: 'BBB' },
+              { value: '3' },
+              { value: '4' },
+              { value: '5' },
+              { value: '6', text: 'CCC' },
+            ]"
             placeholder="---"
             prefix="("
             suffix=")"

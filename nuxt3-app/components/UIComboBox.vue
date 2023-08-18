@@ -384,14 +384,17 @@ function validate(value: string) {
 .UIComboBox-Picker {
   @apply flex flex-col
     shadow-lg
+    max-h-[20rem]
     border border-gray-300 rounded-md
     bg-white
+    overflow-auto
     z-10;
 }
 
 .UIComboBox-PickerItem {
-  @apply flex flex-row items-center
-    first:rounded-t-md last:rounded-b-md;
+  @apply flex flex-row items-center gap-1
+    first:rounded-t-md last:rounded-b-md
+    px-2;
 }
 
 .UIComboBox-PickerItem[data-selected="true"] {
@@ -401,7 +404,6 @@ function validate(value: string) {
 .UIComboBox-PickerItemValue,
 .UIComboBox-PickerItemText {
   @apply flex flex-row items-center
-    px-2
     select-none pointer-events-none;
 }
 
