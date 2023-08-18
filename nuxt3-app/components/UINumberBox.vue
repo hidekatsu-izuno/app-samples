@@ -4,9 +4,8 @@ import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
-  size?: "small" | "large",
   halign?: "start" | "center" | "end",
-  label?: string,
+  size?: "sm" | "lg",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -21,6 +20,7 @@ const props = withDefaults(defineProps<{
   modelValue?: string,
   error?: string,
 }>(), {
+  halign: "end",
   required: false,
   format: ",###.###",
   modelValue: "",
@@ -172,33 +172,18 @@ function getFormatMaxLength(format: string) {
 <template>
   <div
     class="UINumberBox"
-    :data-required="props.required || undefined"
+    :data-halign="props.halign || undefined"
     :data-size="props.size || undefined"
+    :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
-    :data-halign="props.halign || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UINumberBox-Label"
-    >{{ props.label }}</label>
-    <div
-      v-if="props.readonly"
-      class="UINumberBox-Content"
-    >
-      <slot name="start" />
-      <div class="UINumberBox-Item">
-        <div v-if="props.prefix && data.value" class="UINumberBox-Prefix">{{ props.prefix }}</div>
-        <div class="UINumberBox-Text">{{ data.value }}</div>
-        <div v-if="props.suffix && data.value" class="UINumberBox-Suffix">{{ props.suffix }}</div>
-      </div>
-      <slot name="end" />
+    <div v-if="props.readonly" class="UINumberBox-Content">
+      <div v-if="props.prefix && data.value" class="UINumberBox-Prefix">{{ props.prefix }}</div>
+      <div class="UINumberBox-Text">{{ data.value }}</div>
+      <div v-if="props.suffix && data.value" class="UINumberBox-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      v-else
-      class="UINumberBox-Content"
-    >
-      <slot name="start" />
+    <div v-else class="UINumberBox-Content">
       <div v-if="props.prefix" class="UINumberBox-Prefix">{{ props.prefix }}</div>
       <input
         class="UINumberBox-Input"
@@ -216,9 +201,8 @@ function getFormatMaxLength(format: string) {
         @blur="onBlur"
         @compositionstart="onCompositionStart"
         @compositionend="onCompositionEnd"
-      >
+      />
       <div v-if="props.suffix" class="UINumberBox-Suffix">{{ props.suffix }}</div>
-      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -228,12 +212,9 @@ function getFormatMaxLength(format: string) {
 </template>
 
 <style>
-.UINumberBox-Label {
-  @apply block;
-}
-
 .UINumberBox-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UINumberBox-Input {
@@ -241,119 +222,74 @@ function getFormatMaxLength(format: string) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    px-2 py-1
+    px-[0.5em] py-[0.25em]
     min-w-0
     bg-gray-50 disabled:bg-gray-100
-    text-right text-gray-900 disabled:text-gray-400;
-}
+    text-gray-900 disabled:text-gray-400;
 
-.UINumberBox-Input::-webkit-inner-spin-button,
-.UINumberBox-Input::-webkit-outer-spin-button {
-  @apply appearance-none
-    m-0;
-}
-
-.UINumberBox-Item {
-  @apply flex flex-row items-center gap-2;
-}
-
-.UINumberBox-Text {
-  @apply min-h-[calc(1rem+8px)]
-    whitespace-pre-wrap;
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    @apply appearance-none
+      m-0;
+  }
 }
 
 .UINumberBox-Error {
   @apply text-sm text-red-500;
 }
 
-.UINumberBox[data-required="true"] {
-  .UINumberBox-Label::after {
-    @apply text-red-500;
-    content: ' ※';
+.UINumberBox[data-readonly="true"] {
+  .UINumberBox-Content {
+    @apply min-h-[calc(1em+0.5em*2)]
+      border border-gray-200
+      px-[0.5em] py-[0.25em]
+      text-gray-900;
+  }
+
+  .UINumberBox-Text {
+    @apply whitespace-pre-wrap;
   }
 }
 
-.UINumberBox[data-size="large"] {
+.UINumberBox[data-size="lg"] {
   .UINumberBox-Content {
     @apply text-lg;
   }
-
-  .UINumberBox-Input {
-    @apply px-3 py-1.5;
-  }
 }
 
-.UINumberBox[data-size="large"][data-readonly="true"] {
-  .UINumberBox-Content {
-    @apply px-3 py-1.5;
-  }
-
-  .UINumberBox-Text {
-    @apply min-h-[calc(1rem+12px)];
-  }
-}
-
-.UINumberBox[data-size="small"] {
+.UINumberBox[data-size="sm"] {
   .UINumberBox-Content {
     @apply text-sm;
-  }
-
-  .UINumberBox-Input {
-    @apply px-1 py-0.5;
-  }
-}
-
-.UINumberBox[data-size="small"][data-readonly="true"] {
-  .UINumberBox-Content {
-    @apply px-1 py-0.5;
-  }
-
-  .UINumberBox-Text {
-    @apply min-h-[calc(1rem+4px)];
   }
 }
 
 .UINumberBox[data-halign="start"] {
-  .UINumberBox-Content {
+  .UINumberBox-Input {
+    @apply text-start;
+  }
+
+  &[data-readonly="true"] .UINumberBox-Content {
     @apply justify-start;
   }
 }
 
 .UINumberBox[data-halign="center"] {
-  .UINumberBox-Content {
+  .UINumberBox-Input {
+    @apply text-center;
+  }
+
+  &[data-readonly="true"] .UINumberBox-Content {
     @apply justify-center;
   }
 }
 
 .UINumberBox[data-halign="end"] {
-  .UINumberBox-Content {
-    @apply justify-end;
-  }
-}
-
-.UINumberBox[data-halign="start"],
-.UINumberBox[data-halign="center"],
-.UINumberBox[data-halign="end"] {
   .UINumberBox-Input {
-    @apply flex-initial;
+    @apply text-end;
   }
-}
 
-.UINumberBox[data-readonly="true"] {
-  .UINumberBox-Item {
-    @apply flex-auto
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
-.UINumberBox[data-readonly="true"][data-halign="start"],
-.UINumberBox[data-readonly="true"][data-halign="center"],
-.UINumberBox[data-readonly="true"][data-halign="end"] {
-  .UINumberBox-Item,
-  .UINumberBox-Text {
-    @apply flex-initial;
+  &[data-readonly="true"] .UINumberBox-Content {
+    @apply justify-end;
   }
 }
 </style>

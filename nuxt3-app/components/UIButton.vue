@@ -1,9 +1,8 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  label?: string,
-  size?: "small" | "large",
-  halign?: "start" | "center" | "end",
   type?: "filled" | "outline",
+  halign?: "start" | "center" | "end",
+  size?: "sm" | "lg",
   color?: "slate" | "gray" | "zinc" | "neutral" | "stone" |
     "red" | "orange" | "amber" | "yellow" |
     "lime" | "green" | "emerald" | "teal" |
@@ -17,6 +16,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
 }>(), {
   type: "filled",
+  halign: "center",
   color: "blue",
 })
 
@@ -43,17 +43,12 @@ function onBlur(event: Event) {
   <div
     class="UIButton"
     :data-type="props.type"
+    :data-halign="props.halign || undefined"
     :data-size="props.size || undefined"
     :data-color="props.color"
     :data-disabled="props.disabled || undefined"
-    :data-halign="props.halign || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UIButton-Label"
-    >{{ props.label }}</label>
     <div class="UIButton-Content">
-      <slot name="start" />
       <div v-if="props.prefix" class="UIButton-Prefix">{{ props.prefix }}</div>
       <button
         class="UIButton-Input"
@@ -65,22 +60,16 @@ function onBlur(event: Event) {
         @focus="onFocus"
         @click="onClick"
         @blur="onBlur"
-      >
-        <slot />
-      </button>
+      ><slot /></button>
       <div v-if="props.suffix" class="UIButton-Suffix">{{ props.suffix }}</div>
-      <slot name="end" />
     </div>
   </div>
 </template>
 
 <style>
-.UIButton-Label {
-  @apply block;
-}
-
 .UIButton-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UIButton-Input {
@@ -89,58 +78,38 @@ function onBlur(event: Event) {
     outline-none
     rounded-md
     m-0
-    px-4 py-1.5
+    px-[1em] py-[0.375em]
     font-bold
     truncate;
 }
 
-.UIButton[data-size="large"] {
+.UIButton[data-size="lg"] {
   .UIButton-Content {
     @apply text-lg;
   }
-
-  .UIButton-Input {
-    @apply px-6 py-3;
-  }
 }
 
-.UIButton[data-size="small"] {
+.UIButton[data-size="sm"] {
   .UIButton-Content {
     @apply text-sm;
-  }
-
-  .UIButton-Input {
-    @apply px-2 py-1;
   }
 }
 
 .UIButton[data-halign="start"] {
-  .UIButton-Content {
-    @apply justify-start;
-  }
-
   .UIButton-Input {
-    @apply flex-initial;
+    @apply text-start;
   }
 }
 
 .UIButton[data-halign="center"] {
-  .UIButton-Content {
-    @apply justify-center;
-  }
-
   .UIButton-Input {
-    @apply flex-initial;
+    @apply text-center;
   }
 }
 
 .UIButton[data-halign="end"] {
-  .UIButton-Content {
-    @apply justify-end;
-  }
-
   .UIButton-Input {
-    @apply flex-initial;
+    @apply text-end;
   }
 }
 

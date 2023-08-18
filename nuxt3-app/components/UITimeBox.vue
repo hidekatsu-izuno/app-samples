@@ -5,9 +5,8 @@ import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
   type?: "HHmm" | "HHmmss",
-  size?: "small" | "large",
   halign?: "start" | "center" | "end",
-  label?: string,
+  size?: "sm" | "lg",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -23,6 +22,7 @@ const props = withDefaults(defineProps<{
   error?: string,
 }>(), {
   type: "HHmm",
+  halign: "start",
   required: false,
   format: props => props.type === "HHmmss" ? "HH:mm:ss" : "HH:mm",
   modelValue: "",
@@ -160,32 +160,17 @@ function getFormatMaxLength(format: string) {
   <div
     class="UITimeBox"
     :data-required="props.required || undefined"
-    :data-size="props.size || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
     :data-halign="props.halign || undefined"
+    :data-size="props.size || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UITimeBox-Label"
-    >{{ props.label }}</label>
-    <div
-      v-if="props.readonly"
-      class="UITimeBox-Content"
-    >
-      <slot name="start" />
-      <div class="UITimeBox-Item">
-        <div v-if="props.prefix && data.value" class="UITimeBox-Prefix">{{ props.prefix }}</div>
-        <div class="UITimeBox-Text">{{ data.value }}</div>
-        <div v-if="props.suffix && data.value" class="UITimeBox-Suffix">{{ props.suffix }}</div>
-      </div>
-      <slot name="end" />
+    <div v-if="props.readonly" class="UITimeBox-Content">
+      <div v-if="props.prefix && data.value" class="UITimeBox-Prefix">{{ props.prefix }}</div>
+      <div class="UITimeBox-Text">{{ data.value }}</div>
+      <div v-if="props.suffix && data.value" class="UITimeBox-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      v-else
-      class="UITimeBox-Content"
-    >
-      <slot name="start" />
+    <div v-else class="UITimeBox-Content">
       <div v-if="props.prefix" class="UITimeBox-Prefix">{{ props.prefix }}</div>
       <input
         ref="inputRef"
@@ -202,9 +187,8 @@ function getFormatMaxLength(format: string) {
         @blur="onBlur"
         @compositionstart="onCompositionStart"
         @compositionend="onCompositionEnd"
-      >
+      />
       <div v-if="props.suffix" class="UITimeBox-Suffix">{{ props.suffix }}</div>
-      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -214,125 +198,78 @@ function getFormatMaxLength(format: string) {
 </template>
 
 <style>
-.UITimeBox-Label {
-  @apply block;
-}
-
 .UITimeBox-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UITimeBox-Input {
-  @apply flex-auto focus:ring-2 focus:ring-blue-200
+  @apply flex-auto
+    focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    px-2 py-1
+    px-[0.5em] py-[0.25em]
     min-w-0
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
-}
-
-.UITimeBox-Item {
-  @apply flex flex-row items-center gap-2;
-}
-
-.UITimeBox-Text {
-  @apply min-h-[calc(1rem+8px)]
-    whitespace-pre-wrap;
 }
 
 .UITimeBox-Error {
   @apply text-sm text-red-500;
 }
 
-.UITimeBox[data-required="true"] {
-  .UITimeBox-Label::after {
-    @apply text-red-500;
-    content: ' ※';
+.UITimeBox[data-readonly="true"] {
+  .UITimeBox-Content {
+    @apply min-h-[calc(1em+0.5em*2)]
+      border border-gray-200
+      px-[0.5em] py-[0.25em]
+      text-gray-900;
+  }
+
+  .UITimeBox-Text {
+    @apply whitespace-pre-wrap;
   }
 }
 
-.UITimeBox[data-size="large"] {
+.UITimeBox[data-size="lg"] {
   .UITimeBox-Content {
     @apply text-lg;
   }
-
-  .UITimeBox-Input {
-    @apply px-3 py-1.5;
-  }
 }
 
-.UITimeBox[data-size="large"][data-readonly="true"] {
-  .UITimeBox-Content {
-    @apply px-3 py-1.5;
-  }
-
-  .UITimeBox-Text {
-    @apply min-h-[calc(1rem+12px)];
-  }
-}
-
-.UITimeBox[data-size="small"] {
+.UITimeBox[data-size="sm"] {
   .UITimeBox-Content {
     @apply text-sm;
-  }
-
-  .UITimeBox-Input {
-    @apply px-1 py-0.5;
-  }
-}
-
-.UITimeBox[data-size="small"][data-readonly="true"] {
-  .UITimeBox-Content {
-    @apply px-1 py-0.5;
-  }
-
-  .UITimeBox-Text {
-    @apply min-h-[calc(1rem+4px)];
   }
 }
 
 .UITimeBox[data-halign="start"] {
-  .UITimeBox-Content {
+  .UITimeBox-Input {
+    @apply text-start;
+  }
+
+  &[data-readonly="true"] .UITimeBox-Content {
     @apply justify-start;
   }
 }
 
 .UITimeBox[data-halign="center"] {
-  .UITimeBox-Content {
+  .UITimeBox-Input {
+    @apply text-center;
+  }
+
+  &[data-readonly="true"] .UITimeBox-Content {
     @apply justify-center;
   }
 }
 
 .UITimeBox[data-halign="end"] {
-  .UITimeBox-Content {
-    @apply justify-end;
-  }
-}
-
-.UITimeBox[data-halign="start"],
-.UITimeBox[data-halign="center"],
-.UITimeBox[data-halign="end"] {
   .UITimeBox-Input {
-    @apply flex-initial;
+    @apply text-end;
   }
-}
 
-.UITimeBox[data-readonly="true"] {
-  .UITimeBox-Item {
-    @apply flex-auto
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
-.UITimeBox[data-readonly="true"][data-halign="start"],
-.UITimeBox[data-readonly="true"][data-halign="center"],
-.UITimeBox[data-readonly="true"][data-halign="end"] {
-  .UITimeBox-Item,
-  .UITimeBox-Text {
-    @apply flex-initial;
+  &[data-readonly="true"] .UITimeBox-Content {
+    @apply justify-end;
   }
 }
 </style>

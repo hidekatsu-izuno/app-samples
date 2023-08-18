@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  size?: "small" | "large",
   halign?: "start" | "center" | "end",
-  label?: string,
+  size?: "sm" | "lg",
   href?: string,
   prefix?: string,
   suffix?: string,
@@ -40,46 +39,34 @@ function onBlur(event: Event) {
 <template>
   <div
     class="UILink"
-    :data-disabled="props.disabled || undefined"
     :data-halign="props.halign || undefined"
     :data-size="props.size || undefined"
+    :data-disabled="props.disabled || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UILink-Label"
-    >{{ props.label }}</label>
     <div class="UILink-Content">
       <div v-if="props.prefix" class="UILink-Prefix">{{ props.prefix }}</div>
-      <div class="UILink-InputArea">
-        <NuxtLink
-          class="UILink-Input"
-          :class="props.inputClass"
-          :style="props.inputStyle"
-          :href="!props.disabled && props.href"
-          :tabindex="props.tabindex"
-          @focus="onFocus"
-          @click="onClick"
-          @blur="onBlur"
-        >
-          <slot />
-        </NuxtLink>
-      </div>
+      <NuxtLink
+        class="UILink-Input"
+        :class="props.inputClass"
+        :style="props.inputStyle"
+        :href="!props.disabled && props.href"
+        :tabindex="props.tabindex"
+        @focus="onFocus"
+        @click="onClick"
+        @blur="onBlur"
+      >
+        <slot />
+      </NuxtLink>
       <div v-if="props.suffix" class="UILink-Suffix">{{ props.suffix }}</div>
     </div>
   </div>
 </template>
 
 <style>
-.UILink-Label {
-  @apply block;
-}
-
 .UILink-Content {
-  @apply flex flex-row items-center gap-2;
-}
-
-.UILink-InputArea {
-  @apply w-full;
+  @apply flex flex-row items-center gap-2
+    px-[0.5em] py-[0.25em]
+    text-base;
 }
 
 .UILink-Input {
@@ -98,23 +85,15 @@ function onBlur(event: Event) {
   }
 }
 
-.UILink[data-size="large"] {
+.UILink[data-size="lg"] {
   .UILink-Content {
     @apply text-lg;
   }
-
-  .UILink-Input {
-    @apply px-6 py-3;
-  }
 }
 
-.UILink[data-size="small"] {
+.UILink[data-size="sm"] {
   .UILink-Content {
     @apply text-sm;
-  }
-
-  .UILink-Input {
-    @apply px-2 py-1;
   }
 }
 
@@ -122,29 +101,17 @@ function onBlur(event: Event) {
   .UILink-Content {
     @apply justify-start;
   }
-
-  .UILink-InputArea {
-    @apply w-auto;
-  }
 }
 
 .UILink[data-halign="center"] {
   .UILink-Content {
     @apply justify-center;
   }
-
-  .UILink-InputArea {
-    @apply w-auto;
-  }
 }
 
 .UILink[data-halign="end"] {
   .UILink-Content {
     @apply justify-end;
-  }
-
-  .UILink-InputArea {
-    @apply w-auto;
   }
 }
 </style>

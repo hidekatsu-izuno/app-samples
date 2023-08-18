@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end",
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -56,7 +55,6 @@ function onFocusout(event: Event) {
   <div
     class="UIPaginator"
     :data-disabled="props.disabled || undefined"
-    :data-halign="props.halign"
     @focusin="onFocusin"
     @focusout="onFocusout"
   >
@@ -111,9 +109,9 @@ function onFocusout(event: Event) {
     bg-white hover:enabled:bg-blue-800
     disabled:text-gray-400 hover:enabled:text-white;
 
-    .UIIcon {
-      @apply text-2xl;
-    }
+  .UIIcon {
+    @apply text-2xl;
+  }
 }
 
 .UIPaginator-FirstInput {
@@ -147,37 +145,10 @@ function onFocusout(event: Event) {
 }
 
 .UIPaginator-TotalCount::after {
-  content: ' 件'
+  content: " 件"
 }
 
 .UIPaginator[data-disabled="true"] {
   @apply text-gray-400;
-}
-
-.UIPaginator[data-halign="start"] {
-  @apply justify-start;
-
-  .UIPaginator-Page,
-  .UIPaginator-TotalCount {
-    @apply w-auto;
-  }
-}
-
-.UIPaginator[data-halign="center"] {
-  @apply justify-center;
-
-  .UIPaginator-Page,
-  .UIPaginator-TotalCount {
-    @apply w-auto;
-  }
-}
-
-.UIPaginator[data-halign="end"] {
-  @apply justify-end;
-
-  .UIPaginator-Page,
-  .UIPaginator-TotalCount {
-    @apply w-auto;
-  }
 }
 </style>

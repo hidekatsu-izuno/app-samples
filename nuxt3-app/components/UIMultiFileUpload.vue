@@ -1,8 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  size?: "small" | "large",
-  halign?: "start" | "center" | "end",
-  label?: string,
+  size?: "sm" | "lg",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -118,17 +116,11 @@ function validate(value: File[]) {
 <template>
   <div
     class="UIMultiFileUpload"
-    :data-required="props.required || undefined"
     :data-size="props.size || undefined"
+    :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
-    :data-halign="props.halign || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UIMultiFileUpload-Label"
-    >{{ props.label }}</label>
     <div class="UIMultiFileUpload-Content">
-      <slot name="start"/>
       <div v-if="props.prefix" class="UIMultiFileUpload-Prefix">{{ props.prefix }}</div>
       <input
         class="UIMultiFileUpload-Input"
@@ -146,7 +138,6 @@ function validate(value: File[]) {
         @blur="onBlur"
       >
       <div v-if="props.suffix" class="UIMultiFileUpload-Suffix">{{ props.suffix }}</div>
-      <slot name="end"/>
     </div>
     <div
       v-if="data.error"
@@ -156,12 +147,9 @@ function validate(value: File[]) {
 </template>
 
 <style>
-.UIMultiFileUpload-Label {
-  @apply block;
-}
-
 .UIMultiFileUpload-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UIMultiFileUpload-Input {
@@ -169,66 +157,25 @@ function validate(value: File[]) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    px-2 py-1
+    px-[0.5em] py-[0.25em]
+    min-w-0
     bg-gray-50 disabled:bg-gray-100
-    text-gray-900 disabled:text-gray-400
-    resize-none;
+    text-gray-900 disabled:text-gray-400;
 }
 
 .UIMultiFileUpload-Error {
   @apply text-sm text-red-500;
 }
 
-.UIMultiFileUpload[data-required="true"] {
-  .UIMultiFileUpload-Label::after {
-    @apply text-red-500;
-    content: ' ※';
-  }
-}
-
-.UIMultiFileUpload[data-size="large"] {
+.UIMultiFileUpload[data-size="lg"] {
   .UIMultiFileUpload-Content {
     @apply text-lg;
   }
-
-  .UIMultiFileUpload-Input {
-    @apply px-3 py-1.5;
-  }
 }
 
-.UIMultiFileUpload[data-size="small"] {
+.UIMultiFileUpload[data-size="sm"] {
   .UIMultiFileUpload-Content {
     @apply text-sm;
-  }
-
-  .UIMultiFileUpload-Input {
-    @apply px-1 py-0.5;
-  }
-}
-
-.UIMultiFileUpload[data-halign="start"] {
-  .UIMultiFileUpload-Content {
-    @apply justify-start;
-  }
-}
-
-.UIMultiFileUpload[data-halign="center"] {
-  .UIMultiFileUpload-Content {
-    @apply justify-center;
-  }
-}
-
-.UIMultiFileUpload[data-halign="end"] {
-  .UIMultiFileUpload-Content {
-    @apply justify-end;
-  }
-}
-
-.UIMultiFileUpload[data-halign="start"],
-.UIMultiFileUpload[data-halign="center"],
-.UIMultiFileUpload[data-halign="end"] {
-  .UIMultiFileUpload-Input {
-    @apply flex-initial;
   }
 }
 </style>

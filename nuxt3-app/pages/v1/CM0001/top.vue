@@ -156,112 +156,128 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <input v-model="data.textboxRequired" type="checkbox">required
           <input v-model="data.textboxDisabled" type="checkbox">disabled
           <input v-model="data.textboxReadonly" type="checkbox">readonly
-          <UISelectBox v-model="data.textboxSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
-          <UIButton size="small" @click="onValidate">validate</UIButton>
+          <UISelectBox v-model="data.textboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
+          <UIButton size="sm" @click="onValidate">validate</UIButton>
         </div>
       </template>
-      <div class="grid gap-2 p-6 p-6">
-        <UITextBox
-          ref="textbox1Ref"
-          v-model="data.textbox1"
-          label="デフォルト"
-          :required="data.textboxRequired"
-          :disabled="data.textboxDisabled"
-          :readonly="data.textboxReadonly"
-          :size="data.textboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.textbox1 }}</div>
-          </template>
-        </UITextBox>
 
-        <UITextBox
-          v-model="data.textbox2"
-          label="パスワード"
-          type="password"
-          :required="data.textboxRequired"
-          :disabled="data.textboxDisabled"
-          :readonly="data.textboxReadonly"
-          :size="data.textboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.textbox2 }}</div>
-          </template>
-        </UITextBox>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textboxRequired"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UITextBox
+            ref="textbox1Ref"
+            v-model="data.textbox1"
+            :required="data.textboxRequired"
+            :disabled="data.textboxDisabled"
+            :readonly="data.textboxReadonly"
+            :size="data.textboxSize"
+          />
+          <UIText type="outline">{{ data.textbox1 }}</UIText>
+        </div>
 
-        <UITextBox
-          v-model="data.textbox3"
-          label="メールアドレス"
-          type="email"
-          :required="data.textboxRequired"
-          :disabled="data.textboxDisabled"
-          :readonly="data.textboxReadonly"
-          :size="data.textboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.textbox3 }}</div>
-          </template>
-        </UITextBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textboxRequired"
+          >パスワード</UILabel>
+          <UITextBox
+            v-model="data.textbox2"
+            type="password"
+            :required="data.textboxRequired"
+            :disabled="data.textboxDisabled"
+            :readonly="data.textboxReadonly"
+            :size="data.textboxSize"
+          />
+          <UIText type="outline">{{ data.textbox2 }}</UIText>
+        </div>
 
-        <UITextBox
-          v-model="data.textbox4"
-          label="電話番号"
-          type="tel"
-          :required="data.textboxRequired"
-          :disabled="data.textboxDisabled"
-          :readonly="data.textboxReadonly"
-          :size="data.textboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.textbox4 }}</div>
-          </template>
-        </UITextBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textboxRequired"
+          >メールアドレス</UILabel>
+          <UITextBox
+            v-model="data.textbox3"
+            type="email"
+            :required="data.textboxRequired"
+            :disabled="data.textboxDisabled"
+            :readonly="data.textboxReadonly"
+            :size="data.textboxSize"
+          />
+          <UIText type="outline">{{ data.textbox3 }}</UIText>
+        </div>
 
-        <UITextBox
-          v-model="data.textbox5"
-          label="URL"
-          type="url"
-          :required="data.textboxRequired"
-          :disabled="data.textboxDisabled"
-          :readonly="data.textboxReadonly"
-          :size="data.textboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.textbox5 }}</div>
-          </template>
-        </UITextBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textboxRequired"
+          >電話番号</UILabel>
+          <UITextBox
+            v-model="data.textbox4"
+            type="tel"
+            :required="data.textboxRequired"
+            :disabled="data.textboxDisabled"
+            :readonly="data.textboxReadonly"
+            :size="data.textboxSize"
+          />
+          <UIText type="outline">{{ data.textbox4 }}</UIText>
+        </div>
 
-        <UITextBox
-          v-model="data.textbox6"
-          label="フィルタ"
-          type="text"
-          :filter="(text: string) => text.toUpperCase()"
-          :required="data.textboxRequired"
-          :disabled="data.textboxDisabled"
-          :readonly="data.textboxReadonly"
-          :size="data.textboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.textbox6 }}</div>
-          </template>
-        </UITextBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textboxRequired"
+          >URL</UILabel>
+          <UITextBox
+            v-model="data.textbox5"
+            type="url"
+            :required="data.textboxRequired"
+            :disabled="data.textboxDisabled"
+            :readonly="data.textboxReadonly"
+            :size="data.textboxSize"
+          />
+          <UIText type="outline">{{ data.textbox5 }}</UIText>
+        </div>
 
-        <UITextBox
-          v-model="data.textbox7"
-          label="装飾"
-          type="text"
-          prefix="("
-          suffix=")"
-          halign="center"
-          :required="data.textboxRequired"
-          :disabled="data.textboxDisabled"
-          :readonly="data.textboxReadonly"
-          :size="data.textboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.textbox7 }}</div>
-          </template>
-        </UITextBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textboxRequired"
+          >フィルタ</UILabel>
+          <UITextBox
+            v-model="data.textbox6"
+            type="text"
+            :filter="(text: string) => text.toUpperCase()"
+            :required="data.textboxRequired"
+            :disabled="data.textboxDisabled"
+            :readonly="data.textboxReadonly"
+            :size="data.textboxSize"
+          />
+          <UIText type="outline">{{ data.textbox6 }}</UIText>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textboxRequired"
+          >装飾</UILabel>
+          <UITextBox
+            v-model="data.textbox7"
+            type="text"
+            halign="center"
+            prefix="("
+            suffix=")"
+            :required="data.textboxRequired"
+            :disabled="data.textboxDisabled"
+            :readonly="data.textboxReadonly"
+            :size="data.textboxSize"
+          />
+          <UIText type="outline">{{ data.textbox7 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -272,53 +288,60 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.numberboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.numberboxDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.numberboxReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.numberboxSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.numberboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid gap-2 p-6 p-6">
-        <UINumberBox
-          v-model="data.numberbox1"
-          label="デフォルト"
-          :required="data.numberboxRequired"
-          :disabled="data.numberboxDisabled"
-          :readonly="data.numberboxReadonly"
-          :size="data.numberboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.numberbox1 }}</div>
-          </template>
-        </UINumberBox>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.numberboxRequired"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UINumberBox
+            v-model="data.numberbox1"
+            :required="data.numberboxRequired"
+            :disabled="data.numberboxDisabled"
+            :readonly="data.numberboxReadonly"
+            :size="data.numberboxSize"
+          />
+          <UIText type="outline">{{ data.numberbox1 }}</UIText>
+        </div>
 
-        <UINumberBox
-          v-model="data.numberbox2"
-          label="小数点あり"
-          format="###,##0.0#"
-          :required="data.numberboxRequired"
-          :disabled="data.numberboxDisabled"
-          :readonly="data.numberboxReadonly"
-          :size="data.numberboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.numberbox2 }}</div>
-          </template>
-        </UINumberBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.numberboxRequired"
+          >小数点あり</UILabel>
+          <UINumberBox
+            v-model="data.numberbox2"
+            format="###,##0.0#"
+            :required="data.numberboxRequired"
+            :disabled="data.numberboxDisabled"
+            :readonly="data.numberboxReadonly"
+            :size="data.numberboxSize"
+          />
+          <UIText type="outline">{{ data.numberbox2 }}</UIText>
+        </div>
 
-        <UINumberBox
-          v-model="data.numberbox3"
-          label="装飾"
-          :required="data.numberboxRequired"
-          :disabled="data.numberboxDisabled"
-          :readonly="data.numberboxReadonly"
-          :size="data.numberboxSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.numberbox3 }}</div>
-          </template>
-        </UINumberBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.numberboxRequired"
+          >装飾</UILabel>
+          <UINumberBox
+            v-model="data.numberbox3"
+            :required="data.numberboxRequired"
+            :disabled="data.numberboxDisabled"
+            :readonly="data.numberboxReadonly"
+            :size="data.numberboxSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.numberbox3 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -329,53 +352,57 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.dateboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.dateboxDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.dateboxReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.dateboxSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.dateboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
       <div class="grid gap-2 p-6">
-        <UIDateBox
-          v-model="data.datebox1"
-          label="デフォルト"
-          :required="data.dateboxRequired"
-          :disabled="data.dateboxDisabled"
-          :readonly="data.dateboxReadonly"
-          :size="data.dateboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.datebox1 }}</div>
-          </template>
-        </UIDateBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UIDateBox
+            v-model="data.datebox1"
+            :required="data.dateboxRequired"
+            :disabled="data.dateboxDisabled"
+            :readonly="data.dateboxReadonly"
+            :size="data.dateboxSize"
+          />
+          <UIText type="outline">{{ data.datebox1 }}</UIText>
+        </div>
 
-        <UIDateBox
-          v-model="data.datebox2"
-          label="フォーマット"
-          :required="data.dateboxRequired"
-          :disabled="data.dateboxDisabled"
-          :readonly="data.dateboxReadonly"
-          :size="data.dateboxSize"
-          format="'('u-M-d')'"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.datebox2 }}</div>
-          </template>
-        </UIDateBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >フォーマット</UILabel>
+          <UIDateBox
+            v-model="data.datebox2"
+            :required="data.dateboxRequired"
+            :disabled="data.dateboxDisabled"
+            :readonly="data.dateboxReadonly"
+            :size="data.dateboxSize"
+            format="'('u-M-d')'"
+          />
+          <UIText type="outline">{{ data.datebox2 }}</UIText>
+        </div>
 
-        <UIDateBox
-          v-model="data.datebox3"
-          label="装飾"
-          :required="data.dateboxRequired"
-          :disabled="data.dateboxDisabled"
-          :readonly="data.dateboxReadonly"
-          :size="data.dateboxSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.datebox3 }}</div>
-          </template>
-        </UIDateBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >装飾</UILabel>
+          <UIDateBox
+            v-model="data.datebox3"
+            :required="data.dateboxRequired"
+            :disabled="data.dateboxDisabled"
+            :readonly="data.dateboxReadonly"
+            :size="data.dateboxSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.datebox3 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -386,54 +413,60 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.timeboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.timeboxDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.timeboxReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.timeboxSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.timeboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
       <div class="grid gap-2 p-6">
-        <UITimeBox
-          v-model="data.timebox1"
-          label="デフォルト"
-          :required="data.timeboxRequired"
-          :disabled="data.timeboxDisabled"
-          :readonly="data.dateboxReadonly"
-          :size="data.timeboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.timebox1 }}</div>
-          </template>
-        </UITimeBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.timeboxRequired"
+          >デフォルト</UILabel>
+          <UITimeBox
+            v-model="data.timebox1"
+            :required="data.timeboxRequired"
+            :disabled="data.timeboxDisabled"
+            :readonly="data.timeboxReadonly"
+            :size="data.timeboxSize"
+          />
+          <UIText type="outline">{{ data.timebox1 }}</UIText>
+        </div>
 
-        <UITimeBox
-          v-model="data.timebox2"
-          type="HHmmss"
-          label="フォーマット"
-          :required="data.timeboxRequired"
-          :disabled="data.timeboxDisabled"
-          :readonly="data.timeboxReadonly"
-          :size="data.timeboxSize"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.timebox2 }}</div>
-          </template>
-        </UITimeBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.timeboxRequired"
+          >フォーマット</UILabel>
+          <UITimeBox
+            v-model="data.timebox2"
+            type="HHmmss"
+            :required="data.timeboxRequired"
+            :disabled="data.timeboxDisabled"
+            :readonly="data.timeboxReadonly"
+            :size="data.timeboxSize"
+          />
+          <UIText type="outline">{{ data.timebox2 }}</UIText>
+        </div>
 
-        <UITimeBox
-          v-model="data.timebox3"
-          label="装飾"
-          format="H#m#s.SSS"
-          :required="data.timeboxRequired"
-          :disabled="data.timeboxDisabled"
-          :readonly="data.timeboxReadonly"
-          :size="data.timeboxSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-        >
-          <template #end>
-            <div class="border w-1/2 self-stretch">{{ data.timebox3 }}</div>
-          </template>
-        </UITimeBox>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.timeboxRequired"
+          >装飾</UILabel>
+          <UITimeBox
+            v-model="data.timebox3"
+            format="H#m#s.SSS"
+            :required="data.timeboxRequired"
+            :disabled="data.timeboxDisabled"
+            :readonly="data.timeboxReadonly"
+            :size="data.timeboxSize"
+            halign="center"
+            prefix="("
+            suffix=")"
+          />
+          <UIText type="outline">{{ data.timebox3 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -444,33 +477,43 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.textareaRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.textareaDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.textareaReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.textareaSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.textareaSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UITextArea
-          v-model="data.textarea1"
-          label="デフォルト"
-          :required="data.textareaRequired"
-          :disabled="data.textareaDisabled"
-          :readonly="data.textareaReadonly"
-          :size="data.textareaSize"
-        />
-        <div class="border">{{ data.textarea1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textareaRequired"
+          >デフォルト</UILabel>
+          <UITextArea
+            v-model="data.textarea1"
+            :required="data.textareaRequired"
+            :disabled="data.textareaDisabled"
+            :readonly="data.textareaReadonly"
+            :size="data.textareaSize"
+          />
+          <UIText type="outline">{{ data.textarea1 }}</UIText>
+        </div>
 
-        <UITextArea
-          v-model="data.textarea2"
-          label="装飾"
-          :required="data.textareaRequired"
-          :disabled="data.textareaDisabled"
-          :readonly="data.textareaReadonly"
-          :size="data.textareaSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-        />
-        <div class="border">{{ data.textarea2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.textareaRequired"
+          >装飾</UILabel>
+          <UITextArea
+            v-model="data.textarea2"
+            :required="data.textareaRequired"
+            :disabled="data.textareaDisabled"
+            :readonly="data.textareaReadonly"
+            :size="data.textareaSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.textarea2 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -481,37 +524,47 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.selectboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.selectboxDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.selectboxReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.selectboxSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.selectboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UISelectBox
-          v-model="data.selectbox1"
-          label="デフォルト"
-          :required="data.selectboxRequired"
-          :disabled="data.selectboxDisabled"
-          :readonly="data.selectboxReadonly"
-          :size="data.selectboxSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
-          placeholder="---"
-        />
-        <div class="border">{{ data.selectbox1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.selectboxRequired"
+          >デフォルト</UILabel>
+          <UISelectBox
+            v-model="data.selectbox1"
+            :required="data.selectboxRequired"
+            :disabled="data.selectboxDisabled"
+            :readonly="data.selectboxReadonly"
+            :size="data.selectboxSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+            placeholder="---"
+          />
+          <UIText type="outline">{{ data.selectbox1 }}</UIText>
+        </div>
 
-        <UISelectBox
-          v-model="data.selectbox2"
-          label="装飾"
-          :required="data.selectboxRequired"
-          :disabled="data.selectboxDisabled"
-          :readonly="data.selectboxReadonly"
-          :size="data.selectboxSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }, { value: '3' }]"
-          placeholder="---"
-          prefix="("
-          suffix=")"
-          halign="center"
-        />
-        <div class="border">{{ data.selectbox2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.selectboxRequired"
+          >装飾</UILabel>
+          <UISelectBox
+            v-model="data.selectbox2"
+            :required="data.selectboxRequired"
+            :disabled="data.selectboxDisabled"
+            :readonly="data.selectboxReadonly"
+            :size="data.selectboxSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }, { value: '3' }]"
+            placeholder="---"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.selectbox2 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -522,37 +575,47 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.comboboxRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.comboboxDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.comboboxReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.comboboxSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.comboboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UIComboBox
-          v-model="data.combobox1"
-          label="デフォルト"
-          :required="data.comboboxRequired"
-          :disabled="data.comboboxDisabled"
-          :readonly="data.comboboxReadonly"
-          :size="data.comboboxSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '23', text: 'BBB' }]"
-          placeholder="---"
-        />
-        <div class="border">{{ data.combobox1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.comboboxRequired"
+          >デフォルト</UILabel>
+          <UIComboBox
+            v-model="data.combobox1"
+            :required="data.comboboxRequired"
+            :disabled="data.comboboxDisabled"
+            :readonly="data.comboboxReadonly"
+            :size="data.comboboxSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '23', text: 'BBB' }]"
+            placeholder="---"
+          />
+          <UIText type="outline">{{ data.combobox1 }}</UIText>
+        </div>
 
-        <UIComboBox
-          v-model="data.combobox2"
-          label="装飾"
-          :required="data.comboboxRequired"
-          :disabled="data.comboboxDisabled"
-          :readonly="data.comboboxReadonly"
-          :size="data.comboboxSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }, { value: '3' }]"
-          placeholder="---"
-          prefix="("
-          suffix=")"
-          halign="center"
-        />
-        <div class="border">{{ data.combobox2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.comboboxRequired"
+          >装飾</UILabel>
+          <UIComboBox
+            v-model="data.combobox2"
+            :required="data.comboboxRequired"
+            :disabled="data.comboboxDisabled"
+            :readonly="data.comboboxReadonly"
+            :size="data.comboboxSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }, { value: '3' }]"
+            placeholder="---"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.combobox2 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -563,33 +626,43 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.checkRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.checkDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.checkReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.checkSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.checkSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UICheck
-          v-model="data.check1"
-          label="デフォルト"
-          :required="data.checkRequired"
-          :disabled="data.checkDisabled"
-          :readonly="data.checkReadonly"
-          :size="data.checkSize"
-        >チェックボックス</UICheck>
-        <div class="border">{{ data.check1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.checkRequired"
+          >デフォルト</UILabel>
+          <UICheck
+            v-model="data.check1"
+            :required="data.checkRequired"
+            :disabled="data.checkDisabled"
+            :readonly="data.checkReadonly"
+            :size="data.checkSize"
+          >チェックボックス</UICheck>
+          <UIText type="outline">{{ data.check1 }}</UIText>
+        </div>
 
-        <UICheck
-          v-model="data.check2"
-          label="装飾"
-          :required="data.checkRequired"
-          :disabled="data.checkDisabled"
-          :readonly="data.checkReadonly"
-          :size="data.checkSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-        >チェックボックス</UICheck>
-        <div class="border">{{ data.check2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.checkRequired"
+          >装飾</UILabel>
+          <UICheck
+            v-model="data.check2"
+            :required="data.checkRequired"
+            :disabled="data.checkDisabled"
+            :readonly="data.checkReadonly"
+            :size="data.checkSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+          >チェックボックス</UICheck>
+          <UIText type="outline">{{ data.check2 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -600,35 +673,44 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.checklistRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.checklistDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.checklistReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.checklistSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.checklistSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UICheckList
-          v-model="data.checklist1"
-          label="デフォルト"
-          :required="data.checklistRequired"
-          :disabled="data.checklistDisabled"
-          :readonly="data.checklistReadonly"
-          :size="data.checklistSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
-        />
-        <div class="border">{{ data.checklist1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UICheckList
+            v-model="data.checklist1"
+            :required="data.checklistRequired"
+            :disabled="data.checklistDisabled"
+            :readonly="data.checklistReadonly"
+            :size="data.checklistSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          />
+          <UIText type="outline">{{ data.checklist1.join(", ") }}</UIText>
+        </div>
 
-        <UICheckList
-          v-model="data.checklist2"
-          label="装飾"
-          :required="data.checklistRequired"
-          :disabled="data.checklistDisabled"
-          :readonly="data.checklistReadonly"
-          :size="data.checklistSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
-          prefix="("
-          suffix=")"
-          halign="center"
-        />
-        <div class="border">{{ data.checklist2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >装飾</UILabel>
+          <UICheckList
+            v-model="data.checklist2"
+            :required="data.checklistRequired"
+            :disabled="data.checklistDisabled"
+            :readonly="data.checklistReadonly"
+            :size="data.checklistSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.checklist2.join(", ") }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -639,35 +721,44 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <div class="shrink"><input v-model="data.radiolistRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.radiolistDisabled" type="checkbox"> disabled</div>
           <div class="shrink"><input v-model="data.radiolistReadonly" type="checkbox"> readonly</div>
-          <UISelectBox v-model="data.radiolistSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.radiolistSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UIRadioList
-          v-model="data.radiolist1"
-          label="デフォルト"
-          :required="data.radiolistRequired"
-          :disabled="data.radiolistDisabled"
-          :readonly="data.radiolistReadonly"
-          :size="data.radiolistSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
-        />
-        <div class="border">{{ data.radiolist1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UIRadioList
+            v-model="data.radiolist1"
+            :required="data.radiolistRequired"
+            :disabled="data.radiolistDisabled"
+            :readonly="data.radiolistReadonly"
+            :size="data.radiolistSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+          />
+          <UIText type="outline">{{ data.radiolist1 }}</UIText>
+        </div>
 
-        <UIRadioList
-          v-model="data.radiolist2"
-          label="装飾"
-          :required="data.radiolistRequired"
-          :disabled="data.radiolistDisabled"
-          :readonly="data.radiolistReadonly"
-          :size="data.radiolistSize"
-          :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
-          prefix="("
-          suffix=")"
-          halign="center"
-        />
-        <div class="border">{{ data.radiolist2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >装飾</UILabel>
+          <UIRadioList
+            v-model="data.radiolist2"
+            :required="data.radiolistRequired"
+            :disabled="data.radiolistDisabled"
+            :readonly="data.radiolistReadonly"
+            :size="data.radiolistSize"
+            :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.radiolist2 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -677,31 +768,40 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <h2 class="font-bold grow">ファイル選択 (UIFileUpload)</h2>
           <div class="shrink"><input v-model="data.fileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.fileuploadDisabled" type="checkbox"> disabled</div>
-          <UISelectBox v-model="data.fileuploadSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.fileuploadSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UIFileUpload
-          v-model="data.fileupload1"
-          label="デフォルト"
-          :required="data.fileuploadRequired"
-          :disabled="data.fileuploadDisabled"
-          :size="data.fileuploadSize"
-        />
-        <div class="border">{{ data.fileupload1?.name }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UIFileUpload
+            v-model="data.fileupload1"
+            :required="data.fileuploadRequired"
+            :disabled="data.fileuploadDisabled"
+            :size="data.fileuploadSize"
+          />
+          <UIText type="outline">{{ data.fileupload1?.name }}</UIText>
+        </div>
 
-        <UIFileUpload
-          v-model="data.fileupload2"
-          label="装飾"
-          :required="data.fileuploadRequired"
-          :disabled="data.fileuploadDisabled"
-          :size="data.fileuploadSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-        />
-        <div class="border">{{ data.fileupload2?.name }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >装飾</UILabel>
+          <UIFileUpload
+            v-model="data.fileupload2"
+            :required="data.fileuploadRequired"
+            :disabled="data.fileuploadDisabled"
+            :size="data.fileuploadSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.fileupload2?.name }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -711,31 +811,40 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <h2 class="font-bold grow">複数ファイル選択 (UIMultiFileUpload)</h2>
           <div class="shrink"><input v-model="data.multifileuploadRequired" type="checkbox"> required</div>
           <div class="shrink"><input v-model="data.multifileuploadDisabled" type="checkbox"> disabled</div>
-          <UISelectBox v-model="data.multifileuploadSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.multifileuploadSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UIMultiFileUpload
-          v-model="data.multifileupload1"
-          label="デフォルト"
-          :required="data.multifileuploadRequired"
-          :disabled="data.multifileuploadDisabled"
-          :size="data.multifileuploadSize"
-        />
-        <div class="border">{{ data.multifileupload1.map((item: File) => item.name) }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UIMultiFileUpload
+            v-model="data.multifileupload1"
+            :required="data.multifileuploadRequired"
+            :disabled="data.multifileuploadDisabled"
+            :size="data.multifileuploadSize"
+          />
+          <UIText type="outline">{{ data.multifileupload1.map((item: File) => item.name) }}</UIText>
+        </div>
 
-        <UIMultiFileUpload
-          v-model="data.multifileupload2"
-          label="装飾"
-          :required="data.multifileuploadRequired"
-          :disabled="data.multifileuploadDisabled"
-          :size="data.multifileuploadSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-        />
-        <div class="border">{{ data.multifileupload2.map((item: File) => item.name) }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >装飾</UILabel>
+          <UIMultiFileUpload
+            v-model="data.multifileupload2"
+            :required="data.multifileuploadRequired"
+            :disabled="data.multifileuploadDisabled"
+            :size="data.multifileuploadSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+          />
+          <UIText type="outline">{{ data.multifileupload2.map((item: File) => item.name) }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -768,7 +877,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <h2 class="font-bold grow">ボタン (UIButton)</h2>
           <input v-model="data.buttonDisabled" type="checkbox"> disabled
           <UISelectBox
-            size="small"
+            size="sm"
             v-model="data.buttonColor"
             :items="[
               { value: 'blue' },
@@ -779,41 +888,54 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
               { value: 'violet' }, { value: 'purple' }, { value: 'fuchsia' }, { value: 'pink' }, { value: 'rose' },
             ]"
           />
-          <UISelectBox v-model="data.buttonSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.buttonSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UIButton
-          label="デフォルト"
-          :color="(data.buttonColor as any)"
-          :disabled="data.buttonDisabled"
-          :size="data.buttonSize"
-          @click="data.button1++"
-        >ボタン</UIButton>
-        <div class="border">{{ data.button1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UIButton
+            :color="(data.buttonColor as any)"
+            :disabled="data.buttonDisabled"
+            :size="data.buttonSize"
+            @click="data.button1++"
+          >ボタン</UIButton>
+          <UIText type="outline">{{ data.button1 }}</UIText>
+        </div>
 
-        <UIButton
-          label="アウトライン"
-          type="outline"
-          :color="(data.buttonColor as any)"
-          :disabled="data.buttonDisabled"
-          :size="data.buttonSize"
-          @click="data.button2++"
-        >ボタン</UIButton>
-        <div class="border">{{ data.button2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >アウトライン</UILabel>
+          <UIButton
+            type="outline"
+            :color="(data.buttonColor as any)"
+            :disabled="data.buttonDisabled"
+            :size="data.buttonSize"
+            @click="data.button2++"
+          >ボタン</UIButton>
+          <UIText type="outline">{{ data.button2 }}</UIText>
+        </div>
 
-        <UIButton
-          label="装飾"
-          :color="(data.buttonColor as any)"
-          :disabled="data.buttonDisabled"
-          :size="data.buttonSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-          @click="data.button3++"
-        >ボタン</UIButton>
-        <div class="border">{{ data.button3 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >装飾</UILabel>
+          <UIButton
+            :color="(data.buttonColor as any)"
+            :disabled="data.buttonDisabled"
+            :size="data.buttonSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+            @click="data.button3++"
+          >ボタン</UIButton>
+          <UIText type="outline">{{ data.button3 }}</UIText>
+        </div>
       </div>
     </UICard>
 
@@ -822,29 +944,38 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">リンク (UILink)</h2>
           <div class="shrink"><input v-model="data.linkDisabled" type="checkbox"> disabled</div>
-          <UISelectBox v-model="data.linkSize" size="small" :items="[{ value: 'large' }, { value: 'small' }]" />
+          <UISelectBox v-model="data.linkSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
 
-      <div class="grid grid-cols-2 gap-2 p-6">
-        <UILink
-          label="デフォルト"
-          :disabled="data.linkDisabled"
-          :size="data.linkSize"
-          @click="data.link1++"
-        >リンク</UILink>
-        <div class="border">{{ data.link1 }}</div>
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            description="デフォルトの表示設定です"
+          >デフォルト</UILabel>
+          <UILink
+            :disabled="data.linkDisabled"
+            :size="data.linkSize"
+            @click="data.link1++"
+          >リンク</UILink>
+          <div class="border">{{ data.link1 }}</div>
+        </div>
 
-        <UILink
-          label="装飾"
-          :disabled="data.linkDisabled"
-          :size="data.linkSize"
-          prefix="("
-          suffix=")"
-          halign="center"
-          @click="data.link2++"
-        >リンク</UILink>
-        <div class="border">{{ data.link2 }}</div>
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+          >装飾</UILabel>
+          <UILink
+            :disabled="data.linkDisabled"
+            :size="data.linkSize"
+            prefix="("
+            suffix=")"
+            halign="center"
+            @click="data.link2++"
+          >リンク</UILink>
+          <div class="border">{{ data.link2 }}</div>
+        </div>
       </div>
     </UICard>
 

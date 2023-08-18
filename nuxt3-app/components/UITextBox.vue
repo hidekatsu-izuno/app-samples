@@ -3,10 +3,9 @@ import { z, ZodSchema, ZodString } from "zod"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
-  halign?: "start" | "center" | "end",
   type?: "text" | "password" | "email" | "tel" | "url",
-  size?: "small" | "large",
-  label?: string,
+  halign?: "start" | "center" | "end",
+  size?: "sm" | "lg",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -22,6 +21,7 @@ const props = withDefaults(defineProps<{
   error?: string,
 }>(), {
   type: "text",
+  halign: "start",
   required: false,
   modelValue: "",
   error: "",
@@ -151,33 +151,18 @@ function validate(value: string) {
 <template>
   <div
     class="UITextBox"
-    :data-required="props.required || undefined"
+    :data-halign="props.halign || undefined"
     :data-size="props.size || undefined"
+    :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
-    :data-halign="props.halign || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UITextBox-Label"
-    >{{ props.label }}</label>
-    <div
-      v-if="props.readonly"
-      class="UITextBox-Content"
-    >
-      <slot name="start" />
-      <div class="UITextBox-Item">
-        <div v-if="props.prefix && data.value" class="UITextBox-Prefix">{{ props.prefix }}</div>
-        <div class="UITextBox-Text">{{ data.value }}</div>
-        <div v-if="props.suffix && data.value" class="UITextBox-Suffix">{{ props.suffix }}</div>
-      </div>
-      <slot name="end" />
+    <div v-if="props.readonly" class="UITextBox-Content">
+      <div v-if="props.prefix && data.value" class="UITextBox-Prefix">{{ props.prefix }}</div>
+      <div class="UITextBox-Text">{{ data.value }}</div>
+      <div v-if="props.suffix && data.value" class="UITextBox-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      v-else
-      class="UITextBox-Content"
-    >
-      <slot name="start" />
+    <div v-else class="UITextBox-Content">
       <div v-if="props.prefix" class="UITextBox-Prefix">{{ props.prefix }}</div>
       <input
         class="UITextBox-Input"
@@ -196,7 +181,6 @@ function validate(value: string) {
         @compositionend="onCompositionEnd"
       />
       <div v-if="props.suffix" class="UITextBox-Suffix">{{ props.suffix }}</div>
-      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -206,12 +190,9 @@ function validate(value: string) {
 </template>
 
 <style>
-.UITextBox-Label {
-  @apply block;
-}
-
 .UITextBox-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UITextBox-Input {
@@ -219,113 +200,68 @@ function validate(value: string) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    px-2 py-1
+    px-[0.5em] py-[0.25em]
     min-w-0
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
-}
-
-.UITextBox-Item {
-  @apply flex flex-row items-center gap-2;
-}
-
-.UITextBox-Text {
-  @apply min-h-[calc(1rem+8px)]
-    whitespace-pre-wrap;
 }
 
 .UITextBox-Error {
   @apply text-sm text-red-500;
 }
 
-.UITextBox[data-required="true"] {
-  .UITextBox-Label::after {
-    @apply text-red-500;
-    content: ' ※';
+.UITextBox[data-readonly="true"] {
+  .UITextBox-Content {
+    @apply min-h-[calc(1em+0.5em*2)]
+      border border-gray-200
+      px-[0.5em] py-[0.25em]
+      text-gray-900;
+  }
+
+  .UITextBox-Text {
+    @apply whitespace-pre-wrap;
   }
 }
 
-.UITextBox[data-size="large"] {
+.UITextBox[data-size="lg"] {
   .UITextBox-Content {
     @apply text-lg;
   }
-
-  .UITextBox-Input {
-    @apply px-3 py-1.5;
-  }
 }
 
-.UITextBox[data-size="large"][data-readonly="true"] {
-  .UITextBox-Content {
-    @apply px-3 py-1.5;
-  }
-
-  .UITextBox-Text {
-    @apply min-h-[calc(1rem+12px)];
-  }
-}
-
-.UITextBox[data-size="small"] {
+.UITextBox[data-size="sm"] {
   .UITextBox-Content {
     @apply text-sm;
-  }
-
-  .UITextBox-Input {
-    @apply px-1 py-0.5;
-  }
-}
-
-.UITextBox[data-size="small"][data-readonly="true"] {
-  .UITextBox-Content {
-    @apply px-1 py-0.5;
-  }
-
-  .UITextBox-Text {
-    @apply min-h-[calc(1rem+4px)];
   }
 }
 
 .UITextBox[data-halign="start"] {
-  .UITextBox-Content {
+  .UITextBox-Input {
+    @apply text-start;
+  }
+
+  &[data-readonly="true"] .UITextBox-Content {
     @apply justify-start;
   }
 }
 
 .UITextBox[data-halign="center"] {
-  .UITextBox-Content {
+  .UITextBox-Input {
+    @apply text-center;
+  }
+
+  &[data-readonly="true"] .UITextBox-Content {
     @apply justify-center;
   }
 }
 
 .UITextBox[data-halign="end"] {
-  .UITextBox-Content {
-    @apply justify-end;
-  }
-}
-
-.UITextBox[data-halign="start"],
-.UITextBox[data-halign="center"],
-.UITextBox[data-halign="end"] {
   .UITextBox-Input {
-    @apply flex-initial;
+    @apply text-end;
   }
-}
 
-.UITextBox[data-readonly="true"] {
-  .UITextBox-Item {
-    @apply flex-auto
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
-.UITextBox[data-readonly="true"][data-halign="start"],
-.UITextBox[data-readonly="true"][data-halign="center"],
-.UITextBox[data-readonly="true"][data-halign="end"] {
-  .UITextBox-Item,
-  .UITextBox-Text {
-    @apply flex-initial;
+  &[data-readonly="true"] .UITextBox-Content {
+    @apply justify-end;
   }
 }
 </style>

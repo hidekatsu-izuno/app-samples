@@ -6,9 +6,8 @@ import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
-  label?: string,
-  size?: "small" | "large",
   halign?: "start" | "center" | "end",
+  size?: "sm" | "lg",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -23,6 +22,7 @@ const props = withDefaults(defineProps<{
   modelValue?: string,
   error?: string,
 }>(), {
+  halign: "start",
   required: false,
   format: "uuuu/MM/dd",
   modelValue: "",
@@ -236,33 +236,18 @@ function getFormatMaxLength(format: string) {
 <template>
   <div
     class="UIDateBox"
-    :data-required="props.required || undefined"
+    :data-halign="props.halign || undefined"
     :data-size="props.size || undefined"
+    :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
-    :data-halign="props.halign || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UIDateBox-Label"
-    >{{ props.label }}</label>
-    <div
-      v-if="props.readonly"
-      class="UIDateBox-Content"
-    >
-      <slot name="start" />
-      <div class="UIDateBox-Item">
-        <div v-if="props.prefix && data.value" class="UIDateBox-Prefix">{{ props.prefix }}</div>
-        <div class="UIDateBox-Text">{{ data.value }}</div>
-        <div v-if="props.suffix && data.value" class="UIDateBox-Suffix">{{ props.suffix }}</div>
-      </div>
-      <slot name="end" />
+    <div v-if="props.readonly" class="UIDateBox-Content">
+      <div v-if="props.prefix && data.value" class="UIDateBox-Prefix">{{ props.prefix }}</div>
+      <div class="UIDateBox-Text">{{ data.value }}</div>
+      <div v-if="props.suffix && data.value" class="UIDateBox-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      v-else
-      class="UIDateBox-Content"
-    >
-      <slot name="start" />
+    <div v-else class="UIDateBox-Content">
       <div v-if="props.prefix" class="UIDateBox-Prefix">{{ props.prefix }}</div>
       <div class="UIDateBox-InputArea">
         <input
@@ -287,7 +272,6 @@ function getFormatMaxLength(format: string) {
         </div>
       </div>
       <div v-if="props.suffix" class="UIDateBox-Suffix">{{ props.suffix }}</div>
-      <slot name="end" />
     </div>
     <div
       ref="pickerRef"
@@ -338,12 +322,9 @@ function getFormatMaxLength(format: string) {
 </template>
 
 <style>
-.UIDateBox-Label {
-  @apply block;
-}
-
 .UIDateBox-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UIDateBox-InputArea {
@@ -356,10 +337,10 @@ function getFormatMaxLength(format: string) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    pl-2 pr-8 py-1
+    pl-[0.5em] pr-8 py-[0.25em]
     min-w-0
-    disabled:bg-gray-100
-    text-gray-900 bg-gray-50 disabled:text-gray-400;
+    bg-gray-50 disabled:bg-gray-100
+    text-gray-900 disabled:text-gray-400;
   grid-area: 1/1;
 }
 
@@ -372,19 +353,6 @@ function getFormatMaxLength(format: string) {
   .UIIcon {
     @apply text-2xl;
   }
-}
-
-.UIDateBox-Item {
-  @apply flex flex-row items-center gap-2;
-}
-
-.UIDateBox-Text {
-  @apply min-h-[calc(1rem+8px)]
-    whitespace-pre-wrap;
-}
-
-.UIDateBox-Error {
-  @apply text-sm text-red-500;
 }
 
 .UIDateBox-Picker {
@@ -463,110 +431,62 @@ function getFormatMaxLength(format: string) {
     text-white font-bold;
 }
 
-.UIDateBox[data-required="true"] {
-  .UIDateBox-Label::after {
-    @apply text-red-500;
-    content: ' ※';
-  }
-}
-
-.UIDateBox[data-size="large"] {
-  .UIDateBox-Content {
-    @apply text-lg;
-  }
-
-  .UIDateBox-Input {
-    @apply pl-3 pr-9 py-1.5;
-  }
-}
-
-.UIDateBox[data-size="large"][data-readonly="true"] {
-  .UIDateBox-Content {
-    @apply px-3 py-1.5;
-  }
-
-  .UIDateBox-Text {
-    @apply min-h-[calc(1rem+12px)];
-  }
-}
-
-.UIDateBox[data-size="small"] {
-  .UIDateBox-Content {
-    @apply text-sm;
-  }
-
-  .UIDateBox-Input {
-    @apply pl-1 pr-7 py-0.5;
-  }
-}
-
-.UIDateBox[data-size="small"][data-readonly="true"] {
-  .UIDateBox-Content {
-    @apply px-1 py-0.5;
-  }
-
-  .UIDateBox-Text {
-    @apply min-h-[calc(1rem+4px)];
-  }
+.UIDateBox-Error {
+  @apply text-sm text-red-500;
 }
 
 .UIDateBox[data-readonly="true"] {
-  .UIDateBox-Item {
-    @apply border border-gray-200
-      px-2 py-1
+  .UIDateBox-Content {
+    @apply min-h-[calc(1em+0.5em*2)]
+      border border-gray-200
+      px-[0.5em] py-[0.25em]
       text-gray-900;
+  }
+
+  .UIDateBox-Text {
+    @apply whitespace-pre-wrap;
   }
 }
 
-.UIDateBox[data-disabled="true"] {
-  .UIDateBox-InputPickerButton {
-    .UIIcon {
-      @apply text-gray-400;
-    }
+.UIDateBox[data-size="lg"] {
+  .UIDateBox-Content {
+    @apply text-lg;
+  }
+}
+
+.UIDateBox[data-size="sm"] {
+  .UIDateBox-Content {
+    @apply text-sm;
   }
 }
 
 .UIDateBox[data-halign="start"] {
-  .UIDateBox-Content {
+  .UIDateBox-Input {
+    @apply text-start;
+  }
+
+  &[data-readonly="true"] .UIDateBox-Content {
     @apply justify-start;
   }
 }
 
 .UIDateBox[data-halign="center"] {
-  .UIDateBox-Content {
+  .UIDateBox-Input {
+    @apply text-center;
+  }
+
+  &[data-readonly="true"] .UIDateBox-Content {
     @apply justify-center;
   }
 }
 
 .UIDateBox[data-halign="end"] {
-  .UIDateBox-Content {
+  .UIDateBox-Input {
+    @apply text-end;
+  }
+
+  &[data-readonly="true"] .UIDateBox-Content {
     @apply justify-end;
-  }
-}
-
-.UIDateBox[data-halign="start"],
-.UIDateBox[data-halign="center"],
-.UIDateBox[data-halign="end"] {
-  .UIDateBox-InputArea {
-    @apply flex-initial;
-  }
-}
-
-.UIDateBox[data-readonly="true"] {
-  .UIDateBox-Content {
-    @apply flex-auto
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
-.UIDateBox[data-readonly="true"][data-halign="start"],
-.UIDateBox[data-readonly="true"][data-halign="center"],
-.UIDateBox[data-readonly="true"][data-halign="end"] {
-  .UIDateBox-Item,
-  .UIDateBox-Text {
-    @apply flex-initial;
   }
 }
 </style>

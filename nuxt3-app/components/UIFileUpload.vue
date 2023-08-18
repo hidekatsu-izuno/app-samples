@@ -1,8 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  size?: "small" | "large",
-  halign?: "start" | "center" | "end",
-  label?: string,
+  size?: "sm" | "lg",
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -117,17 +115,11 @@ function validate(value?: File) {
 <template>
   <div
     class="UIFileUpload"
-    :data-required="props.required || undefined"
     :data-size="props.size || undefined"
+    :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
-    :data-halign="props.halign || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UIFileUpload-Label"
-    >{{ props.label }}</label>
     <div class="UIFileUpload-Content">
-      <slot name="start"/>
       <div v-if="props.prefix" class="UIFileUpload-Prefix">{{ props.prefix }}</div>
       <input
         class="UIFileUpload-Input"
@@ -136,15 +128,14 @@ function validate(value?: File) {
         :style="props.inputStyle"
         :placeholder="props.placeholder"
         :accept="props.accept"
-        :disabled="props.disabled"
         :tabindex="props.tabindex"
+        :disabled="props.disabled"
         @click="onClick"
         @focus="onFocus"
         @change="onChange"
         @blur="onBlur"
       >
       <div v-if="props.suffix" class="UIFileUpload-Suffix">{{ props.suffix }}</div>
-      <slot name="end"/>
     </div>
     <div
       v-if="data.error"
@@ -154,12 +145,9 @@ function validate(value?: File) {
 </template>
 
 <style>
-.UIFileUpload-Label {
-  @apply block;
-}
-
 .UIFileUpload-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UIFileUpload-Input {
@@ -167,66 +155,25 @@ function validate(value?: File) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    px-2 py-1
+    px-[0.5em] py-[0.25em]
+    min-w-0
     bg-gray-50 disabled:bg-gray-100
-    text-gray-900 disabled:text-gray-400
-    resize-none;
+    text-gray-900 disabled:text-gray-400;
 }
 
 .UIFileUpload-Error {
   @apply text-sm text-red-500;
 }
 
-.UIFileUpload[data-required="true"] {
-  .UIFileUpload-Label::after {
-    @apply text-red-500;
-    content: ' ※';
-  }
-}
-
-.UIFileUpload[data-size="large"] {
+.UIFileUpload[data-size="lg"] {
   .UIFileUpload-Content {
     @apply text-lg;
   }
-
-  .UIFileUpload-Input {
-    @apply px-3 py-1.5;
-  }
 }
 
-.UIFileUpload[data-size="small"] {
+.UIFileUpload[data-size="sm"] {
   .UIFileUpload-Content {
     @apply text-sm;
-  }
-
-  .UIMultiFileUpload-Input {
-    @apply px-1 py-0.5;
-  }
-}
-
-.UIFileUpload[data-halign="start"] {
-  .UIFileUpload-Content {
-    @apply justify-start;
-  }
-}
-
-.UIFileUpload[data-halign="center"] {
-  .UIFileUpload-Content {
-    @apply justify-center;
-  }
-}
-
-.UIFileUpload[data-halign="end"] {
-  .UIFileUpload-Content {
-    @apply justify-end;
-  }
-}
-
-.UIFileUpload[data-halign="start"],
-.UIFileUpload[data-halign="center"],
-.UIFileUpload[data-halign="end"] {
-  .UIFileUpload-Input {
-    @apply flex-initial;
   }
 }
 </style>

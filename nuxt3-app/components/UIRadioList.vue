@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  size?: "small" | "large",
   halign?: "start" | "center" | "end",
-  label?: string,
+  size?: "sm" | "lg",
   prefix?: string,
   suffix?: string,
   placeholder?: string,
@@ -128,21 +127,10 @@ function validate(value: string) {
     :data-halign="props.halign || undefined"
     :data-columns="props.columns"
   >
-    <label
-      v-if="props.label"
-      class="UIRadioList-Label"
-    >{{ props.label }}</label>
-    <div
-      v-if="props.readonly"
-      class="UIRadioList-Content"
-    >
-      <slot name="start" />
-      <div class="UIRadioList-Item">
-        <div v-if="props.prefix && data.value">{{ props.prefix }}</div>
-        <div class="UIRadioList-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
-        <div v-if="props.suffix && data.value">{{ props.suffix }}</div>
-      </div>
-      <slot name="end" />
+    <div v-if="props.readonly" class="UIRadioList-Content">
+      <div v-if="props.prefix && data.value">{{ props.prefix }}</div>
+      <div class="UIRadioList-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
+      <div v-if="props.suffix && data.value">{{ props.suffix }}</div>
     </div>
     <div
       v-else
@@ -151,35 +139,33 @@ function validate(value: string) {
       @focusin="onFocusin"
       @focusout="onFocusout"
     >
-      <slot name="start" />
       <div
         v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
         :key="index"
         class="UIRadioList-Item"
       >
         <div v-if="props.prefix">{{ props.prefix }}</div>
-          <label
-            class="UIRadioList-InputLabel"
-            :class="props.inputClass"
-            :style="props.inputStyle"
-          >
-            <div class="UIRadioList-InputArea">
-              <input
-                class="UIRadioList-Input peer"
-                type="radio"
-                :name="id || undefined"
-                :value="item.value"
-                :checked="item.value === data.value"
-                :disabled="props.disabled"
-                :tabindex="props.tabindex"
-              >
-              <UIIcon name="circle-medium" class="UIRadioList-InputCheck hidden peer-checked:block" />
-            </div>
-            {{ item.text }}
-          </label>
+        <label
+          class="UIRadioList-InputLabel"
+          :class="props.inputClass"
+          :style="props.inputStyle"
+        >
+          <div class="UIRadioList-InputArea">
+            <input
+              class="UIRadioList-Input peer"
+              type="radio"
+              :name="id || undefined"
+              :value="item.value"
+              :checked="item.value === data.value"
+              :disabled="props.disabled"
+              :tabindex="props.tabindex"
+            />
+            <UIIcon name="circle-medium" class="UIRadioList-InputCheck hidden peer-checked:block" />
+          </div>
+          {{ item.text }}
+        </label>
         <div v-if="props.suffix">{{ props.suffix }}</div>
       </div>
-      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -189,10 +175,6 @@ function validate(value: string) {
 </template>
 
 <style>
-.UIRadioList-Label {
-  @apply block;
-}
-
 .UIRadioList-Content {
   @apply flex flex-col;
 }
@@ -203,7 +185,6 @@ function validate(value: string) {
 
 .UIRadioList-InputLabel {
   @apply inline-flex items-center gap-1
-    mr-auto
     py-1;
 }
 
@@ -224,187 +205,124 @@ function validate(value: string) {
 
 .UIRadioList-InputCheck {
   @apply w-full h-full
-    text-white text-base
-    pointer-events-none;
+    text-white text-base;
   grid-area: 1/1;
-}
-
-.UIRadioList-Text {
-  @apply min-h-[calc(1rem+8px)]
-    whitespace-pre-wrap;
 }
 
 .UIRadioList-Error {
   @apply text-sm text-red-500;
 }
 
-.UIRadioList[data-required="true"] {
-  .UIRadioList-Label::after {
-    @apply text-red-500;
-    content: ' ※';
+.UIRadioList[data-readonly="true"] {
+  .UIRadioList-Content {
+    @apply flex-row
+      min-h-[calc(1em+0.5em*2)]
+      border border-gray-200
+      px-[0.5em] py-[0.25em]
+      text-gray-900;
+  }
+
+  .UIRadioList-Text {
+    @apply whitespace-pre-wrap;
   }
 }
 
-.UIRadioList[data-size="large"] {
+.UIRadioList[data-size="lg"] {
   .UIRadioList-Content {
     @apply text-lg;
   }
-
-  .UIRadioList-InputLabel {
-    @apply py-1.5;
-  }
 }
 
-.UIRadioList[data-size="large"][data-readonly="true"] {
-  .UIRadioList-Content {
-    @apply px-3 py-1.5;
-  }
-
-  .UIRadioList-Text {
-    @apply min-h-[calc(1rem+12px)];
-  }
-}
-
-.UIRadioList[data-size="small"] {
+.UIRadioList[data-size="sm"] {
   .UIRadioList-Content {
     @apply text-sm;
-  }
-
-  .UIRadioList-InputLabel {
-    @apply py-0.5;
-  }
-}
-
-.UIRadioList[data-size="small"][data-readonly="true"] {
-  .UIRadioList-Content {
-    @apply px-1 py-0.5;
-  }
-
-  .UIRadioList-Text {
-    @apply min-h-[calc(1rem+4px)];
-  }
-}
-
-.UIRadioList[data-disabled="true"] {
-  .UIRadioList-InputLabel {
-    @apply text-gray-400;
   }
 }
 
 .UIRadioList[data-halign="start"] {
-  .UIRadioList-Content {
-    @apply items-start;
+  .UIRadioList-Item,
+  &[data-readonly="true"] .UIRadioList-Content {
+    @apply justify-start;
   }
 }
 
 .UIRadioList[data-halign="center"] {
-  .UIRadioList-Content {
-    @apply items-center;
-  }
-}
-
-.UIRadioList[data-halign="end"] {
-  .UIRadioList-Content {
-    @apply items-end;
-  }
-}
-
-.UIRadioList[data-halign="start"],
-.UIRadioList[data-halign="center"],
-.UIRadioList[data-halign="end"] {
-  .UIRadioList-InputLabel {
-    @apply mr-0;
-  }
-
-  .UIRadioList-InputArea {
-    @apply flex-initial;
-  }
-}
-
-.UIRadioList[data-readonly="true"] {
-  .UIRadioList-Item {
-    @apply flex-auto
-      flex flex-row items-center gap-2
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
-.UIRadioList[data-readonly="true"][data-halign="start"],
-.UIRadioList[data-readonly="true"][data-halign="center"],
-.UIRadioList[data-readonly="true"][data-halign="end"] {
   .UIRadioList-Item,
-  .UIRadioList-Text {
-    @apply flex-initial;
+  &[data-readonly="true"] .UIRadioList-Content {
+    @apply justify-center;
   }
 }
 
-:not(.UIRadioList[data-readonly="true"]) {
-  .UIRadioList-columns-2 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-2;
-    }
+.UIRadioList[data-halign="end"] {
+  .UIRadioList-Item,
+  &[data-readonly="true"] .UIRadioList-Content {
+    @apply justify-end;
   }
+}
 
-  .UIRadioList-columns-3 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-3;
-    }
+.UIRadioList[data-columns="2"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-2;
   }
+}
 
-  .UIRadioList-columns-4 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-4;
-    }
+.UIRadioList[data-columns="3"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-3;
   }
+}
 
-  .UIRadioList-columns-5 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-5;
-    }
+.UIRadioList[data-columns="4"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-4;
   }
+}
 
-  .UIRadioList-columns-6 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-6;
-    }
+.UIRadioList[data-columns="5"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-5;
   }
+}
 
-  .UIRadioList-columns-7 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-7;
-    }
+.UIRadioList[data-columns="6"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-6;
   }
+}
 
-  .UIRadioList-columns-8 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-8;
-    }
+.UIRadioList[data-columns="7"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-7;
   }
+}
 
-  .UIRadioList-columns-9 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-9;
-    }
+.UIRadioList[data-columns="8"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-8;
   }
+}
 
-  .UIRadioList-columns-10 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-10;
-    }
+.UIRadioList[data-columns="9"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-9;
   }
+}
 
-  .UIRadioList-columns-11 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-11;
-    }
+.UIRadioList[data-columns="10"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-10;
   }
+}
 
-  .UIRadioList-columns-12 {
-    .UIRadioList-Content {
-      @apply grid grid-cols-12;
-    }
+.UIRadioList[data-columns="11"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-11;
+  }
+}
+
+.UIRadioList[data-columns="12"] {
+  .UIRadioList-Content {
+    @apply grid grid-cols-12;
   }
 }
 </style>

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  size?: "small" | "large",
   halign?: "start" | "center" | "end",
-  label?: string,
+  size?: "sm" | "lg",
   value?: string,
   prefix?: string,
   suffix?: string,
@@ -106,33 +105,18 @@ function validate(value: boolean) {
 <template>
   <div
     class="UICheck"
+    :data-halign="props.halign || undefined"
+    :data-size="props.size || undefined"
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
-    :data-size="props.size || undefined"
-    :data-halign="props.halign || undefined"
   >
-    <label
-      v-if="props.label"
-      class="UICheck-Label"
-    >{{ props.label }}</label>
-    <div
-      v-if="props.readonly"
-      class="UICheck-Content"
-    >
-      <slot name="start" />
-      <div class="UICheck-Item">
-        <div v-if="props.prefix && $slots.default" class="UICheck-Prefix">{{ props.prefix }}</div>
-        <div class="UICheck-Text"><slot /></div>
-        <div v-if="props.suffix && $slots.default" class="UICheck-Suffix">{{ props.suffix }}</div>
-      </div>
-      <slot name="end" />
+    <div v-if="props.readonly" class="UICheck-Content">
+      <div v-if="props.prefix && $slots.default" class="UICheck-Prefix">{{ props.prefix }}</div>
+      <div class="UICheck-Text"><slot /></div>
+      <div v-if="props.suffix && $slots.default" class="UICheck-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      v-else
-      class="UICheck-Content"
-    >
-      <slot name="start" />
+    <div v-else class="UICheck-Content">
       <div v-if="props.prefix" class="UICheck-Prefix">{{ props.prefix }}</div>
       <label class="UICheck-InputLabel">
         <div class="UICheck-InputArea">
@@ -154,7 +138,6 @@ function validate(value: boolean) {
         <slot />
       </label>
       <div v-if="props.suffix" class="UICheck-Suffix">{{ props.suffix }}</div>
-      <slot name="end" />
     </div>
     <div
       v-if="data.error"
@@ -164,17 +147,14 @@ function validate(value: boolean) {
 </template>
 
 <style>
-.UICheck-Label {
-  @apply block;
-}
-
 .UICheck-Content {
-  @apply flex flex-row items-center gap-2;
+  @apply flex flex-row items-center gap-2
+    text-base;
 }
 
 .UICheck-InputLabel {
   @apply flex items-center gap-1
-    py-1;
+    py-[0.5em];
 }
 
 .UICheck-InputArea {
@@ -199,69 +179,38 @@ function validate(value: boolean) {
   grid-area: 1/1;
 }
 
-.UICheck-Item {
-  @apply flex flex-row items-center gap-2;
-}
-
-.UICheck-Text {
-  @apply min-h-[calc(1rem+8px)]
-    whitespace-pre-wrap;
-}
-
 .UICheck-Error {
   @apply text-sm text-red-500;
-}
-
-.UICheck[data-required="true"] {
-  .UICheck-Label::after {
-    @apply text-red-500;
-    content: ' ※';
-  }
-}
-
-.UICheck[data-size="large"] {
-  .UICheck-Content {
-    @apply text-lg;
-  }
-
-  .UICheck-Input {
-    @apply py-1.5;
-  }
-}
-
-.UICheck[data-size="large"][data-readonly="true"] {
-  .UICheck-Content {
-    @apply px-3 py-1.5;
-  }
-
-  .UICheck-Text {
-    @apply min-h-[calc(1rem+12px)];
-  }
-}
-
-.UICheck[data-size="small"] {
-  .UICheck-Content {
-    @apply text-sm;
-  }
-
-  .UICheck-Input {
-    @apply py-0.5;
-  }
-}
-
-.UICheck[data-size="small"][data-readonly="true"] {
-  .UICheck-Content {
-    @apply px-1 py-0.5;
-  }
-
-  .UICheck-Text {
-    @apply min-h-[calc(1rem+4px)];
-  }
 }
 
 .UICheck[data-disabled="true"] {
   .UICheck-InputLabel {
     @apply text-gray-400;
+  }
+}
+
+.UICheck[data-readonly="true"] {
+  .UICheck-Content {
+    @apply min-h-[calc(1em+0.5em*2)]
+      border border-gray-200
+      px-[0.5em] py-[0.25em]
+      text-gray-900;
+  }
+
+  .UICheck-Text {
+    @apply whitespace-pre-wrap;
+  }
+}
+
+.UICheck[data-size="lg"] {
+  .UICheck-Content {
+    @apply text-lg;
+  }
+}
+
+.UICheck[data-size="sm"] {
+  .UICheck-Content {
+    @apply text-sm;
   }
 }
 
@@ -280,32 +229,6 @@ function validate(value: boolean) {
 .UICheck[data-halign="end"] {
   .UICheck-Content {
     @apply justify-end;
-  }
-}
-
-.UICheck[data-halign="start"],
-.UICheck[data-halign="center"],
-.UICheck[data-halign="end"] {
-  .UICheck-Input {
-    @apply w-auto;
-  }
-}
-
-.UICheck[data-readonly="true"] {
-  .UICheck-Item {
-    @apply flex-auto
-      border border-gray-200
-      px-2 py-1
-      text-gray-900;
-  }
-}
-
-.UICheck[data-readonly="true"][data-halign="start"],
-.UICheck[data-readonly="true"][data-halign="center"],
-.UICheck[data-readonly="true"][data-halign="end"] {
-  .UICheck-Item,
-  .UICheck-Text {
-    @apply flex-initial;
   }
 }
 </style>
