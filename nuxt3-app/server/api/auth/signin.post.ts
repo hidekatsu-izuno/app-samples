@@ -1,8 +1,6 @@
 import { z } from "zod"
-import { SqlConnection, defineAction, useSqlConnection } from "~/server/utils/action"
-import { AppSessionConfig } from "~/server/utils/session"
+import { type SqlConnection, defineAction, useSqlConnection } from "~/server/utils/action"
 import { UserPasswordSchema, EmailSchema } from "~/utils/schemas"
-import { encodePassword } from "~/server/utils/security"
 
 const SigninSchema = z.object({
   email: EmailSchema,
@@ -18,7 +16,7 @@ export default defineAction(async (event) => {
     throw createError({ statusCode: 401 })
   }
 
-  await updateSession(event, AppSessionConfig, {
+  await event.context.session.update({
     userId,
   })
 
@@ -31,8 +29,7 @@ async function getValidUserId(con: SqlConnection, email: string, password: strin
   const result = await con`
     select
       mu.user_id,
-      mup.user_password,
-      mup.user_password_salt
+      mup.user_password
     from
       mt_user mu
     inner join mt_user_password mup
@@ -48,10 +45,10 @@ async function getValidUserId(con: SqlConnection, email: string, password: strin
   const user = result[0]
   const hashed = await encodePassword(
     password,
-    user.user_password_salt,
+    Buffer.from(user.user_id.replaceAll("-", ""), "base64"),
   )
   if (Buffer.compare(user.user_password, hashed) !== 0) {
-    console.log(hashed.toString("hex"), crypto.getRandomValues(Buffer.from(new Uint8Array(16))).toString("hex"))
+    console.log(hashed.toString("hex"))
     return
   }
 

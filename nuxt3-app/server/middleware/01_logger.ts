@@ -13,6 +13,12 @@ const logger = pino({
   },
 })
 
+declare module "h3" {
+  interface H3EventContext {
+    logger: typeof logger
+  }
+}
+
 export default defineEventHandler((event) => {
   const req = event.node.req
   const res = event.node.res

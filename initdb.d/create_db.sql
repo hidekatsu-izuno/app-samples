@@ -25,18 +25,15 @@ INSERT INTO mt_user (
 CREATE TABLE mt_user_password (
   user_id VARCHAR(36) NOT NULL,
   user_password BYTEA NOT NULL,
-  user_password_salt BYTEA NOT NULL,
   CONSTRAINT pk_mt_user_password PRIMARY KEY (user_id)
 );
 
 INSERT INTO mt_user_password (
   user_id,
-  user_password,
-  user_password_salt
+  user_password
 ) VALUES (
   '9a192654-08fc-11ee-9cff-00155d80ceb2',
-  '\xaacb24c46de58a53f348f9fc18a2cba5',
-  '\x6fe18ae4fac903d1604fadb37113cc8b'
+  '\xcd1ffe065a5f00de8c6fc6b325402246'
 );
 
 CREATE TABLE mt_user_role (

@@ -1,6 +1,5 @@
 import type { H3Event, EventHandler } from "h3"
 import { ZodError } from "zod"
-import { sql } from "./database"
 
 const SqlKey = Symbol.for("SqlKey")
 
@@ -18,7 +17,7 @@ export function defineAction<T = any>(arg1: ControllerOptions | EventHandler<T>,
   return defineEventHandler<T>(async (event) => {
     (event as any)[SqlKey] = new Array<typeof sql>()
     try {
-      return await sql.begin("READ ONLY", async (sql) => {
+      return await sql.begin("READ ONLY", async (sql: SqlConnection) => {
         (event as any)[SqlKey].push(sql)
         try {
           return await handler(event)
@@ -43,8 +42,8 @@ export function useSqlConnection(event: H3Event) {
 }
 
 export async function tx<T>(event: H3Event, handler: () => T) {
-  const cSql = ((event as any)[SqlKey] ?? sql) as SqlConnection
-  return await cSql.begin("READ WRITE", async (tSql) => {
+  const cSql = ((event as any)[SqlKey] ?? event.context.sqlConnection) as SqlConnection
+  return await cSql.begin("READ WRITE", async (tSql: SqlConnection) => {
     (event as any)[SqlKey].push(tSql)
     try {
       return await handler()
