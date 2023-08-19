@@ -153,11 +153,10 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">テキストボックス (UITextBox)</h2>
-          <input v-model="data.textboxRequired" type="checkbox">required
-          <input v-model="data.textboxDisabled" type="checkbox">disabled
-          <input v-model="data.textboxReadonly" type="checkbox">readonly
+          <UICheck v-model="data.textboxRequired" size="sm">required</UICheck>
+          <UICheck v-model="data.textboxDisabled" size="sm">disabled</UICheck>
+          <UICheck v-model="data.textboxReadonly" size="sm">readonly</UICheck>
           <UISelectBox v-model="data.textboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
-          <UIButton size="sm" @click="onValidate">validate</UIButton>
         </div>
       </template>
 

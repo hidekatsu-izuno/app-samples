@@ -1,18 +1,12 @@
 import type { H3Event, EventHandler } from "h3"
 import { ZodError } from "zod"
 import { sql } from "./database"
-import { AppSessionConfig } from "./session"
 
-const AppSessionKey = Symbol.for("AppSessionKey")
 const SqlKey = Symbol.for("SqlKey")
 
 export declare type ControllerOptions = {
   session?: boolean,
   transaction?: boolean,
-}
-
-export declare type AppSession = {
-  userId: string
 }
 
 export declare type SqlConnection = typeof sql
@@ -24,18 +18,6 @@ export function defineAction<T = any>(arg1: ControllerOptions | EventHandler<T>,
   const options = arg2 ? arg1 as ControllerOptions : {}
 
   return defineEventHandler<T>(async (event) => {
-    if (options.session !== false) {
-      const path = getRequestPath(event)
-      if (!/^\/api\/auth\/.*/.test(path)) {
-        const session = await useSession<AppSession>(event, AppSessionConfig)
-        if (session.data?.userId) {
-          (event as any)[AppSessionKey] = session.data
-        } else {
-          throw createError({ statusCode: 401 })
-        }
-      }
-    }
-
     try {
       if (options.transaction !== false) {
         return await sql.begin(async (sql) => {
@@ -57,12 +39,6 @@ export function defineAction<T = any>(arg1: ControllerOptions | EventHandler<T>,
       throw newErr
     }
   })
-}
-
-export function getAppSession(event: H3Event) {
-  return (event as any)[AppSessionKey] ?? ({
-    userId: "",
-  }) as AppSession
 }
 
 export function useSqlConnection(event: H3Event) {

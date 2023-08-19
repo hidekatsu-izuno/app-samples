@@ -55,6 +55,7 @@ async function getValidUserId(con: SqlConnection, email: string, password: strin
   )
   if (Buffer.compare(user.user_password, hashed) !== 0) {
     console.log(hashed.toString("hex"), crypto.getRandomValues(Buffer.from(new Uint8Array(16))).toString("hex"))
+    return
   }
 
   return user.user_id
