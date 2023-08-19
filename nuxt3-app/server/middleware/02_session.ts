@@ -1,7 +1,7 @@
 import type { SessionConfig } from "h3"
 
 const runtimeConfig = useRuntimeConfig()
-export const AppSessionConfig: SessionConfig = {
+const AppSessionConfig: SessionConfig = {
   password: runtimeConfig.session.password,
   maxAge: runtimeConfig.session.maxAge,
   cookie: {
@@ -17,7 +17,7 @@ export declare type AppSession = {
 
 declare module "h3" {
   interface H3EventContext {
-    session: ReturnType<typeof useSession<AppSession>> extends Promise<infer T> ? T : never
+    session?: ReturnType<typeof useSession<AppSession>> extends Promise<infer T> ? T : never
   }
 }
 
