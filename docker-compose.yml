@@ -15,3 +15,9 @@ services:
 
 volumes:
   postgres-15:
+
+# docker compose up -d
+# docker compose down
+
+# docker container prune --force
+# docker volume rm app-samples_postgres-15

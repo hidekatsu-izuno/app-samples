@@ -32,11 +32,11 @@ CREATE TABLE mt_user_password (
 INSERT INTO mt_user_password (
   user_id,
   user_password,
-  user_password_salt,
+  user_password_salt
 ) VALUES (
   '9a192654-08fc-11ee-9cff-00155d80ceb2',
-  '\x00',
-  '\x00'
+  '\xaacb24c46de58a53f348f9fc18a2cba5',
+  '\x6fe18ae4fac903d1604fadb37113cc8b'
 );
 
 CREATE TABLE mt_user_role (

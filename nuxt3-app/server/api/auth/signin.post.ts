@@ -44,16 +44,18 @@ async function getValidUserId(con: SqlConnection, email: string, password: strin
       mu.user_email = ${email}
     `
 
-  if (result.length === 1) {
-    const user = result[0]
-    const hashed = await encodePassword(
-      password,
-      user.user_password_salt,
-    )
-    if (user.user_password === hashed) {
-      return user.user_id
-    } else {
-      console.log(hashed)
-    }
+  if (result.length !== 1) {
+    return
   }
+
+  const user = result[0]
+  const hashed = await encodePassword(
+    password,
+    user.user_password_salt,
+  )
+  if (Buffer.compare(user.user_password, hashed) !== 0) {
+    console.log(hashed.toString("hex"), crypto.getRandomValues(Buffer.from(new Uint8Array(16))).toString("hex"))
+  }
+
+  return user.user_id
 }
