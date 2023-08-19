@@ -7,7 +7,7 @@ const logger = pino({
   level: runtimeConfig.logger.level || "info",
   timestamp: stdTimeFunctions.isoTime,
   formatters: {
-    level(label, number) {
+    level(label) {
       return { level: label }
     },
   },
@@ -55,11 +55,19 @@ function serializeRequest(req: IncomingMessage) {
   let ip = req.socket.remoteAddress
 
   const xFowardedFor = req.headers["x-forwarded-for"]
-  if (xFowardedFor) {
-    let xFowardedForStr = Array.isArray(xFowardedFor) ? xFowardedFor[0] : xFowardedFor
-    xFowardedForStr = xFowardedForStr.split(/,/)[0].trim()
-    if (xFowardedForStr) {
-      ip = xFowardedForStr
+  if (xFowardedFor && runtimeConfig.trustedProxies.size > 0) {
+    const array = Array.isArray(xFowardedFor) ? xFowardedFor : [xFowardedFor]
+    loop:
+    for (const entry of array) {
+      const items = entry.split(/,/g).map(v => v.trim())
+      if (items.length > 0 && items[0]) {
+        for (let i = 1; i < items.length; i++) {
+          if (runtimeConfig.trustedProxies.has(items[i])) {
+            ip = items[0]
+            break loop
+          }
+        }
+      }
     }
   }
 

@@ -17,6 +17,7 @@ export default defineNuxtConfig({
       database: process.env.DB_DATABASE,
     },
     logger: {
+      trustedProxies: new Set((process.env.TRUSTED_PROXIES || "").split(/,/g).map(v => v.trim())),
       level: process.env.LOG_LEVEL,
     },
   },
