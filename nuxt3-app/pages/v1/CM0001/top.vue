@@ -5,7 +5,7 @@ const data = reactive({
   textboxRequired: false,
   textboxDisabled: false,
   textboxReadonly: false,
-  textboxSize: "",
+  textboxSize: undefined,
   textbox1: "",
   textbox2: "",
   textbox3: "",
@@ -303,7 +303,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.numberboxRequired"
             :disabled="data.numberboxDisabled"
             :readonly="data.numberboxReadonly"
-            :size="data.numberboxSize"
+            :size="(data.numberboxSize as any)"
           />
           <UIText type="outline">{{ data.numberbox1 }}</UIText>
         </div>
@@ -319,7 +319,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.numberboxRequired"
             :disabled="data.numberboxDisabled"
             :readonly="data.numberboxReadonly"
-            :size="data.numberboxSize"
+            :size="(data.numberboxSize as any)"
           />
           <UIText type="outline">{{ data.numberbox2 }}</UIText>
         </div>
@@ -334,7 +334,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.numberboxRequired"
             :disabled="data.numberboxDisabled"
             :readonly="data.numberboxReadonly"
-            :size="data.numberboxSize"
+            :size="data.numberboxSize as any"
             prefix="("
             suffix=")"
             halign="center"
@@ -366,7 +366,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.dateboxRequired"
             :disabled="data.dateboxDisabled"
             :readonly="data.dateboxReadonly"
-            :size="data.dateboxSize"
+            :size="(data.dateboxSize as any)"
           />
           <UIText type="outline">{{ data.datebox1 }}</UIText>
         </div>
@@ -380,7 +380,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.dateboxRequired"
             :disabled="data.dateboxDisabled"
             :readonly="data.dateboxReadonly"
-            :size="data.dateboxSize"
+            :size="data.dateboxSize as any"
             format="'('u-M-d')'"
           />
           <UIText type="outline">{{ data.datebox2 }}</UIText>
@@ -395,7 +395,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.dateboxRequired"
             :disabled="data.dateboxDisabled"
             :readonly="data.dateboxReadonly"
-            :size="data.dateboxSize"
+            :size="(data.dateboxSize as any)"
             prefix="("
             suffix=")"
             halign="center"
@@ -427,7 +427,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.timeboxRequired"
             :disabled="data.timeboxDisabled"
             :readonly="data.timeboxReadonly"
-            :size="data.timeboxSize"
+            :size="(data.timeboxSize as any)"
           />
           <UIText type="outline">{{ data.timebox1 }}</UIText>
         </div>
@@ -443,7 +443,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.timeboxRequired"
             :disabled="data.timeboxDisabled"
             :readonly="data.timeboxReadonly"
-            :size="data.timeboxSize"
+            :size="(data.timeboxSize as any)"
           />
           <UIText type="outline">{{ data.timebox2 }}</UIText>
         </div>
@@ -459,7 +459,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.timeboxRequired"
             :disabled="data.timeboxDisabled"
             :readonly="data.timeboxReadonly"
-            :size="data.timeboxSize"
+            :size="(data.timeboxSize as any)"
             halign="center"
             prefix="("
             suffix=")"
@@ -491,7 +491,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.textareaRequired"
             :disabled="data.textareaDisabled"
             :readonly="data.textareaReadonly"
-            :size="data.textareaSize"
+            :size="(data.textareaSize as any)"
           />
           <UIText type="outline">{{ data.textarea1 }}</UIText>
         </div>
@@ -506,7 +506,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.textareaRequired"
             :disabled="data.textareaDisabled"
             :readonly="data.textareaReadonly"
-            :size="data.textareaSize"
+            :size="(data.textareaSize as any)"
             prefix="("
             suffix=")"
             halign="center"
@@ -538,7 +538,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.selectboxRequired"
             :disabled="data.selectboxDisabled"
             :readonly="data.selectboxReadonly"
-            :size="data.selectboxSize"
+            :size="(data.selectboxSize as any)"
             :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
             placeholder="---"
           />
@@ -555,7 +555,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.selectboxRequired"
             :disabled="data.selectboxDisabled"
             :readonly="data.selectboxReadonly"
-            :size="data.selectboxSize"
+            :size="(data.selectboxSize as any)"
             :items="[
               { value: '1', text: 'AAA' },
               { value: '2', text: 'BBB' },
@@ -600,7 +600,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.comboboxRequired"
             :disabled="data.comboboxDisabled"
             :readonly="data.comboboxReadonly"
-            :size="data.comboboxSize"
+            :size="(data.comboboxSize as any)"
             :items="[{ value: '1', text: 'AAA' }, { value: '23', text: 'BBB' }]"
             placeholder="---"
           />
@@ -617,7 +617,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.comboboxRequired"
             :disabled="data.comboboxDisabled"
             :readonly="data.comboboxReadonly"
-            :size="data.comboboxSize"
+            :size="(data.comboboxSize as any)"
             :items="[
               { value: '1', text: 'AAA' },
               { value: '2', text: 'BBB' },
@@ -658,7 +658,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.checkRequired"
             :disabled="data.checkDisabled"
             :readonly="data.checkReadonly"
-            :size="data.checkSize"
+            :size="(data.checkSize as any)"
           >チェックボックス</UICheck>
           <UIText type="outline">{{ data.check1 }}</UIText>
         </div>
@@ -673,7 +673,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.checkRequired"
             :disabled="data.checkDisabled"
             :readonly="data.checkReadonly"
-            :size="data.checkSize"
+            :size="(data.checkSize as any)"
             prefix="("
             suffix=")"
             halign="center"
@@ -705,7 +705,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.checklistRequired"
             :disabled="data.checklistDisabled"
             :readonly="data.checklistReadonly"
-            :size="data.checklistSize"
+            :size="(data.checklistSize as any)"
             :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
           />
           <UIText type="outline">{{ data.checklist1.join(", ") }}</UIText>
@@ -720,7 +720,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.checklistRequired"
             :disabled="data.checklistDisabled"
             :readonly="data.checklistReadonly"
-            :size="data.checklistSize"
+            :size="(data.checklistSize as any)"
             :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
             prefix="("
             suffix=")"
@@ -753,7 +753,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.radiolistRequired"
             :disabled="data.radiolistDisabled"
             :readonly="data.radiolistReadonly"
-            :size="data.radiolistSize"
+            :size="(data.radiolistSize as any)"
             :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
           />
           <UIText type="outline">{{ data.radiolist1 }}</UIText>
@@ -768,7 +768,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.radiolistRequired"
             :disabled="data.radiolistDisabled"
             :readonly="data.radiolistReadonly"
-            :size="data.radiolistSize"
+            :size="(data.radiolistSize as any)"
             :items="[{ value: '1', text: 'AAA' }, { value: '2', text: 'BBB' }]"
             prefix="("
             suffix=")"
@@ -799,7 +799,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             v-model="data.fileupload1"
             :required="data.fileuploadRequired"
             :disabled="data.fileuploadDisabled"
-            :size="data.fileuploadSize"
+            :size="(data.fileuploadSize as any)"
           />
           <UIText type="outline">{{ data.fileupload1?.name }}</UIText>
         </div>
@@ -812,7 +812,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             v-model="data.fileupload2"
             :required="data.fileuploadRequired"
             :disabled="data.fileuploadDisabled"
-            :size="data.fileuploadSize"
+            :size="(data.fileuploadSize as any)"
             prefix="("
             suffix=")"
             halign="center"
@@ -842,7 +842,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             v-model="data.multifileupload1"
             :required="data.multifileuploadRequired"
             :disabled="data.multifileuploadDisabled"
-            :size="data.multifileuploadSize"
+            :size="(data.multifileuploadSize as any)"
           />
           <UIText type="outline">{{ data.multifileupload1.map((item: File) => item.name) }}</UIText>
         </div>
@@ -855,7 +855,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             v-model="data.multifileupload2"
             :required="data.multifileuploadRequired"
             :disabled="data.multifileuploadDisabled"
-            :size="data.multifileuploadSize"
+            :size="(data.multifileuploadSize as any)"
             prefix="("
             suffix=")"
             halign="center"
@@ -918,7 +918,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <UIButton
             :color="(data.buttonColor as any)"
             :disabled="data.buttonDisabled"
-            :size="data.buttonSize"
+            :size="(data.buttonSize as any)"
             @click="data.button1++"
           >ボタン</UIButton>
           <UIText type="outline">{{ data.button1 }}</UIText>
@@ -932,7 +932,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             type="outline"
             :color="(data.buttonColor as any)"
             :disabled="data.buttonDisabled"
-            :size="data.buttonSize"
+            :size="(data.buttonSize as any)"
             @click="data.button2++"
           >ボタン</UIButton>
           <UIText type="outline">{{ data.button2 }}</UIText>
@@ -945,7 +945,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           <UIButton
             :color="(data.buttonColor as any)"
             :disabled="data.buttonDisabled"
-            :size="data.buttonSize"
+            :size="(data.buttonSize as any)"
             prefix="("
             suffix=")"
             halign="center"
@@ -973,7 +973,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           >デフォルト</UILabel>
           <UILink
             :disabled="data.linkDisabled"
-            :size="data.linkSize"
+            :size="(data.linkSize as any)"
             @click="data.link1++"
           >リンク</UILink>
           <div class="border">{{ data.link1 }}</div>
@@ -985,7 +985,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           >装飾</UILabel>
           <UILink
             :disabled="data.linkDisabled"
-            :size="data.linkSize"
+            :size="(data.linkSize as any)"
             prefix="("
             suffix=")"
             halign="center"

@@ -9,10 +9,7 @@ const SigninSchema = z.object({
   password: UserPasswordSchema,
 })
 
-export default defineAction({
-  session: false,
-  transaction: false,
-}, async (event) => {
+export default defineAction(async (event) => {
   const params = SigninSchema.parse(await readBody(event))
 
   const con = useSqlConnection(event)

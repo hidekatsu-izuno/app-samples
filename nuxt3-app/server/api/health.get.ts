@@ -1,8 +1,5 @@
-export default defineAction({
-  session: false,
-  transaction: false,
-}, (event) => {
-  event.context.logger.info("info!")
-  event.context.logger.warn("warn!")
-  throw new Error("error!")
+export default defineAction(async (event) => {
+  const con = useSqlConnection(event)
+  await con`select 1`.execute()
+  return "success"
 })

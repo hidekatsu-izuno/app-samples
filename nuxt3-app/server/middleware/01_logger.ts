@@ -55,14 +55,14 @@ function serializeRequest(req: IncomingMessage) {
   let ip = req.socket.remoteAddress
 
   const xFowardedFor = req.headers["x-forwarded-for"]
-  if (xFowardedFor && runtimeConfig.trustedProxies.size > 0) {
+  if (xFowardedFor && runtimeConfig.logger?.trustedProxies?.size > 0) {
     const array = Array.isArray(xFowardedFor) ? xFowardedFor : [xFowardedFor]
     loop:
     for (const entry of array) {
       const items = entry.split(/,/g).map(v => v.trim())
       if (items.length > 0 && items[0]) {
         for (let i = 1; i < items.length; i++) {
-          if (runtimeConfig.trustedProxies.has(items[i])) {
+          if (runtimeConfig.logger.trustedProxies.has(items[i])) {
             ip = items[0]
             break loop
           }
