@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// @ts-expect-error virtual file
-import { globalMiddleware } from '#build/middleware'
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock"
 
 defineOptions({
@@ -40,18 +38,14 @@ function init() {
   })
 
   const nuxtApp = useNuxtApp()
-  nuxtApp.hook('page:finish', close)
-  nuxtApp.hook('vue:error', close)
+  nuxtApp.hook("page:finish", close)
+  nuxtApp.hook("vue:error", close)
 
   onMounted(() => {
     open()
   })
 
   onBeforeUnmount(() => {
-    const index = globalMiddleware.indexOf(open)
-    if (index >= 0) {
-      globalMiddleware.splice(index, 1)
-    }
     clear()
   })
 

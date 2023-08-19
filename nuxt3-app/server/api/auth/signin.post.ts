@@ -4,8 +4,6 @@ import { AppSessionConfig } from "~/server/utils/session"
 import { UserPasswordSchema, EmailSchema } from "~/utils/schemas"
 import { encodePassword } from "~/server/utils/security"
 
-const runtimeConfig = useRuntimeConfig()
-
 const SigninSchema = z.object({
   email: EmailSchema,
   password: UserPasswordSchema,
@@ -33,25 +31,29 @@ export default defineAction({
 })
 
 async function getValidUserId(con: SqlConnection, email: string, password: string) {
-  const hashed = (await encodePassword(
-    password,
-    Buffer.from(runtimeConfig.auth.salt, "base64"),
-  )).toString("base64")
-
   const result = await con`
     select
-      mu.user_id
+      mu.user_id,
+      mup.user_password,
+      mup.user_password_salt
     from
       mt_user mu
     inner join mt_user_password mup
       on mup.user_id = mu.user_id
-      and mup.user_password = ${hashed}
     where
       mu.user_email = ${email}
     `
+
   if (result.length === 1) {
-    return result[0]?.user_id
-  } else {
-    console.log(hashed)
+    const user = result[0]
+    const hashed = await encodePassword(
+      password,
+      user.user_password_salt,
+    )
+    if (user.user_password === hashed) {
+      return user.user_id
+    } else {
+      console.log(hashed)
+    }
   }
 }

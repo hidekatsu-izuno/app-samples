@@ -54,7 +54,7 @@ export function defineAction<T = any>(arg1: ControllerOptions | EventHandler<T>,
       if (err instanceof ZodError) {
         newErr = createError({ statusCode: 400, cause: err })
       }
-      return newErr
+      throw newErr
     }
   })
 }

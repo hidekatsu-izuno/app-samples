@@ -21,7 +21,7 @@ const goChangePasswordPage = () => {
 
 const onLoginButtonClick = async () => {
   try {
-    const data = await validate({
+    const request = await validate({
       email: emailRef,
       password: passwordRef,
     })
@@ -29,7 +29,7 @@ const onLoginButtonClick = async () => {
     try {
       const result = await fetchURL("/api/auth/signin", {
         method: "POST",
-        data,
+        body: request,
       })
       location.href = result.redirect
     } catch (err) {
@@ -50,28 +50,36 @@ const onLoginButtonClick = async () => {
         Nuxt3 Sample App
       </h1>
       <UICard>
-        <div class="grid grid-cols-1 gap-y-4 p-6">
-          <UITextBox
-            ref="emailRef"
-            type="email"
-            label="メールアドレス"
-            required
-            :schema="EmailSchema"
-          />
-          <UITextBox
-            ref="passwordRef"
-            type="password"
-            label="パスワード"
-            name="password"
-            required
-            :schema="UserPasswordSchema"
-          />
-          <UILink halign="end" class="text-sm" @click="goChangePasswordPage">
-            パスワードを忘れた方はこちら
-          </UILink>
-          <UIButton halign="center" @click="onLoginButtonClick">
-            ログイン
-          </UIButton>
+        <div class="grid gap-y-4 p-6">
+          <div>
+            <UILabel required>メールアドレス</UILabel>
+            <UITextBox
+              ref="emailRef"
+              type="email"
+              required
+              :schema="EmailSchema"
+            />
+          </div>
+          <div>
+            <UILabel required>パスワード</UILabel>
+            <UITextBox
+              ref="passwordRef"
+              type="password"
+              name="password"
+              required
+              :schema="UserPasswordSchema"
+            />
+          </div>
+          <div>
+            <UILink halign="end" class="text-sm" @click="goChangePasswordPage">
+              パスワードを忘れた方はこちら
+            </UILink>
+          </div>
+          <div>
+            <UIButton @click="onLoginButtonClick">
+              ログイン
+            </UIButton>
+          </div>
         </div>
       </UICard>
       <div class="m-4 mb-8 text-center">

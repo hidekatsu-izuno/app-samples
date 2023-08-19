@@ -35,7 +35,9 @@ export default defineEventHandler((event) => {
       res: resInfo,
     })
 
-    if (err || res.statusCode >= 500) {
+    if (err) {
+      httpLogger.error({ err }, "finished with error")
+    } else if (res.statusCode >= 500) {
       httpLogger.error("finished with error")
     } else if (res.statusCode >= 400) {
       httpLogger.warn("finished with warning")

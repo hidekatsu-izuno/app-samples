@@ -24,16 +24,19 @@ INSERT INTO mt_user (
 
 CREATE TABLE mt_user_password (
   user_id VARCHAR(36) NOT NULL,
-  user_password VARCHAR(1000) NOT NULL,
+  user_password BYTEA NOT NULL,
+  user_password_salt BYTEA NOT NULL,
   CONSTRAINT pk_mt_user_password PRIMARY KEY (user_id)
 );
 
 INSERT INTO mt_user_password (
   user_id,
-  user_password
+  user_password,
+  user_password_salt,
 ) VALUES (
   '9a192654-08fc-11ee-9cff-00155d80ceb2',
-  'PYxKgBwocpZ7leh0j0nF4g=='
+  '\x00',
+  '\x00'
 );
 
 CREATE TABLE mt_user_role (
