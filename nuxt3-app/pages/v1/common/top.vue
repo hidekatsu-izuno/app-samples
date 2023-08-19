@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MenuList from "~/components/v1/CM0001/MenuList.vue"
+import MenuList from "~/components/v1/common/MenuList.vue"
 
 const data = reactive({
   textboxRequired: false,

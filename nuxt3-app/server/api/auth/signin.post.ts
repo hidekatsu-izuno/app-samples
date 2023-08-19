@@ -22,7 +22,7 @@ export default defineAction(async (event) => {
   })
 
   return {
-    redirect: "/v1/CM0001/top",
+    redirect: "/v1/common/top",
   }
 })
 
