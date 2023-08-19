@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
     halign?: "start" | "center" | "end",
   }>,
   modelValue?: Array<Record<string, any>>,
-  footer?: (modelValue:  Array<Record<string, any>>, items: Record<string, any>) => Record<string, any>,
+  footer?: (modelValue: Array<Record<string, any>>, items: Record<string, any>) => Record<string, any>,
 }>(), {
   wrap: false,
   ellipsis: false,
@@ -99,7 +99,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
   >
     <div class="UIDataTable-Header">
       <div class="UIDataTable-HeaderRow">
-        <template v-for="(item, colIndex) in items">
+        <template v-for="(item, colIndex) in items" :key="colIndex">
           <div
             class="UIDataTable-HeaderCell"
             :data-col="colIndex"
@@ -112,23 +112,24 @@ function onSeparatorMouseDown(event: MouseEvent) {
             @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
             @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
           ><slot
-              name="footerCell"
-              :item="item"
-              :value="item.label || item.key"
+            name="footerCell"
+            :item="item"
+            :value="item.label || item.key"
           >{{ item.label ?? item.key }}</slot></div>
           <div
             class="UIDataTable-HeaderSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
-          ></div>
+          />
         </template>
       </div>
     </div>
     <div class="UIDataTable-Content">
       <div
-        class="UIDataTable-ContentRow"
         v-for="(rowValues, rowIndex) in props.modelValue"
+        :key="rowIndex"
+        class="UIDataTable-ContentRow"
       >
-        <template v-for="(item, colIndex) in items">
+        <template v-for="(item, colIndex) in items" :key="((colIndex << 16) & rowIndex)">
           <div
             class="UIDataTable-ContentCell"
             :data-col="colIndex"
@@ -141,25 +142,24 @@ function onSeparatorMouseDown(event: MouseEvent) {
             }"
             @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
             @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
-
           ><slot
             name="contentCell"
-            :rowValues="rowValues"
-            :rowIndex="rowIndex"
-            :colIndex="colIndex"
+            :row-values="rowValues"
+            :row-index="rowIndex"
+            :col-index="colIndex"
             :item="item"
             :value="rowValues?.[item.key]"
           >{{ rowValues?.[item.key] }}</slot></div>
           <div
             class="UIDataTable-ContentSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
-          ></div>
+          />
         </template>
       </div>
     </div>
-    <div class="UIDataTable-Footer" v-if="data.footerValues">
+    <div v-if="data.footerValues" class="UIDataTable-Footer">
       <div class="UIDataTable-FooterRow">
-        <template v-for="(item, colIndex) in items">
+        <template v-for="(item, colIndex) in items" :key="colIndex">
           <div
             class="UIDataTable-FooterCell"
             :data-col="colIndex"
@@ -172,15 +172,15 @@ function onSeparatorMouseDown(event: MouseEvent) {
             @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
             @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
           ><slot
-              name="footerCell"
-              :rowValues="data.footerValues"
-              :item="item"
-              :value="data.footerValues[item.key]"
+            name="footerCell"
+            :row-values="data.footerValues"
+            :item="item"
+            :value="data.footerValues[item.key]"
           >{{ data.footerValues[item.key] }}</slot></div>
           <div
             class="UIDataTable-FooterSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
-          ></div>
+          />
         </template>
       </div>
     </div>

@@ -284,9 +284,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">数値ボックス (UINumberBox)</h2>
-          <div class="shrink"><input v-model="data.numberboxRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.numberboxDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.numberboxReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.numberboxRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.numberboxDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.numberboxReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.numberboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -348,9 +348,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">日付ボックス (UIDateBox)</h2>
-          <div class="shrink"><input v-model="data.dateboxRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.dateboxDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.dateboxReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.dateboxRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.dateboxDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.dateboxReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.dateboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -409,9 +409,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">時刻ボックス (UITimeBox)</h2>
-          <div class="shrink"><input v-model="data.timeboxRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.timeboxDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.timeboxReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.timeboxRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.timeboxDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.timeboxReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.timeboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -473,9 +473,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">テキストエリア (UITextArea)</h2>
-          <div class="shrink"><input v-model="data.textareaRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.textareaDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.textareaReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.textareaRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.textareaDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.textareaReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.textareaSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -520,9 +520,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">セレクトボックス (UISelectBox)</h2>
-          <div class="shrink"><input v-model="data.selectboxRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.selectboxDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.selectboxReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.selectboxRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.selectboxDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.selectboxReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.selectboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -582,9 +582,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">コンボボックス (UIComboBox)</h2>
-          <div class="shrink"><input v-model="data.comboboxRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.comboboxDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.comboboxReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.comboboxRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.comboboxDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.comboboxReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.comboboxSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -640,9 +640,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">チェックボックス (UICheck)</h2>
-          <div class="shrink"><input v-model="data.checkRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.checkDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.checkReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.checkRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.checkDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.checkReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.checkSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -687,9 +687,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">チェックリスト (UICheckList)</h2>
-          <div class="shrink"><input v-model="data.checklistRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.checklistDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.checklistReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.checklistRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.checklistDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.checklistReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.checklistSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -735,9 +735,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ラジオリスト (UIRadioList)</h2>
-          <div class="shrink"><input v-model="data.radiolistRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.radiolistDisabled" type="checkbox"> disabled</div>
-          <div class="shrink"><input v-model="data.radiolistReadonly" type="checkbox"> readonly</div>
+          <div class="shrink"><input v-model="data.radiolistRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.radiolistDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.radiolistReadonly" type="checkbox" /> readonly</div>
           <UISelectBox v-model="data.radiolistSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -783,8 +783,8 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ファイル選択 (UIFileUpload)</h2>
-          <div class="shrink"><input v-model="data.fileuploadRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.fileuploadDisabled" type="checkbox"> disabled</div>
+          <div class="shrink"><input v-model="data.fileuploadRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.fileuploadDisabled" type="checkbox" /> disabled</div>
           <UISelectBox v-model="data.fileuploadSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -826,8 +826,8 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">複数ファイル選択 (UIMultiFileUpload)</h2>
-          <div class="shrink"><input v-model="data.multifileuploadRequired" type="checkbox"> required</div>
-          <div class="shrink"><input v-model="data.multifileuploadDisabled" type="checkbox"> disabled</div>
+          <div class="shrink"><input v-model="data.multifileuploadRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.multifileuploadDisabled" type="checkbox" /> disabled</div>
           <UISelectBox v-model="data.multifileuploadSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -869,7 +869,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ページング (UIPaginator)</h2>
-          <div class="shrink"><input v-model="data.paginatorDisabled" type="checkbox"> disabled</div>
+          <div class="shrink"><input v-model="data.paginatorDisabled" type="checkbox" /> disabled</div>
         </div>
       </template>
 
@@ -892,10 +892,10 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">ボタン (UIButton)</h2>
-          <input v-model="data.buttonDisabled" type="checkbox"> disabled
+          <input v-model="data.buttonDisabled" type="checkbox" /> disabled
           <UISelectBox
-            size="sm"
             v-model="data.buttonColor"
+            size="sm"
             :items="[
               { value: 'blue' },
               { value: 'slate' }, { value: 'gray' }, { value: 'zinc' }, { value: 'neutral' }, { value: 'stone' },
@@ -960,7 +960,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">リンク (UILink)</h2>
-          <div class="shrink"><input v-model="data.linkDisabled" type="checkbox"> disabled</div>
+          <div class="shrink"><input v-model="data.linkDisabled" type="checkbox" /> disabled</div>
           <UISelectBox v-model="data.linkSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
         </div>
       </template>
@@ -1003,23 +1003,26 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
 
-      <UITabBar :items="[
-        { value: 'tab1', text: 'タブ１' },
-        { value: 'tab2', text: 'タブ２' },
-        { value: 'tab3', text: 'タブ３' }
-      ]" />
+      <UITabBar
+        :items="[
+          { value: 'tab1', text: 'タブ１' },
+          { value: 'tab2', text: 'タブ２' },
+          { value: 'tab3', text: 'タブ３' }
+        ]"
+      />
     </UICard>
 
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">データテーブル (UIDataTable)</h2>
-          <div class="shrink"><input v-model="data.dataTableWrap" type="checkbox"> wrap</div>
-          <div class="shrink"><input v-model="data.dataTableEllipsis" type="checkbox"> ellipsis</div>
+          <div class="shrink"><input v-model="data.dataTableWrap" type="checkbox" /> wrap</div>
+          <div class="shrink"><input v-model="data.dataTableEllipsis" type="checkbox" /> ellipsis</div>
         </div>
       </template>
 
       <UIDataTable
+        v-model="data.dataTable"
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
         :items="[
@@ -1027,10 +1030,9 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           { key: 'date', label: '日付', halign: 'center' },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },
         ]"
-        v-model="data.dataTable"
         :footer="onFooter"
       >
-        <template v-slot:contentCell="{ item, value }">
+        <template #contentCell="{ item, value }">
           <template v-if="item.key === 'date'">{{
             formatDate(value, 'uuuu/MM/dd')
           }}</template>
@@ -1038,6 +1040,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       </UIDataTable>
       <br />
       <UIDataTable
+        v-model="data.dataTable"
         style="height: 200px"
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
@@ -1047,12 +1050,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           { key: 'date', label: '日付', halign: 'center' },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },
         ]"
-        v-model="data.dataTable"
         :footer="onFooter"
       >
-        <template v-slot:contentCell="{ item, value, rowValues }">
+        <template #contentCell="{ item, value, rowValues }">
           <template v-if="item.key === 'boolean'">
-            <UICheck halign="center" v-model="rowValues[item.key]" />
+            <UICheck v-model="rowValues[item.key]" halign="center" />
           </template>
           <template v-else-if="item.key === 'date'">{{
             formatDate(value, 'uuuu/MM/dd')

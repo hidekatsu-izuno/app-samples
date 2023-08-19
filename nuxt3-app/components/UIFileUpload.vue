@@ -134,7 +134,7 @@ function validate(value?: File) {
         @focus="onFocus"
         @change="onChange"
         @blur="onBlur"
-      >
+      />
       <div v-if="props.suffix" class="UIFileUpload-Suffix">{{ props.suffix }}</div>
     </div>
     <div

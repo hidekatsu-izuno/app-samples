@@ -167,7 +167,7 @@ function validate(value: string[]) {
               :tabindex="props.tabindex"
               :value="item.value"
               :checked="data.value.includes(item.value)"
-            >
+            />
             <UIIcon name="check-bold" class="UICheckList-InputCheck hidden peer-checked:block" />
           </div>
           {{ item.text }}

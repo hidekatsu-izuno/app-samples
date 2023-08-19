@@ -266,7 +266,7 @@ function getFormatMaxLength(format: string) {
           @mousedown="onMouseDown"
           @compositionstart="onCompositionStart"
           @compositionend="onCompositionEnd"
-        >
+        />
         <div class="UIDateBox-InputPickerButton" @mousedown="onInputPickerButtonMouseDown">
           <UIIcon name="calendar" />
         </div>

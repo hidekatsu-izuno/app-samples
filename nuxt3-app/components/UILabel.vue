@@ -12,11 +12,12 @@ const props = withDefaults(defineProps<{
     class="UILabel"
     :data-required="props.required || undefined"
   >
-    <label class="UILabel-Text"
+    <label
+      class="UILabel-Text"
     ><slot /></label>
     <span
-      class="UILabel-Description"
       v-if="props.description"
+      class="UILabel-Description"
     >{{ props.description }}</span>
   </div>
 </template>

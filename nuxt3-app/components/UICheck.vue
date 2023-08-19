@@ -132,7 +132,7 @@ function validate(value: boolean) {
             @focus="onFocus"
             @change="onChange"
             @blur="onBlur"
-          >
+          />
           <UIIcon name="check-bold" class="UICheck-InputCheck hidden peer-checked:block" />
         </div>
         <slot />
