@@ -1,5 +1,6 @@
 import { z } from "zod"
-import { type SqlConnection, defineAction, useSqlConnection } from "~/server/utils/action"
+import { AppSessionConfig } from "../../middleware/02_session"
+import { type SqlConnection, useSqlConnection } from "~/server/utils/action"
 import { UserPasswordSchema, EmailSchema } from "~/utils/schemas"
 
 const SigninSchema = z.object({
@@ -16,7 +17,7 @@ export default defineAction(async (event) => {
     throw createError({ statusCode: 401 })
   }
 
-  await event.context.session.update({
+  await updateSession(event, AppSessionConfig, {
     userId,
   })
 

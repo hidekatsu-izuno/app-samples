@@ -1,7 +1,7 @@
 import type { SessionConfig } from "h3"
 
 const runtimeConfig = useRuntimeConfig()
-const AppSessionConfig: SessionConfig = {
+export const AppSessionConfig: SessionConfig = {
   password: runtimeConfig.session.password,
   maxAge: runtimeConfig.session.maxAge,
   cookie: {
@@ -17,14 +17,14 @@ export declare type AppSession = {
 
 declare module "h3" {
   interface H3EventContext {
-    session?: ReturnType<typeof useSession<AppSession>> extends Promise<infer T> ? T : never
+    session?: ReturnType<typeof getSession<AppSession>> extends Promise<infer T> ? T : never
   }
 }
 
 export default defineEventHandler(async (event) => {
   const path = getRequestPath(event)
   if (/^\/(api\/)?v1\//.test(path)) {
-    const session = await useSession<AppSession>(event, AppSessionConfig)
+    const session = await getSession<AppSession>(event, AppSessionConfig)
     if (session.data?.userId) {
       event.context.session = session
     } else {

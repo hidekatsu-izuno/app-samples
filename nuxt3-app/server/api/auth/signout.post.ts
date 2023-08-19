@@ -1,6 +1,6 @@
-import { defineAction } from "~/server/utils/action"
+import { AppSessionConfig } from "../../middleware/02_session"
 
 export default defineAction(async (event) => {
-  await event.context.session.clear()
+  await clearSession(event, AppSessionConfig)
   return {}
 })

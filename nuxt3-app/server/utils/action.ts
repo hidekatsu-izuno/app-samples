@@ -22,7 +22,7 @@ export function defineAction<T = any>(handler: EventHandler<T>) {
     try {
       return await tx(event, async () => {
         return await handler(event)
-      }, "READONLY")
+      }, "READ ONLY")
     } catch (err) {
       let newErr = err
       if (err instanceof ZodError) {
