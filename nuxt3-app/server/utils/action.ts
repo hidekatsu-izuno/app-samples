@@ -42,7 +42,11 @@ export function useSqlConnection(event: H3Event) {
 }
 
 export async function tx<T>(event: H3Event, handler: () => T) {
-  const cSql = ((event as any)[SqlKey] ?? event.context.sqlConnection) as SqlConnection
+  const cSql = ((event as any)[SqlKey] ?? event.context.database) as SqlConnection | undefined
+  if (!cSql) {
+    throw new Error("Cannot establish connection.")
+  }
+
   return await cSql.begin("READ WRITE", async (tSql: SqlConnection) => {
     (event as any)[SqlKey].push(tSql)
     try {

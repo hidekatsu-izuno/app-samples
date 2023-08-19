@@ -12,13 +12,13 @@ const sql = postgres({
 
 declare module "h3" {
   interface H3EventContext {
-    sqlConnection: typeof sql
+    database: typeof sql
   }
 }
 
 export default defineEventHandler((event) => {
   const path = getRequestPath(event)
   if (/^\/api\//.test(path)) {
-    event.context.sqlConnection = sql
+    event.context.database = sql
   }
 })
