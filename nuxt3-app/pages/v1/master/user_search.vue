@@ -42,8 +42,8 @@ async function onSearchButtonClick() {
   data.searchResult = res.items
 }
 
-function onSelectButtonClick(userId: string) {
-  historyState.push("./user_update", { userId })
+function onSelectButtonClick(mode: string, userId?: string) {
+  historyState.push("./user_update", { mode, userId })
 }
 </script>
 
@@ -56,7 +56,7 @@ function onSelectButtonClick(userId: string) {
     <div class="grid gap-4">
       <UICard>
         <template #header>
-          <div class="px-4 py-2">
+          <div class="px-2 py-1">
             <h2 class="font-bold">検索条件</h2>
           </div>
         </template>
@@ -80,7 +80,7 @@ function onSelectButtonClick(userId: string) {
           </div>
         </div>
         <template #footer>
-          <div class="flex flex-row items-center justify-end px-4 py-2">
+          <div class="flex flex-row items-center justify-end px-2 py-1">
             <UIButton class="w-40" @click="onSearchButtonClick">検索</UIButton>
           </div>
         </template>
@@ -88,15 +88,15 @@ function onSelectButtonClick(userId: string) {
 
       <UICard>
         <template #header>
-          <div class="flex flex-row items-center justify-between px-4 py-2">
-            <h2 class="font-bold">検索結果</h2>
+          <div class="flex flex-row items-center justify-between px-2 py-1">
             <UIPaginator v-model="data.pageNo" :page-size="data.pageSize" :total-count="data.totalCount" />
+            <UIButton @click="() => onSelectButtonClick('register')">追加</UIButton>
           </div>
         </template>
         <UIDataTable
           v-model="data.searchResult"
           :items="[
-            { key: 'userId', label: '' },
+            { key: 'userId', label: '', width: '160px' },
             { key: 'userEmail', label: 'メールアドレス', width: '300px' },
             { key: 'userName', label: 'ユーザー名', width: '300px' },
             { key: 'isDeleted', label: '削除', halign: 'center', width: '100px', format: (value: any) => value ? '削除' : '' },
@@ -104,7 +104,10 @@ function onSelectButtonClick(userId: string) {
         >
           <template #contentCell="{ item, value }">
             <template v-if="item.key === 'userId'">
-              <UIButton size="sm" @click="() => onSelectButtonClick(value)">選択</UIButton>
+              <div class="flex flex-row justify-center gap-2">
+                <UIButton size="sm" @click="() => onSelectButtonClick('update', value)">更新</UIButton>
+                <UIButton size="sm" @click="() => onSelectButtonClick('delete', value)">削除</UIButton>
+              </div>
             </template>
           </template>
         </UIDataTable>
