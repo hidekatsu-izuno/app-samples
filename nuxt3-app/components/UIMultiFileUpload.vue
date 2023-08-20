@@ -157,7 +157,7 @@ function validate(value: File[]) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    px-[0.5em] py-[0.25em]
+    px-[0.25em] py-[0.125em]
     min-w-0
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;

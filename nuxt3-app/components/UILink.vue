@@ -65,7 +65,7 @@ function onBlur(event: Event) {
 <style>
 .UILink-Content {
   @apply flex flex-row items-center gap-2
-    px-[0.5em] py-[0.25em]
+    px-[0.25em] py-[0.125em]
     text-base;
 }
 

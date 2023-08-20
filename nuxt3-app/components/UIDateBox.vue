@@ -337,7 +337,7 @@ function getFormatMaxLength(format: string) {
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
-    pl-[0.5em] pr-8 py-[0.25em]
+    pl-[0.25em] pr-8 py-[0.125em]
     min-w-0
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
@@ -437,9 +437,9 @@ function getFormatMaxLength(format: string) {
 
 .UIDateBox[data-readonly="true"] {
   .UIDateBox-Content {
-    @apply min-h-[calc(1.5em+(0.25em+1px)*2)]
+    @apply min-h-[calc(1.5em+(0.125em+1px)*2)]
       border border-gray-200
-      px-[0.5em] py-[0.25em]
+      px-[0.25em] py-[0.125em]
       text-gray-900;
   }
 

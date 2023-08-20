@@ -875,7 +875,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
 
       <div class="grid grid-cols-2 gap-2 p-6">
         <UIPaginator v-model="data.paginator1" :disabled="data.paginatorDisabled" />
-        <div class="border">{{ data.paginator1 }}</div>
+        <UIText type="outline">{{ data.paginator1 }}</UIText>
 
         <UIPaginator
           v-model="data.paginator2"
@@ -884,7 +884,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :page-size="50"
           :total-count="1000"
         />
-        <div class="border">{{ data.paginator2 }}</div>
+        <UIText type="outline">{{ data.paginator2 }}</UIText>
       </div>
     </UICard>
 
@@ -976,7 +976,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :size="(data.linkSize as any)"
             @click="data.link1++"
           >リンク</UILink>
-          <div class="border">{{ data.link1 }}</div>
+          <UIText type="outline">{{ data.link1 }}</UIText>
         </div>
 
         <div class="grid grid-cols-2 gap-x-2">
@@ -991,7 +991,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             halign="center"
             @click="data.link2++"
           >リンク</UILink>
-          <div class="border">{{ data.link2 }}</div>
+          <UIText type="outline">{{ data.link2 }}</UIText>
         </div>
       </div>
     </UICard>
