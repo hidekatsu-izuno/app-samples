@@ -17,7 +17,7 @@ export declare type AppSession = {
 
 declare module "h3" {
   interface H3EventContext {
-    session?: ReturnType<typeof getSession<AppSession>> extends Promise<infer T> ? T : never
+    session?: AppSession
   }
 }
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   if (/^\/(api\/)?v1\//.test(path)) {
     const session = await getSession<AppSession>(event, AppSessionConfig)
     if (session.data?.userId) {
-      event.context.session = session
+      event.context.session = session.data
       await updateSession(event, AppSessionConfig)
     } else {
       throw createError({ statusCode: 401 })
