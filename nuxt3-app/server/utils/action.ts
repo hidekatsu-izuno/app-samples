@@ -10,6 +10,15 @@ const sql = postgres({
   password: runtimeConfig.database.password,
   database: runtimeConfig.database.database,
   debug: process.env.NODE_ENV === "development",
+  types: {
+    bigint: {
+      to: 20,
+      from: [20],
+      parse: (x: any) => Number.parseInt(x, 10),
+      serialize: (x: any) => x.toString(),
+    },
+  },
+  transform: postgres.camel,
 })
 
 const SqlKey = Symbol.for("SqlKey")
@@ -49,9 +58,9 @@ export async function tx<T>(event: H3Event, handler: () => T, options?: string) 
 
 export function useSqlConnection(event: H3Event) {
   const array = (event as any)[SqlKey]
-  const sql = array[array.length - 1]
-  if (!sql) {
+  const cSql = array[array.length - 1]
+  if (!cSql) {
     throw new Error("Cannot establish connection.")
   }
-  return sql
+  return cSql as typeof sql
 }

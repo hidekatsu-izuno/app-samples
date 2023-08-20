@@ -23,7 +23,7 @@ const data = reactive({
   focused: false,
 })
 
-const maxPage = computed(() => Math.max(Math.ceil(props.totalCount / props.pageSize), 1))
+const maxPage = computed(() => Math.max(Math.ceil(props.totalCount / Math.max(props.pageSize, 1)), 1))
 
 function onFocusin(event: Event) {
   if (!data.focused) {
@@ -131,16 +131,14 @@ function onFocusout(event: Event) {
     outline-2 outline-blue-200
     border-y border-gray-300 hover:enabled:border-0
     px-2
-    w-full
     bg-white hover:enabled:bg-blue-800
     hover:enabled:text-white
     whitespace-nowrap;
 }
 
 .UIPaginator-TotalCount {
-  @apply flex items-center
-    px-2
-    w-full
+  @apply flex items-center justify-end
+    pl-2
     whitespace-nowrap;
 }
 

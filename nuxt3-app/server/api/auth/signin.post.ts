@@ -46,12 +46,12 @@ async function getValidUserId(con: SqlConnection, email: string, password: strin
   const user = result[0]
   const hashed = await encodePassword(
     password,
-    Buffer.from(user.user_id.replaceAll("-", ""), "base64"),
+    Buffer.from(user.userId.replaceAll("-", ""), "base64"),
   )
-  if (Buffer.compare(user.user_password, hashed) !== 0) {
+  if (Buffer.compare(user.userPassword, hashed) !== 0) {
     console.log(hashed.toString("hex"))
     return
   }
 
-  return user.user_id
+  return user.userId
 }

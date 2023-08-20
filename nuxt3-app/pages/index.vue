@@ -2,6 +2,7 @@
 import { onBackupState, useHistoryState } from "vue-history-state"
 import { EmailSchema, UserPasswordSchema } from "~/utils/schemas"
 
+const indicator = useLoadingIndicator()
 const historyState = useHistoryState()
 
 const data = reactive(historyState.data || {
@@ -27,6 +28,7 @@ const onLoginButtonClick = async () => {
     })
 
     try {
+      indicator.open()
       const result = await fetchURL("/api/auth/signin", {
         method: "POST",
         body: request,
@@ -35,6 +37,8 @@ const onLoginButtonClick = async () => {
     } catch (err) {
       data.message = "ログインに失敗しました。"
       data.showMessageBox = true
+    } finally {
+      indicator.close()
     }
   } catch (err) {
     data.message = "入力に誤りがあります。"

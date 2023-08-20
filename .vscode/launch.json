@@ -6,14 +6,14 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "client: chrome",
+      "name": "client:chrome",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}/nuxt3-app"
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "server: nuxt",
+      "name": "server:nuxt",
       "cwd": "${workspaceFolder}/nuxt3-app",
       "program": "./node_modules/nuxi/bin/nuxi.mjs",
       "args": [
@@ -23,10 +23,10 @@
   ],
   "compounds": [
     {
-      "name": "fullstack: nuxt",
+      "name": "fullstack:nuxt",
       "configurations": [
-        "server: nuxt",
-        "client: chrome"
+        "server:nuxt",
+        "client:chrome"
       ]
     }
   ]

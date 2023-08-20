@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
     width?: string,
     label?: string,
     halign?: "start" | "center" | "end",
+    format?: (value: any) => string
   }>,
   modelValue?: Array<Record<string, any>>,
   footer?: (modelValue: Array<Record<string, any>>, items: Record<string, any>) => Record<string, any>,
@@ -104,7 +105,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
             class="UIDataTable-HeaderCell"
             :data-col="colIndex"
             :data-key="item.key"
-            :data-halign="item.halign"
+            data-halign="center"
             :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
             :style="{
               width: data.widths[colIndex] ?? '100px',
@@ -149,7 +150,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
             :col-index="colIndex"
             :item="item"
             :value="rowValues?.[item.key]"
-          >{{ rowValues?.[item.key] }}</slot></div>
+          >{{ item.format ? item.format(rowValues?.[item.key]) : rowValues?.[item.key] }}</slot></div>
           <div
             class="UIDataTable-ContentSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
@@ -176,7 +177,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
             :row-values="data.footerValues"
             :item="item"
             :value="data.footerValues[item.key]"
-          >{{ data.footerValues[item.key] }}</slot></div>
+          >{{ item.format ? item.format(data.footerValues[item.key]) : data.footerValues[item.key] }}</slot></div>
           <div
             class="UIDataTable-FooterSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
