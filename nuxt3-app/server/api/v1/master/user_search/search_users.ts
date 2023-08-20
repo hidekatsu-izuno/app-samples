@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { PartialEmailSchema, UserNameSchema, DateSchema, CommentSchema, PositiveIntSchema } from "~/utils/schemas"
+import { authorize } from "~/server/utils/functions"
 
 const schema = z.object({
   userEmail: PartialEmailSchema.optional(),
@@ -14,6 +15,8 @@ const schema = z.object({
 const PAGE_SIZE = 100
 
 export default defineAction(async (event) => {
+  await authorize(event, ["admin"])
+
   const body = await readBody(event)
   const params = schema.parse(body)
   const sql = useSqlConnection(event)
