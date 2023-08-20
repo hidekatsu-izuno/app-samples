@@ -1,16 +1,28 @@
 <script setup lang="ts">
 import MenuList from "~/components/v1/common/MenuList.vue"
 
+const historyState = useHistoryState()
+
+const data = reactive(historyState.data || {
+  userEmail: "",
+  userName: "",
+  birthDateFrom: "",
+  birthDateTo: "",
+  isDeleted: false,
+
+  pageNo: 1,
+  pageSize: 1,
+  totalCount: 0,
+  searchResult: [] as any[],
+})
+
+onBackupState(() => data)
+
 const userEmail = ref()
 const userName = ref()
 const birthDateFrom = ref()
 const birthDateTo = ref()
 const isDeleted = ref()
-
-const pageNo = ref(1)
-const pageSize = ref(0)
-const totalCount = ref(0)
-const searchResult = ref<any[]>([])
 
 async function onSearchButtonClick() {
   const req = await validate({
@@ -24,10 +36,14 @@ async function onSearchButtonClick() {
     method: "POST",
     body: req,
   })
-  pageNo.value = res.pageNo
-  pageSize.value = res.pageSize
-  totalCount.value = res.totalCount
-  searchResult.value = res.items
+  data.pageNo = res.pageNo
+  data.pageSize = res.pageSize
+  data.totalCount = res.totalCount
+  data.searchResult = res.items
+}
+
+function onSelectButtonClick(userId: string) {
+  historyState.push("./user_update", { userId })
 }
 </script>
 
@@ -47,20 +63,20 @@ async function onSearchButtonClick() {
         <div class="flex flex-col px-4 py-2 gap-2">
           <div>
             <UILabel>メールアドレス</UILabel>
-            <UITextBox ref="userEmail" class="w-80" />
+            <UITextBox ref="userEmail" v-model="data.userEmail" class="w-80" />
           </div>
           <div>
             <UILabel>ユーザー名</UILabel>
-            <UITextBox ref="userName" class="w-80" />
+            <UITextBox ref="userName" v-model="data.userName" class="w-80" />
           </div>
           <div>
             <UILabel>誕生日</UILabel>
             <div class="flex flex-row items-center gap-2">
-              <UIDateBox ref="birthDateFrom" class="w-32" /><div>～</div><UIDateBox ref="birthDateTo" class="w-32" />
+              <UIDateBox ref="birthDateFrom" v-model="data.birthDateFrom" class="w-32" /><div>～</div><UIDateBox ref="birthDateTo" v-model="data.birthDateTo" class="w-32" />
             </div>
           </div>
           <div>
-            <UICheck ref="isDeleted">削除されたものを含む</UICheck>
+            <UICheck ref="isDeleted" v-model="data.isDeleted">削除されたものを含む</UICheck>
           </div>
         </div>
         <template #footer>
@@ -74,22 +90,22 @@ async function onSearchButtonClick() {
         <template #header>
           <div class="flex flex-row items-center justify-between px-4 py-2">
             <h2 class="font-bold">検索結果</h2>
-            <UIPaginator v-model="pageNo" :page-size="pageSize" :total-count="totalCount" />
+            <UIPaginator v-model="data.pageNo" :page-size="data.pageSize" :total-count="data.totalCount" />
           </div>
         </template>
         <UIDataTable
-          v-model="searchResult"
+          v-model="data.searchResult"
           :items="[
-            { key: 'radio', label: '' },
+            { key: 'userId', label: '' },
             { key: 'userEmail', label: 'メールアドレス', width: '300px' },
             { key: 'userName', label: 'ユーザー名', width: '300px' },
             { key: 'isDeleted', label: '削除', halign: 'center', width: '100px', format: (value: any) => value ? '削除' : '' },
           ]"
         >
           <template #contentCell="{ item, value }">
-            <template v-if="item.key === 'date'">{{
-              formatDate(value, 'uuuu/MM/dd')
-            }}</template>
+            <template v-if="item.key === 'userId'">
+              <UIButton size="sm" @click="() => onSelectButtonClick(value)">選択</UIButton>
+            </template>
           </template>
         </UIDataTable>
       </UICard>
