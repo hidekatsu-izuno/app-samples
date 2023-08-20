@@ -21,9 +21,8 @@ if (error.value) {
         Nuxt3 Sample App
       </h1>
       <UICard>
-        <div class="flex flex-col items-center justify-center gap-4 p-4">
-          <div v-if="statusCode">{{ statusCode }} エラーが発生しました。</div>
-          <div>{{ message }}</div>
+        <div class="flex flex-col items-center justify-center gap-4 p-4 min-h-[180px]">
+          <div>{{ statusCode }} {{ message }}</div>
         </div>
       </UICard>
     </div>
