@@ -2,6 +2,8 @@ CREATE TABLE mt_user (
   user_id VARCHAR(36) NOT NULL,
   user_email VARCHAR(256),
   user_name VARCHAR(64) NOT NULL,
+  birth_date DATE,
+  is_deleted BOOLEAN NOT NULL,
   comment VARCHAR(1000),
   update_time TIMESTAMP WITH TIME ZONE NOT NULL,
   CONSTRAINT pk_mt_user PRIMARY KEY (user_id),
@@ -12,12 +14,16 @@ INSERT INTO mt_user (
   user_id,
   user_email,
   user_name,
+  birth_date,
+  is_deleted,
   comment,
   update_time
 ) VALUES (
   '9a192654-08fc-11ee-9cff-00155d80ceb2',
   'admin@example.com',
   'Administrator',
+  NULL,
+  FALSE,
   NULL,
   CURRENT_TIMESTAMP
 );
