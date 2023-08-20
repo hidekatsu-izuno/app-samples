@@ -216,7 +216,7 @@ function validate(value: string) {
 .UIRadioList[data-readonly="true"] {
   .UIRadioList-Content {
     @apply flex-row
-      min-h-[calc(1em+0.5em*2)]
+      min-h-[calc(1.5em+(0.25em+1px)*2)]
       border border-gray-200
       px-[0.5em] py-[0.25em]
       text-gray-900;
