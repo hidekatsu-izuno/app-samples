@@ -140,7 +140,7 @@ function validate(value: string) {
   }
 
   if (!error) {
-    return formatDate(date, props.type === "HHmmss" ? "HH:mm:ss" : "HH:mm")
+    return formatDate(date, props.type === "HHmmss" ? "HH:mm:ss" : "HH:mm") || undefined
   }
 
   if (error !== data.error) {

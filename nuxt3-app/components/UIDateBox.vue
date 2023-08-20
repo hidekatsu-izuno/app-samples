@@ -217,7 +217,7 @@ function validate(value: string) {
   }
 
   if (!error) {
-    return formatDate(date, "uuuu-MM-dd")
+    return formatDate(date, "uuuu-MM-dd") || undefined
   }
 
   if (error !== data.error) {
@@ -362,7 +362,7 @@ function getFormatMaxLength(format: string) {
     p-2
     bg-white
     text-sm
-    z-10;
+    z-[1000];
 }
 
 .UIDateBox-PickerPrevInput,

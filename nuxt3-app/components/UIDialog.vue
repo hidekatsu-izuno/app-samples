@@ -69,6 +69,6 @@ function close(result: any) {
     rounded-lg
     inset-0
     w-1/2
-    z-50;
+    z-[2000];
 }
 </style>

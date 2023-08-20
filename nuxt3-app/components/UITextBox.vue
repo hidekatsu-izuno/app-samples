@@ -136,7 +136,7 @@ function validate(value: string) {
   }
 
   if (!error) {
-    return value
+    return value || undefined
   }
 
   if (error !== data.error) {

@@ -130,7 +130,7 @@ function validate(value: string) {
     }
   }
 
-  if (num) {
+  if (num != null) {
     if (props.schema) {
       const result = props.schema.safeParse(num, {
         errorMap: JapaneseErrorMap,

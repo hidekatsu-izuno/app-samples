@@ -24,18 +24,17 @@ export default defineAction(async (event) => {
       mu.user_id,
       mu.user_email,
       mu.user_name,
-      TO_CHAR(mu.birth_date, 'YYYY-MM-DD') AS birth_date,
-      mu.is_deleted,
-      mu.comment,
-      TO_CHAR(mu.update_time at time zone 'UTC', 'YYYY-MM-dd"T"HH24:MI:SS"Z"') AS update_time
+      mu.is_deleted
     FROM
       mt_user mu
     WHERE
       1 = 1
-      ${params.userEmail ? sql`and mu.user_email like '%' || ${params.userEmail} || '%'` : sql``}
-      ${params.userName ? sql`and mu.user_name like '%' || ${params.userName} || '%'` : sql``}
-      ${params.isDeleted != null ? sql`and mu.is_deleted = ${params.isDeleted} || '%'` : sql``}
-      ${params.comment ? sql`and mu.user_email like '%' || ${params.comment} || '%'` : sql``}
+      ${params.userEmail ? sql`AND mu.user_email LIKE '%' || ${params.userEmail} || '%'` : sql``}
+      ${params.userName ? sql`AND mu.user_name LIKE '%' || ${params.userName} || '%'` : sql``}
+      ${params.birthDateFrom ? sql`AND mu.birth_date >= ${params.birthDateFrom}` : sql``}
+      ${params.birthDateTo ? sql`AND mu.birth_date <= ${params.birthDateTo}` : sql``}
+      ${params.isDeleted != null ? sql`AND mu.is_deleted = ${params.isDeleted}` : sql``}
+      ${params.comment ? sql`AND mu.user_email LIKE '%' || ${params.comment} || '%'` : sql``}
     ORDER BY
       mu.user_email
     LIMIT ${PAGE_SIZE} OFFSET ${(params.pageNo ? params.pageNo - 1 : 0) * PAGE_SIZE}

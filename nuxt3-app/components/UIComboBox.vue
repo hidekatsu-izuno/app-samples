@@ -255,7 +255,7 @@ function validate(value: string) {
   }
 
   if (!error) {
-    return value
+    return value || undefined
   }
 
   if (error !== data.error) {
@@ -388,7 +388,7 @@ function validate(value: string) {
     border border-gray-300 rounded-md
     bg-white
     overflow-auto
-    z-10;
+    z-[1000];
 }
 
 .UIComboBox-PickerItem {

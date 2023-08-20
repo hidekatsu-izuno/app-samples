@@ -80,11 +80,10 @@ async function onSearchButtonClick() {
         <UIDataTable
           v-model="searchResult"
           :items="[
+            { key: 'radio', label: '' },
             { key: 'userEmail', label: 'メールアドレス', width: '300px' },
             { key: 'userName', label: 'ユーザー名', width: '300px' },
-            { key: 'birthDate', label: '誕生日', halign: 'center', width: '300px', format: (value: any) => formatDate(value, 'uuuu/MM/dd') },
-            { key: 'comment', label: 'コメント', width: '300px' },
-            { key: 'isDeleted', label: '削除', halign: 'center', width: '300px' },
+            { key: 'isDeleted', label: '削除', halign: 'center', width: '100px', format: (value: any) => value ? '削除' : '' },
           ]"
         >
           <template #contentCell="{ item, value }">

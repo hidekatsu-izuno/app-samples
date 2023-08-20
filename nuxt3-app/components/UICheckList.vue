@@ -107,7 +107,7 @@ function validate(value: string[]) {
   }
 
   if (!error) {
-    return value
+    return value.length > 0 ? value : undefined
   }
 
   if (error !== data.error) {

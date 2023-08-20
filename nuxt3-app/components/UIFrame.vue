@@ -82,7 +82,7 @@ function onDrawerClick(e: MouseEvent) {
   @apply sticky top-0 left-0 right-0
     shadow
     overflow-hidden
-    z-20;
+    z-[100];
 }
 
 .UIFrame-HeaderContent {
@@ -129,13 +129,13 @@ function onDrawerClick(e: MouseEvent) {
     px-4 py-1
     bg-white
     overflow-hidden
-    z-20;
+    z-[100];
 }
 
 .UIFrame-Drawer {
   @apply fixed top-0 bottom-0 left-0 right-0 xl:block xl:static
     bg-black/[.5]
-    z-20;
+    z-[100];
 }
 
 .UIFrame-DrawerPanel {

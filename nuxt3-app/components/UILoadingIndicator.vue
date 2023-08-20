@@ -124,7 +124,7 @@ function clear() {
     p-2
     w-16 h-16
     overflow-hidden
-    z-50;
+    z-[3000];
 }
 
 .UILoadingIndicator::backdrop {

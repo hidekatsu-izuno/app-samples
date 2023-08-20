@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) => {
     const session = await getSession<AppSession>(event, AppSessionConfig)
     if (session.data?.userId) {
       event.context.session = session
+      await updateSession(event, AppSessionConfig)
     } else {
       throw createError({ statusCode: 401 })
     }
