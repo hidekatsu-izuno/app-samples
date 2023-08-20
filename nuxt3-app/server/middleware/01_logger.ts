@@ -16,6 +16,7 @@ const logger = pino({
 declare module "h3" {
   interface H3EventContext {
     logger: typeof logger
+    cause?: Error
   }
 }
 
@@ -41,12 +42,12 @@ export default defineEventHandler((event) => {
       res: resInfo,
     })
 
-    if (err) {
-      httpLogger.error({ err }, "finished with error")
-    } else if (res.statusCode >= 500) {
-      httpLogger.error("finished with error")
+    if (res.statusCode >= 500) {
+      httpLogger.error({ err: err || event.context.cause }, "finished with error")
     } else if (res.statusCode >= 400) {
-      httpLogger.warn("finished with warning")
+      httpLogger.warn({ err: err || event.context.cause }, "finished with warning")
+    } else if (err || event.context.cause) {
+      httpLogger.error({ err: err || event.context.cause }, "finished with error")
     } else {
       httpLogger.info("finished successfully")
     }

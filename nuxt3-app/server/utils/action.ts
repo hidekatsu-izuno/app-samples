@@ -1,4 +1,4 @@
-import type { H3Event, EventHandler } from "h3"
+import { H3Event, H3Error, EventHandler } from "h3"
 import { ZodError } from "zod"
 import { default as postgres } from "postgres"
 
@@ -33,11 +33,16 @@ export function defineAction<T = any>(handler: EventHandler<T>) {
         return await handler(event)
       }, "READ ONLY")
     } catch (err) {
-      let newErr = err
-      if (err instanceof ZodError) {
-        newErr = createError({ statusCode: 400, cause: err })
+      if (err instanceof H3Error) {
+        event.context.cause = (err.cause || err) as Error
+        throw err
+      } else if (err instanceof ZodError) {
+        event.context.cause = err
+        throw createError({ statusCode: 400, cause: err })
+      } else {
+        event.context.cause = err as Error
+        throw createError({ statusCode: 500, cause: err })
       }
-      throw newErr
     } finally {
       delete (event as any)[SqlKey]
     }
