@@ -40,7 +40,7 @@ export default defineAction(async (event) => {
       )
     `
     if (result.count !== 1) {
-      throw new BusinessError("ユーザー登録に失敗しました。")
+      throw new BusinessError("ユーザーの登録に失敗しました。")
     }
   })
   sendNoContent(event)
