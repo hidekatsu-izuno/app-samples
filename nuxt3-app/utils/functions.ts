@@ -36,10 +36,15 @@ export const fetchURL = $fetch.create({
   },
 
   onResponseError({ response }) {
-    throw createError({
-      statusCode: response.status,
-      statusMessage: response.statusText,
-      fatal: true,
-    })
+    if (response && response.headers.get("content-type") === "application/problem+json") {
+      const { title, ...rest } = response._data || {}
+      throw new BusinessError(title || "", rest)
+    } else {
+      throw createError({
+        statusCode: response.status,
+        statusMessage: response.statusText,
+        fatal: true,
+      })
+    }
   },
 })

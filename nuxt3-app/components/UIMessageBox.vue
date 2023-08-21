@@ -34,7 +34,7 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
   >
     <div class="p-6 text-center">
       <UIIcon name="alert-circle-outline" class="text-red-500 text-6xl" />
-      <h3 class="mb-5 text-lg font-normal text-gray-400">
+      <h3 class="mb-5 text-lg font-normal text-gray-900">
         <slot />
       </h3>
       <div class="flex justify-center gap-0.5">

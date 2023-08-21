@@ -1,7 +1,7 @@
 import { H3Event, H3Error, EventHandler } from "h3"
 import { ZodError } from "zod"
 import { default as postgres } from "postgres"
-import { BusinessError } from "../../utils/errors"
+import { BusinessError } from "~/utils/errors"
 
 const runtimeConfig = useRuntimeConfig()
 const sql = postgres({
@@ -35,8 +35,16 @@ export function defineAction<T = any>(handler: EventHandler<T>) {
       }, "READ ONLY")
     } catch (err) {
       if (err instanceof BusinessError) {
+        const host = getRequestHost(event)
+        const protocol = getRequestProtocol(event)
+
         event.context.cause = err
-        throw err
+        setResponseStatus(event, 400)
+        defaultContentType(event, "application/problem+json")
+        event.node.res.end(JSON.stringify({
+          type: new URL("/business-error", `${protocol}://${host}`).toString(),
+          title: err.message,
+        }))
       } else if (err instanceof H3Error) {
         event.context.cause = (err.cause || err) as Error
         throw err

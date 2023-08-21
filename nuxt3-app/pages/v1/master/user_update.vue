@@ -11,6 +11,7 @@ const data = reactive({
   isDeleted: false,
   revisionNo: 0,
 
+  errorMessage: "",
   showError: false,
 })
 
@@ -87,8 +88,13 @@ async function onUpdateButtonClick() {
     } else {
       throw new Error(`Unknown mode: ${info.mode}`)
     }
-  } catch {
-    data.showError = true
+  } catch (err) {
+    if (err instanceof BusinessError) {
+      data.errorMessage = err.message
+      data.showError = true
+    } else {
+      throw err
+    }
   }
 }
 </script>
@@ -151,11 +157,7 @@ async function onUpdateButtonClick() {
       </UICard>
     </div>
 
-    <UIMessageBox v-model="data.showError" type="error">{{
-      info.mode === "register" ? "登録" :
-      info.mode === "delete" ? "削除" :
-      "更新"
-    }}に失敗しました。</UIMessageBox>
+    <UIMessageBox v-model="data.showError" type="error">{{ data.errorMessage }}</UIMessageBox>
 
     <template #drawer>
       <MenuList />

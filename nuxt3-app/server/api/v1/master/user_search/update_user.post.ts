@@ -27,12 +27,11 @@ export default defineAction(async (event) => {
         user_name = ${params.userName},
         birth_date = ${params.birthDate || null},
         comment = ${params.comment || null},
-        is_deleted = TRUE,
+        is_deleted = ${params.isDeleted ?? false},
         update_time = CLOCK_TIMESTAMP(),
         revision_no = (revision_no + 1) % 2147483647
       WHERE
         user_id = ${params.userId}
-        AND is_deleted = FALSE
         AND revision_no = ${params.revisionNo}
     `
     if (result.count !== 1) {
