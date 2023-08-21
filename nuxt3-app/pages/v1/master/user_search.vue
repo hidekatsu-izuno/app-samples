@@ -2,6 +2,7 @@
 import MenuList from "~/components/v1/common/MenuList.vue"
 
 const historyState = useHistoryState()
+const indicator = useLoadingIndicator()
 
 const data = reactive(historyState.data || {
   userEmail: "",
@@ -32,14 +33,19 @@ async function onSearchButtonClick() {
     birthDateTo,
     isDeleted,
   })
-  const res = await fetchURL("/api/v1/master/user_search/search_users", {
-    method: "POST",
-    body: req,
-  })
-  data.pageNo = res.pageNo
-  data.pageSize = res.pageSize
-  data.totalCount = res.totalCount
-  data.searchResult = res.items
+  try {
+    indicator.open()
+    const res = await fetchURL("/api/v1/master/user_search/search_users", {
+      method: "POST",
+      body: req,
+    })
+    data.pageNo = res.pageNo
+    data.pageSize = res.pageSize
+    data.totalCount = res.totalCount
+    data.searchResult = res.records
+  } finally {
+    indicator.close()
+  }
 }
 
 function onSelectButtonClick(mode: string, userId?: string) {

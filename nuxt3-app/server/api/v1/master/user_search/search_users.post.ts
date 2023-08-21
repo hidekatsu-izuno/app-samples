@@ -12,6 +12,14 @@ const schema = z.object({
   pageNo: PositiveIntSchema.optional(),
 })
 
+interface User {
+  totalCount: number,
+  userId: string,
+  userEmail: string,
+  userName: string,
+  isDeleted: boolean,
+}
+
 const PAGE_SIZE = 100
 
 export default defineAction(async (event) => {
@@ -21,7 +29,7 @@ export default defineAction(async (event) => {
   const params = schema.parse(body)
   const sql = useSqlConnection(event)
 
-  const result = await sql`
+  const result = await sql<User[]>`
     SELECT
       count(*) over () AS total_count,
       mu.user_id,
@@ -46,6 +54,6 @@ export default defineAction(async (event) => {
     pageNo: params.pageNo,
     pageSize: PAGE_SIZE,
     totalCount: (result[0]?.totalCount || 0) as number,
-    items: result,
+    records: result.map(({ totalCount, ...rest }) => ({ ...rest })),
   }
 })
