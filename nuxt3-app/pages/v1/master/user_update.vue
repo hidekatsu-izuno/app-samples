@@ -54,6 +54,8 @@ async function onUpdateButtonClick() {
         method: "POST",
         body: req,
       })
+
+      historyState.back({ refresh: true })
     } else if (info.mode === "update") {
       const req = await validate({
         userId: info.userId,
@@ -68,6 +70,8 @@ async function onUpdateButtonClick() {
         method: "POST",
         body: req,
       })
+
+      historyState.back({ refresh: true })
     } else if (info.mode === "delete") {
       const req = await validate({
         userId: info.userId,
@@ -78,6 +82,8 @@ async function onUpdateButtonClick() {
         method: "POST",
         body: req,
       })
+
+      historyState.back({ refresh: true })
     } else {
       throw new Error(`Unknown mode: ${info.mode}`)
     }
@@ -117,17 +123,17 @@ async function onUpdateButtonClick() {
           </div>
           <div>
             <UILabel required>ユーザー名</UILabel>
-            <UITextBox ref="userName" v-model="data.userName" class="w-80" />
+            <UITextBox ref="userName" v-model="data.userName" :readonly="info.mode === 'delete'" class="w-80" />
           </div>
           <div>
             <UILabel>誕生日</UILabel>
             <div class="flex flex-row items-center gap-2">
-              <UIDateBox ref="birthDate" v-model="data.birthDate" class="w-32" />
+              <UIDateBox ref="birthDate" v-model="data.birthDate" :readonly="info.mode === 'delete'" class="w-32" />
             </div>
           </div>
           <div>
             <UILabel>コメント</UILabel>
-            <UITextBox ref="comment" v-model="data.comment" class="w-80" />
+            <UITextBox ref="comment" v-model="data.comment" :readonly="info.mode === 'delete'" class="w-80" />
           </div>
           <div v-if="info.mode === 'update'">
             <UICheck ref="isDeleted" v-model="data.isDeleted">削除</UICheck>

@@ -12,20 +12,24 @@ export default defineAction(async (event) => {
 
   const body = await readBody(event)
   const params = schema.parse(body)
-  const sql = useSqlConnection(event)
 
-  const result = await sql`
-    UPDATE mt_user SET
-      is_deleted = TRUE,
-      update_time = CLOCK_TIMESTAMP(),
-      revision_no = (revision_no + 1) % 2147483647
-    WHERE
-      user_id = ${params.userId}
-      AND is_deleted = FALSE
-      AND revision_no = ${params.revisionNo}
-  `
-  if (result.count !== 1) {
-    throw new BusinessError("ユーザー登録に失敗しました。")
-  }
+  await doTransaction(event, async () => {
+    const sql = useSqlConnection(event)
+
+    const result = await sql`
+      UPDATE mt_user SET
+        is_deleted = TRUE,
+        update_time = CLOCK_TIMESTAMP(),
+        revision_no = (revision_no + 1) % 2147483647
+      WHERE
+        user_id = ${params.userId}
+        AND is_deleted = FALSE
+        AND revision_no = ${params.revisionNo}
+    `
+    if (result.count !== 1) {
+      throw new BusinessError("ユーザーの削除に失敗しました。")
+    }
+  })
+
   sendNoContent(event)
 })

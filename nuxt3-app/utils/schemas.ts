@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const PositiveIntSchema = z.number().int().positive()
+export const PositiveIntSchema = z.number().int().nonnegative()
 export const DateSchema = z.string().regex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)
 export const TimestampSchema = z.string().datetime()
 export const EmailSchema = z.string().email().max(256)

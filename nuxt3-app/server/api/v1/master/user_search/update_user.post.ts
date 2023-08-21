@@ -6,7 +6,7 @@ const schema = z.object({
   userId: UserIdSchema,
   userEmail: EmailSchema,
   userName: UserNameSchema,
-  birthDate: DateSchema,
+  birthDate: DateSchema.optional(),
   comment: CommentSchema.optional(),
   isDeleted: z.boolean().optional(),
   revisionNo: PositiveIntSchema,
@@ -17,24 +17,27 @@ export default defineAction(async (event) => {
 
   const body = await readBody(event)
   const params = schema.parse(body)
-  const sql = useSqlConnection(event)
 
-  const result = await sql`
-    UPDATE mt_user SET
-      user_email = ${params.userEmail},
-      user_name = ${params.userName},
-      birth_date = ${params.birthDate},
-      comment = ${params.comment || null},
-      is_deleted = TRUE,
-      update_time = CLOCK_TIMESTAMP(),
-      revision_no = (revision_no + 1) % 2147483647
-    WHERE
-      user_id = ${params.userId}
-      AND is_deleted = FALSE
-      AND revision_no = ${params.revisionNo}
-  `
-  if (result.count !== 1) {
-    throw new BusinessError("ユーザー登録に失敗しました。")
-  }
+  await doTransaction(event, async () => {
+    const sql = useSqlConnection(event)
+
+    const result = await sql`
+      UPDATE mt_user SET
+        user_email = ${params.userEmail},
+        user_name = ${params.userName},
+        birth_date = ${params.birthDate || null},
+        comment = ${params.comment || null},
+        is_deleted = TRUE,
+        update_time = CLOCK_TIMESTAMP(),
+        revision_no = (revision_no + 1) % 2147483647
+      WHERE
+        user_id = ${params.userId}
+        AND is_deleted = FALSE
+        AND revision_no = ${params.revisionNo}
+    `
+    if (result.count !== 1) {
+      throw new BusinessError("ユーザーの更新に失敗しました。")
+    }
+  })
   sendNoContent(event)
 })
