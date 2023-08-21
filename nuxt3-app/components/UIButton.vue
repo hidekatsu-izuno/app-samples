@@ -78,7 +78,7 @@ function onBlur(event: Event) {
     outline-none
     rounded-md
     m-0
-    px-[1em] py-[0.375em]
+    px-[1em] py-[calc(0.125em+1px)]
     font-bold
     truncate;
 }

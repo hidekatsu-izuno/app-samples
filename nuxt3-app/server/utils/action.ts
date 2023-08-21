@@ -1,6 +1,7 @@
 import { H3Event, H3Error, EventHandler } from "h3"
 import { ZodError } from "zod"
 import { default as postgres } from "postgres"
+import { BusinessError } from "../../utils/errors"
 
 const runtimeConfig = useRuntimeConfig()
 const sql = postgres({
@@ -33,7 +34,10 @@ export function defineAction<T = any>(handler: EventHandler<T>) {
         return await handler(event)
       }, "READ ONLY")
     } catch (err) {
-      if (err instanceof H3Error) {
+      if (err instanceof BusinessError) {
+        event.context.cause = err
+        throw err
+      } else if (err instanceof H3Error) {
         event.context.cause = (err.cause || err) as Error
         throw err
       } else if (err instanceof ZodError) {
