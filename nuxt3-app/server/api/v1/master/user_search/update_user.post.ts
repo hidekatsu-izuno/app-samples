@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { CommentSchema, DateSchema, EmailSchema, PositiveIntSchema, UserIdSchema, UserNameSchema } from "~/utils/schemas"
+import { BusinessError } from "~/utils/errors"
 
 const schema = z.object({
   userId: UserIdSchema,
@@ -18,7 +19,7 @@ export default defineAction(async (event) => {
   const params = schema.parse(body)
   const sql = useSqlConnection(event)
 
-  await sql`
+  const result = await sql`
     UPDATE mt_user SET
       user_email = ${params.userEmail},
       user_name = ${params.userName},
@@ -32,5 +33,8 @@ export default defineAction(async (event) => {
       AND is_deleted = FALSE
       AND revision_no = ${params.revisionNo}
   `
+  if (result.count !== 1) {
+    throw new BusinessError("ユーザー登録に失敗しました。")
+  }
   sendNoContent(event)
 })

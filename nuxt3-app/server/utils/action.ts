@@ -27,9 +27,10 @@ export declare type SqlConnection = typeof sql
 
 export function defineAction<T = any>(handler: EventHandler<T>) {
   return defineEventHandler<T>(async (event) => {
-    (event as any)[SqlKey] = [sql]
+    const stack = [sql];
+    (event as any)[SqlKey] = stack
     try {
-      return await tx(event, async () => {
+      return await doTransaction(event, async () => {
         return await handler(event)
       }, "READ ONLY")
     } catch (err) {
@@ -49,14 +50,14 @@ export function defineAction<T = any>(handler: EventHandler<T>) {
   })
 }
 
-export async function tx<T>(event: H3Event, handler: () => T, options?: string) {
-  const cSql = useSqlConnection(event)
-  return await cSql.begin(options ?? "READ WRITE", async (tSql: SqlConnection) => {
-    (event as any)[SqlKey].push(tSql)
+export async function doTransaction<T>(event: H3Event, handler: () => T, options?: string) {
+  const stack = (event as any)[SqlKey]
+  return await stack[0].begin(options ?? "READ WRITE", async (tSql: SqlConnection) => {
+    stack.push(tSql)
     try {
       return await handler()
     } finally {
-      (event as any)[SqlKey].pop(tSql)
+      stack.pop()
     }
   })
 }

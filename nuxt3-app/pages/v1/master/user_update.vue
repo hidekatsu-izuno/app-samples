@@ -44,7 +44,6 @@ async function onUpdateButtonClick() {
   try {
     if (info.mode === "register") {
       const req = await validate({
-        userId: info.userId,
         userEmail,
         userName,
         birthDate,
@@ -107,11 +106,17 @@ async function onUpdateButtonClick() {
         </template>
         <div class="flex flex-col px-4 py-2 gap-2">
           <div>
-            <UILabel>メールアドレス</UILabel>
-            <UITextBox ref="userEmail" v-model="data.userEmail" :readonly="info.mode !== 'register'" class="w-80" />
+            <UILabel :required="info.mode === 'register'">メールアドレス</UILabel>
+            <UITextBox
+              ref="userEmail"
+              v-model="data.userEmail"
+              :required="info.mode === 'register'"
+              :readonly="info.mode !== 'register'"
+              class="w-80"
+            />
           </div>
           <div>
-            <UILabel>ユーザー名</UILabel>
+            <UILabel required>ユーザー名</UILabel>
             <UITextBox ref="userName" v-model="data.userName" class="w-80" />
           </div>
           <div>

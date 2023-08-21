@@ -1,13 +1,13 @@
 import { z } from "zod"
-import { CommentSchema, DateSchema, EmailSchema, UserIdSchema, UserNameSchema } from "~/utils/schemas"
+import { BusinessError } from "~/utils/errors"
+import { CommentSchema, DateSchema, EmailSchema, UserNameSchema } from "~/utils/schemas"
+import { doTransaction } from "~/server/utils/action"
 
 const schema = z.object({
-  userId: UserIdSchema,
   userEmail: EmailSchema,
   userName: UserNameSchema,
-  birthDate: DateSchema,
+  birthDate: DateSchema.optional(),
   comment: CommentSchema.optional(),
-  isDeleted: z.boolean().optional(),
 })
 
 export default defineAction(async (event) => {
@@ -15,28 +15,33 @@ export default defineAction(async (event) => {
 
   const body = await readBody(event)
   const params = schema.parse(body)
-  const sql = useSqlConnection(event)
 
-  await sql`
-    INSERT INTO mt_user (
-      user_id,
-      user_email,
-      user_name,
-      birth_date,
-      is_deleted,
-      comment,
-      update_time,
-      revision_no
-    ) VALUES (
-      ${params.userId},
-      ${params.userEmail},
-      ${params.userName},
-      ${params.birthDate},
-      FALSE,
-      ${params.comment || null},
-      CLOCK_TIMESTAMP(),
-      0
-    )
-  `
+  await doTransaction(event, async () => {
+    const sql = useSqlConnection(event)
+    const result = await sql`
+      INSERT INTO mt_user (
+        user_id,
+        user_email,
+        user_name,
+        birth_date,
+        is_deleted,
+        comment,
+        update_time,
+        revision_no
+      ) VALUES (
+        ${crypto.randomUUID()},
+        ${params.userEmail},
+        ${params.userName},
+        ${params.birthDate || null},
+        FALSE,
+        ${params.comment || null},
+        CLOCK_TIMESTAMP(),
+        0
+      )
+    `
+    if (result.count !== 1) {
+      throw new BusinessError("ユーザー登録に失敗しました。")
+    }
+  })
   sendNoContent(event)
 })
