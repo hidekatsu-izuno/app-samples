@@ -61,7 +61,7 @@ function onSelectButtonClick(mode: string, userId?: string) {
 </script>
 
 <template>
-  <UIFrame>
+  <UIFrame backable>
     <template #title>
       <h1 class="font-bold text-xl">ユーザーマスタ検索</h1>
     </template>

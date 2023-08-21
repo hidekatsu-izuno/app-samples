@@ -100,7 +100,7 @@ async function onUpdateButtonClick() {
 </script>
 
 <template>
-  <UIFrame>
+  <UIFrame backable>
     <template #title>
       <h1 class="font-bold text-xl">ユーザーマスタ{{
         info.mode === "register" ? "登録" :

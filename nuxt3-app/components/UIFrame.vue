@@ -1,4 +1,12 @@
 <script setup lang="ts">
+const historyState = useHistoryState()
+
+const props = withDefaults(defineProps<{
+  backable?: boolean,
+}>(), {
+  backable: false,
+})
+
 const data = reactive({
   showDrawer: false,
 })
@@ -11,6 +19,10 @@ function closeDrawer() {
   data.showDrawer = false
 }
 
+function goBack() {
+  historyState.back()
+}
+
 function onDrawerClick(e: MouseEvent) {
   e.stopPropagation()
 }
@@ -21,7 +33,8 @@ function onDrawerClick(e: MouseEvent) {
     <div class="UIFrame-Body">
       <header class="UIFrame-Header">
         <div class="UIFrame-HeaderContent">
-          <UIIcon v-if="$slots.drawer" name="menu" @click="openDrawer" />
+          <UIIcon v-if="$slots.drawer" class="UIFrame-HeaderDrawerCloseIcon" name="menu" @click="openDrawer" />
+          <UIIcon v-if="props.backable" class="UIFrame-HeaderBackIcon" name="arrow-left" @click="goBack" />
           <div v-if="$slots.title" class="UIFrame-HeaderTitle">
             <slot name="title" />
           </div>
@@ -54,7 +67,7 @@ function onDrawerClick(e: MouseEvent) {
         @click="onDrawerClick"
       >
         <div class="UIFrame-DrawerHeader">
-          <UIIcon name="menu-open" @click="closeDrawer" />
+          <UIIcon class="UIFrame-DrawerHeaderDrawerOpenIcon" name="menu-open" @click="closeDrawer" />
           <div class="UIFrame-DrawerTitle">Nuxt3 App</div>
         </div>
         <div class="UIFrame-DrawerContent">
@@ -91,11 +104,16 @@ function onDrawerClick(e: MouseEvent) {
     px-4 h-14
     bg-white;
 
-  .UIIcon {
+  .UIFrame-HeaderDrawerCloseIcon {
     @apply xl:hidden
       text-4xl
       cursor-pointer;
   }
+}
+
+.UIFrame-HeaderBackIcon {
+  @apply text-4xl
+    cursor-pointer;
 }
 
 .UIFrame-HeaderTitle {
@@ -151,7 +169,7 @@ function onDrawerClick(e: MouseEvent) {
     px-4
     w-64 h-14;
 
-  .UIIcon {
+  .UIFrame-DrawerHeaderDrawerOpenIcon {
     @apply xl:hidden
       mr-2
       text-4xl
