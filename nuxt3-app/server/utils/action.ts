@@ -27,8 +27,7 @@ export declare type SqlConnection = typeof sql
 
 export function defineAction<T = any>(handler: EventHandler<T>) {
   return defineEventHandler<T>(async (event) => {
-    const stack = [sql];
-    (event as any)[SqlKey] = stack
+    (event as any)[SqlKey] = [sql]
     try {
       return await doTransaction(event, async () => {
         return await handler(event)
