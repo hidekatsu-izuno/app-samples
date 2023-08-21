@@ -35,3 +35,11 @@ npm run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+<!--
+残課題：
+・LoadingIndicator の改善
+・別の Pagenator を追加
+・SQLログの出力
+・戻るボタンの追加
+-->

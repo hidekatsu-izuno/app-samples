@@ -1,6 +1,7 @@
 import { addDynamicIconSelectors } from "@iconify/tailwind"
 
 const isGenerateMode = process.argv.includes("generate")
+const env = process.env.NODE_ENV
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -18,7 +19,7 @@ export default defineNuxtConfig({
     },
     logger: {
       trustedProxies: new Set((process.env.TRUSTED_PROXIES || "").split(/,/g).map(v => v.trim())),
-      level: process.env.LOG_LEVEL,
+      level: process.env.LOG_LEVEL || (env === "development" ? "debug" : "info"),
     },
   },
 

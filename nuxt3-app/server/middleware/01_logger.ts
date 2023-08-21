@@ -1,9 +1,9 @@
-import type { IncomingMessage, ServerResponse } from "http"
+import type { H3Event } from "h3"
 import { default as pino, stdTimeFunctions } from "pino"
 
 const runtimeConfig = useRuntimeConfig()
 
-const logger = pino({
+export const logger = pino({
   level: runtimeConfig.logger.level || "info",
   timestamp: stdTimeFunctions.isoTime,
   formatters: {
@@ -21,11 +21,10 @@ declare module "h3" {
 }
 
 export default defineEventHandler((event) => {
-  const req = event.node.req
   const res = event.node.res
 
   const startTime = Date.now()
-  const reqInfo = serializeRequest(req)
+  const reqInfo = serializeRequest(event)
   event.context.logger = logger.child({
     req: reqInfo,
   })
@@ -35,7 +34,7 @@ export default defineEventHandler((event) => {
     res.removeListener("finish", onResponseComplete)
     res.removeListener("error", onResponseComplete)
 
-    const resInfo = serializeResponse(res)
+    const resInfo = serializeResponse(event)
     resInfo.responseTime = Date.now() - startTime
     const httpLogger = logger.child({
       req: reqInfo,
@@ -58,48 +57,31 @@ export default defineEventHandler((event) => {
   res.on("error", onResponseComplete)
 })
 
-function serializeRequest(req: IncomingMessage) {
-  let ip = req.socket.remoteAddress
-
-  const xFowardedFor = req.headers["x-forwarded-for"]
-  if (xFowardedFor && runtimeConfig.logger?.trustedProxies?.size > 0) {
-    const array = Array.isArray(xFowardedFor) ? xFowardedFor : [xFowardedFor]
-    loop:
-    for (const entry of array) {
-      const items = entry.split(/,/g).map(v => v.trim())
-      if (items.length > 0 && items[0]) {
-        for (let i = 1; i < items.length; i++) {
-          if (runtimeConfig.logger.trustedProxies.has(items[i])) {
-            ip = items[0]
-            break loop
-          }
-        }
-      }
-    }
-  }
-
+function serializeRequest(event: H3Event) {
   const id = crypto.randomUUID()
+  const headers = getRequestHeaders(event)
   return {
     id,
-    method: req.method,
-    url: req.url,
-    ip,
-    headers: {
-      host: req.headers.host,
-      "user-agent": req.headers["user-agent"],
-      referer: req.headers.referer,
-      cookie: req.headers.cookie,
-    },
+    method: getMethod(event),
+    url: getRequestURL(event),
+    ip: getRequestHost(event, { xForwardedHost: true }),
+    headers: ["host", "user-agent", "referer", "cookie"].reduce((dest, key) => {
+      dest[key] = headers[key]
+      return dest
+    }, {} as Record<string, any>),
   }
 }
 
-function serializeResponse(res: ServerResponse) {
+function serializeResponse(event: H3Event) {
+  const statusCode = getResponseStatus(event)
+  const headers = getResponseHeaders(event)
+
   return {
-    statusCode: res.statusCode,
+    statusCode,
     responseTime: 0,
-    headers: {
-      "content-type": res.getHeader("content-type"),
-      "content-length": res.getHeader("content-length"),
-    },
+    headers: ["content-type", "content-length"].reduce((dest, key) => {
+      dest[key] = headers[key]
+      return dest
+    }, {} as Record<string, any>),
   }
 }

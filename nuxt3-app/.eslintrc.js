@@ -23,5 +23,6 @@ module.exports = {
     "@typescript-eslint/func-call-spacing": "error",
     "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
     "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
+    "@typescript-eslint/consistent-type-imports": "error",
   },
 }

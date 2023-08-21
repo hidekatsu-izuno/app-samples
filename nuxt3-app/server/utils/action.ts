@@ -1,34 +1,14 @@
-import { H3Event, H3Error, EventHandler } from "h3"
+import type { H3Event, EventHandler } from "h3"
+import { H3Error } from "h3"
 import { ZodError } from "zod"
-import { default as postgres } from "postgres"
+import type { TransactionSql } from "postgres"
 import { BusinessError } from "~/utils/errors"
-
-const runtimeConfig = useRuntimeConfig()
-const sql = postgres({
-  host: runtimeConfig.database.host,
-  port: runtimeConfig.database.port ? Number.parseInt(runtimeConfig.database.port, 10) : 5432,
-  username: runtimeConfig.database.user,
-  password: runtimeConfig.database.password,
-  database: runtimeConfig.database.database,
-  debug: process.env.NODE_ENV === "development",
-  types: {
-    bigint: {
-      to: 20,
-      from: [20],
-      parse: (x: any) => Number.parseInt(x, 10),
-      serialize: (x: any) => x.toString(),
-    },
-  },
-  transform: postgres.camel,
-})
 
 const SqlKey = Symbol.for("SqlKey")
 
-export declare type SqlConnection = typeof sql
-
 export function defineAction<T = any>(handler: EventHandler<T>) {
   return defineEventHandler<T>(async (event) => {
-    (event as any)[SqlKey] = [sql]
+    (event as any)[SqlKey] = [event.context.sql]
     try {
       return await doTransaction(event, async () => {
         return await handler(event)
@@ -63,7 +43,7 @@ export function defineAction<T = any>(handler: EventHandler<T>) {
 
 export async function doTransaction<T>(event: H3Event, handler: () => T, options?: string) {
   const stack = (event as any)[SqlKey]
-  return await stack[0].begin(options ?? "READ WRITE", async (tSql: SqlConnection) => {
+  return await stack[0].begin(options ?? "READ WRITE", async (tSql: TransactionSql) => {
     stack.push(tSql)
     try {
       return await handler()
@@ -79,5 +59,5 @@ export function useSqlConnection(event: H3Event) {
   if (!cSql) {
     throw new Error("Cannot establish connection.")
   }
-  return cSql as typeof sql
+  return cSql as TransactionSql
 }
