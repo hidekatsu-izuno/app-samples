@@ -2,6 +2,7 @@
 import MenuList from "~/components/v1/common/MenuList.vue"
 
 const historyState = useHistoryState()
+const info = historyState.info || {}
 const indicator = useLoadingIndicator()
 
 const data = reactive(historyState.data || {
@@ -24,6 +25,12 @@ const userName = ref()
 const birthDateFrom = ref()
 const birthDateTo = ref()
 const isDeleted = ref()
+
+onMounted(async () => {
+  if (info.refresh) {
+    await onSearchButtonClick()
+  }
+})
 
 async function onSearchButtonClick() {
   const req = await validate({
