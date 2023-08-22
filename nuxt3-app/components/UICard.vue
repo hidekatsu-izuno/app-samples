@@ -27,7 +27,8 @@
 }
 
 .UICard-Content {
-  @apply grow;
+  @apply grow
+    flex flex-col;
 }
 
 .UICard-Footer {

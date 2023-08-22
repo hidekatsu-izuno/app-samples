@@ -58,6 +58,10 @@ const props = withDefaults(defineProps<{
   @apply icon-[mdi--close-circle];
 }
 
+.UIIcon[data-name="cog"] {
+  @apply icon-[mdi--cog];
+}
+
 .UIIcon[data-name="help"] {
   @apply icon-[mdi--help];
 }

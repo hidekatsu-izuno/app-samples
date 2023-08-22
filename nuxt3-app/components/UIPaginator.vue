@@ -30,15 +30,23 @@ watch(() => [props.modelValue, props.pageSize, props.totalCount], () => {
   data.maxPage = Math.max(Math.ceil(props.totalCount / Math.max(props.pageSize, 1)), 1)
 
   const layout = [] as typeof data.layout
-  const start = props.modelValue <= 4 ? 1 : Math.min(props.modelValue - 1, data.maxPage - 4)
-  const end = props.modelValue >= data.maxPage - 3 ? data.maxPage : Math.max(props.modelValue + 1, 5)
-  if (start !== 1) {
+  const start = props.modelValue - 1 <= 3 ? 1 : Math.min(props.modelValue - 1, data.maxPage - 4)
+  const end = data.maxPage - props.modelValue <= 3 ? data.maxPage : Math.max(props.modelValue + 1, 5)
+  if (start <= 3) {
+    for (let i = 1; i <= start - 1; i++) {
+      layout.push(i)
+    }
+  } else if (start !== 1) {
     layout.push(1, undefined)
   }
   for (let i = start; i <= end; i++) {
     layout.push(i)
   }
-  if (end !== data.maxPage) {
+  if (data.maxPage - end <= 2) {
+    for (let i = end + 1; i <= data.maxPage; i++) {
+      layout.push(i)
+    }
+  } else if (end !== data.maxPage) {
     layout.push(undefined, data.maxPage)
   }
   data.layout = layout
@@ -174,7 +182,7 @@ function onFocusout(event: Event) {
   @apply justify-center;
 }
 
-.UIPaginator[data-halign="end"] {
+.UIPageNavigator[data-halign="end"] {
   @apply justify-end;
 }
 </style>

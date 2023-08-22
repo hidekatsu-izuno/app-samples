@@ -204,6 +204,10 @@ function onSeparatorMouseDown(event: MouseEvent) {
     z-[2];
 }
 
+.UIDataTable-Content {
+  @apply grow;
+}
+
 .UIDataTable-Footer {
   @apply sticky bottom-0 left-0 right-0
     z-[2];

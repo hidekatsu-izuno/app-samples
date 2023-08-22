@@ -73,7 +73,8 @@ function onBlur(event: Event) {
 }
 
 .UIButton-Input {
-  @apply block flex-auto
+  @apply flex-auto
+    flex flex-row items-center justify-center gap-1
     focus:ring-2 focus:ring-blue-200
     outline-none
     rounded-md
@@ -81,6 +82,10 @@ function onBlur(event: Event) {
     px-[1em] py-[calc(0.125em+1px)]
     font-bold
     truncate;
+
+  .UIIcon {
+    @apply text-xl;
+  }
 }
 
 .UIButton[data-size="lg"] {

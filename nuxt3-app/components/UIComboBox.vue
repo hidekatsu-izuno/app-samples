@@ -38,15 +38,18 @@ const emits = defineEmits<{
 
 const data = reactive({
   focused: false,
+  maxLength: undefined as number | undefined,
   value: "",
   error: "",
   ime: false,
 })
 
-const maxLength = computed(() => props.schema?.maxLength ?? undefined)
-
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
+}, { immediate: true })
+
+watch(() => props.schema?.maxLength, () => {
+  data.maxLength = props.schema?.maxLength ?? undefined
 }, { immediate: true })
 
 watch(() => props.error, () => {
@@ -293,7 +296,7 @@ function validate(value: string) {
           :placeholder="props.placeholder"
           :disabled="props.disabled"
           :tabindex="props.tabindex"
-          :maxlength="maxLength"
+          :maxlength="data.maxLength"
           :value="data.value"
           @focus="onFocus"
           @input="onInput"

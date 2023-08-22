@@ -70,12 +70,17 @@ function onBlur(event: Event) {
 }
 
 .UILink-Input {
-  @apply focus:ring-2 focus:ring-blue-200
+  @apply flex flex-row items-center gap-1
+    focus:ring-2 focus:ring-blue-200
     outline-none
     rounded-md
     text-blue-600
     hover:underline
     cursor-pointer;
+
+  .UIIcon {
+    @apply text-xl;
+  }
 }
 
 .UILink[data-disabled="true"] {

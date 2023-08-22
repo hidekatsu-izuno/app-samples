@@ -37,12 +37,12 @@ const emits = defineEmits<{
 
 const data = reactive({
   focused: false,
+  maxLength: undefined as number | undefined,
+  baseLength: 16,
   value: "",
   error: "",
   ime: false,
 })
-
-const maxLength = computed(() => getFormatMaxLength(props.format))
 
 watch(() => props.modelValue, () => {
   if (data.focused) {
@@ -50,6 +50,11 @@ watch(() => props.modelValue, () => {
   } else {
     data.value = formatNumber(props.modelValue, props.format)
   }
+}, { immediate: true })
+
+watch(() => props.format, () => {
+  data.maxLength = getFormatMaxLength(props.format)
+  data.baseLength = props.format.length
 }, { immediate: true })
 
 watch(() => props.error, () => {
@@ -194,7 +199,8 @@ function getFormatMaxLength(format: string) {
         :placeholder="props.placeholder"
         :disabled="props.disabled"
         :tabindex="props.tabindex"
-        :maxlength="maxLength"
+        :maxlength="data.maxLength"
+        :size="data.baseLength"
         :value="data.value"
         @input="onInput"
         @focus="onFocus"

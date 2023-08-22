@@ -86,6 +86,7 @@ const data = reactive({
   paginatorDisabled: false,
   paginator1: 1,
   paginator2: 1,
+  paginator3: 1,
   buttonDisabled: false,
   buttonSize: "",
   buttonColor: "blue",
@@ -908,9 +909,18 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           :disabled="data.paginatorDisabled"
           halign="center"
           :page-size="50"
-          :total-count="1000"
+          :total-count="350"
         />
         <UIText type="outline">{{ data.paginator2 }}</UIText>
+
+        <UIPaginator
+          v-model="data.paginator3"
+          :disabled="data.paginatorDisabled"
+          halign="center"
+          :page-size="50"
+          :total-count="1000"
+        />
+        <UIText type="outline">{{ data.paginator3 }}</UIText>
       </div>
     </UICard>
 
@@ -976,7 +986,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             suffix=")"
             halign="center"
             @click="data.button3++"
-          >ボタン</UIButton>
+          ><UIIcon name="cog" />ボタン</UIButton>
           <UIText type="outline">{{ data.button3 }}</UIText>
         </div>
       </div>
@@ -1016,7 +1026,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             suffix=")"
             halign="center"
             @click="data.link2++"
-          >リンク</UILink>
+          ><UIIcon name="cog" />リンク</UILink>
           <UIText type="outline">{{ data.link2 }}</UIText>
         </div>
       </div>

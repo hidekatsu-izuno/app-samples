@@ -39,4 +39,8 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 <!--
 残課題：
 ・LoadingIndicator の改善
+・DataTable に Radio を可能に。ヘッダに checkbox 可能に
+・DataTable の最終行に線を出したい
+・TextBox, NumberBox, DateBox, TimeBox を候補入力可能にする
+・
 -->
