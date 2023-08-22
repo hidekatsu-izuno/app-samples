@@ -1,5 +1,5 @@
 export default defineAction(async (event) => {
-  const con = useSqlConnection(event)
-  await con`select 1`.execute()
+  const sql = useSqlConnection(event)
+  await sql`select 1`.execute()
   return "success"
 })

@@ -6,6 +6,8 @@ import { BusinessError } from "~/utils/errors"
 
 const SqlKey = Symbol.for("SqlKey")
 
+export declare type Sql = TransactionSql
+
 export function defineAction<T = any>(handler: EventHandler<T>) {
   return defineEventHandler<T>(async (event) => {
     (event as any)[SqlKey] = [event.context.sql]

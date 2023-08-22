@@ -1,4 +1,5 @@
-import { z, ZodErrorMap } from "zod"
+import type { ZodErrorMap } from "zod"
+import { z } from "zod"
 
 export const JapaneseErrorMap: ZodErrorMap = (issue, ctx) => {
   switch (issue.code) {

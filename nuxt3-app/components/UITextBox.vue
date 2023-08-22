@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { z, ZodSchema, ZodString } from "zod"
+import type { ZodSchema, ZodString } from "zod"
+import { z } from "zod"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{

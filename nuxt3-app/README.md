@@ -40,5 +40,4 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 残課題：
 ・LoadingIndicator の改善
 ・別の Pagenator を追加
-・戻るボタンの追加
 -->

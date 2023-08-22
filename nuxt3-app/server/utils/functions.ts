@@ -1,5 +1,5 @@
 import crypto from "node:crypto"
-import { H3Event } from "h3"
+import type { H3Event } from "h3"
 
 export * from "../../utils/functions"
 

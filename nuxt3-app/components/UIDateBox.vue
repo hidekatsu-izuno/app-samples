@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createPopper } from "@popperjs/core"
-import { ZodDate } from "zod"
+import type { ZodDate } from "zod"
 import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameDay, sub, add } from "date-fns"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"

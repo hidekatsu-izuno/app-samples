@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ZodNumber } from "zod"
+import type { ZodNumber } from "zod"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 

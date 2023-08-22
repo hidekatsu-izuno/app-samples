@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { AppSessionConfig } from "../../middleware/02_session"
-import { type SqlConnection, useSqlConnection } from "~/server/utils/action"
+import { type Sql, useSqlConnection } from "~/server/utils/action"
 import { UserPasswordSchema, EmailSchema } from "~/utils/schemas"
 
 const SigninSchema = z.object({
@@ -11,8 +11,8 @@ const SigninSchema = z.object({
 export default defineAction(async (event) => {
   const params = SigninSchema.parse(await readBody(event))
 
-  const con = useSqlConnection(event)
-  const userId = await getValidUserId(con, params.email, params.password)
+  const sql = useSqlConnection(event)
+  const userId = await getValidUserId(sql, params.email, params.password)
   if (!userId) {
     throw createError({ statusCode: 401 })
   }
@@ -26,8 +26,8 @@ export default defineAction(async (event) => {
   }
 })
 
-async function getValidUserId(con: SqlConnection, email: string, password: string) {
-  const result = await con`
+async function getValidUserId(sql: Sql, email: string, password: string) {
+  const result = await sql`
     select
       mu.user_id,
       mup.user_password

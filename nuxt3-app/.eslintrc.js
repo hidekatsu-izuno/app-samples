@@ -12,6 +12,7 @@ module.exports = {
     "comma-dangle": ["error", "always-multiline"],
     "no-console": "warn",
     "no-labels": "off",
+    "require-await": "error",
     "space-before-function-paren": ["error", { named: "never" }],
     "no-use-before-define": "off",
     "import/no-named-default": "off",

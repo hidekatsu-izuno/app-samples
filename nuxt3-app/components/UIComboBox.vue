@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createPopper } from "@popperjs/core"
-import { ZodString } from "zod"
+import type { ZodString } from "zod"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 
 const props = withDefaults(defineProps<{
