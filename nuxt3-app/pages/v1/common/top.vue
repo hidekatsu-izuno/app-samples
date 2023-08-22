@@ -80,6 +80,9 @@ const data = reactive({
   multifileuploadSize: "",
   multifileupload1: [] as File[],
   multifileupload2: [] as File[],
+  pageNavigatorDisabled: false,
+  pageNavigator1: 1,
+  pageNavigator2: 1,
   paginatorDisabled: false,
   paginator1: 1,
   paginator2: 1,
@@ -862,6 +865,29 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
           />
           <UIText type="outline">{{ data.multifileupload2.map((item: File) => item.name) }}</UIText>
         </div>
+      </div>
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
+          <h2 class="font-bold grow">ページ制御 (UIPageNavigator)</h2>
+          <div class="shrink"><input v-model="data.pageNavigatorDisabled" type="checkbox" /> disabled</div>
+        </div>
+      </template>
+
+      <div class="grid grid-cols-2 gap-2 p-6">
+        <UIPageNavigator v-model="data.pageNavigator1" :disabled="data.pageNavigatorDisabled" />
+        <UIText type="outline">{{ data.pageNavigator1 }}</UIText>
+
+        <UIPageNavigator
+          v-model="data.pageNavigator2"
+          :disabled="data.pageNavigatorDisabled"
+          halign="center"
+          :page-size="50"
+          :total-count="1000"
+        />
+        <UIText type="outline">{{ data.pageNavigator2 }}</UIText>
       </div>
     </UICard>
 

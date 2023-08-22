@@ -22,25 +22,10 @@ const emits = defineEmits<{
 const data = reactive({
   focused: false,
   maxPage: 1,
-  layout: [] as (number | undefined)[],
 })
 
-watch(() => [props.modelValue, props.pageSize, props.totalCount], () => {
+watch(() => [props.pageSize, props.totalCount], () => {
   data.maxPage = Math.max(Math.ceil(props.totalCount / Math.max(props.pageSize, 1)), 1)
-
-  const layout = [] as typeof data.layout
-  const start = props.modelValue <= 4 ? 1 : Math.min(props.modelValue - 1, data.maxPage - 4)
-  const end = props.modelValue >= data.maxPage - 3 ? data.maxPage : Math.max(props.modelValue + 1, 5)
-  if (start !== 1) {
-    layout.push(1, undefined)
-  }
-  for (let i = start; i <= end; i++) {
-    layout.push(i)
-  }
-  if (end !== data.maxPage) {
-    layout.push(undefined, data.maxPage)
-  }
-  data.layout = layout
 }, { immediate: true })
 
 function onFocusin(event: Event) {
@@ -71,13 +56,23 @@ function onFocusout(event: Event) {
 
 <template>
   <div
-    class="UIPaginator"
+    class="UIPageNavigator"
     :data-disabled="props.disabled || undefined"
     @focusin="onFocusin"
     @focusout="onFocusout"
   >
     <button
-      class="UIPaginator-PrevInput"
+      class="UIPageNavigator-FirstInput"
+      type="button"
+      :disabled="props.disabled || props.modelValue === 1"
+      :data-value="1"
+      :tabindex="props.tabindex"
+      @click="onClick"
+    >
+      <UIIcon name="page-first" />
+    </button>
+    <button
+      class="UIPageNavigator-PrevInput"
       type="button"
       :disabled="props.disabled || props.modelValue === 1"
       :data-value="Math.max(props.modelValue - 1, 1)"
@@ -85,39 +80,30 @@ function onFocusout(event: Event) {
     >
       <UIIcon name="chevron-left" />
     </button>
-    <template v-for="(page, index) in data.layout" :key="index">
-      <button
-        v-if="page"
-        class="UIPaginator-PageInput"
-        type="button"
-        :disabled="props.disabled || props.modelValue === page"
-        :data-value="page"
-        @click="onClick"
-      >{{ page }}</button>
-      <div v-else class="UIPaginator-Leader" />
-    </template>
+    <div
+      class="UIPageNavigator-Page"
+    >{{ props.modelValue }} / {{ data.maxPage }}</div>
     <button
       type="button"
-      class="UIPaginator-NextInput"
+      class="UIPageNavigator-NextInput"
       :disabled="props.disabled || props.modelValue === data.maxPage"
       :data-value="Math.min(props.modelValue + 1, data.maxPage)"
       @click="onClick"
     >
       <UIIcon name="chevron-right" />
     </button>
-    <div class="UIPaginator-TotalCount">{{ props.totalCount }}</div>
+    <div class="UIPageNavigator-TotalCount">{{ props.totalCount }}</div>
   </div>
 </template>
 
 <style>
-.UIPaginator {
+.UIPageNavigator {
   @apply flex flex-row;
 }
 
-.UIPaginator-PrevInput,
-.UIPaginator-PageInput,
-.UIPaginator-Leader,
-.UIPaginator-NextInput {
+.UIPageNavigator-FirstInput,
+.UIPageNavigator-PrevInput,
+.UIPageNavigator-NextInput {
   @apply flex items-center justify-center
     focus:ring-2 focus:ring-blue-200
     outline-none
@@ -132,35 +118,41 @@ function onFocusout(event: Event) {
   }
 }
 
-.UIPaginator-PrevInput,
-.UIPaginator-PageInput,
-.UIPaginator-Leader {
+.UIPageNavigator-FirstInput,
+.UIPageNavigator-PrevInput,
+.UIPageNavigator-Page {
   @apply -mr-[1px];
 }
 
-.UIPaginator-PrevInput {
+.UIPageNavigator-FirstInput {
   @apply rounded-l-lg;
 }
 
-.UIPaginator-Leader::after {
-  content: "…"
-}
-
-.UIPaginator-NextInput {
+.UIPageNavigator-NextInput {
   @apply rounded-r-lg;
 }
 
-.UIPaginator-TotalCount {
+.UIPageNavigator-Page {
+  @apply flex items-center justify-center
+    outline-2 outline-blue-200
+    border border-gray-300 hover:enabled:border-0
+    px-2
+    bg-white hover:enabled:bg-blue-800
+    hover:enabled:text-white
+    whitespace-nowrap;
+}
+
+.UIPageNavigator-TotalCount {
   @apply flex items-center justify-end
     pl-2
     whitespace-nowrap;
 }
 
-.UIPaginator-TotalCount::after {
+.UIPageNavigator-TotalCount::after {
   content: " 件"
 }
 
-.UIPaginator[data-disabled="true"] {
+.UIPageNavigator[data-disabled="true"] {
   @apply text-gray-400;
 }
 </style>
