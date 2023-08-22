@@ -104,7 +104,7 @@ function onCompositionEnd(event: Event) {
   onInput(event)
 }
 
-function onKeydown(event: KeyboardEvent) {
+async function onKeydown(event: KeyboardEvent) {
   if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key !== "Enter") {
     return
   }
@@ -112,7 +112,7 @@ function onKeydown(event: KeyboardEvent) {
   if (pickerRef.value) {
     const pickerEl = pickerRef.value
     if (pickerEl.style.display === "none") {
-      onInputPickerButtonMouseDown(event)
+      await onInputPickerButtonMouseDown(event)
     } else if (event.key === "Enter") {
       const itemEl = pickerEl.querySelector('.UIComboBox-PickerItem[data-selected="true"]')
       if (itemEl) {
@@ -169,7 +169,7 @@ function onBlur(event: Event) {
   emits("blur", event)
 }
 
-function onInputPickerButtonMouseDown(event: Event) {
+async function onInputPickerButtonMouseDown(event: Event) {
   event.preventDefault()
   if (props.disabled) {
     return
@@ -205,10 +205,10 @@ function onInputPickerButtonMouseDown(event: Event) {
     }
   }
 
-  popper?.update()
+  await popper?.update()
 }
 
-function onPickerItemMouseDown(event: Event) {
+async function onPickerItemMouseDown(event: Event) {
   const target = event.target as HTMLElement
   const value = target.dataset.value ?? ""
   if (value !== data.value) {
@@ -216,7 +216,7 @@ function onPickerItemMouseDown(event: Event) {
     emits("update:modelValue", data.value)
     emits("change", event)
   }
-  nextTick(() => inputRef.value?.blur())
+  await nextTick(() => inputRef.value?.blur())
 }
 
 function onPikcerItemMouseEnter(event: Event) {

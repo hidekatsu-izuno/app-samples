@@ -147,7 +147,7 @@ function onMouseDown(event: Event) {
   }
 }
 
-function onInputPickerButtonMouseDown(event: Event) {
+async function onInputPickerButtonMouseDown(event: Event) {
   event.preventDefault()
   if (props.disabled) {
     return
@@ -161,7 +161,7 @@ function onInputPickerButtonMouseDown(event: Event) {
   if (pickerRef.value) {
     pickerRef.value.style.display = ""
   }
-  popper?.update()
+  await popper?.update()
 }
 
 function onPickerMouseDown(event: Event) {
@@ -176,7 +176,7 @@ function onPickerNextButtonClick() {
   pickerData.current = add(pickerData.current, { months: 1 })
 }
 
-function onPickerDateClick(event: Event, date: Date) {
+async function onPickerDateClick(event: Event, date: Date) {
   const value = formatDate(date, "uuuuMMdd")
   if (value !== data.value) {
     data.value = value
@@ -184,7 +184,7 @@ function onPickerDateClick(event: Event, date: Date) {
     emits("change", event)
   }
 
-  nextTick(() => inputRef.value?.blur())
+  await nextTick(() => inputRef.value?.blur())
 }
 
 function validate(value: string) {
