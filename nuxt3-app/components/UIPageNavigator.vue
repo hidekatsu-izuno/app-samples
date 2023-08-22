@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  halign?: "start" | "center" | "end",
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -57,6 +58,7 @@ function onFocusout(event: Event) {
 <template>
   <div
     class="UIPageNavigator"
+    :data-halign="props.halign || undefined"
     :data-disabled="props.disabled || undefined"
     @focusin="onFocusin"
     @focusout="onFocusout"
@@ -154,5 +156,17 @@ function onFocusout(event: Event) {
 
 .UIPageNavigator[data-disabled="true"] {
   @apply text-gray-400;
+}
+
+.UIPageNavigator[data-halign="start"] {
+  @apply justify-start;
+}
+
+.UIPageNavigator[data-halign="center"] {
+  @apply justify-center;
+}
+
+.UIPageNavigator[data-halign="end"] {
+  @apply justify-end;
 }
 </style>
