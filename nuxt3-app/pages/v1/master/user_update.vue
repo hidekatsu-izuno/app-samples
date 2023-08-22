@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const indicator = useLoadingIndicator()
 const historyState = useHistoryState()
 const info = historyState.info || {}
 
@@ -43,6 +44,8 @@ onMounted(async () => {
 
 async function onUpdateButtonClick() {
   try {
+    indicator.open()
+
     if (info.mode === "register") {
       const req = await validate({
         userEmail,
@@ -89,6 +92,7 @@ async function onUpdateButtonClick() {
       throw new Error(`Unknown mode: ${info.mode}`)
     }
   } catch (err) {
+    indicator.close()
     if (err instanceof BusinessError) {
       data.errorMessage = err.message
       data.showError = true
