@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
-  items?: Array<{ value: string, text?: string }>,
+  items?: string[],
   required?: boolean,
   disabled?: boolean,
   readonly?: boolean,
@@ -154,8 +154,7 @@ function onBlur(event: Event) {
   }
 
   const target = event.target as HTMLInputElement
-  let value = props.filter ? props.filter(target.value) : target.value
-  value = props.items.find(item => item.value === value || item.text === value)?.value || data.value
+  const value = props.filter ? props.filter(target.value) : target.value
   if (value !== data.value) {
     data.value = value
     emits("update:modelValue", data.value)
@@ -186,16 +185,6 @@ async function onInputPickerButtonMouseDown(event: Event) {
       pickerEl.style.width = `${inputEl.offsetWidth}px`
     }
     pickerEl.style.display = ""
-
-    const itemValueEls = pickerEl.querySelectorAll(".UIComboBox-PickerItemValue")
-    let maxOffsetWidth = 0
-    for (let i = 0; i < itemValueEls.length; i++) {
-      itemValueEls[i].style.width = undefined
-      maxOffsetWidth = Math.max(itemValueEls[i].offsetWidth, maxOffsetWidth)
-    }
-    for (let i = 0; i < itemValueEls.length; i++) {
-      itemValueEls[i].style.width = `${maxOffsetWidth}px`
-    }
 
     const itemEls = pickerEl.querySelectorAll(".UIComboBox-PickerItem")
     for (let i = 0; i < itemEls.length; i++) {
@@ -238,7 +227,7 @@ function validate(value: string) {
   let error = ""
 
   if (value) {
-    if (!props.items.some(item => item.value === value)) {
+    if (!props.items.includes(value)) {
       error = "値が不正です。"
     } else {
       const schema = props.schema
@@ -281,7 +270,7 @@ function validate(value: string) {
   >
     <div v-if="props.readonly" class="UIComboBox-Content">
       <div v-if="props.prefix && data.value" class="UIComboBox-Prefix">{{ props.prefix }}</div>
-      <div class="UIComboBox-Text">{{ props.items.find(item => item.value === data.value)?.text }}</div>
+      <div class="UIComboBox-Text">{{ data.value }}</div>
       <div v-if="props.suffix && data.value" class="UIComboBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div v-else class="UIComboBox-Content">
@@ -317,22 +306,20 @@ function validate(value: string) {
       style="display: none"
     >
       <li
-        v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"
-        :key="index"
-        class="UIComboBox-PickerItem"
-        :data-value="item.value"
+        v-if="!props.required"
+        class="UIComboBox-PickerItemPlaceholder"
+        data-value=""
         @mousedown="onPickerItemMouseDown"
         @mouseenter="onPikcerItemMouseEnter"
-      >
-        <div
-          v-if="item.value"
-          class="UIComboBox-PickerItemValue"
-        >{{ item.value }}</div>
-        <div
-          v-if="item.text"
-          class="UIComboBox-PickerItemText"
-        >{{ item.text }}</div>
-      </li>
+      >{{ props.placeholder }}</li>
+      <li
+        v-for="(item, index) in props.items"
+        :key="index"
+        class="UIComboBox-PickerItem"
+        :data-value="item"
+        @mousedown="onPickerItemMouseDown"
+        @mouseenter="onPikcerItemMouseEnter"
+      >{{ item }}</li>
     </ul>
     <div
       v-if="data.error"
@@ -393,24 +380,26 @@ function validate(value: string) {
     z-[1000];
 }
 
+.UIComboBox-PickerItemPlaceholder,
 .UIComboBox-PickerItem {
   @apply flex flex-row items-center gap-1
     first:rounded-t-md last:rounded-b-md
-    px-2;
+    px-2
+    select-none;
 }
 
 .UIComboBox-PickerItem[data-selected="true"] {
   @apply text-white bg-blue-500;
 }
 
-.UIComboBox-PickerItemValue,
-.UIComboBox-PickerItemText {
-  @apply flex flex-row items-center
-    select-none pointer-events-none;
-}
-
 .UIComboBox-Error {
   @apply text-sm text-red-500;
+}
+
+.UIComboBox[data-required="true"] {
+  .UIComboBox-PickerItemPlaceholder {
+    @apply hidden;
+  }
 }
 
 .UIComboBox[data-readonly="true"] {
@@ -443,6 +432,8 @@ function validate(value: string) {
     @apply text-start;
   }
 
+  .UIComboBox-PickerItemPlaceholder,
+  .UIComboBox-PickerItem,
   &[data-readonly="true"] .UIComboBox-Content {
     @apply justify-start;
   }
@@ -453,6 +444,8 @@ function validate(value: string) {
     @apply text-center;
   }
 
+  .UIComboBox-PickerItemPlaceholder,
+  .UIComboBox-PickerItem,
   &[data-readonly="true"] .UIComboBox-Content {
     @apply justify-center;
   }
@@ -463,6 +456,8 @@ function validate(value: string) {
     @apply text-end;
   }
 
+  .UIComboBox-PickerItemPlaceholder,
+  .UIComboBox-PickerItem,
   &[data-readonly="true"] .UIComboBox-Content {
     @apply justify-end;
   }

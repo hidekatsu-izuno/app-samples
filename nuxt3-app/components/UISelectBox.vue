@@ -131,7 +131,7 @@ function validate(value: string) {
           @change="onChange"
           @blur="onBlur"
         >
-          <option class="UISelectBox-InputOption" :disabled="props.required">{{ props.placeholder }}</option>
+          <option class="UISelectBox-InputOptionPlaceholder" :disabled="props.required" value="">{{ props.placeholder }}</option>
           <option v-for="(item, index) in items" :key="index" class="UISelectBox-InputOption" :value="item.value">{{ item.text == null ? item.value : item.text }}</option>
         </select>
         <div class="UISelectBox-InputPickerButton">
@@ -174,6 +174,7 @@ function validate(value: string) {
   }
 }
 
+.UISelectBox-InputOptionPlaceholder,
 .UISelectBox-InputOption {
   @apply text-gray-900;
 }
@@ -191,6 +192,12 @@ function validate(value: string) {
 
 .UISelectBox-Error {
   @apply text-sm text-red-500;
+}
+
+.UISelectBox[data-required="true"] {
+  .UISelectBox-InputPlaceholder {
+    @apply hidden;
+  }
 }
 
 .UISelectBox[data-readonly="true"] {

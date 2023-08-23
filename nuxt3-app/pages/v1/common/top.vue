@@ -610,7 +610,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.comboboxDisabled"
             :readonly="data.comboboxReadonly"
             :size="(data.comboboxSize as any)"
-            :items="[{ value: '1', text: 'AAA' }, { value: '23', text: 'BBB' }]"
+            :items="['AAA', 'BBB']"
             placeholder="---"
           />
           <UIText type="outline">{{ data.combobox1 }}</UIText>
@@ -627,14 +627,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.comboboxDisabled"
             :readonly="data.comboboxReadonly"
             :size="(data.comboboxSize as any)"
-            :items="[
-              { value: '1', text: 'AAA' },
-              { value: '2', text: 'BBB' },
-              { value: '3' },
-              { value: '4' },
-              { value: '5' },
-              { value: '6', text: 'CCC' },
-            ]"
+            :items="['AAA', 'BBB', '3', '4', '5', 'CCC']"
             placeholder="---"
             prefix="("
             suffix=")"
