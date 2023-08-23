@@ -4,6 +4,7 @@ const props = withDefaults(defineProps<{
   size?: "sm" | "lg",
   prefix?: string,
   suffix?: string,
+  name?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -31,7 +32,7 @@ const emits = defineEmits<{
 }>()
 
 const data = reactive({
-  id: crypto.randomUUID(),
+  name: props.name || crypto.randomUUID(),
   value: new Array<string>(),
   focused: false,
   error: "",
@@ -162,7 +163,7 @@ function validate(value: string[]) {
             <input
               class="UICheckList-Input peer"
               type="checkbox"
-              :name="data.id"
+              :name="data.name"
               :disabled="props.disabled"
               :tabindex="props.tabindex"
               :value="item.value"

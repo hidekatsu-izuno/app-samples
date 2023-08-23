@@ -113,7 +113,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
             @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
             @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
           ><slot
-            name="footerCell"
+            name="headerCell"
             :item="item"
             :value="item.label || item.key"
           >{{ item.label ?? item.key }}</slot></div>
@@ -190,7 +190,8 @@ function onSeparatorMouseDown(event: MouseEvent) {
 
 <style>
 .UIDataTable {
-  @apply overflow-auto;
+  @apply flex flex-col
+    overflow-auto;
 }
 
 .UIDataTable-Header,
@@ -205,7 +206,8 @@ function onSeparatorMouseDown(event: MouseEvent) {
 }
 
 .UIDataTable-Content {
-  @apply grow;
+  @apply grow
+    -mb-[1px];
 }
 
 .UIDataTable-Footer {
@@ -228,7 +230,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
 }
 
 .UIDataTable-ContentRow {
-  @apply border-t first:border-t-0 border-gray-300
+  @apply border-b border-gray-300
     bg-white;
 }
 

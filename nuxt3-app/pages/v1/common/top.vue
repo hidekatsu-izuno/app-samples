@@ -64,6 +64,11 @@ const data = reactive({
   checklistSize: "",
   checklist1: [],
   checklist2: [],
+  radioRequired: false,
+  radioDisabled: false,
+  radioReadonly: false,
+  radioSize: "",
+  radio1: false,
   radiolistRequired: false,
   radiolistDisabled: false,
   radiolistReadonly: false,
@@ -678,6 +683,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.checkDisabled"
             :readonly="data.checkReadonly"
             :size="(data.checkSize as any)"
+            value="X"
             prefix="("
             suffix=")"
             halign="center"
@@ -731,6 +737,55 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             halign="center"
           />
           <UIText type="outline">{{ data.checklist2.join(", ") }}</UIText>
+        </div>
+      </div>
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
+          <h2 class="font-bold grow">ラジオボタン (UIRadio)</h2>
+          <div class="shrink"><input v-model="data.radioRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.radioDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.radioReadonly" type="checkbox" /> readonly</div>
+          <UISelectBox v-model="data.radioSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
+        </div>
+      </template>
+
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.radioRequired"
+          >デフォルト</UILabel>
+          <UIRadio
+            v-model="data.radio1"
+            :required="data.radioRequired"
+            :disabled="data.radioDisabled"
+            :readonly="data.radioReadonly"
+            :size="(data.radioSize as any)"
+            name="radio1"
+          >ラジオボタン</UIRadio>
+          <UIText type="outline">{{ data.radio1 }}</UIText>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.radioRequired"
+          >装飾</UILabel>
+          <UIRadio
+            v-model="data.radio1"
+            :required="data.radioRequired"
+            :disabled="data.radioDisabled"
+            :readonly="data.radioReadonly"
+            :size="(data.radioSize as any)"
+            name="radio1"
+            prefix="("
+            suffix=")"
+            halign="center"
+          >ラジオボタン</UIRadio>
+          <UIText type="outline">{{ data.radio1 }}</UIText>
         </div>
       </div>
     </UICard>

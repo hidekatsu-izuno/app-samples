@@ -5,6 +5,7 @@ const props = withDefaults(defineProps<{
   prefix?: string,
   suffix?: string,
   placeholder?: string,
+  name?: string,
   tabindex?: number,
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -33,7 +34,7 @@ const emits = defineEmits<{
 }>()
 
 const data = reactive({
-  id: crypto.randomUUID(),
+  name: props.name || crypto.randomUUID(),
   value: "",
   focused: false,
   error: "",
@@ -154,7 +155,7 @@ function validate(value: string) {
             <input
               class="UIRadioList-Input peer"
               type="radio"
-              :name="data.id"
+              :name="data.name"
               :value="item.value"
               :checked="item.value === data.value"
               :disabled="props.disabled"

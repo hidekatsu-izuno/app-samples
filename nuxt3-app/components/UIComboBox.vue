@@ -315,7 +315,6 @@ function validate(value: string) {
       ref="pickerRef"
       class="UIComboBox-Picker"
       style="display: none"
-      @mousedown="onPickerMouseDown"
     >
       <li
         v-for="(item, index) in (props.required ? props.items : [{ value: '', text: props.placeholder }, ...props.items])"

@@ -5,7 +5,6 @@
   "eslint.format.enable": true,
   "eslint.workingDirectories": ["./nuxt3-app"],
   "[typescript]": {
-    "editor.formatOnSave": true,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   },
   "css.lint.unknownAtRules": "ignore",

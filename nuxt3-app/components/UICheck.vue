@@ -2,6 +2,7 @@
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  name?: string,
   value?: string,
   prefix?: string,
   suffix?: string,
@@ -125,6 +126,7 @@ function validate(value: boolean) {
             class="UICheck-Input peer"
             :class="props.inputClass"
             :style="props.inputStyle"
+            :name="props.name"
             :value="props.value"
             :disabled="props.disabled"
             :tabindex="props.tabindex"
