@@ -307,7 +307,8 @@ function validate(value: string) {
     >
       <li
         v-if="!props.required"
-        class="UIComboBox-PickerItemPlaceholder"
+        class="UIComboBox-PickerItem"
+        data-placeholder="true"
         data-value=""
         @mousedown="onPickerItemMouseDown"
         @mouseenter="onPikcerItemMouseEnter"
@@ -380,7 +381,6 @@ function validate(value: string) {
     z-[1000];
 }
 
-.UIComboBox-PickerItemPlaceholder,
 .UIComboBox-PickerItem {
   @apply flex flex-row items-center gap-1
     first:rounded-t-md last:rounded-b-md
@@ -394,12 +394,6 @@ function validate(value: string) {
 
 .UIComboBox-Error {
   @apply text-sm text-red-500;
-}
-
-.UIComboBox[data-required="true"] {
-  .UIComboBox-PickerItemPlaceholder {
-    @apply hidden;
-  }
 }
 
 .UIComboBox[data-readonly="true"] {
@@ -432,7 +426,6 @@ function validate(value: string) {
     @apply text-start;
   }
 
-  .UIComboBox-PickerItemPlaceholder,
   .UIComboBox-PickerItem,
   &[data-readonly="true"] .UIComboBox-Content {
     @apply justify-start;
@@ -444,7 +437,6 @@ function validate(value: string) {
     @apply text-center;
   }
 
-  .UIComboBox-PickerItemPlaceholder,
   .UIComboBox-PickerItem,
   &[data-readonly="true"] .UIComboBox-Content {
     @apply justify-center;
@@ -456,7 +448,6 @@ function validate(value: string) {
     @apply text-end;
   }
 
-  .UIComboBox-PickerItemPlaceholder,
   .UIComboBox-PickerItem,
   &[data-readonly="true"] .UIComboBox-Content {
     @apply justify-end;
