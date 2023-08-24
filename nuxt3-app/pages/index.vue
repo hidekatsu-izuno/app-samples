@@ -13,6 +13,7 @@ const data = reactive(historyState.data || {
 
 const emailRef = ref()
 const passwordRef = ref()
+const alertRef = ref()
 
 onBackupState(() => data)
 
@@ -35,14 +36,12 @@ const onLoginButtonClick = async () => {
       })
       location.href = result.redirect
     } catch (err) {
-      data.message = "ログインに失敗しました。"
-      data.showMessageBox = true
+      alertRef.value.open("ログインに失敗しました。")
     } finally {
       loading.hide()
     }
   } catch (err) {
-    data.message = "入力に誤りがあります。"
-    data.showMessageBox = true
+    alertRef.value.open("入力に誤りがあります。")
   }
 }
 </script>
@@ -90,6 +89,6 @@ const onLoginButtonClick = async () => {
         Copyright &copy; Hidekatsu Izuno
       </div>
     </div>
-    <UIAlert v-model="data.showMessageBox">{{ data.message }}</UIAlert>
+    <UIAlert ref="alertRef" />
   </div>
 </template>

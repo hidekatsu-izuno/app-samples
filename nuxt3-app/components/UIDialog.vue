@@ -6,51 +6,45 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<{
-  modelValue?: boolean,
   modaless?: boolean,
+  modelValue?: boolean,
 }>(), {
-  modelValue: false,
   modaless: false,
+  modelValue: false,
 })
 
 const elRef = ref()
 
-onMounted(() => {
-  watch(() => props.modelValue, () => {
-    if (props.modelValue) {
-      if (!props.modaless) {
-        elRef.value.showModal()
-        disableBodyScroll(elRef.value, {
-          reserveScrollBarGap: true,
-        })
-      } else {
-        elRef.value.show()
-      }
+watch(() => props.modelValue, () => {
+  if (props.modelValue) {
+    open()
+  } else {
+    close()
+  }
+}, { flush: "post" })
+
+onUnmounted(() => {
+  clearAllBodyScrollLocks()
+})
+
+function open() {
+  if (elRef.value) {
+    disableBodyScroll(elRef.value, {
+      reserveScrollBarGap: true,
+    })
+    if (props.modaless) {
+      elRef.value.show()
     } else {
-      if (!props.modaless) {
-        enableBodyScroll(elRef.value)
-      }
-      elRef.value.close()
+      elRef.value.showModal()
     }
-  }, { flush: "post" })
+  }
+}
 
-  onUnmounted(() => {
-    clearAllBodyScrollLocks()
-  })
-})
-
-const emits = defineEmits<{
-  (event: "update:modelValue", value: boolean): void,
-  (event: "close", value: any): void,
-}>()
-
-defineExpose({
-  close,
-})
-
-function close(result: any) {
-  emits("update:modelValue", false)
-  emits("close", result)
+function close() {
+  if (elRef.value) {
+    elRef.value.close()
+    enableBodyScroll(elRef.value)
+  }
 }
 </script>
 
@@ -66,6 +60,7 @@ function close(result: any) {
 .UIDialog {
   @apply fixed
     shadow-2xl
+    outline-none
     rounded-lg
     inset-0
     w-1/2

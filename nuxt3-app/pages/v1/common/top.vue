@@ -124,6 +124,10 @@ const data = reactive({
 })
 
 const textbox1Ref = ref()
+const alert1Ref = ref()
+const alert2Ref = ref()
+const alert3Ref = ref()
+const alert4Ref = ref()
 const loading = useLoadingIndicator()
 
 async function onValidate() {
@@ -1156,20 +1160,20 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2 p-6">
-        <UIAlert v-model="data.alert1Opend" type="ok" @close="data.alert1 = $event">あ</UIAlert>
-        <UIButton @click="data.alert1Opend = true">OK</UIButton>
+        <UIAlert ref="alert1Ref" @close="data.alert1 = $event">あ</UIAlert>
+        <UIButton @click="() => alert1Ref.open()">OK</UIButton>
         <div class="border">{{ data.alert1 }}</div>
 
-        <UIAlert v-model="data.alert2Opend" type="ok-cancel" @close="data.alert2 = $event">い</UIAlert>
-        <UIButton @click="data.alert2Opend = true">OK/CANCEL</UIButton>
+        <UIAlert ref="alert2Ref" :buttons="['ok', 'cancel']" @close="data.alert2 = $event">い</UIAlert>
+        <UIButton @click="() => alert2Ref.open()">OK/CANCEL</UIButton>
         <div class="border">{{ data.alert2 }}</div>
 
-        <UIAlert v-model="data.alert3Opened" type="yes-no" @close="data.alert3 = $event">う</UIAlert>
-        <UIButton @click="data.alert3Opened = true">YES/NO</UIButton>
+        <UIAlert ref="alert3Ref" :buttons="['yes', 'no']" @close="data.alert3 = $event">う</UIAlert>
+        <UIButton @click="() => alert3Ref.open()">YES/NO</UIButton>
         <div class="border">{{ data.alert3 }}</div>
 
-        <UIAlert v-model="data.alert4Opened" type="yes-no-cancel" @close="data.alert4 = $event">え</UIAlert>
-        <UIButton @click="data.alert4Opened = true">YES/NO/CANCEL</UIButton>
+        <UIAlert ref="alert4Ref" :buttons="['yes', 'no', 'cancel']" @close="data.alert4 = $event">え</UIAlert>
+        <UIButton @click="() => alert4Ref.open()">YES/NO/CANCEL</UIButton>
         <div class="border">{{ data.alert4 }}</div>
       </div>
     </UICard>
