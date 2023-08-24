@@ -179,23 +179,25 @@ function getFormatMaxLength(format: string) {
     </div>
     <div v-else class="UITimeBox-Content">
       <div v-if="props.prefix" class="UITimeBox-Prefix">{{ props.prefix }}</div>
-      <input
-        ref="inputRef"
-        class="UITimeBox-Input"
-        type="text"
-        inputmode="numeric"
-        :placeholder="props.placeholder"
-        :tabindex="props.tabindex"
-        :disabled="props.disabled"
-        :maxlength="data.maxLength"
-        :size="data.baseLength"
-        :value="data.value"
-        @input="onInput"
-        @focus="onFocus"
-        @blur="onBlur"
-        @compositionstart="onCompositionStart"
-        @compositionend="onCompositionEnd"
-      />
+      <div class="UITimeBox-InputArea">
+        <input
+          ref="inputRef"
+          class="UITimeBox-Input"
+          type="text"
+          inputmode="numeric"
+          :placeholder="props.placeholder"
+          :tabindex="props.tabindex"
+          :disabled="props.disabled"
+          :maxlength="data.maxLength"
+          :size="data.baseLength"
+          :value="data.value"
+          @input="onInput"
+          @focus="onFocus"
+          @blur="onBlur"
+          @compositionstart="onCompositionStart"
+          @compositionend="onCompositionEnd"
+        />
+      </div>
       <div v-if="props.suffix" class="UITimeBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
@@ -211,9 +213,13 @@ function getFormatMaxLength(format: string) {
     text-base;
 }
 
-.UITimeBox-Input {
+.UITimeBox-InputArea {
   @apply flex-auto
-    focus:ring-2 focus:ring-blue-200
+    grid;
+}
+
+.UITimeBox-Input {
+  @apply focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
     px-[0.25em] py-[0.125em]

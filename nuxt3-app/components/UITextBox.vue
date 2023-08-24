@@ -7,6 +7,7 @@ const props = withDefaults(defineProps<{
   type?: "text" | "password" | "email" | "tel" | "url",
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  button?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -34,6 +35,7 @@ const emits = defineEmits<{
   (event: "focus", value: Event): void,
   (event: "update:modelValue", value: string): void,
   (event: "update:error", value: string): void,
+  (event: "buttonClick", value: Event): void,
   (event: "change", value: Event): void,
   (event: "blur", value: Event): void,
 }>()
@@ -162,6 +164,7 @@ function validate(value: string) {
     :data-required="props.required || undefined"
     :data-disabled="props.disabled || undefined"
     :data-readonly="props.readonly || undefined"
+    :data-button="!!props.button || undefined"
   >
     <div v-if="props.readonly" class="UITextBox-Content">
       <div v-if="props.prefix && data.value" class="UITextBox-Prefix">{{ props.prefix }}</div>
@@ -170,22 +173,34 @@ function validate(value: string) {
     </div>
     <div v-else class="UITextBox-Content">
       <div v-if="props.prefix" class="UITextBox-Prefix">{{ props.prefix }}</div>
-      <input
-        class="UITextBox-Input"
-        :class="props.inputClass"
-        :style="props.inputStyle"
-        :type="props.type"
-        :placeholder="props.placeholder"
-        :disabled="props.disabled"
-        :tabindex="props.tabindex"
-        :maxlength="data.maxLength"
-        :value="data.value"
-        @focus="onFocus"
-        @input="onInput"
-        @blur="onBlur"
-        @compositionstart="onCompositionStart"
-        @compositionend="onCompositionEnd"
-      />
+      <div class="UITextBox-InputArea">
+        <input
+          class="UITextBox-Input"
+          :class="props.inputClass"
+          :style="props.inputStyle"
+          :type="props.type"
+          :placeholder="props.placeholder"
+          :disabled="props.disabled"
+          :tabindex="props.tabindex"
+          :maxlength="data.maxLength"
+          :value="data.value"
+          @focus="onFocus"
+          @input="onInput"
+          @blur="onBlur"
+          @compositionstart="onCompositionStart"
+          @compositionend="onCompositionEnd"
+        />
+        <button
+          v-if="props.button"
+          class="UITextBox-InputButton"
+          type="button"
+          :disabled="props.disabled || undefined"
+          :tabindex="props.tabindex"
+          @click="emits('buttonClick', $event)"
+        >
+          <UIIcon :name="props.button" />
+        </button>
+      </div>
       <div v-if="props.suffix" class="UITextBox-Suffix">{{ props.suffix }}</div>
     </div>
     <div
@@ -201,8 +216,13 @@ function validate(value: string) {
     text-base;
 }
 
-.UITextBox-Input {
+.UITextBox-InputArea {
   @apply flex-auto
+    grid;
+}
+
+.UITextBox-Input {
+  @apply grow
     focus:ring-2 focus:ring-blue-200
     outline-none
     border border-gray-300 rounded-md focus:border-blue-500
@@ -210,10 +230,39 @@ function validate(value: string) {
     min-w-0
     bg-gray-50 disabled:bg-gray-100
     text-gray-900 disabled:text-gray-400;
+  grid-area: 1/1;
+}
+
+.UITextBox-InputButton {
+  @apply justify-self-end
+    flex flex-row items-center justify-center
+    focus:ring-2 focus:ring-blue-200
+    outline-none
+    rounded-e-md
+    px-1
+    bg-gray-400 enabled:hover:bg-gray-500 disabled:bg-gray-300
+    text-white;
+  grid-area: 1/1;
+
+  .UIIcon {
+    @apply text-2xl;
+  }
 }
 
 .UITextBox-Error {
   @apply text-sm text-red-500;
+}
+
+.UITextBox[data-button="true"] {
+  .UITextBox-Input {
+    @apply pr-8;
+  }
+}
+
+.UITextBox[data-disabled="true"] {
+  .UITextBox-InputButton {
+    @apply text-gray-400;
+  }
 }
 
 .UITextBox[data-readonly="true"] {

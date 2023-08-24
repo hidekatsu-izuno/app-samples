@@ -202,6 +202,12 @@ function validate(value: string) {
   }
 }
 
+.UISelectBox[data-disabled="true"] {
+  .UISelectBox-InputPickerButton {
+    @apply text-gray-400;
+  }
+}
+
 .UISelectBox[data-readonly="true"] {
   .UISelectBox-Content {
     @apply min-h-[calc(1.5em+(0.125em+1px)*2)]

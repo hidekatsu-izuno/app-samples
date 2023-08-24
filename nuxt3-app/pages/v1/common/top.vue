@@ -287,6 +287,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.textboxDisabled"
             :readonly="data.textboxReadonly"
             :size="data.textboxSize"
+            button="magnify"
           />
           <UIText type="outline">{{ data.textbox7 }}</UIText>
         </div>

@@ -394,6 +394,12 @@ function validate(value: string) {
   @apply text-sm text-red-500;
 }
 
+.UIComboBox[data-disabled="true"] {
+  .UIComboBox-InputPickerButton {
+    @apply text-gray-400;
+  }
+}
+
 .UIComboBox[data-readonly="true"] {
   .UIComboBox-Content {
     @apply min-h-[calc(1.5em+(0.125em+1px)*2)]

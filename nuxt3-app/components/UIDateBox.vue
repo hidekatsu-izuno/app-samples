@@ -456,6 +456,12 @@ function getFormatMaxLength(format: string) {
   }
 }
 
+.UIDateBox[data-disabled="true"] {
+  .UIDateBox-InputPickerButton {
+    @apply text-gray-400;
+  }
+}
+
 .UIDateBox[data-size="lg"] {
   .UIDateBox-Content {
     @apply text-lg;

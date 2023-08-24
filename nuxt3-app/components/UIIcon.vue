@@ -30,6 +30,10 @@ const props = withDefaults(defineProps<{
   @apply icon-[mdi--calendar];
 }
 
+.UIIcon[data-name="card-search-outline"] {
+  @apply icon-[mdi--card-search-outline];
+}
+
 .UIIcon[data-name="check"] {
   @apply icon-[mdi--check];
 }
@@ -74,6 +78,10 @@ const props = withDefaults(defineProps<{
   @apply icon-[mdi--information-outline];
 }
 
+.UIIcon[data-name="magnify"] {
+  @apply icon-[mdi--magnify];
+}
+
 .UIIcon[data-name="menu"] {
   @apply icon-[mdi--menu];
 }
@@ -88,5 +96,9 @@ const props = withDefaults(defineProps<{
 
 .UIIcon[data-name="page-last"] {
   @apply icon-[mdi--page-last];
+}
+
+.UIIcon[data-name="window-maximize"] {
+  @apply icon-[mdi--window-maximize];
 }
 </style>
