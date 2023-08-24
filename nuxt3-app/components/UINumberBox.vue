@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   halign: "end",
   required: false,
-  format: ",###.###",
+  format: "#,###,###.###",
   modelValue: "",
   error: "",
 })

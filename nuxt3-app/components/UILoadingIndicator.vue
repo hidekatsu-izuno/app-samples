@@ -42,14 +42,7 @@ router.afterEach((_to, _from, failure) => {
 })
 
 onMounted(() => {
-  if (data.value) {
-    if (elRef.value) {
-      disableBodyScroll(elRef.value, {
-        reserveScrollBarGap: true,
-      })
-    }
-    document.removeEventListener("keydown", listener, true)
-  }
+  hide()
 })
 
 onBeforeUnmount(() => {
@@ -117,7 +110,7 @@ function clear() {
 <template>
   <Teleport to="body">
     <div
-      v-if="data.value"
+      v-show="data.value"
       ref="elRef"
       class="UILoadingIndicator"
       :data-throttled="data.throttleTimerId != null"

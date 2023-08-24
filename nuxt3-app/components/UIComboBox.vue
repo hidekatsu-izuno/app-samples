@@ -227,19 +227,15 @@ function validate(value: string) {
   let error = ""
 
   if (value) {
-    if (!props.items.includes(value)) {
-      error = "値が不正です。"
-    } else {
-      const schema = props.schema
-      if (schema) {
-        const result = schema.safeParse(value, {
-          errorMap: JapaneseErrorMap,
-        })
-        if (result.success) {
-          value = result.data
-        } else {
-          error = result.error.issues[0].message
-        }
+    const schema = props.schema
+    if (schema) {
+      const result = schema.safeParse(value, {
+        errorMap: JapaneseErrorMap,
+      })
+      if (result.success) {
+        value = result.data
+      } else {
+        error = result.error.issues[0].message
       }
     }
   } else if (props.required) {

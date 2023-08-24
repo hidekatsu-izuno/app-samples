@@ -734,6 +734,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       </div>
     </UICard>
 
+    <!--
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
@@ -782,6 +783,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </div>
     </UICard>
+    -->
 
     <UICard class="mb-4">
       <template #header>

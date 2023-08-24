@@ -40,6 +40,5 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 残課題：
 ・Alert レベルの修正
 ・DataTable に Radio を可能に
-・TextBox, NumberBox を候補入力可能にする
 ・CodeBox を追加
 -->
