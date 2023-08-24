@@ -21,6 +21,8 @@ const props = withDefaults(defineProps<{
   items: () => [],
   columns: 1,
   required: false,
+  disabled: false,
+  readonly: false,
   modelValue: "",
   error: "",
 })

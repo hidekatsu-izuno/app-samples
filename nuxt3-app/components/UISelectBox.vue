@@ -18,6 +18,8 @@ const props = withDefaults(defineProps<{
   halign: "start",
   items: () => [],
   required: false,
+  disabled: false,
+  readonly: false,
   modelValue: "",
   error: "",
 })

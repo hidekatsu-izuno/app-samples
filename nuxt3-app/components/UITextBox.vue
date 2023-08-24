@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<{
   type: "text",
   halign: "start",
   required: false,
+  disabled: false,
+  readonly: false,
   modelValue: "",
   error: "",
 })

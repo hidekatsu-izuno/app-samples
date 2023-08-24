@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<{
   type: "HHmm",
   halign: "start",
   required: false,
+  disabled: false,
+  readonly: false,
   format: props => props.type === "HHmmss" ? "HH:mm:ss" : "HH:mm",
   modelValue: "",
   error: "",

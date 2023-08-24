@@ -20,6 +20,8 @@ const props = withDefaults(defineProps<{
   filter?: (input: string) => string,
 }>(), {
   required: false,
+  disabled: false,
+  readonly: false,
   modelValue: "",
   error: "",
 })

@@ -16,6 +16,8 @@ const props = withDefaults(defineProps<{
   error?: string,
 }>(), {
   required: false,
+  disabled: false,
+  readonly: false,
   modelValue: false,
   error: "",
 })

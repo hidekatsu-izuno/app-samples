@@ -22,6 +22,8 @@ const props = withDefaults(defineProps<{
 }>(), {
   halign: "end",
   required: false,
+  disabled: false,
+  readonly: false,
   format: "#,###,###.###",
   modelValue: "",
   error: "",

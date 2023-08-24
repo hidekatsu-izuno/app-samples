@@ -14,10 +14,13 @@ const props = withDefaults(defineProps<{
   inputClass?: string | Record<string, boolean> |(string | Record<string, boolean>)[],
   inputStyle?: string | Record<string, string> | (string | Record<string, string>)[],
   disabled?: boolean,
+  autofocus?: boolean,
 }>(), {
   type: "filled",
   halign: "center",
   color: "blue",
+  disabled: false,
+  autofocus: false,
 })
 
 const emits = defineEmits<{
@@ -57,6 +60,7 @@ function onBlur(event: Event) {
         :style="props.inputStyle"
         :disabled="props.disabled"
         :tabindex="props.tabindex"
+        :autofocus="props.autofocus ?? undefined"
         @focus="onFocus"
         @click="onClick"
         @blur="onBlur"

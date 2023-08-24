@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<{
 }>(), {
   halign: "start",
   required: false,
+  disabled: false,
+  readonly: false,
   format: "uuuu/MM/dd",
   modelValue: "",
   error: "",
