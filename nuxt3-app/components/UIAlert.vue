@@ -94,7 +94,7 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
 
 <style>
 .UIAlert {
-  @apply max-w-[640px] min-w-[320px];
+  @apply max-w-[640px] w-screen;
 }
 
 .UIAlert-Header {
