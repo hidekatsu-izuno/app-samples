@@ -171,6 +171,10 @@ async function onInputPickerButtonMouseDown(event: Event) {
   await popper?.update()
 }
 
+function onPickerMouseDown(event: Event) {
+  event.preventDefault()
+}
+
 function onPickerPrevButtonClick() {
   pickerData.current = sub(pickerData.current, { months: 1 })
 }
@@ -281,6 +285,7 @@ function getFormatMaxLength(format: string) {
       ref="pickerRef"
       class="UIDateBox-Picker"
       style="display: none"
+      @mousedown="onPickerMouseDown"
     >
       <div
         class="UIDateBox-PickerPrevInput"
