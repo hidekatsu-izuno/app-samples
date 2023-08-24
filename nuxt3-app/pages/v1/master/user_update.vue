@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const indicator = useLoadingIndicator()
+const loading = useLoadingIndicator()
 const historyState = useHistoryState()
 const info = historyState.info || {}
 
@@ -44,7 +44,7 @@ onMounted(async () => {
 
 async function onUpdateButtonClick() {
   try {
-    indicator.open()
+    loading.show()
 
     if (info.mode === "register") {
       const req = await validate({
@@ -92,7 +92,7 @@ async function onUpdateButtonClick() {
       throw new Error(`Unknown mode: ${info.mode}`)
     }
   } catch (err) {
-    indicator.close()
+    loading.hide()
     if (err instanceof BusinessError) {
       data.errorMessage = err.message
       data.showError = true
@@ -161,7 +161,7 @@ async function onUpdateButtonClick() {
       </UICard>
     </div>
 
-    <UIMessageBox v-model="data.showError" type="error">{{ data.errorMessage }}</UIMessageBox>
+    <UIAlert v-model="data.showError" type="error">{{ data.errorMessage }}</UIAlert>
 
     <template #drawer>
       <MenuList />

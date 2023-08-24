@@ -26,7 +26,7 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
 
 <template>
   <UIDialog
-    class="UIMessageBox"
+    class="UIAlert"
     role="alertdialog"
     :modaless="props.modaless"
     :model-value="props.modelValue"

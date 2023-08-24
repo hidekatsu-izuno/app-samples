@@ -5,56 +5,67 @@ defineOptions({
   inheritAttrs: false,
 })
 
+if (process.client) {
+  document.addEventListener("keydown", listener, true)
+}
+
 const data = reactive({
   throttleTimerId: undefined as NodeJS.Timeout | undefined,
   durationTimerId: undefined as NodeJS.Timeout | undefined,
-  value: false,
+  value: true,
 })
 
 const elRef = ref()
 
-init()
-
 provide("useLoadingIndicator", {
-  open,
-  close,
-  clear,
+  show,
+  hide,
 })
 
-function init() {
-  const router = useRouter()
-  router.onError(() => {
-    close()
-  })
-  router.beforeResolve((to, from) => {
-    if (to === from || to.matched.every((comp, index) => comp.components && comp.components?.default === from.matched[index]?.components?.default)) {
-      close()
+const nuxtApp = useNuxtApp()
+nuxtApp.hook("page:finish", hide)
+nuxtApp.hook("vue:error", hide)
+
+const router = useRouter()
+router.onError(() => {
+  hide()
+})
+router.beforeResolve((to, from) => {
+  if (to === from || to.matched.every((comp, index) => comp.components && comp.components?.default === from.matched[index]?.components?.default)) {
+    hide()
+  }
+})
+router.afterEach((_to, _from, failure) => {
+  if (failure) {
+    hide()
+  }
+})
+
+onMounted(() => {
+  if (data.value) {
+    if (elRef.value) {
+      disableBodyScroll(elRef.value, {
+        reserveScrollBarGap: true,
+      })
     }
-  })
-  router.afterEach((_to, _from, failure) => {
-    if (failure) {
-      close()
-    }
-  })
+    document.removeEventListener("keydown", listener, true)
+  }
+})
 
-  const nuxtApp = useNuxtApp()
-  nuxtApp.hook("page:finish", close)
-  nuxtApp.hook("vue:error", close)
+onBeforeUnmount(() => {
+  clear()
+})
 
-  onMounted(() => {
-    open()
-  })
+onUnmounted(() => {
+  clearAllBodyScrollLocks()
+  document.removeEventListener("keydown", listener, true)
+})
 
-  onBeforeUnmount(() => {
-    clear()
-  })
-
-  onUnmounted(() => {
-    clearAllBodyScrollLocks()
-  })
+function listener(event: Event) {
+  event.preventDefault()
 }
 
-function open(options?: { throttle: number, duration: number }) {
+function show(options?: { throttle: number, duration: number }) {
   clear()
 
   if (options?.throttle) {
@@ -65,26 +76,28 @@ function open(options?: { throttle: number, duration: number }) {
   if (options?.duration) {
     data.durationTimerId = setTimeout(() => {
       data.durationTimerId = undefined
-      close()
+      hide()
     }, options.duration + (options?.throttle || 0))
   }
-  if (!data.value && elRef.value) {
-    elRef.value.showModal()
-    disableBodyScroll(elRef.value, {
-      reserveScrollBarGap: true,
-    })
+  if (!data.value) {
+    document.addEventListener("keydown", listener, true)
+    if (elRef.value) {
+      disableBodyScroll(elRef.value, {
+        reserveScrollBarGap: true,
+      })
+    }
     data.value = true
   }
 }
 
-function close() {
+function hide() {
   clear()
 
   if (data.value) {
     if (elRef.value) {
       enableBodyScroll(elRef.value)
-      elRef.value.close()
     }
+    document.removeEventListener("keydown", listener, true)
     data.value = false
   }
 }
@@ -103,39 +116,44 @@ function clear() {
 
 <template>
   <Teleport to="body">
-    <dialog
+    <div
+      v-if="data.value"
       ref="elRef"
       class="UILoadingIndicator"
       :data-throttled="data.throttleTimerId != null"
       v-bind="$attrs"
     >
       <div class="UILoadingIndicator-Loading" />
-    </dialog>
+    </div>
   </Teleport>
   <slot />
 </template>
 
 <style>
 .UILoadingIndicator {
-  @apply fixed
-    shadow-2xl
-    outline-none
-    rounded-lg
-    p-2
-    w-16 h-16
-    overflow-hidden
+  @apply fixed inset-0
+    flex items-center justify-center
+    bg-[rgba(0,0,0,0)]
     z-[3000];
 }
 
-.UILoadingIndicator::backdrop {
-  @apply opacity-0;
+.UILoadingIndicator-Loading {
+  @apply flex items-center justify-center
+    shadow-2xl
+    w-16 h-16
+    rounded-lg
+    p-2
+    bg-white
+    overflow-hidden;
 }
 
-.UILoadingIndicator-Loading {
-  @apply border border-8 border-t-blue-700 border-l-blue-400 border-b-blue-200 border-r-blue-50 rounded-full
+.UILoadingIndicator-Loading::before {
+  @apply block
+    border border-8 border-t-blue-700 border-l-blue-400 border-b-blue-200 border-r-blue-50 rounded-full
     w-full h-full;
+  content: '';
   animation-name: spin;
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
@@ -149,5 +167,4 @@ function clear() {
     transform: rotate(360deg);
   }
 }
-
 </style>

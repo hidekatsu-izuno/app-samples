@@ -3,7 +3,7 @@ import MenuList from "~/components/v1/common/MenuList.vue"
 
 const historyState = useHistoryState()
 const info = historyState.info || {}
-const indicator = useLoadingIndicator()
+const loading = useLoadingIndicator()
 
 const data = reactive(historyState.data || {
   userEmail: "",
@@ -41,7 +41,7 @@ async function onSearchButtonClick() {
     isDeleted,
   })
   try {
-    indicator.open()
+    loading.show()
     const res = await fetchURL("/api/v1/master/user_search/search_users", {
       method: "POST",
       body: req,
@@ -51,7 +51,7 @@ async function onSearchButtonClick() {
     data.totalCount = res.totalCount
     data.searchResult = res.records
   } finally {
-    indicator.close()
+    loading.hide()
   }
 }
 

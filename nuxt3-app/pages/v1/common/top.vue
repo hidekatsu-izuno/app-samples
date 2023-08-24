@@ -113,18 +113,18 @@ const data = reactive({
     { boolean: false, number: 6, string: "fff", date: "2020-06-01" },
     { boolean: false, number: 7, string: "long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-long-", date: "2020-06-01" },
   ],
-  messageBox1Opend: false,
-  messageBox2Opend: false,
-  messageBox3Opened: false,
-  messageBox4Opened: false,
-  messageBox1: undefined as string | undefined,
-  messageBox2: undefined as string | undefined,
-  messageBox3: undefined as string | undefined,
-  messageBox4: undefined as string | undefined,
+  alert1Opend: false,
+  alert2Opend: false,
+  alert3Opened: false,
+  alert4Opened: false,
+  alert1: undefined as string | undefined,
+  alert2: undefined as string | undefined,
+  alert3: undefined as string | undefined,
+  alert4: undefined as string | undefined,
 })
 
 const textbox1Ref = ref()
-const indicator = useLoadingIndicator()
+const loading = useLoadingIndicator()
 
 async function onValidate() {
   const result = await validate({
@@ -1150,25 +1150,25 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
-          <h2 class="font-bold grow">メッセージボックス (UIMessageBox)</h2>
+          <h2 class="font-bold grow">アラートダイアログ (UIAlert)</h2>
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2 p-6">
-        <UIMessageBox v-model="data.messageBox1Opend" type="ok" @close="data.messageBox1 = $event">あ</UIMessageBox>
-        <UIButton @click="data.messageBox1Opend = true">OK</UIButton>
-        <div class="border">{{ data.messageBox1 }}</div>
+        <UIAlert v-model="data.alert1Opend" type="ok" @close="data.alert1 = $event">あ</UIAlert>
+        <UIButton @click="data.alert1Opend = true">OK</UIButton>
+        <div class="border">{{ data.alert1 }}</div>
 
-        <UIMessageBox v-model="data.messageBox2Opend" type="ok-cancel" @close="data.messageBox2 = $event">い</UIMessageBox>
-        <UIButton @click="data.messageBox2Opend = true">OK/CANCEL</UIButton>
-        <div class="border">{{ data.messageBox2 }}</div>
+        <UIAlert v-model="data.alert2Opend" type="ok-cancel" @close="data.alert2 = $event">い</UIAlert>
+        <UIButton @click="data.alert2Opend = true">OK/CANCEL</UIButton>
+        <div class="border">{{ data.alert2 }}</div>
 
-        <UIMessageBox v-model="data.messageBox3Opened" type="yes-no" @close="data.messageBox3 = $event">う</UIMessageBox>
-        <UIButton @click="data.messageBox3Opened = true">YES/NO</UIButton>
-        <div class="border">{{ data.messageBox3 }}</div>
+        <UIAlert v-model="data.alert3Opened" type="yes-no" @close="data.alert3 = $event">う</UIAlert>
+        <UIButton @click="data.alert3Opened = true">YES/NO</UIButton>
+        <div class="border">{{ data.alert3 }}</div>
 
-        <UIMessageBox v-model="data.messageBox4Opened" type="yes-no-cancel" @close="data.messageBox4 = $event">え</UIMessageBox>
-        <UIButton @click="data.messageBox4Opened = true">YES/NO/CANCEL</UIButton>
-        <div class="border">{{ data.messageBox4 }}</div>
+        <UIAlert v-model="data.alert4Opened" type="yes-no-cancel" @close="data.alert4 = $event">え</UIAlert>
+        <UIButton @click="data.alert4Opened = true">YES/NO/CANCEL</UIButton>
+        <div class="border">{{ data.alert4 }}</div>
       </div>
     </UICard>
 
@@ -1179,7 +1179,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2 p-6">
-        <UIButton @click="indicator.open({ throttle: 1000, duration: 4000 })">Show</UIButton>
+        <UIButton @click="loading.show({ throttle: 1000, duration: 4000 })">Show</UIButton>
       </div>
     </UICard>
 
