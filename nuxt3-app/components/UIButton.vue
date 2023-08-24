@@ -139,14 +139,14 @@ function onBlur(event: Event) {
 
 .UIButton[data-color="gray"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-gray-500 enabled:hover:bg-gray-400 disabled:bg-gray-300
+    @apply bg-gray-500 enabled:hover:bg-gray-400 disabled:bg-gray-400
       text-white;
   }
 }
 
 .UIButton[data-color="gray"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-gray-500 enabled:hover:border-slate-400 disabled:border-gray-300
+    @apply border border-gray-500 enabled:hover:border-slate-400 disabled:border-gray-400
       enabled:hover:bg-gray-400
       text-gray-500 enabled:hover:text-white disabled:text-gray-400;
   }
