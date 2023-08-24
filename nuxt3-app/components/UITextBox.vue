@@ -240,7 +240,7 @@ function validate(value: string) {
     outline-none
     rounded-e-md
     px-1
-    bg-blue-700 enabled:hover:bg-blue-800 disabled:bg-gray-400
+    bg-blue-700 enabled:hover:bg-blue-600 disabled:bg-gray-400
     text-white;
   grid-area: 1/1;
 
@@ -261,7 +261,7 @@ function validate(value: string) {
 
 .UITextBox[data-disabled="true"] {
   .UITextBox-InputButton {
-    @apply text-gray-400;
+    @apply text-gray-600;
   }
 }
 

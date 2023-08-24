@@ -124,30 +124,30 @@ function onBlur(event: Event) {
 
 .UIButton[data-color="slate"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-slate-500 enabled:hover:bg-slate-600 disabled:bg-gray-400
+    @apply bg-slate-500 enabled:hover:bg-slate-400 disabled:bg-gray-300
       text-white;
   }
 }
 
 .UIButton[data-color="slate"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-slate-500 disabled:border-gray-400
-      enabled:hover:bg-slate-500
-      text-slate-500 enabled:hover:text-white disabled:text-gray-400;
+    @apply border border-slate-500 enabled:hover:border-slate-400 disabled:border-gray-300
+      enabled:hover:bg-slate-400
+      text-slate-500 enabled:hover:text-white disabled:text-gray-300;
   }
 }
 
 .UIButton[data-color="gray"][data-type="filled"] {
   .UIButton-Input {
-    @apply bg-gray-400 enabled:hover:bg-gray-500 disabled:bg-gray-300
+    @apply bg-gray-500 enabled:hover:bg-gray-400 disabled:bg-gray-300
       text-white;
   }
 }
 
 .UIButton[data-color="gray"][data-type="outline"] {
   .UIButton-Input {
-    @apply border border-gray-400 disabled:border-gray-300
-      enabled:hover:bg-gray-500
+    @apply border border-gray-500 enabled:hover:border-slate-400 disabled:border-gray-300
+      enabled:hover:bg-gray-400
       text-gray-500 enabled:hover:text-white disabled:text-gray-400;
   }
 }
