@@ -1164,15 +1164,15 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         <UIButton @click="() => alert1Ref.open()">OK</UIButton>
         <div class="border">{{ data.alert1 }}</div>
 
-        <UIAlert ref="alert2Ref" :buttons="['ok', 'cancel']" @close="data.alert2 = $event">い</UIAlert>
+        <UIAlert ref="alert2Ref" type="warn" :buttons="['ok', 'cancel']" @close="data.alert2 = $event">い</UIAlert>
         <UIButton @click="() => alert2Ref.open()">OK/CANCEL</UIButton>
         <div class="border">{{ data.alert2 }}</div>
 
-        <UIAlert ref="alert3Ref" :buttons="['yes', 'no']" @close="data.alert3 = $event">う</UIAlert>
+        <UIAlert ref="alert3Ref" type="info" :buttons="['yes', 'no']" @close="data.alert3 = $event">う</UIAlert>
         <UIButton @click="() => alert3Ref.open()">YES/NO</UIButton>
         <div class="border">{{ data.alert3 }}</div>
 
-        <UIAlert ref="alert4Ref" :buttons="['yes', 'no', 'cancel']" @close="data.alert4 = $event">え</UIAlert>
+        <UIAlert ref="alert4Ref" :buttons="['yes', 'no', 'cancel']" title="タイトル" @close="data.alert4 = $event">え</UIAlert>
         <UIButton @click="() => alert4Ref.open()">YES/NO/CANCEL</UIButton>
         <div class="border">{{ data.alert4 }}</div>
       </div>

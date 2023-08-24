@@ -10,6 +10,10 @@ const props = withDefaults(defineProps<{
 </template>
 
 <style>
+.UIIcon[data-name="alert-outline"] {
+  @apply icon-[mdi--alert-outline];
+}
+
 .UIIcon[data-name="alert-circle-outline"] {
   @apply icon-[mdi--alert-circle-outline];
 }
@@ -64,6 +68,10 @@ const props = withDefaults(defineProps<{
 
 .UIIcon[data-name="help"] {
   @apply icon-[mdi--help];
+}
+
+.UIIcon[data-name="information-outline"] {
+  @apply icon-[mdi--information-outline];
 }
 
 .UIIcon[data-name="menu"] {

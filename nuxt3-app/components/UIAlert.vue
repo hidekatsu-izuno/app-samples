@@ -1,8 +1,12 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  type?: "error" | "warn" | "info",
+  title?: string,
   buttons?: ("ok" | "yes" | "no" | "cancel")[],
   modaless?: boolean,
 }>(), {
+  type: "error",
+  title: undefined,
   buttons: () => ["ok"],
   modaless: false,
 })
@@ -39,10 +43,23 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
     class="UIAlert"
     role="alertdialog"
     :modaless="props.modaless"
+    :data-type="props.type"
   >
     <div class="UIAlert-Header">
-      <UIIcon name="alert-circle-outline" class="UIAlert-Icon" />
-      <div class="UIAlert-Title">エラー</div>
+      <UIIcon
+        :name="(
+          props.type === 'info' ? 'information-outline' :
+          props.type === 'warn' ? 'alert-outline' :
+          'alert-circle-outline'
+        )"
+        class="UIAlert-Icon"
+      />
+      <div class="UIAlert-Title">{{
+        props.title ? props.title :
+        props.type === 'info' ? '情報' :
+        props.type === 'warn' ? '警告' :
+        'エラー'
+      }}</div>
       <button
         type="button"
         class="UIAlert-CloseButton"
@@ -64,7 +81,11 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
         class="UIAlert-Button"
         :data-button="button"
         :autofocus="index === 0"
-        :color="index === 0 ? 'red' : 'neutral'"
+        :color="index === 0 ? (
+          props.type === 'info' ? 'blue' :
+          props.type === 'warn' ? 'yellow' :
+          'red'
+        ) : 'neutral'"
         @click="close(button)"
       />
     </div>
@@ -79,11 +100,6 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
 .UIAlert-Header {
   @apply flex flex-row items-center gap-2
     px-2 py-2;
-}
-
-.UIAlert-Icon {
-  @apply
-    text-red-500 text-5xl;
 }
 
 .UIAlert-Title {
@@ -116,6 +132,24 @@ function close(result?: "ok" | "yes" | "no" | "cancel") {
 .UIAlert-Footer {
   @apply flex justify-center gap-2
     px-4 py-4;
+}
+
+.UIAlert[data-type="error"] {
+  .UIAlert-Icon {
+    @apply text-red-500 text-5xl;
+  }
+}
+
+.UIAlert[data-type="warn"] {
+  .UIAlert-Icon {
+    @apply text-yellow-400 text-5xl;
+  }
+}
+
+.UIAlert[data-type="info"] {
+  .UIAlert-Icon {
+    @apply text-blue-500 text-5xl;
+  }
 }
 
 .UIAlert-Button[data-button="ok"] {
