@@ -240,7 +240,7 @@ function validate(value: string) {
     outline-none
     rounded-e-md
     px-1
-    bg-gray-400 enabled:hover:bg-gray-500 disabled:bg-gray-300
+    bg-blue-700 enabled:hover:bg-blue-800 disabled:bg-gray-400
     text-white;
   grid-area: 1/1;
 
