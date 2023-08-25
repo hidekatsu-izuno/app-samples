@@ -13,8 +13,8 @@ const props = withDefaults(defineProps<{
     syncSelector?: boolean,
     format?: (value: any) => string
   }>,
-  modelValue?: Array<Record<string, any>>,
-  footer?: (modelValue: Array<Record<string, any>>, items: Record<string, any>) => Record<string, any>,
+  modelValue?: Record<string, any>[],
+  footer?: (modelValue: Record<string, any>[], items: Record<string, any>) => Record<string, any>,
 }>(), {
   wrap: false,
   ellipsis: false,
@@ -27,19 +27,47 @@ const data = reactive({
   widths: [] as (string | undefined)[],
   footerRecord: undefined as Record<string, any> | undefined,
   colResize: false,
+  colGroups: [] as ({ area: string, start: number, items? : typeof props.items })[],
   rowGroups: [] as ({ area: string, start: number, records?: Record<string, any>[] })[],
 })
 
 const elRef = ref()
 
-watch(() => [props.modelValue, props.items, props.fix], () => {
+watch(() => [props.modelValue, props.items, props.wrap, props.fix], () => {
   data.widths = props.items.map(item => item.width)
   data.footerRecord = props.footer?.(props.modelValue, props.items)
 
-  const top = (props.fix?.top != null && props.fix.top > 0)
+  const left = (props.fix?.left != null && props.fix.left > 0 && !props.wrap)
+    ? props.fix.left
+    : 0
+  const right = (props.fix?.right != null && props.fix.right > 0 && !props.wrap)
+    ? Math.min(props.fix.right, props.items.length - left)
+    : 0
+  data.colGroups = []
+  if (left > 0) {
+    data.colGroups.push({
+      area: "left",
+      start: 0,
+      items: props.items.slice(0, left),
+    })
+  }
+  data.colGroups.push({
+    area: "center",
+    start: left,
+    items: left > 0 || right > 0 ? props.items.slice(left, props.items.length - right) : props.items,
+  })
+  if (right > 0) {
+    data.colGroups.push({
+      area: "right",
+      start: props.items.length - right,
+      items: props.items.slice(props.items.length - right),
+    })
+  }
+
+  const top = (props.fix?.top != null && props.fix.top > 0 && !props.wrap)
     ? props.fix.top
     : 0
-  const bottom = (props.fix?.bottom != null && props.fix.bottom > 0)
+  const bottom = (props.fix?.bottom != null && props.fix.bottom > 0 && !props.wrap)
     ? Math.min(props.fix.bottom, props.modelValue.length - top)
     : 0
   data.rowGroups = [
@@ -51,12 +79,12 @@ watch(() => [props.modelValue, props.items, props.fix], () => {
     {
       area: "center",
       start: top,
-      records: props.modelValue.slice(top, props.modelValue.length - bottom),
+      records: top > 0 || bottom > 0 ? props.modelValue.slice(top, props.modelValue.length - bottom) : props.modelValue,
     },
     {
       area: "bottom",
       start: props.modelValue.length - bottom,
-      records: bottom > 0 ? props.modelValue.slice(props.modelValue.length - bottom, props.modelValue.length) : undefined,
+      records: bottom > 0 ? props.modelValue.slice(props.modelValue.length - bottom) : undefined,
     },
   ]
 }, { immediate: true })
@@ -122,9 +150,9 @@ function onSeparatorMouseDown(event: MouseEvent) {
     :data-colresize="data.colResize || undefined"
   >
     <div
-      v-for="(rowGroup, index) in data.rowGroups"
-      :key="index"
-      class="UIDataTable-ViewArea"
+      v-for="(rowGroup, rowGroupIndex) in data.rowGroups"
+      :key="rowGroupIndex"
+      class="UIDataTable-RowGroup"
       :data-viewarea="rowGroup.area"
     >
       <div
@@ -132,30 +160,37 @@ function onSeparatorMouseDown(event: MouseEvent) {
         class="UIDataTable-Header"
       >
         <div class="UIDataTable-HeaderRow">
-          <template v-for="(item, colIndex) in items" :key="colIndex">
-            <div
-              class="UIDataTable-HeaderCell"
-              :data-col="colIndex"
-              :data-key="item.key"
-              data-halign="center"
-              :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
-              :style="{
-                width: data.widths[colIndex] ?? '100px',
-              }"
-              @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
-              @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
-            ><slot
-              name="headerCell"
-              :item="item"
-              :value="item.label || item.key"
-            ><div class="UIDataTable-CellValue">{{
-              item.label ?? item.key
-            }}</div></slot></div>
-            <div
-              class="UIDataTable-HeaderSeparator"
-              @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
-            />
-          </template>
+          <div
+            v-for="(colGroup, colGroupIndex) in data.colGroups"
+            :key="colGroupIndex"
+            class="UIDataTable-ColGroup"
+            :data-viewarea="colGroup.area"
+          >
+            <template v-for="(item, colIndex) in colGroup.items" :key="colIndex">
+              <div
+                class="UIDataTable-HeaderCell"
+                :data-col="colGroup.start + colIndex"
+                :data-key="item.key"
+                data-halign="center"
+                :data-width="data.widths[colGroup.start + colIndex] == null && props.wrap ? 'fill' : undefined"
+                :style="{
+                  width: data.widths[colGroup.start + colIndex] ?? '100px',
+                }"
+                @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
+                @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
+              ><slot
+                name="headerCell"
+                :item="item"
+                :value="item.label || item.key"
+              ><div class="UIDataTable-CellValue">{{
+                item.label ?? item.key
+              }}</div></slot></div>
+              <div
+                class="UIDataTable-HeaderSeparator"
+                @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
+              />
+            </template>
+          </div>
         </div>
       </div>
       <div class="UIDataTable-Content">
@@ -164,35 +199,42 @@ function onSeparatorMouseDown(event: MouseEvent) {
           :key="rowGroup.start + rowIndex"
           class="UIDataTable-ContentRow"
         >
-          <template v-for="(item, colIndex) in items" :key="((colIndex << 16) & (rowGroup.start + rowIndex))">
-            <div
-              class="UIDataTable-ContentCell"
-              :data-col="colIndex"
-              :data-row="rowGroup.start + rowIndex"
-              :data-key="item.key"
-              :data-syncselector="item.syncSelector || undefined"
-              :data-halign="item.halign"
-              :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
-              :style="{
-                width: data.widths[colIndex] ?? '100px',
-              }"
-              @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
-              @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
-            ><slot
-              name="contentCell"
-              :record="record"
-              :row-index="rowGroup.start + rowIndex"
-              :col-index="colIndex"
-              :item="item"
-              :value="item.format ? item.format(record?.[item.key]) : record?.[item.key]"
-            ><div class="UIDataTable-CellValue">{{
-              item.format ? item.format(record?.[item.key]) : record?.[item.key]
-            }}</div></slot></div>
-            <div
-              class="UIDataTable-ContentSeparator"
-              @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
-            />
-          </template>
+          <div
+            v-for="(colGroup, colGroupIndex) in data.colGroups"
+            :key="colGroupIndex"
+            class="UIDataTable-ColGroup"
+            :data-viewarea="colGroup.area"
+          >
+            <template v-for="(item, colIndex) in colGroup.items" :key="colIndex">
+              <div
+                class="UIDataTable-ContentCell"
+                :data-col="colGroup.start + colIndex"
+                :data-row="rowGroup.start + rowIndex"
+                :data-key="item.key"
+                :data-syncselector="item.syncSelector || undefined"
+                :data-halign="item.halign"
+                :data-width="data.widths[colGroup.start + colIndex] == null && props.wrap ? 'fill' : undefined"
+                :style="{
+                  width: data.widths[colGroup.start + colIndex] ?? '100px',
+                }"
+                @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
+                @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
+              ><slot
+                name="contentCell"
+                :record="record"
+                :row-index="rowGroup.start + rowIndex"
+                :col-index="colGroup.start + colIndex"
+                :item="item"
+                :value="item.format ? item.format(record?.[item.key]) : record?.[item.key]"
+              ><div class="UIDataTable-CellValue">{{
+                item.format ? item.format(record?.[item.key]) : record?.[item.key]
+              }}</div></slot></div>
+              <div
+                class="UIDataTable-ContentSeparator"
+                @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
+              />
+            </template>
+          </div>
         </div>
       </div>
       <div
@@ -200,31 +242,38 @@ function onSeparatorMouseDown(event: MouseEvent) {
         class="UIDataTable-Footer"
       >
         <div class="UIDataTable-FooterRow">
-          <template v-for="(item, colIndex) in items" :key="colIndex">
-            <div
-              class="UIDataTable-FooterCell"
-              :data-col="colIndex"
-              :data-key="item.key"
-              :data-halign="item.halign"
-              :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
-              :style="{
-                width: data.widths[colIndex] ?? '100px',
-              }"
-              @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
-              @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
-            ><slot
-              name="footerCell"
-              :record="data.footerRecord"
-              :item="item"
-              :value="item.format ? item.format(data.footerRecord[item.key]) : data.footerRecord[item.key]"
-            ><div class="UIDataTable-CellValue">{{
-              item.format ? item.format(data.footerRecord?.[item.key]) : data.footerRecord?.[item.key]
-            }}</div></slot></div>
-            <div
-              class="UIDataTable-FooterSeparator"
-              @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
-            />
-          </template>
+          <div
+            v-for="(colGroup, colGroupIndex) in data.colGroups"
+            :key="colGroupIndex"
+            class="UIDataTable-ColGroup"
+            :data-viewarea="colGroup.area"
+          >
+            <template v-for="(item, colIndex) in colGroup.items" :key="colIndex">
+              <div
+                class="UIDataTable-FooterCell"
+                :data-col="colGroup.start + colIndex"
+                :data-key="item.key"
+                :data-halign="item.halign"
+                :data-width="data.widths[colGroup.start + colIndex] == null && props.wrap ? 'fill' : undefined"
+                :style="{
+                  width: data.widths[colGroup.start + colIndex] ?? '100px',
+                }"
+                @mouseenter="(event) => props.ellipsis && onContentCellMouseEnter(event)"
+                @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
+              ><slot
+                name="footerCell"
+                :record="data.footerRecord"
+                :item="item"
+                :value="item.format ? item.format(data.footerRecord[item.key]) : data.footerRecord[item.key]"
+              ><div class="UIDataTable-CellValue">{{
+                item.format ? item.format(data.footerRecord?.[item.key]) : data.footerRecord?.[item.key]
+              }}</div></slot></div>
+              <div
+                class="UIDataTable-FooterSeparator"
+                @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
+              />
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -243,21 +292,34 @@ function onSeparatorMouseDown(event: MouseEvent) {
   @apply min-w-fit;
 }
 
-.UIDataTable-ViewArea[data-viewarea="top"] {
-  @apply sticky top-0 left-0 right-0
+.UIDataTable-RowGroup[data-viewarea="top"] {
+  @apply sticky top-0
     z-[2];
 }
 
-.UIDataTable-ViewArea[data-viewarea="center"],
+.UIDataTable-RowGroup[data-viewarea="center"],
 .UIDataTable-Content {
-  @apply grow
+  @apply grow;
 }
 
-.UIDataTable-ViewArea[data-viewarea="bottom"] {
-  @apply sticky bottom-0 left-0 right-0
-    border-t border-gray-300
+.UIDataTable-RowGroup[data-viewarea="bottom"] {
+  @apply sticky bottom-0
     -mt-[1px]
     z-[2];
+
+  .UIDataTable-Content {
+    @apply border-t border-gray-300;
+  }
+}
+
+.UIDataTable-ColGroup[data-viewarea="left"] {
+  @apply sticky left-0
+    z-[3];
+}
+
+.UIDataTable-ColGroup[data-viewarea="right"] {
+  @apply sticky right-0
+    z-[3];
 }
 
 .UIDataTable-Footer {
@@ -267,8 +329,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
 .UIDataTable-HeaderRow,
 .UIDataTable-ContentRow,
 .UIDataTable-FooterRow {
-  @apply flex flex-row items-stretch
-    min-w-fit
+  @apply flex flex-row
     pr-4;
 }
 
@@ -276,16 +337,48 @@ function onSeparatorMouseDown(event: MouseEvent) {
   @apply border-b border-gray-300
     bg-slate-50
     font-bold;
+
+  .UIDataTable-ColGroup[data-viewarea="left"] {
+    @apply bg-slate-50;
+  }
+
+  .UIDataTable-ColGroup[data-viewarea="right"] {
+    @apply border-l border-gray-300
+      bg-slate-50;
+  }
 }
 
 .UIDataTable-ContentRow {
   @apply border-b border-gray-300
     bg-white;
+
+  .UIDataTable-ColGroup[data-viewarea="left"] {
+    @apply bg-white;
+  }
+
+  .UIDataTable-ColGroup[data-viewarea="right"] {
+    @apply border-l border-gray-300
+      bg-white;
+  }
 }
 
 .UIDataTable-FooterRow {
   @apply border-t border-gray-300
     bg-slate-50;
+
+  .UIDataTable-ColGroup[data-viewarea="left"] {
+    @apply bg-slate-50;
+  }
+
+  .UIDataTable-ColGroup[data-viewarea="right"] {
+    @apply border-l border-gray-300
+      bg-slate-50;
+  }
+}
+
+.UIDataTable-ColGroup {
+  @apply flex flex-row items-stretch
+    min-w-fit;
 }
 
 .UIDataTable-HeaderCell,
@@ -353,9 +446,12 @@ function onSeparatorMouseDown(event: MouseEvent) {
   .UIDataTable-HeaderRow,
   .UIDataTable-ContentRow,
   .UIDataTable-FooterRow {
-    @apply flex-wrap
-      mr-[-2px]
+    @apply mr-[-2px]
       pr-0;
+  }
+
+  .UIDataTable-ColGroup {
+    @apply flex-auto flex-wrap;
   }
 
   .UIDataTable-HeaderRow,

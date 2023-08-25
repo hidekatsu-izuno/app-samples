@@ -1142,7 +1142,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         style="height: 400px"
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
-        :fix="{ top: 1, bottom: 1, }"
+        :fix="{ top: 1, bottom: 1, left: 1, right: 1 }"
         :items="[
           { key: 'boolean', label: '', width: '80px', halign: 'center', syncSelector: true },
           { key: 'string', label: '文字列', width: '400px' },
