@@ -739,7 +739,6 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       </div>
     </UICard>
 
-    <!--
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
@@ -757,14 +756,27 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             class="col-span-2"
             :required="data.radioRequired"
           >デフォルト</UILabel>
-          <UIRadio
-            v-model="data.radio1"
-            :required="data.radioRequired"
-            :disabled="data.radioDisabled"
-            :readonly="data.radioReadonly"
-            :size="(data.radioSize as any)"
-            name="radio1"
-          >ラジオボタン</UIRadio>
+          <div>
+            <UIRadio
+              v-model="data.radio1"
+              :required="data.radioRequired"
+              :disabled="data.radioDisabled"
+              :readonly="data.radioReadonly"
+              :size="(data.radioSize as any)"
+              name="radio1"
+              value="1"
+            >ラジオボタン</UIRadio>
+            <UIRadio
+              v-model="data.radio1"
+              :required="data.radioRequired"
+              :disabled="data.radioDisabled"
+              :readonly="data.radioReadonly"
+              :size="(data.radioSize as any)"
+              name="radio1"
+              value="2"
+            >ラジオボタン</UIRadio>
+          </div>
+
           <UIText type="outline">{{ data.radio1 }}</UIText>
         </div>
 
@@ -788,7 +800,6 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </div>
     </UICard>
-    -->
 
     <UICard class="mb-4">
       <template #header>

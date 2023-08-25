@@ -252,9 +252,14 @@ function onSeparatorMouseDown(event: MouseEvent) {
 .UIDataTable-FooterCell {
   @apply flex-none
     flex flex-row items-center
-    px-[0.25em] py-[0.125em]
+    overflow-hidden;
+}
+
+.UIDataTable-CellValue {
+  @apply px-[0.25em] py-[0.125em]
     min-h-[calc(1rem+0.125em*2)]
-    whitespace-pre-wrap;
+    whitespace-pre-wrap
+    break-words;
 }
 
 .UIDataTable-HeaderSeparator,
@@ -346,13 +351,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
 
 .UIDataTable[data-ellipsis="true"] {
   .UIDataTable-CellValue {
-    @apply truncate;
-  }
-}
-
-.UIDataTable:not([data-ellipsis="true"]) {
-  .UIDataTable-CellValue {
-    @apply break-words;
+    @apply break-normal truncate;
   }
 }
 </style>
