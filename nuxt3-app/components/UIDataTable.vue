@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
     width?: string,
     label?: string,
     halign?: "start" | "center" | "end",
+    selector?: boolean,
     format?: (value: any) => string
   }>,
   modelValue?: Array<Record<string, any>>,
@@ -23,19 +24,19 @@ const props = withDefaults(defineProps<{
 const data = reactive({
   focused: false,
   widths: [] as Array<string | undefined>,
-  footerValues: undefined as Record<string, any> | undefined,
+  footerRecord: undefined as Record<string, any> | undefined,
   colResize: false,
 })
 
 const elRef = ref()
 
 watch(() => props.modelValue, () => {
-  data.footerValues = props.footer?.(props.modelValue, props.items)
+  data.footerRecord = props.footer?.(props.modelValue, props.items)
 }, { immediate: true })
 
 watch(() => props.items, () => {
   data.widths = props.items.map(item => item.width)
-  data.footerValues = props.footer?.(props.modelValue, props.items)
+  data.footerRecord = props.footer?.(props.modelValue, props.items)
 }, { immediate: true })
 
 function onContentCellMouseEnter(event: MouseEvent) {
@@ -128,7 +129,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
     </div>
     <div class="UIDataTable-Content">
       <div
-        v-for="(rowValues, rowIndex) in props.modelValue"
+        v-for="(record, rowIndex) in props.modelValue"
         :key="rowIndex"
         class="UIDataTable-ContentRow"
       >
@@ -138,6 +139,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
             :data-col="colIndex"
             :data-row="rowIndex"
             :data-key="item.key"
+            :data-selector="item.selector || undefined"
             :data-halign="item.halign"
             :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
             :style="{
@@ -147,13 +149,13 @@ function onSeparatorMouseDown(event: MouseEvent) {
             @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
           ><slot
             name="contentCell"
-            :row-values="rowValues"
+            :record="record"
             :row-index="rowIndex"
             :col-index="colIndex"
             :item="item"
-            :value="rowValues?.[item.key]"
+            :value="item.format ? item.format(record?.[item.key]) : record?.[item.key]"
           ><div class="UIDataTable-CellValue">{{
-            item.format ? item.format(rowValues?.[item.key]) : rowValues?.[item.key]
+            item.format ? item.format(record?.[item.key]) : record?.[item.key]
           }}</div></slot></div>
           <div
             class="UIDataTable-ContentSeparator"
@@ -162,7 +164,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
         </template>
       </div>
     </div>
-    <div v-if="data.footerValues" class="UIDataTable-Footer">
+    <div v-if="data.footerRecord" class="UIDataTable-Footer">
       <div class="UIDataTable-FooterRow">
         <template v-for="(item, colIndex) in items" :key="colIndex">
           <div
@@ -178,11 +180,11 @@ function onSeparatorMouseDown(event: MouseEvent) {
             @mouseleave="(event) => props.ellipsis && onContentCellMouseLeave(event)"
           ><slot
             name="footerCell"
-            :row-values="data.footerValues"
+            :record="data.footerRecord"
             :item="item"
-            :value="data.footerValues[item.key]"
+            :value="item.format ? item.format(data.footerRecord[item.key]) : data.footerRecord[item.key]"
           ><div class="UIDataTable-CellValue">{{
-            item.format ? item.format(data.footerValues[item.key]) : data.footerValues[item.key]
+            item.format ? item.format(data.footerRecord?.[item.key]) : data.footerRecord?.[item.key]
           }}</div></slot></div>
           <div
             class="UIDataTable-FooterSeparator"
@@ -269,6 +271,10 @@ function onSeparatorMouseDown(event: MouseEvent) {
 
 .UIDataTable[data-colresize="true"] {
   @apply cursor-col-resize;
+}
+
+.UIDataTable-ContentRow:has([data-selector="true"] input:checked) {
+  @apply bg-blue-100;
 }
 
 .UIDataTable-HeaderCell[data-width="fill"],

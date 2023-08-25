@@ -1118,17 +1118,11 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         :ellipsis="data.dataTableEllipsis"
         :items="[
           { key: 'string', label: '文字列', width: '400px' },
-          { key: 'date', label: '日付', halign: 'center' },
+          { key: 'date', label: '日付', halign: 'center', format: (value: string) => formatDate(value, 'uuuu/MM/dd') },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },
         ]"
         :footer="onFooter"
-      >
-        <template #contentCell="{ item, value }">
-          <template v-if="item.key === 'date'">{{
-            formatDate(value, 'uuuu/MM/dd')
-          }}</template>
-        </template>
-      </UIDataTable>
+      />
       <br />
       <UIDataTable
         v-model="data.dataTable"
@@ -1137,16 +1131,16 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
         :items="[
-          { key: 'boolean', label: '', width: '80px', halign: 'center' },
+          { key: 'boolean', label: '', width: '80px', halign: 'center', selector: true },
           { key: 'string', label: '文字列', width: '400px' },
           { key: 'date', label: '日付', halign: 'center' },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },
         ]"
         :footer="onFooter"
       >
-        <template #contentCell="{ item, value, rowValues }">
+        <template #contentCell="{ item, value, record }">
           <template v-if="item.key === 'boolean'">
-            <UICheck v-model="rowValues[item.key]" halign="center" />
+            <UICheck v-model="record[item.key]" halign="center" />
           </template>
           <template v-else-if="item.key === 'date'">{{
             formatDate(value, 'uuuu/MM/dd')

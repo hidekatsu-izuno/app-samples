@@ -35,9 +35,3 @@ npm run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-
-<!--
-残課題：
-・DataTable に Radio を可能に
- →　
--->
