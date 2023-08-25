@@ -68,7 +68,8 @@ const data = reactive({
   radioDisabled: false,
   radioReadonly: false,
   radioSize: "",
-  radio1: false,
+  radio1: "",
+  radio2: "",
   radiolistRequired: false,
   radiolistDisabled: false,
   radiolistReadonly: false,
@@ -786,17 +787,17 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :required="data.radioRequired"
           >装飾</UILabel>
           <UIRadio
-            v-model="data.radio1"
+            v-model="data.radio2"
             :required="data.radioRequired"
             :disabled="data.radioDisabled"
             :readonly="data.radioReadonly"
             :size="(data.radioSize as any)"
-            name="radio1"
+            name="radio2"
             prefix="("
             suffix=")"
             halign="center"
           >ラジオボタン</UIRadio>
-          <UIText type="outline">{{ data.radio1 }}</UIText>
+          <UIText type="outline">{{ data.radio2 }}</UIText>
         </div>
       </div>
     </UICard>
@@ -1142,7 +1143,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
         :items="[
-          { key: 'boolean', label: '', width: '80px', halign: 'center', selector: true },
+          { key: 'boolean', label: '', width: '80px', halign: 'center', syncSelector: true },
           { key: 'string', label: '文字列', width: '400px' },
           { key: 'date', label: '日付', halign: 'center' },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },

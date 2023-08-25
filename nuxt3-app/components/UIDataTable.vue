@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
     width?: string,
     label?: string,
     halign?: "start" | "center" | "end",
-    selector?: boolean,
+    syncSelector?: boolean,
     format?: (value: any) => string
   }>,
   modelValue?: Array<Record<string, any>>,
@@ -139,7 +139,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
             :data-col="colIndex"
             :data-row="rowIndex"
             :data-key="item.key"
-            :data-selector="item.selector || undefined"
+            :data-syncselector="item.syncSelector || undefined"
             :data-halign="item.halign"
             :data-width="data.widths[colIndex] == null && props.wrap ? 'fill' : undefined"
             :style="{
@@ -278,7 +278,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
   @apply cursor-col-resize;
 }
 
-.UIDataTable-ContentRow:has([data-selector="true"] input:checked) {
+.UIDataTable-ContentRow:has([data-syncselector="true"] input:checked) {
   @apply bg-blue-100;
 }
 

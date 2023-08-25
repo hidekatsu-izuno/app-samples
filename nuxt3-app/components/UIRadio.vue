@@ -59,13 +59,19 @@ function onChange(event: Event) {
     emits("update:error", data.error)
   }
 
-  const currentTarget = event.currentTarget as HTMLElement
-  const name = (event.target as HTMLElement).getAttribute("name")
-  const target = (name
-    ? currentTarget.querySelector(`[name="${name}"]:checked`)
-    : currentTarget) as HTMLInputElement | null
-  data.value = target ? target.value : ""
-  emits("update:modelValue", data.value)
+  const target = event.target as HTMLInputElement
+  const name = target.getAttribute("name")
+  let value = ""
+  if (name) {
+    const checked = document.querySelector(`[name="${name}"]:checked`)
+    value = (checked && checked.getAttribute("value")) || ""
+  } else if (target.checked) {
+    value = target.getAttribute("value") || ""
+  }
+  if (value !== data.value) {
+    data.value = value
+    emits("update:modelValue", data.value)
+  }
 
   try {
     validate(data.value)
