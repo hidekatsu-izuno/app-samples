@@ -2,6 +2,7 @@
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -123,6 +124,7 @@ function validate(value: string) {
       <div class="UISelectBox-InputArea">
         <select
           class="UISelectBox-Input"
+          :name="props.name"
           :class="props.inputClass"
           :style="props.inputStyle"
           :disabled="props.disabled"

@@ -158,7 +158,7 @@ function validate(value: boolean) {
 
 .UICheck-InputLabel {
   @apply flex items-center gap-1
-    py-[0.5em];
+    py-[0.125em];
 }
 
 .UICheck-InputArea {

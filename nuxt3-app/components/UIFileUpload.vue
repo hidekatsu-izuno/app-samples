@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
   size?: "sm" | "lg",
+  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -125,6 +126,7 @@ function validate(value?: File) {
       <input
         class="UIFileUpload-Input"
         type="file"
+        :name="props.name"
         :class="props.inputClass"
         :style="props.inputStyle"
         :placeholder="props.placeholder"

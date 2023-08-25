@@ -39,4 +39,5 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 <!--
 残課題：
 ・DataTable に Radio を可能に
+ →　
 -->

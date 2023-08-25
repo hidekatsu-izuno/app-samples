@@ -8,6 +8,7 @@ import { toHalfwidthAscii } from "~/utils/functions"
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -262,6 +263,7 @@ function getFormatMaxLength(format: string) {
           class="UIDateBox-Input"
           type="text"
           inputmode="numeric"
+          :name="props.name"
           :placeholder="props.placeholder"
           :tabindex="props.tabindex"
           :disabled="props.disabled"

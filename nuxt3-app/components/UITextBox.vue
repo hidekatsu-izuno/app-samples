@@ -7,6 +7,7 @@ const props = withDefaults(defineProps<{
   type?: "text" | "password" | "email" | "tel" | "url",
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  name?: string,
   button?: string,
   placeholder?: string,
   prefix?: string,
@@ -176,6 +177,7 @@ function validate(value: string) {
       <div class="UITextBox-InputArea">
         <input
           class="UITextBox-Input"
+          :name="props.name"
           :class="props.inputClass"
           :style="props.inputStyle"
           :type="props.type"

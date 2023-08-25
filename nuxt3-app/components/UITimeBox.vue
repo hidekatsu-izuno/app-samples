@@ -7,6 +7,7 @@ const props = withDefaults(defineProps<{
   type?: "HHmm" | "HHmmss",
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -185,6 +186,9 @@ function getFormatMaxLength(format: string) {
           class="UITimeBox-Input"
           type="text"
           inputmode="numeric"
+          :name="props.name"
+          :class="props.inputClass"
+          :style="props.inputStyle"
           :placeholder="props.placeholder"
           :tabindex="props.tabindex"
           :disabled="props.disabled"

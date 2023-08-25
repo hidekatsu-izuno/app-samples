@@ -116,7 +116,9 @@ function onSeparatorMouseDown(event: MouseEvent) {
             name="headerCell"
             :item="item"
             :value="item.label || item.key"
-          >{{ item.label ?? item.key }}</slot></div>
+          ><div class="UIDataTable-CellValue">{{
+            item.label ?? item.key
+          }}</div></slot></div>
           <div
             class="UIDataTable-HeaderSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
@@ -150,7 +152,9 @@ function onSeparatorMouseDown(event: MouseEvent) {
             :col-index="colIndex"
             :item="item"
             :value="rowValues?.[item.key]"
-          >{{ item.format ? item.format(rowValues?.[item.key]) : rowValues?.[item.key] }}</slot></div>
+          ><div class="UIDataTable-CellValue">{{
+            item.format ? item.format(rowValues?.[item.key]) : rowValues?.[item.key]
+          }}</div></slot></div>
           <div
             class="UIDataTable-ContentSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
@@ -177,7 +181,9 @@ function onSeparatorMouseDown(event: MouseEvent) {
             :row-values="data.footerValues"
             :item="item"
             :value="data.footerValues[item.key]"
-          >{{ item.format ? item.format(data.footerValues[item.key]) : data.footerValues[item.key] }}</slot></div>
+          ><div class="UIDataTable-CellValue">{{
+            item.format ? item.format(data.footerValues[item.key]) : data.footerValues[item.key]
+          }}</div></slot></div>
           <div
             class="UIDataTable-FooterSeparator"
             @mousedown="(event) => !props.wrap && onSeparatorMouseDown(event)"
@@ -207,11 +213,11 @@ function onSeparatorMouseDown(event: MouseEvent) {
 
 .UIDataTable-Content {
   @apply grow
-    -mb-[1px];
 }
 
 .UIDataTable-Footer {
   @apply sticky bottom-0 left-0 right-0
+    -mt-[1px]
     z-[2];
 }
 
@@ -243,9 +249,9 @@ function onSeparatorMouseDown(event: MouseEvent) {
 .UIDataTable-ContentCell,
 .UIDataTable-FooterCell {
   @apply flex-none
-    align-middle
-    px-2 py-1
-    min-h-[calc(1rem+8px)]
+    flex flex-row items-center
+    px-[0.25em] py-[0.125em]
+    min-h-[calc(1rem+0.125em*2)]
     whitespace-pre-wrap;
 }
 
@@ -271,16 +277,22 @@ function onSeparatorMouseDown(event: MouseEvent) {
   @apply flex-1;
 }
 
+.UIDataTable-HeaderCell[data-halign="start"],
+.UIDataTable-ContentCell[data-halign="start"],
+.UIDataTable-FooterCell[data-halign="start"] {
+  @apply justify-start;
+}
+
 .UIDataTable-HeaderCell[data-halign="center"],
 .UIDataTable-ContentCell[data-halign="center"],
 .UIDataTable-FooterCell[data-halign="center"] {
-  @apply text-center;
+  @apply justify-center;
 }
 
 .UIDataTable-HeaderCell[data-halign="end"],
 .UIDataTable-ContentCell[data-halign="end"],
 .UIDataTable-FooterCell[data-halign="end"] {
-  @apply text-right;
+  @apply justify-end;
 }
 
 .UIDataTable[data-wrap="true"] {
@@ -294,12 +306,12 @@ function onSeparatorMouseDown(event: MouseEvent) {
       pr-0;
   }
 
-  .UIDataTable-HeaderRow {
+  .UIDataTable-HeaderRow,
+  .UIDataTable-ContentRow {
     @apply border-b-0
       mb-[-1px];
   }
 
-  .UIDataTable-ContentRow,
   .UIDataTable-FooterRow {
     @apply border-t-0;
   }
@@ -310,11 +322,11 @@ function onSeparatorMouseDown(event: MouseEvent) {
     @apply flex-auto;
   }
 
-  .UIDataTable-HeaderCell {
+  .UIDataTable-HeaderCell,
+  .UIDataTable-ContentCell {
     @apply border-b border-slate-300;
   }
 
-  .UIDataTable-ContentCell,
   .UIDataTable-FooterCell {
     @apply border-t border-slate-300;
   }
@@ -327,17 +339,13 @@ function onSeparatorMouseDown(event: MouseEvent) {
 }
 
 .UIDataTable[data-ellipsis="true"] {
-  .UIDataTable-HeaderCell,
-  .UIDataTable-ContentCell,
-  .UIDataTable-FooterCell {
+  .UIDataTable-CellValue {
     @apply truncate;
   }
 }
 
 .UIDataTable:not([data-ellipsis="true"]) {
-  .UIDataTable-HeaderCell,
-  .UIDataTable-ContentCell,
-  .UIDataTable-FooterCell {
+  .UIDataTable-CellValue {
     @apply break-words;
   }
 }

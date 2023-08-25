@@ -6,6 +6,7 @@ import { toHalfwidthAscii } from "~/utils/functions"
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -196,6 +197,7 @@ function getFormatMaxLength(format: string) {
         class="UINumberBox-Input"
         type="text"
         inputmode="decimal"
+        :name="props.name"
         :class="props.inputClass"
         :style="props.inputStyle"
         :placeholder="props.placeholder"

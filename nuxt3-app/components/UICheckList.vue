@@ -196,7 +196,7 @@ function validate(value: string[]) {
 
 .UICheckList-InputLabel {
   @apply inline-flex items-center gap-1
-    py-1;
+    py-[0.125em];
 }
 
 .UICheckList-InputArea {

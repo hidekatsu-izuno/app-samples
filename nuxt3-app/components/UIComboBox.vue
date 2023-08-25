@@ -6,6 +6,7 @@ import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 const props = withDefaults(defineProps<{
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
+  name?: string,
   placeholder?: string,
   prefix?: string,
   suffix?: string,
@@ -278,6 +279,7 @@ function validate(value: string) {
           ref="inputRef"
           class="UIComboBox-Input"
           type="text"
+          :name="props.name"
           :class="props.inputClass"
           :style="props.inputStyle"
           :placeholder="props.placeholder"

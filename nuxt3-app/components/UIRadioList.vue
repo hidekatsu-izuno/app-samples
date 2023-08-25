@@ -188,7 +188,7 @@ function validate(value: string) {
 
 .UIRadioList-InputLabel {
   @apply inline-flex items-center gap-1
-    py-1;
+    py-[0.125em];
 }
 
 .UIRadioList-InputArea {

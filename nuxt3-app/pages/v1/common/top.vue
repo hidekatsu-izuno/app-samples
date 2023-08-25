@@ -1132,11 +1132,12 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       <br />
       <UIDataTable
         v-model="data.dataTable"
-        style="height: 200px"
+        selectable
+        style="height: 400px"
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
         :items="[
-          { key: 'boolean', label: '', width: '80px' },
+          { key: 'boolean', label: '', width: '80px', halign: 'center' },
           { key: 'string', label: '文字列', width: '400px' },
           { key: 'date', label: '日付', halign: 'center' },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },
