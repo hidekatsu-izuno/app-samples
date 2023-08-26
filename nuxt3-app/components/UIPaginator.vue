@@ -182,7 +182,7 @@ function onFocusout(event: Event) {
   @apply justify-center;
 }
 
-.UIPageNavigator[data-halign="end"] {
+.UIPaginator[data-halign="end"] {
   @apply justify-end;
 }
 </style>

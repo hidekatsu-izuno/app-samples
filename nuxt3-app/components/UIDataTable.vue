@@ -33,7 +33,7 @@ const data = reactive({
 
 const elRef = ref()
 
-watch(() => [props.modelValue, props.items, props.wrap, props.fix], () => {
+watch(() => [props.modelValue, props.items, props.wrap, props.fix, props.footer], () => {
   data.widths = props.items.map(item => item.width)
   data.footerRecord = props.footer?.(props.modelValue, props.items)
 
@@ -70,23 +70,24 @@ watch(() => [props.modelValue, props.items, props.wrap, props.fix], () => {
   const bottom = (props.fix?.bottom != null && props.fix.bottom > 0 && !props.wrap)
     ? Math.min(props.fix.bottom, props.modelValue.length - top)
     : 0
-  data.rowGroups = [
-    {
-      area: "top",
-      start: 0,
-      records: top > 0 ? props.modelValue.slice(0, top) : undefined,
-    },
-    {
-      area: "center",
-      start: top,
-      records: top > 0 || bottom > 0 ? props.modelValue.slice(top, props.modelValue.length - bottom) : props.modelValue,
-    },
-    {
+  data.rowGroups = []
+  data.rowGroups.push({
+    area: "top",
+    start: 0,
+    records: top > 0 ? props.modelValue.slice(0, top) : undefined,
+  })
+  data.rowGroups.push({
+    area: "center",
+    start: top,
+    records: top > 0 || bottom > 0 ? props.modelValue.slice(top, props.modelValue.length - bottom) : props.modelValue,
+  })
+  if (bottom > 0 || props.footer) {
+    data.rowGroups.push({
       area: "bottom",
       start: props.modelValue.length - bottom,
       records: bottom > 0 ? props.modelValue.slice(props.modelValue.length - bottom) : undefined,
-    },
-  ]
+    })
+  }
 }, { immediate: true })
 
 function onContentCellMouseEnter(event: MouseEvent) {
@@ -197,6 +198,7 @@ function onSeparatorMouseDown(event: MouseEvent) {
         <div
           v-for="(record, rowIndex) in rowGroup.records"
           :key="rowGroup.start + rowIndex"
+          :data-parity="rowIndex % 2 === 0 ? 'even': 'odd'"
           class="UIDataTable-ContentRow"
         >
           <div
@@ -422,19 +424,31 @@ function onSeparatorMouseDown(event: MouseEvent) {
   @apply flex-1;
 }
 
-.UIDataTable-HeaderCell[data-halign="start"],
+.UIDataTable-HeaderCell[data-halign="start"] {
+  @apply justify-start
+    text-start;
+}
+
 .UIDataTable-ContentCell[data-halign="start"],
 .UIDataTable-FooterCell[data-halign="start"] {
   @apply justify-start;
 }
 
-.UIDataTable-HeaderCell[data-halign="center"],
+.UIDataTable-HeaderCell[data-halign="center"] {
+  @apply justify-center
+    text-center;
+}
+
 .UIDataTable-ContentCell[data-halign="center"],
 .UIDataTable-FooterCell[data-halign="center"] {
   @apply justify-center;
 }
 
-.UIDataTable-HeaderCell[data-halign="end"],
+.UIDataTable-HeaderCell[data-halign="end"] {
+  @apply justify-end
+    text-end;
+}
+
 .UIDataTable-ContentCell[data-halign="end"],
 .UIDataTable-FooterCell[data-halign="end"] {
   @apply justify-end;

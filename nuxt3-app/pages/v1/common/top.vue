@@ -1128,12 +1128,15 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         v-model="data.dataTable"
         :wrap="data.dataTableWrap"
         :ellipsis="data.dataTableEllipsis"
+        style="height:400px"
         :items="[
           { key: 'string', label: '文字列', width: '400px' },
           { key: 'date', label: '日付', halign: 'center', format: (value: string) => formatDate(value, 'uuuu/MM/dd') },
           { key: 'number', label: '数値', halign: 'end', width: '300px' },
+          { key: 'etc1', label: 'その他1', width: '300px' },
+          { key: 'etc2', label: 'その他2', width: '300px' },
+          { key: 'etc3', label: 'その他3', width: '300px' },
         ]"
-        :footer="onFooter"
       />
       <br />
       <UIDataTable
