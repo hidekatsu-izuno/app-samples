@@ -1,14 +1,15 @@
-import type { H3Event, EventHandler } from "h3"
+import type { H3Event } from "h3"
 import { H3Error } from "h3"
 import { ZodError } from "zod"
 import type { TransactionSql } from "postgres"
+import { default as postgres } from "postgres"
 import { BusinessError } from "~/utils/errors"
 
 const SqlKey = Symbol.for("SqlKey")
 
 export declare type Sql = TransactionSql
 
-export function defineAction<T = any>(handler: EventHandler<T>) {
+export function defineAction<T = any>(handler: Parameters<typeof defineEventHandler>[0]) {
   return defineEventHandler<T>(async (event) => {
     (event as any)[SqlKey] = [event.context.sql]
     try {
@@ -16,6 +17,10 @@ export function defineAction<T = any>(handler: EventHandler<T>) {
         return await handler(event)
       }, "READ ONLY")
     } catch (err) {
+      if (err instanceof postgres.PostgresError && /^23/.test(err.code)) {
+        err = new BusinessError("データが重複しています", { cause: err })
+      }
+
       if (err instanceof BusinessError) {
         const host = getRequestHost(event)
         const protocol = getRequestProtocol(event)
