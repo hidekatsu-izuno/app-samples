@@ -41,8 +41,8 @@ router.afterEach((_to, _from, failure) => {
   }
 })
 
-onMounted(() => {
-  hide()
+onMounted(async () => {
+  await nextTick(hide)
 })
 
 onBeforeUnmount(() => {

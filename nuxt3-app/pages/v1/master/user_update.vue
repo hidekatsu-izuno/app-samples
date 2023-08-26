@@ -22,25 +22,23 @@ const birthDate = ref()
 const comment = ref()
 const isDeleted = ref()
 
-onMounted(async () => {
-  if (info.mode !== "register") {
-    const res = await fetchURL("/api/v1/master/user_search/find_user", {
-      method: "POST",
-      body: { userId: info.userId },
-    })
-    if (!res) {
-      throw createError({ statusCode: 404 })
-    }
-
-    data.userId = res.userId
-    data.userEmail = res.userEmail
-    data.userName = res.userName
-    data.birthDate = res.birthDate || ""
-    data.comment = res.comment || ""
-    data.isDeleted = res.isDeleted
-    data.revisionNo = res.revisionNo
+if (process.client && info.mode !== "register") {
+  const res = await fetchURL("/api/v1/master/user_search/find_user", {
+    method: "POST",
+    body: { userId: info.userId },
+  })
+  if (!res) {
+    throw createError({ statusCode: 404 })
   }
-})
+
+  data.userId = res.userId
+  data.userEmail = res.userEmail
+  data.userName = res.userName
+  data.birthDate = res.birthDate || ""
+  data.comment = res.comment || ""
+  data.isDeleted = res.isDeleted
+  data.revisionNo = res.revisionNo
+}
 
 async function onUpdateButtonClick() {
   try {

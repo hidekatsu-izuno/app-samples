@@ -36,10 +36,16 @@ const emits = defineEmits<{
 }>()
 
 const data = reactive({
-  name: props.name || crypto.randomUUID(),
+  name: props.name,
   value: "",
   focused: false,
   error: "",
+})
+
+onMounted(() => {
+  if (!data.name) {
+    data.name = crypto.randomUUID()
+  }
 })
 
 watch(() => props.modelValue, () => {
