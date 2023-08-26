@@ -9,8 +9,8 @@ const SqlKey = Symbol.for("SqlKey")
 
 export declare type Sql = TransactionSql
 
-export function defineAction<T = any>(handler: Parameters<typeof defineEventHandler>[0]) {
-  return defineEventHandler<T>(async (event) => {
+export function defineAction(handler: Parameters<typeof defineEventHandler>[0]) {
+  return defineEventHandler(async (event) => {
     (event as any)[SqlKey] = [event.context.sql]
     try {
       return await doTransaction(event, async () => {

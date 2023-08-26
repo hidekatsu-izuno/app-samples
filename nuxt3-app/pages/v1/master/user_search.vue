@@ -2,10 +2,9 @@
 import MenuList from "~/components/v1/common/MenuList.vue"
 
 const historyState = useHistoryState()
-const info = historyState.info || {}
 const loading = useLoadingIndicator()
 
-const data = reactive(historyState.data || {
+const data = useRestorableData({
   userEmail: "",
   userName: "",
   birthDateFrom: "",
@@ -18,8 +17,6 @@ const data = reactive(historyState.data || {
   searchResult: [] as any[],
 })
 
-onBackupState(() => data)
-
 const userEmail = ref()
 const userName = ref()
 const birthDateFrom = ref()
@@ -27,7 +24,7 @@ const birthDateTo = ref()
 const isDeleted = ref()
 
 onMounted(async () => {
-  if (info.refresh) {
+  if (historyState.info?.refresh) {
     await onSearchButtonClick()
   }
 })

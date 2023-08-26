@@ -1,1 +1,1 @@
-export { useHistoryState } from "vue-history-state"
+export { useHistoryState, useRestorableData } from "vue-history-state"
