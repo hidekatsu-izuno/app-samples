@@ -22,7 +22,7 @@ const birthDate = ref()
 const comment = ref()
 const isDeleted = ref()
 
-if (process.client && info.mode !== "register") {
+if (info.mode === "update" || info.mode === "delete") {
   const res = await fetchURL("/api/v1/master/user_search/find_user", {
     method: "POST",
     body: { userId: info.userId },

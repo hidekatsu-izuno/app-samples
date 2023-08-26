@@ -31,7 +31,10 @@ router.onError(() => {
   hide()
 })
 router.beforeResolve((to, from) => {
-  if (to === from || to.matched.every((comp, index) => comp.components && comp.components?.default === from.matched[index]?.components?.default)) {
+  if (
+    to === from ||
+    to.matched.every((comp, index) => comp.components && comp.components?.default === from.matched[index]?.components?.default)
+  ) {
     hide()
   }
 })
@@ -41,8 +44,8 @@ router.afterEach((_to, _from, failure) => {
   }
 })
 
-onMounted(async () => {
-  await nextTick(hide)
+onMounted(() => {
+  hide()
 })
 
 onBeforeUnmount(() => {

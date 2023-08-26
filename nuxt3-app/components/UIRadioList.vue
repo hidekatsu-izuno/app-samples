@@ -42,11 +42,9 @@ const data = reactive({
   error: "",
 })
 
-onMounted(() => {
-  if (!data.name) {
-    data.name = crypto.randomUUID()
-  }
-})
+if (!data.name) {
+  data.name = crypto.randomUUID()
+}
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
