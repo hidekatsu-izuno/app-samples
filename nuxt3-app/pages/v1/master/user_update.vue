@@ -3,7 +3,16 @@ const loading = useLoadingIndicator()
 const historyState = useHistoryState()
 const info = historyState.info || {}
 
-const data = useRestorableData({
+const data = await useRestorableAsyncData(async (info) => {
+  if (info.mode === "update" || info.mode === "delete") {
+    return await fetchURL("/api/v1/master/user_search/find_user", {
+      method: "POST",
+      body: { userId: info.userId },
+    })
+  } else {
+    return {}
+  }
+}, {
   userId: "",
   userEmail: "",
   userName: "",
@@ -21,29 +30,6 @@ const userName = ref()
 const birthDate = ref()
 const comment = ref()
 const isDeleted = ref()
-
-if (process.client && !historyState.visited && (
-  historyState.info?.mode === "update" ||
-  historyState.info?.mode === "delete"
-)) {
-  const res = await fetchURL("/api/v1/master/user_search/find_user", {
-    method: "POST",
-    body: { userId: info.userId },
-  })
-  if (!res) {
-    throw createError({ statusCode: 404 })
-  }
-
-  onMounted(() => {
-    data.userId = res.userId
-    data.userEmail = res.userEmail
-    data.userName = res.userName
-    data.birthDate = res.birthDate || ""
-    data.comment = res.comment || ""
-    data.isDeleted = res.isDeleted
-    data.revisionNo = res.revisionNo
-  })
-}
 
 async function onUpdateButtonClick() {
   try {

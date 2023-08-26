@@ -1,1 +1,6 @@
-export { useHistoryState, useRestorableData } from "vue-history-state"
+export {
+  useHistoryState,
+  useRestorableData,
+  useRestorableAsyncData,
+  onBackupState,
+} from "vue-history-state"

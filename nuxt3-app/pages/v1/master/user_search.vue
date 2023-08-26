@@ -90,7 +90,7 @@ function onSelectButtonClick(mode: string, userId?: string) {
           </div>
         </div>
         <template #footer>
-          <div class="flex flex-row items-center justify-end px-2 py-1">
+          <div class="flex-auto flex flex-row items-center justify-end px-2 py-1">
             <UIButton class="w-40" @click="onSearchButtonClick">検索</UIButton>
           </div>
         </template>
@@ -98,7 +98,7 @@ function onSelectButtonClick(mode: string, userId?: string) {
 
       <UICard>
         <template #header>
-          <div class="flex flex-row items-center justify-between px-2 py-1">
+          <div class="flex-auto flex flex-row items-center justify-between px-2 py-1">
             <UIPaginator v-model="data.pageNo" :page-size="data.pageSize" :total-count="data.totalCount" />
             <UIButton @click="() => onSelectButtonClick('register')">追加</UIButton>
           </div>
@@ -114,7 +114,7 @@ function onSelectButtonClick(mode: string, userId?: string) {
         >
           <template #contentCell="{ item, value }">
             <template v-if="item.key === 'userId'">
-              <div class="flex flex-row justify-center gap-2">
+              <div class="flex-auto flex flex-row justify-center gap-2">
                 <UIButton size="sm" @click="() => onSelectButtonClick('update', value)">更新</UIButton>
                 <UIButton size="sm" @click="() => onSelectButtonClick('delete', value)">削除</UIButton>
               </div>
