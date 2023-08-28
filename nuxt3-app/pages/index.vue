@@ -36,9 +36,8 @@ const onLoginButtonClick = async () => {
       })
       location.href = result.redirect
     } catch (err) {
-      alertRef.value.open("ログインに失敗しました。")
-    } finally {
       loading.hide()
+      alertRef.value.open("ログインに失敗しました。")
     }
   } catch (err) {
     alertRef.value.open("入力に誤りがあります。")

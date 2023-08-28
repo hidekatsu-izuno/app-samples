@@ -3,16 +3,7 @@ const loading = useLoadingIndicator()
 const historyState = useHistoryState()
 const info = historyState.info || {}
 
-const data = await useRestorableAsyncData(async (info) => {
-  if (info.mode === "update" || info.mode === "delete") {
-    return await fetchURL("/api/v1/master/user_search/find_user", {
-      method: "POST",
-      body: { userId: info.userId },
-    })
-  } else {
-    return {}
-  }
-}, {
+const data = await useRestorableAsyncData({
   userId: "",
   userEmail: "",
   userName: "",
@@ -23,6 +14,15 @@ const data = await useRestorableAsyncData(async (info) => {
 
   errorMessage: "",
   showError: false,
+}, async () => {
+  if (!historyState.visited && (info.mode === "update" || info.mode === "delete")) {
+    return await fetchURL("/api/v1/master/user_search/find_user", {
+      method: "POST",
+      body: { userId: info.userId },
+    })
+  } else {
+    return {}
+  }
 })
 
 const userEmail = ref()
