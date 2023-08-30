@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const loading = useLoadingIndicator()
 const historyState = useHistoryState()
-const info = historyState.info || {}
 
-const data = await useRestorableAsyncData({
+const data = useRestorableData({
+  mode: "new",
   userId: "",
   userEmail: "",
   userName: "",
@@ -14,14 +14,24 @@ const data = await useRestorableAsyncData({
 
   errorMessage: "",
   showError: false,
-}, async () => {
-  if (!historyState.visited && (info.mode === "update" || info.mode === "delete")) {
-    return await fetchURL("/api/v1/master/user_search/find_user", {
-      method: "POST",
-      body: { userId: info.userId },
-    })
-  } else {
-    return {}
+}, ({ visited, info }) => {
+  if (!visited) {
+    if (info?.mode === "register") {
+      return {
+        mode: info.mode,
+        userId: info.userId,
+      }
+    } else if (info?.mode === "update" || info?.mode === "delete") {
+      return fetchURL("/api/v1/master/user_search/find_user", {
+        method: "POST",
+        body: { userId: info.userId },
+      }).then(res => ({
+        ...res,
+        mode: info.mode,
+      }))
+    } else {
+      throw createError({ statusCode: 400 })
+    }
   }
 })
 
@@ -35,7 +45,7 @@ async function onUpdateButtonClick() {
   try {
     loading.show()
 
-    if (info.mode === "register") {
+    if (data.mode === "register") {
       const req = await validate({
         userEmail,
         userName,
@@ -49,9 +59,9 @@ async function onUpdateButtonClick() {
       })
 
       historyState.back({ refresh: true })
-    } else if (info.mode === "update") {
+    } else if (data.mode === "update") {
       const req = await validate({
-        userId: info.userId,
+        userId: data.userId,
         userEmail,
         userName,
         birthDate,
@@ -65,9 +75,9 @@ async function onUpdateButtonClick() {
       })
 
       historyState.back({ refresh: true })
-    } else if (info.mode === "delete") {
+    } else if (data.mode === "delete") {
       const req = await validate({
-        userId: info.userId,
+        userId: data.userId,
         revisionNo: data.revisionNo,
       })
 
@@ -78,7 +88,7 @@ async function onUpdateButtonClick() {
 
       historyState.back({ refresh: true })
     } else {
-      throw new Error(`Unknown mode: ${info.mode}`)
+      throw new Error(`Unknown mode: ${data.mode}`)
     }
   } catch (err) {
     loading.hide()
@@ -96,8 +106,8 @@ async function onUpdateButtonClick() {
   <UIFrame backable>
     <template #title>
       <h1 class="font-bold text-xl">ユーザーマスタ{{
-        info.mode === "register" ? "登録" :
-        info.mode === "delete" ? "削除" :
+        data.mode === "register" ? "登録" :
+        data.mode === "delete" ? "削除" :
         "更新"
       }}</h1>
     </template>
@@ -111,38 +121,38 @@ async function onUpdateButtonClick() {
         </template>
         <div class="flex flex-col px-4 py-2 gap-2">
           <div>
-            <UILabel :required="info.mode === 'register'">メールアドレス</UILabel>
+            <UILabel :required="data.mode === 'register'">メールアドレス</UILabel>
             <UITextBox
               ref="userEmail"
               v-model="data.userEmail"
-              :required="info.mode === 'register'"
-              :readonly="info.mode !== 'register'"
+              :required="data.mode === 'register'"
+              :readonly="data.mode !== 'register'"
               class="w-80"
             />
           </div>
           <div>
             <UILabel required>ユーザー名</UILabel>
-            <UITextBox ref="userName" v-model="data.userName" :readonly="info.mode === 'delete'" class="w-80" />
+            <UITextBox ref="userName" v-model="data.userName" :readonly="data.mode === 'delete'" class="w-80" />
           </div>
           <div>
             <UILabel>誕生日</UILabel>
             <div class="flex flex-row items-center gap-2">
-              <UIDateBox ref="birthDate" v-model="data.birthDate" :readonly="info.mode === 'delete'" class="w-32" />
+              <UIDateBox ref="birthDate" v-model="data.birthDate" :readonly="data.mode === 'delete'" class="w-32" />
             </div>
           </div>
           <div>
             <UILabel>コメント</UILabel>
-            <UITextBox ref="comment" v-model="data.comment" :readonly="info.mode === 'delete'" class="w-80" />
+            <UITextBox ref="comment" v-model="data.comment" :readonly="data.mode === 'delete'" class="w-80" />
           </div>
-          <div v-if="info.mode === 'update'">
+          <div v-if="data.mode === 'update'">
             <UICheck ref="isDeleted" v-model="data.isDeleted">削除</UICheck>
           </div>
         </div>
         <template #footer>
           <div class="flex flex-row items-center justify-end px-4 py-2">
             <UIButton class="w-40" @click="onUpdateButtonClick">{{
-              info.mode === "register" ? "登録" :
-              info.mode === "delete" ? "削除" :
+              data.mode === "register" ? "登録" :
+              data.mode === "delete" ? "削除" :
               "更新"
             }}</UIButton>
           </div>
