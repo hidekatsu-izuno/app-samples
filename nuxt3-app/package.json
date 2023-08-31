@@ -17,7 +17,7 @@
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.6.5",
     "@types/body-scroll-lock": "^3.1.0",
-    "@types/lodash-es": "^4.17.8",
+    "@types/lodash-es": "^4.17.9",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.47.0",
@@ -34,7 +34,7 @@
     "lodash-es": "^4.17.21",
     "pino": "^8.15.0",
     "postgres": "^3.3.5",
-    "vue-history-state": "^0.14.0-5",
+    "vue-history-state": "^0.14.0",
     "zod": "^3.22.2"
   }
 }

@@ -22,7 +22,7 @@ declare module "h3" {
 }
 
 export default defineEventHandler(async (event) => {
-  const path = getRequestPath(event)
+  const path = event.path
   if (/^\/(api\/)?v1\//.test(path)) {
     const session = await getSession<AppSession>(event, AppSessionConfig)
     if (session.data?.userId) {

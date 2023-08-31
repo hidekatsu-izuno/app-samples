@@ -62,7 +62,7 @@ function serializeRequest(event: H3Event) {
   const headers = getRequestHeaders(event)
   return {
     id,
-    method: getMethod(event),
+    method: event.method,
     url: getRequestURL(event),
     ip: getRequestHost(event, { xForwardedHost: true }),
     headers: ["host", "user-agent", "referer", "cookie"].reduce((dest, key) => {
