@@ -1,11 +1,10 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  type?: "error" | "warn" | "info",
+  type: "error" | "warn" | "info",
   title?: string,
   buttons?: ("ok" | "yes" | "no" | "cancel")[],
   modaless?: boolean,
 }>(), {
-  type: "error",
   title: undefined,
   buttons: () => ["ok"],
   modaless: false,

@@ -88,6 +88,6 @@ const onLoginButtonClick = async () => {
         Copyright &copy; Hidekatsu Izuno
       </div>
     </div>
-    <UIAlert ref="alertRef" />
+    <UIAlert ref="alertRef" type="error" />
   </div>
 </template>

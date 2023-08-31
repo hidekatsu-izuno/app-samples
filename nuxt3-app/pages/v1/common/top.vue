@@ -1118,6 +1118,20 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
     <UICard class="mb-4">
       <template #header>
         <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
+          <h2 class="font-bold grow">注記 (UINote)</h2>
+        </div>
+      </template>
+
+      <div class="flex flex-col gap-2 p-3">
+        <UINote type="error">エラーです。</UINote>
+        <UINote type="warn">警告です。</UINote>
+        <UINote type="info">情報です。</UINote>
+      </div>
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
           <h2 class="font-bold grow">データテーブル (UIDataTable)</h2>
           <div class="shrink"><input v-model="data.dataTableWrap" type="checkbox" /> wrap</div>
           <div class="shrink"><input v-model="data.dataTableEllipsis" type="checkbox" /> ellipsis</div>
@@ -1172,7 +1186,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2 p-6">
-        <UIAlert ref="alert1Ref" @close="data.alert1 = $event">あ</UIAlert>
+        <UIAlert ref="alert1Ref" type="error" @close="data.alert1 = $event">あ</UIAlert>
         <UIButton @click="() => alert1Ref.open()">OK</UIButton>
         <div class="border">{{ data.alert1 }}</div>
 
@@ -1184,7 +1198,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         <UIButton @click="() => alert3Ref.open()">YES/NO</UIButton>
         <div class="border">{{ data.alert3 }}</div>
 
-        <UIAlert ref="alert4Ref" :buttons="['yes', 'no', 'cancel']" title="タイトル" @close="data.alert4 = $event">え</UIAlert>
+        <UIAlert ref="alert4Ref" type="error" :buttons="['yes', 'no', 'cancel']" title="タイトル" @close="data.alert4 = $event">え</UIAlert>
         <UIButton @click="() => alert4Ref.open()">YES/NO/CANCEL</UIButton>
         <div class="border">{{ data.alert4 }}</div>
       </div>
