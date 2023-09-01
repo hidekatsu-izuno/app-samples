@@ -37,7 +37,7 @@ export async function validate(target: UnvalidatedJSONValue) {
   const context = { success: true }
   const result = await validateInternal(context, target)
   if (!context.success) {
-    throw createError({ message: "入力に誤りがあります。", statusCode: 400 })
+    throw new BusinessError("入力に誤りがあります。")
   }
   return result
 }
@@ -84,98 +84,4 @@ async function validateInternal(context: { success: boolean }, target: Unvalidat
     }
     return obj
   }
-}
-
-export interface UIInputEvent<T> {
-  get value(): T
-  set value(value: T)
-  get error(): string
-  set error(value: string)
-}
-
-export interface Schema {
-  get required(): boolean
-}
-
-export class ObjectSchema implements Schema {
-  constructor(
-    public required: boolean,
-    public type: Record<string, Schema> | undefined,
-    public strict: boolean,
-  ) {
-
-  }
-}
-
-export declare type ArraySchema = Schema & {
-  type?: Schema[],
-  minLength: number,
-  maxLength?: number,
-}
-
-export declare type StringSchema = Schema & {
-  type?: "email" | "url" | "tel" | "date",
-  format?: string,
-  minLength?: number,
-  maxLength?: number,
-  in?: string[],
-}
-
-export declare type NumberSchema = Schema & {
-  type?: "integer" | "int8" | "uint8" | "int16" | "uint16" | "int32" | "uint32",
-  precision?: number,
-  scale?: number,
-  gt?: number,
-  ge?: number,
-  lt?: number,
-  le?: number,
-  in?: number[],
-}
-
-export declare type BooleanSchema = Schema & {
-}
-
-export const schema = {
-  object(options?: {
-    required?: boolean,
-    type?: Record<string, Schema>,
-    strict?: boolean,
-  }): ObjectSchema {
-    return {
-      required: options?.required ?? false,
-      type: options?.type,
-      strict: options?.required ?? false,
-    }
-  },
-
-  array(options?: {
-    schema?: Schema,
-    required?: boolean,
-    minLength?: number,
-    maxLength?: number
-  }): Schema {
-    return {} as Schema
-  },
-
-  string(options?: {
-    required?: boolean,
-    minLength?: number,
-    maxLength?: number,
-  }): Schema {
-    return {} as Schema
-  },
-
-  number(options?: {
-    required?: boolean,
-    minValue?: number,
-    maxValue?: number,
-  }): Schema {
-    return {} as Schema
-  },
-
-  boolean(options?: {
-    required?: boolean,
-  }): Schema {
-    return {} as Schema
-  },
 }

@@ -16,7 +16,8 @@ const data = useRestorableData({
   totalCount: 0,
   searchResult: [] as any[],
 
-  message: "",
+  infoMessage: "",
+  errorMessage: "",
 })
 
 const userEmail = ref()
@@ -25,22 +26,25 @@ const birthDateFrom = ref()
 const birthDateTo = ref()
 const isDeleted = ref()
 
+const alert = ref()
+
 onMounted(async () => {
   if (historyState.info?.refresh) {
     await onSearchButtonClick()
   }
-  data.message = historyState.info?.message
+  data.infoMessage = historyState.info?.message
 })
 
 async function onSearchButtonClick() {
-  const req = await validate({
-    userEmail,
-    userName,
-    birthDateFrom,
-    birthDateTo,
-    isDeleted,
-  })
   try {
+    const req = await validate({
+      userEmail,
+      userName,
+      birthDateFrom,
+      birthDateTo,
+      isDeleted,
+    })
+
     loading.show()
     const res = await fetchURL("/api/v1/master/user_search/search_users", {
       method: "POST",
@@ -50,6 +54,12 @@ async function onSearchButtonClick() {
     data.pageSize = res.pageSize
     data.totalCount = res.totalCount
     data.searchResult = res.records
+  } catch (err) {
+    if (err instanceof BusinessError) {
+      alert.value.open(err.message)
+    } else {
+      throw err
+    }
   } finally {
     loading.hide()
   }
@@ -67,7 +77,7 @@ function onSelectButtonClick(mode: string, userId?: string) {
     </template>
 
     <div class="grid gap-4">
-      <UINote v-if="data.message" type="info">{{ data.message }}</UINote>
+      <UINote v-if="data.infoMessage" type="info">{{ data.infoMessage }}</UINote>
 
       <UICard>
         <template #header>
@@ -128,6 +138,8 @@ function onSelectButtonClick(mode: string, userId?: string) {
         </UIDataTable>
       </UICard>
     </div>
+
+    <UIAlert ref="alert" type="error">{{ data.errorMessage }}</UIAlert>
 
     <template #drawer>
       <MenuList />
