@@ -41,6 +41,8 @@ const birthDate = ref()
 const comment = ref()
 const isDeleted = ref()
 
+const alert = ref()
+
 async function onUpdateButtonClick() {
   try {
     loading.show()
@@ -93,8 +95,7 @@ async function onUpdateButtonClick() {
   } catch (err) {
     loading.hide()
     if (err instanceof BusinessError) {
-      data.errorMessage = err.message
-      data.showError = true
+      alert.value.open(err.message)
     } else {
       throw err
     }
@@ -127,22 +128,40 @@ async function onUpdateButtonClick() {
               v-model="data.userEmail"
               :required="data.mode === 'register'"
               :readonly="data.mode !== 'register'"
+              :schema="EmailSchema"
               class="w-80"
             />
           </div>
           <div>
             <UILabel required>ユーザー名</UILabel>
-            <UITextBox ref="userName" v-model="data.userName" :readonly="data.mode === 'delete'" class="w-80" />
+            <UITextBox
+              ref="userName"
+              v-model="data.userName"
+              :readonly="data.mode === 'delete'"
+              :schema="UserNameSchema"
+              class="w-80"
+            />
           </div>
           <div>
             <UILabel>誕生日</UILabel>
             <div class="flex flex-row items-center gap-2">
-              <UIDateBox ref="birthDate" v-model="data.birthDate" :readonly="data.mode === 'delete'" class="w-32" />
+              <UIDateBox
+                ref="birthDate"
+                v-model="data.birthDate"
+                :readonly="data.mode === 'delete'"
+                class="w-32"
+              />
             </div>
           </div>
           <div>
             <UILabel>コメント</UILabel>
-            <UITextBox ref="comment" v-model="data.comment" :readonly="data.mode === 'delete'" class="w-80" />
+            <UITextBox
+              ref="comment"
+              v-model="data.comment"
+              :readonly="data.mode === 'delete'"
+              :schema="CommentSchema"
+              class="w-80"
+            />
           </div>
           <div v-if="data.mode === 'update'">
             <UICheck ref="isDeleted" v-model="data.isDeleted">削除</UICheck>
@@ -160,7 +179,7 @@ async function onUpdateButtonClick() {
       </UICard>
     </div>
 
-    <UIAlert v-model="data.showError" type="error">{{ data.errorMessage }}</UIAlert>
+    <UIAlert ref="alert" type="error">{{ data.errorMessage }}</UIAlert>
 
     <template #drawer>
       <MenuList />

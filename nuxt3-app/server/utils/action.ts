@@ -28,10 +28,10 @@ export function defineAction(handler: Parameters<typeof defineEventHandler>[0]) 
         event.context.cause = err
         setResponseStatus(event, 400)
         defaultContentType(event, "application/problem+json")
-        event.node.res.end(JSON.stringify({
+        return {
           type: new URL("/business-error", `${protocol}://${host}`).toString(),
           title: err.message,
-        }))
+        }
       } else if (err instanceof H3Error) {
         event.context.cause = (err.cause || err) as Error
         throw err

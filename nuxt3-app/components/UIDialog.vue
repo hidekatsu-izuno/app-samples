@@ -21,7 +21,7 @@ watch(() => props.modelValue, () => {
   } else {
     close()
   }
-}, { flush: "post" })
+})
 
 onUnmounted(() => {
   clearAllBodyScrollLocks()
