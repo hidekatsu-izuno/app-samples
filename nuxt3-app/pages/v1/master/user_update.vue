@@ -60,7 +60,7 @@ async function onUpdateButtonClick() {
         body: req,
       })
 
-      historyState.back({ refresh: true })
+      historyState.back({ refresh: true, message: "正常に登録されました。" })
     } else if (data.mode === "update") {
       const req = await validate({
         userId: data.userId,
@@ -76,7 +76,7 @@ async function onUpdateButtonClick() {
         body: req,
       })
 
-      historyState.back({ refresh: true })
+      historyState.back({ refresh: true, message: "正常に更新されました。" })
     } else if (data.mode === "delete") {
       const req = await validate({
         userId: data.userId,
@@ -88,7 +88,7 @@ async function onUpdateButtonClick() {
         body: req,
       })
 
-      historyState.back({ refresh: true })
+      historyState.back({ refresh: true, message: "正常に削除されました。" })
     } else {
       throw new Error(`Unknown mode: ${data.mode}`)
     }

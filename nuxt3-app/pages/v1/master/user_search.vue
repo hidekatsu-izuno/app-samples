@@ -15,6 +15,8 @@ const data = useRestorableData({
   pageSize: 1,
   totalCount: 0,
   searchResult: [] as any[],
+
+  message: "",
 })
 
 const userEmail = ref()
@@ -27,6 +29,7 @@ onMounted(async () => {
   if (historyState.info?.refresh) {
     await onSearchButtonClick()
   }
+  data.message = historyState.info?.message
 })
 
 async function onSearchButtonClick() {
@@ -64,6 +67,8 @@ function onSelectButtonClick(mode: string, userId?: string) {
     </template>
 
     <div class="grid gap-4">
+      <UINote type="info">{{ data.message }}</UINote>
+
       <UICard>
         <template #header>
           <div class="px-2 py-1">
