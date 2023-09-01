@@ -67,7 +67,7 @@ function onSelectButtonClick(mode: string, userId?: string) {
     </template>
 
     <div class="grid gap-4">
-      <UINote type="info">{{ data.message }}</UINote>
+      <UINote v-if="data.message" type="info">{{ data.message }}</UINote>
 
       <UICard>
         <template #header>
