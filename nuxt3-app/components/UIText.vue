@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<{
 .UIText-Content {
   @apply text-base
     min-h-[calc(1.5em+(0.125em+1px)*2)]
-    px-[0.25em] py-[0.125em]
+    py-[0.125em]
     whitespace-pre-wrap;
 }
 

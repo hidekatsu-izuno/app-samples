@@ -96,8 +96,10 @@ function onSelectButtonClick(mode: string, userId?: string) {
           </div>
           <div>
             <UILabel>誕生日</UILabel>
-            <div class="flex flex-row items-center gap-2">
-              <UIDateBox ref="birthDateFrom" v-model="data.birthDateFrom" class="w-32" /><div>～</div><UIDateBox ref="birthDateTo" v-model="data.birthDateTo" class="w-32" />
+            <div class="flex flex-row gap-2">
+              <UIDateBox ref="birthDateFrom" v-model="data.birthDateFrom" class="w-32" />
+              <UIText>～</UIText>
+              <UIDateBox ref="birthDateTo" v-model="data.birthDateTo" class="w-32" />
             </div>
           </div>
           <div>
