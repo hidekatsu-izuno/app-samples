@@ -58,6 +58,12 @@ const data = reactive({
   checkSize: "",
   check1: false,
   check2: false,
+  switchRequired: false,
+  switchDisabled: false,
+  switchReadonly: false,
+  switchSize: "",
+  switch1: false,
+  switch2: false,
   checklistRequired: false,
   checklistDisabled: false,
   checklistReadonly: false,
@@ -687,6 +693,54 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             suffix=")"
             halign="center"
           >チェックボックス</UICheck>
+          <UIText type="outline">{{ data.check2 }}</UIText>
+        </div>
+      </div>
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
+          <h2 class="font-bold grow">スイッチ (UISwitch)</h2>
+          <div class="shrink"><input v-model="data.switchRequired" type="checkbox" /> required</div>
+          <div class="shrink"><input v-model="data.switchDisabled" type="checkbox" /> disabled</div>
+          <div class="shrink"><input v-model="data.switchReadonly" type="checkbox" /> readonly</div>
+          <UISelectBox v-model="data.switchSize" size="sm" :items="[{ value: 'lg' }, { value: 'sm' }]" />
+        </div>
+      </template>
+
+      <div class="grid gap-2 p-6">
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.switchRequired"
+          >デフォルト</UILabel>
+          <UISwitch
+            v-model="data.switch1"
+            :required="data.switchRequired"
+            :disabled="data.switchDisabled"
+            :readonly="data.switchReadonly"
+            :size="(data.switchSize as any)"
+          >トグルボタン</UISwitch>
+          <UIText type="outline">{{ data.switch1 }}</UIText>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-2">
+          <UILabel
+            class="col-span-2"
+            :required="data.switchRequired"
+          >装飾</UILabel>
+          <UISwitch
+            v-model="data.switch2"
+            :required="data.switchRequired"
+            :disabled="data.switchDisabled"
+            :readonly="data.switchReadonly"
+            :size="(data.switchSize as any)"
+            value="X"
+            prefix="("
+            suffix=")"
+            halign="center"
+          >トグルボタン</UISwitch>
           <UIText type="outline">{{ data.check2 }}</UIText>
         </div>
       </div>

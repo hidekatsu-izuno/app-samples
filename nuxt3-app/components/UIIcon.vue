@@ -58,6 +58,10 @@ const props = withDefaults(defineProps<{
   @apply icon-[mdi--chevron-right];
 }
 
+.UIIcon[data-name="circle"] {
+  @apply icon-[mdi--circle];
+}
+
 .UIIcon[data-name="circle-medium"] {
   @apply icon-[mdi--circle-medium];
 }

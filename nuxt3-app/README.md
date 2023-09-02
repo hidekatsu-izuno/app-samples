@@ -38,7 +38,6 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 
 <!--
 TODO:
-- Add a Toggle component
 - Add a DropDown component
 - Add a new validation method
 -->
