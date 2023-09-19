@@ -128,6 +128,7 @@ const data = reactive({
   alert2: undefined as string | undefined,
   alert3: undefined as string | undefined,
   alert4: undefined as string | undefined,
+  effect1: true,
 })
 
 const textbox1Ref = ref()
@@ -1266,6 +1267,27 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
       </template>
       <div class="grid grid-cols-2 gap-2 p-6">
         <UIButton @click="loading.show({ throttle: 1000, duration: 4000 })">Show</UIButton>
+      </div>
+    </UICard>
+
+    <UICard class="mb-4">
+      <template #header>
+        <div class="flex flex-row justify-items-stretch items-center gap-2 p-3">
+          <h2 class="font-bold grow">エフェクト (UIEffect)</h2>
+        </div>
+      </template>
+      <div class="grid grid-cols-2 gap-2 p-6">
+        <div class="w-24 h-24 border p-2">
+          <UIEffect type="slideup" duration="3s">
+            <div
+              v-if="data.effect1"
+              class="bg-red-500"
+            >Slide Up<br />Slide Up<br />{{ data.effect1 }}</div>
+          </UIEffect>
+        </div>
+        <UIButton
+          @click="() => data.effect1 = !data.effect1"
+        >Slide Up</UIButton>
       </div>
     </UICard>
 
