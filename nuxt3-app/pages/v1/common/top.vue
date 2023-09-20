@@ -1277,8 +1277,8 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2 p-6">
-        <div class="w-24 h-24 border p-2">
-          <UIEffect type="slideup" duration="3s">
+        <div class="border p-2">
+          <UIEffect type="slideup">
             <div
               v-if="data.effect1"
               class="bg-red-500"
