@@ -16,7 +16,7 @@ export const JapaneseErrorMap: ZodErrorMap = (issue, ctx) => {
           .join(", ")}`,
       }
     case z.ZodIssueCode.invalid_union:
-      return { message: "Invalid input" }
+      return { message: "入力に誤りがあります。" }
     case z.ZodIssueCode.invalid_union_discriminator:
       return {
         message: `Invalid discriminator value. Expected ${issue.options
@@ -53,7 +53,7 @@ export const JapaneseErrorMap: ZodErrorMap = (issue, ctx) => {
       } else if (issue.type === "number") {
         return { message: `${issue.minimum}${issue.inclusive ? "以上の" : "より大きい"}値を入力する必要があります。` }
       } else {
-        return { message: "Invalid input" }
+        return { message: "入力に誤りがあります。" }
       }
     case z.ZodIssueCode.too_big:
       if (issue.type === "array") {
@@ -63,10 +63,10 @@ export const JapaneseErrorMap: ZodErrorMap = (issue, ctx) => {
       } else if (issue.type === "number") {
         return { message: `${issue.maximum}${issue.inclusive ? "以下の" : "未満の"}値を入力する必要があります。` }
       } else {
-        return { message: "Invalid input" }
+        return { message: "入力に誤りがあります。" }
       }
     case z.ZodIssueCode.custom:
-      return { message: "Invalid input" }
+      return { message: "入力に誤りがあります。" }
     case z.ZodIssueCode.invalid_intersection_types:
       return { message: "Intersection results could not be merged" }
     case z.ZodIssueCode.not_multiple_of:

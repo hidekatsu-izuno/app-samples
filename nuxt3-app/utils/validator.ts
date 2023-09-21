@@ -1,3 +1,5 @@
+import { z } from "zod"
+
 type JSONValue = null
   | string
   | number
@@ -83,5 +85,46 @@ async function validateInternal(context: { success: boolean }, target: Unvalidat
       }
     }
     return obj
+  }
+}
+
+export function decimalCheck(precision: number, scale: number = 0) {
+  return (arg: number, ctx: z.RefinementCtx) => {
+    if (!Number.isFinite(arg)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "入力に誤りがあります。",
+      })
+      return
+    }
+
+    const m = /^[+-]?([0-9]+)(?:[.][0-9]*)?$/.exec(formatNumber(arg))
+    if (!m) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "入力に誤りがあります。",
+      })
+      return
+    }
+
+    const ipart = Math.max(m[1].replace(/^0+/, "").length, 1)
+    const fpart = Math.max((m[2] ?? "").replace(/0+$/, "").length, 0)
+
+    if (ipart + fpart > precision) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: scale > 0
+          ? `整数部${precision - scale}桁以内、小数部${scale}桁以内の数値を入力してください。`
+          : `${precision}桁以内の整数を指定してください。`,
+      })
+      return
+    }
+
+    if (scale > 0 && fpart > scale) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `整数部${precision - scale}桁以内、小数部${scale}桁以内の数値を入力してください。`,
+      })
+    }
   }
 }

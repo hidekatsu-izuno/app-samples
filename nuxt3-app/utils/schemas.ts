@@ -10,3 +10,5 @@ export const PartialEmailSchema = z.string().max(256)
 export const UserPasswordSchema = z.string().min(8)
 export const UserNameSchema = z.string().max(1024)
 export const CommentSchema = z.string().max(1000)
+
+export const PrecisionSchema = z.number().superRefine(decimalCheck(10, 0))

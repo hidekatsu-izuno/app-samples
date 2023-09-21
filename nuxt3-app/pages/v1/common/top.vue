@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import MenuList from "~/components/v1/common/MenuList.vue"
+import { PrecisionSchema } from "~/utils/schemas"
 
 const data = reactive({
   textboxRequired: false,
@@ -342,6 +343,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.numberboxDisabled"
             :readonly="data.numberboxReadonly"
             :size="(data.numberboxSize as any)"
+            :schema="PrecisionSchema"
           />
           <UIText type="outline">{{ data.numberbox2 }}</UIText>
         </div>
