@@ -418,6 +418,7 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             :disabled="data.dateboxDisabled"
             :readonly="data.dateboxReadonly"
             :size="(data.dateboxSize as any)"
+            type="uuuu-MM"
             prefix="("
             suffix=")"
             halign="center"

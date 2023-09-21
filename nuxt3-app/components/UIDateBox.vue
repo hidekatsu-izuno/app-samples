@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { createPopper } from "@popperjs/core"
 import type { ZodDate } from "zod"
-import { eachDayOfInterval, startOfDay, startOfWeek, lastDayOfWeek, lastDayOfMonth, startOfMonth, isSameDay, sub, add } from "date-fns"
+import { eachDayOfInterval, eachMonthOfInterval, startOfDay, startOfWeek, startOfMonth, startOfYear, endOfYear, lastDayOfWeek, lastDayOfMonth, isSameDay, isSameMonth, sub, add } from "date-fns"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 
 const props = withDefaults(defineProps<{
+  type?: "uuuu-MM-dd" | "uuuu-MM",
   halign?: "start" | "center" | "end",
   size?: "sm" | "lg",
   name?: string,
@@ -23,11 +24,12 @@ const props = withDefaults(defineProps<{
   modelValue?: string,
   error?: string,
 }>(), {
+  type: "uuuu-MM-dd",
   halign: "start",
   required: false,
   disabled: false,
   readonly: false,
-  format: "uuuu/MM/dd",
+  format: props => props.type === "uuuu-MM" ? "uuuu/MM" : "uuuu/MM/dd",
   modelValue: "",
   error: "",
 })
@@ -44,10 +46,16 @@ const data = reactive({
   focused: false,
   maxLength: 10,
   baseLength: 8,
+  inputFormat: "",
+  pickerBaseFormat: "",
   value: "",
   error: "",
   ime: false,
 })
+
+watch(() => props.type, () => {
+  data.inputFormat = props.type === "uuuu-MM" ? "uuuuMM" : "uuuuMMdd"
+}, { immediate: true })
 
 watch(() => props.modelValue, () => {
   data.value = data.focused ? props.modelValue : formatDate(props.modelValue, props.format)
@@ -96,7 +104,7 @@ function onFocus(event: Event) {
   if (target.value) {
     const date = parseDate(target.value, props.format)
     if (date) {
-      data.value = formatDate(date, "uuuuMMdd")
+      data.value = formatDate(date, data.inputFormat)
     }
   }
 
@@ -177,15 +185,15 @@ function onPickerMouseDown(event: Event) {
 }
 
 function onPickerPrevButtonClick() {
-  pickerData.current = sub(pickerData.current, { months: 1 })
+  pickerData.current = sub(pickerData.current, props.type === "uuuu-MM" ? { years: 1 } : { months: 1 })
 }
 
 function onPickerNextButtonClick() {
-  pickerData.current = add(pickerData.current, { months: 1 })
+  pickerData.current = add(pickerData.current, props.type === "uuuu-MM" ? { years: 1 } : { months: 1 })
 }
 
-async function onPickerDateClick(event: Event, date: Date) {
-  const value = formatDate(date, "uuuuMMdd")
+async function onPickerTargetButtonClick(event: Event, date: Date) {
+  const value = formatDate(date, data.inputFormat)
   if (value !== data.value) {
     data.value = value
     emits("update:modelValue", data.value)
@@ -200,7 +208,13 @@ function validate(value: string) {
 
   let date
   if (value) {
-    if (/^[0-9]{8}|[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
+    if (props.type === "uuuu-MM") {
+      if (/^[0-9]{6}|[0-9]{4}-[0-9]{2}$/.test(value)) {
+        date = parseDate(value)
+      } else {
+        date = parseDate(value, props.format)
+      }
+    } else if (/^[0-9]{8}|[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
       date = parseDate(value)
     } else {
       date = parseDate(value, props.format)
@@ -244,6 +258,7 @@ function getFormatMaxLength(format: string) {
 <template>
   <div
     class="UIDateBox"
+    :data-type="props.type"
     :data-halign="props.halign || undefined"
     :data-size="props.size || undefined"
     :data-required="props.required || undefined"
@@ -290,39 +305,68 @@ function getFormatMaxLength(format: string) {
       @mousedown="onPickerMouseDown"
     >
       <div
-        class="UIDateBox-PickerPrevInput"
-        @click="onPickerPrevButtonClick"
+        v-if="props.type === 'uuuu-MM'"
+        class="UIDateBox-PickerMonth"
       >
-        <UIIcon name="arrow-left" />
+        <div
+          class="UIDateBox-PickerPrevInput"
+          @click="onPickerPrevButtonClick"
+        >
+          <UIIcon name="arrow-left" />
+        </div>
+        <div class="UIDateBox-PickerBase">{{ formatDate(pickerData.current, "uuuu") }}</div>
+        <div
+          class="UIDateBox-PickerNextInput"
+          @click="onPickerNextButtonClick"
+        >
+          <UIIcon name="arrow-right" />
+        </div>
+        <div
+          v-for="month in eachMonthOfInterval({
+            start: startOfYear(pickerData.current),
+            end: endOfYear(pickerData.current),
+          })"
+          :key="month.getTime()"
+          class="UIDateBox-PickerTarget"
+          :class="isSameMonth(pickerData.start, month) ? 'UIDateBox-PickerTarget-current' : ''"
+          @click="(event) => onPickerTargetButtonClick(event, month)"
+        >{{ month.getMonth() + 1 }}</div>
       </div>
-      <div class="UIDateBox-PickerMonth">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
       <div
-        class="UIDateBox-PickerNextInput"
-        @click="onPickerNextButtonClick"
+        v-else
+        class="UIDateBox-PickerDay"
       >
-        <UIIcon name="arrow-right" />
+        <div
+          class="UIDateBox-PickerPrevInput"
+          @click="onPickerPrevButtonClick"
+        >
+          <UIIcon name="arrow-left" />
+        </div>
+        <div class="UIDateBox-PickerBase">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
+        <div
+          class="UIDateBox-PickerNextInput"
+          @click="onPickerNextButtonClick"
+        >
+          <UIIcon name="arrow-right" />
+        </div>
+        <div class="UIDateBox-PickerSunday" />
+        <div class="UIDateBox-PickerMonday" />
+        <div class="UIDateBox-PickerTuesday" />
+        <div class="UIDateBox-PickerWednesday" />
+        <div class="UIDateBox-PickerThursday" />
+        <div class="UIDateBox-PickerFriday" />
+        <div class="UIDateBox-PickerSaturday" />
+        <div
+          v-for="date in eachDayOfInterval({
+            start: startOfWeek(startOfMonth(pickerData.current)),
+            end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
+          })"
+          :key="date.getTime()"
+          class="UIDateBox-PickerTarget"
+          :class="isSameDay(pickerData.start, date) ? 'UIDateBox-PickerTarget-current' : ''"
+          @click="(event) => onPickerTargetButtonClick(event, date)"
+        >{{ date.getDate() }}</div>
       </div>
-      <div class="UIDateBox-PickerSunday" />
-      <div class="UIDateBox-PickerMonday" />
-      <div class="UIDateBox-PickerTuesday" />
-      <div class="UIDateBox-PickerWednesday" />
-      <div class="UIDateBox-PickerThursday" />
-      <div class="UIDateBox-PickerFriday" />
-      <div class="UIDateBox-PickerSaturday" />
-      <div
-        v-for="date in eachDayOfInterval({
-          start: startOfWeek(startOfMonth(pickerData.current)),
-          end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
-        })"
-        :key="date.getTime()"
-        class="UIDateBox-PickerDate"
-        :class="[
-          isSameDay(pickerData.start, date) ? 'UIDateBox-PickerDate-today' : '',
-          ...(Array.isArray(props.inputClass) ? props.inputClass : [ props.inputClass ])
-        ]"
-        :style="props.inputStyle"
-        @click="(event) => onPickerDateClick(event, date)"
-      >{{ date.getDate() }}</div>
     </div>
     <div
       v-if="data.error"
@@ -366,8 +410,7 @@ function getFormatMaxLength(format: string) {
 }
 
 .UIDateBox-Picker {
-  @apply grid grid-cols-7 justify-center items-center
-    shadow-lg
+  @apply shadow-lg
     rounded-md
     p-2
     bg-white
@@ -375,11 +418,50 @@ function getFormatMaxLength(format: string) {
     z-[1000];
 }
 
+.UIDateBox-PickerMonth {
+  @apply grid grid-cols-4 justify-center items-center;
+
+  .UIDateBox-PickerBase {
+    @apply col-span-2;
+  }
+
+  .UIDateBox-PickerPrevInput,
+  .UIDateBox-PickerNextInput,
+  .UIDateBox-PickerTarget {
+    @apply w-12 h-12;
+  }
+
+  .UIDateBox-PickerBase {
+    @apply h-12;
+  }
+
+  .UIDateBox-PickerTarget::after {
+    content: "月";
+  }
+}
+
+.UIDateBox-PickerDay {
+  @apply grid grid-cols-7 justify-center items-center;
+
+  .UIDateBox-PickerBase {
+    @apply col-span-5;
+  }
+
+  .UIDateBox-PickerPrevInput,
+  .UIDateBox-PickerNextInput,
+  .UIDateBox-PickerTarget {
+    @apply w-8 h-8;
+  }
+
+  .UIDateBox-PickerBase {
+    @apply h-8;
+  }
+}
+
 .UIDateBox-PickerPrevInput,
 .UIDateBox-PickerNextInput {
   @apply flex items-center justify-center
     rounded-md
-    w-8 h-8
     hover:bg-gray-100
     cursor-default;
 
@@ -388,9 +470,8 @@ function getFormatMaxLength(format: string) {
   }
 }
 
-.UIDateBox-PickerMonth {
-  @apply col-span-5
-    flex items-center justify-center
+.UIDateBox-PickerBase {
+  @apply flex items-center justify-center
     h-8;
 }
 
@@ -428,15 +509,14 @@ function getFormatMaxLength(format: string) {
   content: '土'
 }
 
-.UIDateBox-PickerDate {
+.UIDateBox-PickerTarget {
   @apply flex items-center justify-center
     rounded-md
-    h-8
     hover:bg-gray-100
     cursor-default;
 }
 
-.UIDateBox-PickerDate-today {
+.UIDateBox-PickerTarget-current {
   @apply bg-blue-700 hover:bg-blue-800
     text-white font-bold;
 }
