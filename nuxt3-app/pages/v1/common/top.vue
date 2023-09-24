@@ -130,6 +130,7 @@ const data = reactive({
   alert3: undefined as string | undefined,
   alert4: undefined as string | undefined,
   effect1: true,
+  effect2: true,
 })
 
 const textbox1Ref = ref()
@@ -1285,12 +1286,25 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
             <div
               v-if="data.effect1"
               class="bg-red-500"
+              duration="5s"
             >Slide Up<br />Slide Up<br />{{ data.effect1 }}</div>
           </UIEffect>
         </div>
         <UIButton
           @click="() => data.effect1 = !data.effect1"
         >Slide Up</UIButton>
+
+        <div class="border p-2">
+          <UIEffect type="slideleft">
+            <div
+              v-if="data.effect2"
+              class="bg-red-500"
+            >Slide Left<br />Slide Left<br />{{ data.effect2 }}</div>
+          </UIEffect>
+        </div>
+        <UIButton
+          @click="() => data.effect2 = !data.effect2"
+        >Slide Left</UIButton>
       </div>
     </UICard>
 
