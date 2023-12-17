@@ -5,7 +5,7 @@ const message = ref("予期しないエラーが発生しました。")
 if (error.value) {
   statusCode.value = "statusCode" in error.value ? error.value.statusCode : undefined
   if (statusCode.value === 401) {
-    message.value = "認証に失敗しました。"
+    message.value = "セッションの期限が切れました。再度ログインをお願いします。"
   } else if (statusCode.value === 404) {
     message.value = "ページが見つかりません。"
   } else if (statusCode.value && statusCode.value < 500) {

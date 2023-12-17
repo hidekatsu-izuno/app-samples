@@ -38,5 +38,6 @@ export default defineAction(async (event) => {
       throw new BusinessError("ユーザーの更新に失敗しました。")
     }
   })
+
   sendNoContent(event)
 })
