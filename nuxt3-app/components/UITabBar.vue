@@ -69,7 +69,7 @@ function onFocusout(event: Event) {
       :style="props.inputStyle"
       :data-value="item.value"
       :disabled="item.value === data.value"
-      :tabindex="props.tabindex ?? ''"
+      :tabindex="props.tabindex"
       @click="onClick"
     >{{ item.text }}</button>
   </div>

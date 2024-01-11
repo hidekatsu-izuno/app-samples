@@ -168,7 +168,7 @@ function validate(value: string[]) {
               type="checkbox"
               :name="name ?? ''"
               :disabled="props.disabled"
-              :tabindex="props.tabindex ?? ''"
+              :tabindex="props.tabindex"
               :value="item.value ?? ''"
               :checked="data.value.includes(item.value)"
             />

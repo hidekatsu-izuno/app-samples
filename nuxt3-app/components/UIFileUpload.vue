@@ -131,7 +131,7 @@ function validate(value?: File) {
         :style="props.inputStyle"
         :placeholder="props.placeholder"
         :accept="props.accept"
-        :tabindex="props.tabindex ?? ''"
+        :tabindex="props.tabindex"
         :disabled="props.disabled"
         @click="onClick"
         @focus="onFocus"

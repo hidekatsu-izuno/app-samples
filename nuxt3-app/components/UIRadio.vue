@@ -141,7 +141,7 @@ function validate(value: string) {
             :name="props.name"
             :value="props.value ?? ''"
             :disabled="props.disabled"
-            :tabindex="props.tabindex ?? ''"
+            :tabindex="props.tabindex"
             :checked="props.value === data.value"
             @focus="onFocus"
             @change="onChange"

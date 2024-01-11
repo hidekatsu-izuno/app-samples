@@ -59,7 +59,7 @@ function onBlur(event: Event) {
         :class="props.inputClass"
         :style="props.inputStyle"
         :disabled="props.disabled"
-        :tabindex="props.tabindex ?? ''"
+        :tabindex="props.tabindex"
         :autofocus="props.autofocus ?? undefined"
         @focus="onFocus"
         @click="onClick"

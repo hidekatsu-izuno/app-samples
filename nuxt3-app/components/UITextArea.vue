@@ -155,7 +155,7 @@ function validate(value: string) {
         :style="props.inputStyle"
         :placeholder="props.placeholder"
         :disabled="props.disabled"
-        :tabindex="props.tabindex ?? ''"
+        :tabindex="props.tabindex"
         :value="data.value"
         @focus="onFocus"
         @input="onInput"
