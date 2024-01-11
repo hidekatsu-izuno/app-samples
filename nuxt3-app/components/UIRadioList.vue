@@ -36,15 +36,16 @@ const emits = defineEmits<{
 }>()
 
 const data = reactive({
-  name: props.name,
   value: "",
   focused: false,
   error: "",
 })
 
-if (!data.name) {
-  data.name = crypto.randomUUID()
-}
+defineExpose({
+  validate() {
+    return validate(data.value)
+  },
+})
 
 watch(() => props.modelValue, () => {
   data.value = props.modelValue
@@ -54,11 +55,7 @@ watch(() => props.error, () => {
   data.error = props.error
 }, { immediate: true })
 
-defineExpose({
-  validate() {
-    return validate(data.value)
-  },
-})
+const { data: name } = await useAsyncData("name", async () => await (props.name ?? crypto.randomUUID()))
 
 function onFocusin(event: Event) {
   if (!data.focused) {
@@ -161,7 +158,7 @@ function validate(value: string) {
             <input
               class="UIRadioList-Input peer"
               type="radio"
-              :name="data.name"
+              :name="name ?? ''"
               :value="item.value ?? ''"
               :checked="item.value === data.value"
               :disabled="props.disabled"

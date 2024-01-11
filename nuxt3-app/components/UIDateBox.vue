@@ -88,13 +88,13 @@ const pickerData = reactive({
 let popper: ReturnType<typeof createPopper>
 
 onMounted(async () => {
+  onUnmounted(() => {
+    popper?.destroy()
+  })
+
   await nextTick(() => {
     popper = createPopper(inputRef.value, pickerRef.value, {
       placement: "bottom-end",
-    })
-
-    onUnmounted(() => {
-      popper?.destroy()
     })
   })
 })
