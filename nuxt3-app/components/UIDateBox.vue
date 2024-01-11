@@ -87,13 +87,15 @@ const pickerData = reactive({
 
 let popper: ReturnType<typeof createPopper>
 
-onMounted(() => {
-  popper = createPopper(inputRef.value, pickerRef.value, {
-    placement: "bottom-end",
-  })
+onMounted(async () => {
+  await nextTick(() => {
+    popper = createPopper(inputRef.value, pickerRef.value, {
+      placement: "bottom-end",
+    })
 
-  onUnmounted(() => {
-    popper?.destroy()
+    onUnmounted(() => {
+      popper?.destroy()
+    })
   })
 })
 
@@ -280,9 +282,9 @@ function getFormatMaxLength(format: string) {
           inputmode="numeric"
           :name="props.name"
           :placeholder="props.placeholder"
-          :tabindex="props.tabindex"
+          :tabindex="props.tabindex ?? ''"
           :disabled="props.disabled"
-          :maxlength="data.maxLength"
+          :maxlength="data.maxLength ?? ''"
           :size="data.baseLength"
           :value="data.value"
           @input="onInput"
@@ -298,76 +300,78 @@ function getFormatMaxLength(format: string) {
       </div>
       <div v-if="props.suffix" class="UIDateBox-Suffix">{{ props.suffix }}</div>
     </div>
-    <div
-      ref="pickerRef"
-      class="UIDateBox-Picker"
-      style="display: none"
-      @mousedown="onPickerMouseDown"
-    >
+    <ClientOnly>
       <div
-        v-if="props.type === 'uuuu-MM'"
-        class="UIDateBox-PickerMonth"
+        ref="pickerRef"
+        class="UIDateBox-Picker"
+        style="display: none"
+        @mousedown="onPickerMouseDown"
       >
         <div
-          class="UIDateBox-PickerPrevInput"
-          @click="onPickerPrevButtonClick"
+          v-if="props.type === 'uuuu-MM'"
+          class="UIDateBox-PickerMonth"
         >
-          <UIIcon name="arrow-left" />
+          <div
+            class="UIDateBox-PickerPrevInput"
+            @click="onPickerPrevButtonClick"
+          >
+            <UIIcon name="arrow-left" />
+          </div>
+          <div class="UIDateBox-PickerBase">{{ formatDate(pickerData.current, "uuuu") }}</div>
+          <div
+            class="UIDateBox-PickerNextInput"
+            @click="onPickerNextButtonClick"
+          >
+            <UIIcon name="arrow-right" />
+          </div>
+          <div
+            v-for="month in eachMonthOfInterval({
+              start: startOfYear(pickerData.current),
+              end: endOfYear(pickerData.current),
+            })"
+            :key="month.getTime()"
+            class="UIDateBox-PickerTarget"
+            :class="isSameMonth(pickerData.start, month) ? 'UIDateBox-PickerTarget-current' : ''"
+            @click="(event) => onPickerTargetButtonClick(event, month)"
+          >{{ month.getMonth() + 1 }}</div>
         </div>
-        <div class="UIDateBox-PickerBase">{{ formatDate(pickerData.current, "uuuu") }}</div>
         <div
-          class="UIDateBox-PickerNextInput"
-          @click="onPickerNextButtonClick"
+          v-else
+          class="UIDateBox-PickerDay"
         >
-          <UIIcon name="arrow-right" />
+          <div
+            class="UIDateBox-PickerPrevInput"
+            @click="onPickerPrevButtonClick"
+          >
+            <UIIcon name="arrow-left" />
+          </div>
+          <div class="UIDateBox-PickerBase">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
+          <div
+            class="UIDateBox-PickerNextInput"
+            @click="onPickerNextButtonClick"
+          >
+            <UIIcon name="arrow-right" />
+          </div>
+          <div class="UIDateBox-PickerSunday" />
+          <div class="UIDateBox-PickerMonday" />
+          <div class="UIDateBox-PickerTuesday" />
+          <div class="UIDateBox-PickerWednesday" />
+          <div class="UIDateBox-PickerThursday" />
+          <div class="UIDateBox-PickerFriday" />
+          <div class="UIDateBox-PickerSaturday" />
+          <div
+            v-for="date in eachDayOfInterval({
+              start: startOfWeek(startOfMonth(pickerData.current)),
+              end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
+            })"
+            :key="date.getTime()"
+            class="UIDateBox-PickerTarget"
+            :class="isSameDay(pickerData.start, date) ? 'UIDateBox-PickerTarget-current' : ''"
+            @click="(event) => onPickerTargetButtonClick(event, date)"
+          >{{ date.getDate() }}</div>
         </div>
-        <div
-          v-for="month in eachMonthOfInterval({
-            start: startOfYear(pickerData.current),
-            end: endOfYear(pickerData.current),
-          })"
-          :key="month.getTime()"
-          class="UIDateBox-PickerTarget"
-          :class="isSameMonth(pickerData.start, month) ? 'UIDateBox-PickerTarget-current' : ''"
-          @click="(event) => onPickerTargetButtonClick(event, month)"
-        >{{ month.getMonth() + 1 }}</div>
       </div>
-      <div
-        v-else
-        class="UIDateBox-PickerDay"
-      >
-        <div
-          class="UIDateBox-PickerPrevInput"
-          @click="onPickerPrevButtonClick"
-        >
-          <UIIcon name="arrow-left" />
-        </div>
-        <div class="UIDateBox-PickerBase">{{ formatDate(pickerData.current, "uuuu/MM") }}</div>
-        <div
-          class="UIDateBox-PickerNextInput"
-          @click="onPickerNextButtonClick"
-        >
-          <UIIcon name="arrow-right" />
-        </div>
-        <div class="UIDateBox-PickerSunday" />
-        <div class="UIDateBox-PickerMonday" />
-        <div class="UIDateBox-PickerTuesday" />
-        <div class="UIDateBox-PickerWednesday" />
-        <div class="UIDateBox-PickerThursday" />
-        <div class="UIDateBox-PickerFriday" />
-        <div class="UIDateBox-PickerSaturday" />
-        <div
-          v-for="date in eachDayOfInterval({
-            start: startOfWeek(startOfMonth(pickerData.current)),
-            end: lastDayOfWeek(lastDayOfMonth(pickerData.current)),
-          })"
-          :key="date.getTime()"
-          class="UIDateBox-PickerTarget"
-          :class="isSameDay(pickerData.start, date) ? 'UIDateBox-PickerTarget-current' : ''"
-          @click="(event) => onPickerTargetButtonClick(event, date)"
-        >{{ date.getDate() }}</div>
-      </div>
-    </div>
+    </ClientOnly>
     <div
       v-if="data.error"
       class="UIDateBox-Error"

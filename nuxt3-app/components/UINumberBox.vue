@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ZodNumber } from "zod"
+import type { ZodEffects, ZodNumber } from "zod"
 import { JapaneseErrorMap } from "~/utils/zod/JapaneseErrorMap"
 import { toHalfwidthAscii } from "~/utils/functions"
 
@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   readonly?: boolean,
   format?: string,
-  schema?: ZodNumber,
+  schema?: ZodNumber | ZodEffects<ZodNumber, number, number>,
   modelValue?: string,
   error?: string,
 }>(), {
@@ -202,8 +202,8 @@ function getFormatMaxLength(format: string) {
         :style="props.inputStyle"
         :placeholder="props.placeholder"
         :disabled="props.disabled"
-        :tabindex="props.tabindex"
-        :maxlength="data.maxLength"
+        :tabindex="props.tabindex ?? ''"
+        :maxlength="data.maxLength ?? ''"
         :size="data.baseLength"
         :value="data.value"
         @input="onInput"

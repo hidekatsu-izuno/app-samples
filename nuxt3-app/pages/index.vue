@@ -29,14 +29,14 @@ const onLoginButtonClick = async () => {
     })
 
     try {
-      loading.show()
+      loading.start()
       const result = await fetchURL("/api/auth/signin", {
         method: "POST",
         body: request,
       })
       location.href = result.redirect
     } catch (err) {
-      loading.hide()
+      loading.finish()
       alertRef.value.open("ログインに失敗しました。")
     }
   } catch (err) {

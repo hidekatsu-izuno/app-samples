@@ -4,9 +4,8 @@ useHead({
 })
 </script>
 <template>
+  <NuxtLoadingIndicator color="blue" />
   <NuxtLayout>
-    <UILoadingIndicator>
-      <NuxtPage />
-    </UILoadingIndicator>
+    <NuxtPage />
   </NuxtLayout>
 </template>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+
+<head>
+<title>Title</title>
+<script>
+function onClick() {
+  const count = document.getElementById("count")
+  count.textContent = Number(count.textContent) + 1
+}
+</script>
+<style>
+.btn { font-weight: bold; }
+</style>
+</head>
+
+<body>
+  <div>
+    <div id="count">1</div>
+    <button id="button" class="btn"
+      onclick="onClick()">add</button>
+    </body>
+  </div>
+</html>

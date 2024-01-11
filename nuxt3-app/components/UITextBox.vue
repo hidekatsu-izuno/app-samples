@@ -183,8 +183,8 @@ function validate(value: string) {
           :type="props.type"
           :placeholder="props.placeholder"
           :disabled="props.disabled"
-          :tabindex="props.tabindex"
-          :maxlength="data.maxLength"
+          :tabindex="props.tabindex ?? ''"
+          :maxlength="data.maxLength ?? ''"
           :value="data.value"
           @focus="onFocus"
           @input="onInput"
@@ -197,7 +197,7 @@ function validate(value: string) {
           class="UITextBox-InputButton"
           type="button"
           :disabled="props.disabled || undefined"
-          :tabindex="props.tabindex"
+          :tabindex="props.tabindex ?? ''"
           @click="emits('buttonClick', $event)"
         >
           <UIIcon :name="props.button" />

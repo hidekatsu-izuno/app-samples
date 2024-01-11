@@ -54,7 +54,7 @@ function onBlur(event: Event) {
         :style="props.inputStyle"
         :href="!props.disabled && props.href"
         :autofocus="props.autofocus || undefined"
-        :tabindex="props.tabindex"
+        :tabindex="props.tabindex ?? ''"
         @focus="onFocus"
         @click="onClick"
         @blur="onBlur"

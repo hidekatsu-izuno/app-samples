@@ -1270,7 +1270,13 @@ function onFooter(modelValue: Record<string, any>[], items: Record<string, any>)
         </div>
       </template>
       <div class="grid grid-cols-2 gap-2 p-6">
-        <UIButton @click="loading.show({ throttle: 1000, duration: 4000 })">Show</UIButton>
+        <UIButton
+          @click="async () => {
+            loading.start()
+            await wait(3000)
+            loading.finish()
+          }"
+        >Show</UIButton>
       </div>
     </UICard>
 

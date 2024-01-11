@@ -162,10 +162,10 @@ function validate(value: string) {
               class="UIRadioList-Input peer"
               type="radio"
               :name="data.name"
-              :value="item.value"
+              :value="item.value ?? ''"
               :checked="item.value === data.value"
               :disabled="props.disabled"
-              :tabindex="props.tabindex"
+              :tabindex="props.tabindex ?? ''"
             />
             <UIIcon name="circle-medium" class="UIRadioList-InputCheck hidden peer-checked:block" />
           </div>

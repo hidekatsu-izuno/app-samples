@@ -68,7 +68,7 @@ function onFocusout(event: Event) {
       type="button"
       :disabled="props.disabled || props.modelValue === 1"
       :data-value="1"
-      :tabindex="props.tabindex"
+      :tabindex="props.tabindex ?? ''"
       @click="onClick"
     >
       <UIIcon name="page-first" />

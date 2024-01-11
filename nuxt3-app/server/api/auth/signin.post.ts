@@ -1,4 +1,5 @@
 import { z } from "zod"
+import type { H3Event } from "h3"
 import { AppSessionConfig } from "../../middleware/02_session"
 import { type Sql, useSqlConnection } from "~/server/utils/action"
 import { UserPasswordSchema, EmailSchema } from "~/utils/schemas"
@@ -12,7 +13,7 @@ export default defineAction(async (event) => {
   const params = SigninSchema.parse(await readBody(event))
 
   const sql = useSqlConnection(event)
-  const userId = await getValidUserId(sql, params.email, params.password)
+  const userId = await getValidUserId(sql, params.email, params.password, event)
   if (!userId) {
     throw createError({ statusCode: 401 })
   }
@@ -26,7 +27,7 @@ export default defineAction(async (event) => {
   }
 })
 
-async function getValidUserId(sql: Sql, email: string, password: string) {
+async function getValidUserId(sql: Sql, email: string, password: string, event: H3Event) {
   const result = await sql`
     select
       mu.user_id,
@@ -48,8 +49,9 @@ async function getValidUserId(sql: Sql, email: string, password: string) {
     password,
     Buffer.from(user.userId.replaceAll("-", ""), "base64"),
   )
+
   if (Buffer.compare(user.userPassword, hashed) !== 0) {
-    console.log(hashed.toString("hex"))
+    // console.log(hashed.toString("hex"))
     return
   }
 

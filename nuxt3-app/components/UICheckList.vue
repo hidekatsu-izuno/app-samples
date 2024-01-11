@@ -171,8 +171,8 @@ function validate(value: string[]) {
               type="checkbox"
               :name="data.name"
               :disabled="props.disabled"
-              :tabindex="props.tabindex"
-              :value="item.value"
+              :tabindex="props.tabindex ?? ''"
+              :value="item.value ?? ''"
               :checked="data.value.includes(item.value)"
             />
             <UIIcon name="check-bold" class="UICheckList-InputCheck hidden peer-checked:block" />

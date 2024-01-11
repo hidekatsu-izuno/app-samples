@@ -53,7 +53,15 @@ export default defineNuxtConfig({
       ],
     },
   },
-
+  /*
+  nitro: {
+    esbuild: {
+      options: {
+        drop: ["console", "debugger"],
+      },
+    },
+  },
+*/
   ...(isGenerateMode
     ? {
         ignore: [
