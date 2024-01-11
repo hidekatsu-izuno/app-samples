@@ -23,7 +23,9 @@ export default defineNuxtConfig({
     },
   },
 
-  sourcemap: true,
+  devtools: {
+    enabled: true,
+  },
 
   modules: [
     "@nuxtjs/tailwindcss",
@@ -53,15 +55,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  /*
-  nitro: {
-    esbuild: {
-      options: {
-        drop: ["console", "debugger"],
-      },
-    },
-  },
-*/
+
   ...(isGenerateMode
     ? {
         ignore: [
