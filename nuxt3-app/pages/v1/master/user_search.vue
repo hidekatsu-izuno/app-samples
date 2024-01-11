@@ -45,7 +45,7 @@ async function onSearchButtonClick() {
       isDeleted,
     })
 
-    loading.show()
+    loading.start()
     const res = await fetchURL("/api/v1/master/user_search/search_users", {
       method: "POST",
       body: req,
@@ -61,7 +61,7 @@ async function onSearchButtonClick() {
       throw err
     }
   } finally {
-    loading.hide()
+    loading.finish()
   }
 }
 

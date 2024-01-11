@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { EmailSchema, UserNameSchema, CommentSchema } from "~/utils/schemas"
+
 const loading = useLoadingIndicator()
 const historyState = useHistoryState()
 
@@ -45,7 +47,7 @@ const alert = ref()
 
 async function onUpdateButtonClick() {
   try {
-    loading.show()
+    loading.start()
 
     if (data.mode === "register") {
       const req = await validate({
@@ -93,7 +95,7 @@ async function onUpdateButtonClick() {
       throw new Error(`Unknown mode: ${data.mode}`)
     }
   } catch (err) {
-    loading.hide()
+    loading.finish()
     if (err instanceof BusinessError) {
       alert.value.open(err.message)
     } else {

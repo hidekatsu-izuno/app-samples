@@ -13,46 +13,54 @@ const data = reactive({
   size: "",
 })
 
-function onBeforeEnter(el: HTMLElement) {
-  if (props.type === "slideup") {
-    data.size = `${el.scrollHeight}px`
-  } else if (props.type === "slideleft") {
-    if (el.parentElement) {
-      if (el.style.width === "" || el.style.width === "auto") {
-        data.size = `${el.parentElement.scrollWidth}px`
+function onBeforeEnter(el: Element) {
+  if (el instanceof HTMLElement) {
+    if (props.type === "slideup") {
+      data.size = `${el.scrollHeight}px`
+    } else if (props.type === "slideleft") {
+      if (el.parentElement) {
+        if (el.style.width === "" || el.style.width === "auto") {
+          data.size = `${el.parentElement.scrollWidth}px`
+        }
+      }
+      if (!data.size) {
+        data.size = `${el.scrollWidth}px`
       }
     }
-    if (!data.size) {
-      data.size = `${el.scrollWidth}px`
-    }
   }
 }
 
-function onAfterEnter(el: HTMLElement) {
-  if (el.dataset.height) {
-    data.size = ""
-  }
-}
-
-function onBeforeLeave(el: HTMLElement) {
-  if (props.type === "slideup") {
-    data.size = `${el.scrollHeight}px`
-  } else if (props.type === "slideleft") {
-    if (el.parentElement) {
-      if (el.style.width === "" || el.style.width === "auto") {
-        data.size = `${el.parentElement.scrollWidth}px`
-      }
-    }
-    if (!data.size) {
-      data.size = `${el.scrollWidth}px`
-    }
-  }
-}
-
-function onAfterLeave(el: HTMLElement) {
-  if (props.type === "slideup") {
+function onAfterEnter(el: Element) {
+  if (el instanceof HTMLElement) {
     if (el.dataset.height) {
       data.size = ""
+    }
+  }
+}
+
+function onBeforeLeave(el: Element) {
+  if (el instanceof HTMLElement) {
+    if (props.type === "slideup") {
+      data.size = `${el.scrollHeight}px`
+    } else if (props.type === "slideleft") {
+      if (el.parentElement) {
+        if (el.style.width === "" || el.style.width === "auto") {
+          data.size = `${el.parentElement.scrollWidth}px`
+        }
+      }
+      if (!data.size) {
+        data.size = `${el.scrollWidth}px`
+      }
+    }
+  }
+}
+
+function onAfterLeave(el: Element) {
+  if (el instanceof HTMLElement) {
+    if (props.type === "slideup") {
+      if (el.dataset.height) {
+        data.size = ""
+      }
     }
   }
 }
