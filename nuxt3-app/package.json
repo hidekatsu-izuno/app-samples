@@ -33,7 +33,7 @@
     "body-scroll-lock": "^3.1.5",
     "date-fns": "^2.30.0",
     "decimal.js": "^10.4.3",
-    "jtc-utils": "^0.3.7",
+    "jtc-utils": "^0.3.8",
     "lodash-es": "^4.17.21",
     "pino": "^8.17.1",
     "postgres": "^3.4.3",
