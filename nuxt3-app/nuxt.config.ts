@@ -28,6 +28,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    "nuxt-security",
     "@nuxtjs/tailwindcss",
     "vue-history-state/nuxt",
   ],
