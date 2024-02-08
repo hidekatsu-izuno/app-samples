@@ -33,6 +33,8 @@ const emits = defineEmits<{
   (event: "blur", value: Event): void,
 }>()
 
+const defaultName = useId()
+
 const data = reactive({
   value: new Array<string>(),
   focused: false,
@@ -52,8 +54,6 @@ defineExpose({
     return validate(data.value)
   },
 })
-
-const { data: name } = await useAsyncData("name", async () => await (props.name ?? crypto.randomUUID()))
 
 function onFocusin(event: Event) {
   if (!data.focused) {
@@ -166,7 +166,7 @@ function validate(value: string[]) {
             <input
               class="UICheckList-Input peer"
               type="checkbox"
-              :name="name ?? ''"
+              :name="name ?? defaultName"
               :disabled="props.disabled"
               :tabindex="props.tabindex"
               :value="item.value ?? ''"
