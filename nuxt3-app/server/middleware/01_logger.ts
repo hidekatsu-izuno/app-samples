@@ -1,3 +1,4 @@
+import crypto from "node:crypto"
 import type { H3Event } from "h3"
 import { default as pino, stdTimeFunctions } from "pino"
 

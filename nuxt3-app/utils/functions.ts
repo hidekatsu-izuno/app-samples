@@ -11,7 +11,7 @@ export {
   FixlenWriter,
 } from "jtc-utils"
 
-export { default as range } from "lodash-es/range"
+export { range } from "lodash-es"
 
 export const wait = (ms: number) => {
   return new Promise((resolve) => {
