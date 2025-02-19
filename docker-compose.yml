@@ -2,22 +2,22 @@ version: '3'
 
 services:
   db:
-    image: postgres:15
+    image: postgres:17
     container_name: app-samples-db
     ports:
       - 5432:5432
     volumes:
-      - postgres-15:/var/lib/postgresql/data
+      - postgres-17:/var/lib/postgresql/data
       - ./initdb.d:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
 volumes:
-  postgres-15:
+  postgres-17:
 
 # docker compose up -d
 # docker compose down
 
 # docker container prune --force
-# docker volume rm app-samples_postgres-15
+# docker volume rm app-samples_postgres-17
