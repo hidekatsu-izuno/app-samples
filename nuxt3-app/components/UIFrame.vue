@@ -88,7 +88,7 @@ function onDrawerClick(e: MouseEvent) {
 .UIFrame-Body {
   @apply
     flex flex-col grow
-    overflow-x-clip;
+    overflow-x-hidden;
 }
 
 .UIFrame-Header {
